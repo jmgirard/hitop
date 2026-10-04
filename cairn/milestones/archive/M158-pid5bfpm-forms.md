@@ -1,0 +1,11 @@
+# M158: PID5BF+M Word, Qualtrics and REDCap forms
+
+**Status:** done (2026-10-03, PR #167 https://github.com/jmgirard/hitop/pull/167)
+
+**Goal:** Researchers can build and download PID5BF+M paper forms, a Qualtrics import file and a REDCap data dictionary.
+
+**Outcome:** New exports `generate_docx_pid5bfpm()` (US and A4), `generate_qualtrics_pid5bfpm()` and `generate_redcap_pid5bfpm()` take the 36 items in BF+M order from `pid_items$BFPM`. Qualtrics IDs are `PID5BFPM_01` to `_36`, and REDCap fields are `pid5bfpm_01` to `_36`. The Word form adds a second scoring table through the new `make_domain_table()` and a `table_3` slot in `build_hitop_doc()`. The table lists the 6 `pid_bfpm_domains` rows with their facets. The scoring line states item means for facets and the mean of 3 facets for domains. It also says that no items are reverse-scored. The four prebuilt files ship in `inst/extdata/` and `pkgdown/assets/downloads/` as 4 new `hitop_artifacts` rows (48 in all). The new page `download-pid5bfpm.Rmd` has no online strip, through a `no_strip_stems` exemption. Page counts went from 6 to 7. The test helpers `docx_domain_rows()` and an anchored `docx_scoring_rows()` read the tables back. The family-wide generator tests now include the new generators.
+
+**Decisions:** Milestone-local, with IP1 sign-off at the T1 gate. The forms print the APA PID-5 `pid_instructions` text and 0 to 3 labels. No English BF+M instructions are published. The German FU Berlin sheet translates the same text. A change to `pid_instructions` therefore changes these forms too. Source row in `cairn/SOURCES.md`.
+
+**Review:** A three-lens fan-out gave 22 findings. 14 were fixed on the branch, 3 went to candidate rows and 5 were rejected (4 planned, 1 style). The fixes covered README and DESIGN status text and the shared smoke lists and legend lock. They also covered two test helpers that read too far, the download page's reliability wording and the (R) sentence. Follow-ups: the PID-5-BF (R) sentence, the APA footer and the "1.0" version went to the "Form text awaiting a source and sign-off" row. The missing `\value` help sections went to the "Clinical reporting & release" row. The PR conversation was empty. The CI wait stopped once at the ceiling and was resumed. Hygiene removed the M038 facet-limits lesson to fit the byte cap.
