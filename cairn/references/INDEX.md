@@ -25,4 +25,5 @@
 - [bach2020.md](bach2020.md) — Bach et al. (2020), *Psychopathology* 53, 179-188: the PID5BF+M development paper, its six anankastia items, its domain rule (p. 181) and its English facet names (Table 2).
 - [apa2013pid5irf.md](apa2013pid5irf.md) — The APA PID-5 Informant Form (Markon et al., 2013): its 218 item texts, its Facet and Domain Tables, the self-report alignment, and the two reverse lists that disagree on items 98 and 176.
 - [apa2013pid5child.md](apa2013pid5child.md) — The APA PID-5 child forms for ages 11 to 17 (Krueger et al., 2013), full and brief: their instructions, and a scripted check that their items and keying equal the adult `FULL` and `BF` tables.
+- [niemeyer2022.md](niemeyer2022.md) — Niemeyer et al. (2022), *JPA* 104, 30-43, with its OSF Table S3 and analysis code: the PID-5-FFBF forensic form's 100 items in four versions, its facets, its two reverse items and its domain rules.
 - [rfc9110.md](rfc9110.md) — RFC 9110, *HTTP Semantics*, section 4.1 (read 2026-10-01): senders and recipients are asked to support URIs of at least 8,000 octets, behind the Study Link Builder's long-link warning.

@@ -6,7 +6,7 @@
 \usage{
 rename_pid5_items(
   data,
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   method = c("number", "text"),
   item_cols = NULL,
   item_text = NULL,
@@ -19,16 +19,20 @@ rename_pid5_items(
 
 \item{version}{A string specifying the PID-5 form the items belong to:
 \code{"FULL"} (220 items), \code{"SF"} (100 items), \code{"BF"} (25 items), \code{"BFPM"}
-(the 36-item PID5BF+M), or \code{"IRF"} (the 218-item Informant Form, whose
-text matches \code{pid_items$TextIRF}). Matched case-insensitively.
-(default = \code{"FULL"})}
+(the 36-item PID5BF+M), \code{"IRF"} (the 218-item Informant Form, whose
+text matches \code{pid_items$TextIRF}), or \code{"FFBF"} (the 100-item Forensic
+Faceted Brief Form, whose text matches any of the four texts in
+\link{pid_ffbf_items}: self or informant report, English or German). Matched
+case-insensitively; \code{"F"} is refused, because it starts both
+"FULL" and "FFBF". (default = \code{"FULL"})}
 
 \item{method}{A string specifying the matching method: \code{"number"} to rename
 columns spelled \code{from_prefix} followed by an item number, or \code{"text"} to
 match against the literal item prompt text in \code{pid_items$Text}
 (\code{pid_items$TextIRF} for \code{version = "IRF"}, whose text has no "He or
 she..." stem, leading ellipsis or final period, so text copied from the
-printed informant form needs those removed first). (default = \code{"number"})
+printed informant form needs those removed first; for \code{version = "FFBF"},
+any of the four texts in \link{pid_ffbf_items}). (default = \code{"number"})
 
 The forms number their items independently, so \code{"number"} reads the
 digits as an item number of the form named by \code{version}: under
@@ -51,7 +55,7 @@ to match the exports. (default = \code{"pid_"})}
 \item{prefix}{A string pasted literally before each standardized item
 number, which is zero-padded to the width of the form's largest item
 number. \code{NULL} resolves to the form's own stem: \code{"pid5_"}, \code{"pid5sf_"},
-\code{"pid5bf_"}, \code{"pid5bfpm_"} or \code{"pid5irf_"}. (default = \code{NULL})}
+\code{"pid5bf_"}, \code{"pid5bfpm_"}, \code{"pid5irf_"} or \code{"pid5ffbf_"}. (default = \code{NULL})}
 }
 \value{
 A data frame with renamed column names for the matched PID-5 items.
@@ -68,6 +72,12 @@ if no column at all is named \code{from_prefix} followed by a number, nothing
 is renamed and the report is \code{hitop_no_columns_matched}. Under either
 method, if some but not all of the form's items were renamed, the
 completeness report is \code{hitop_incomplete_rename}.
+
+Under \code{version = "FFBF"} and \code{method = "text"}, a call in which two
+columns match the same item (for example its self-report and informant
+texts, or its English and German texts) is an error, since both would
+take the same name. Rename each form's columns in its own data frame, or
+give each call its own \code{prefix}.
 }
 \description{
 Rename data frame columns to the standard PID-5 item names of one form,
@@ -76,8 +86,9 @@ the literal item prompt text. The standard names are the ones the package's
 REDCap and Qualtrics exports write and the shipped datasets carry:
 \code{pid5_001} to \code{pid5_220} for the full form, \code{pid5sf_001} to \code{pid5sf_100} for
 the short form, and \code{pid5bf_01} to \code{pid5bf_25} for the brief form. The
-PID5BF+M names, \code{pid5bfpm_01} to \code{pid5bfpm_36}, and the Informant Form
-names, \code{pid5irf_001} to \code{pid5irf_218}, follow the same pattern.
+PID5BF+M names, \code{pid5bfpm_01} to \code{pid5bfpm_36}, the Informant Form names,
+\code{pid5irf_001} to \code{pid5irf_218}, and the Forensic Faceted Brief Form names,
+\code{pid5ffbf_001} to \code{pid5ffbf_100}, follow the same pattern.
 }
 \examples{
 # Rename columns named as this package's datasets were before the rename

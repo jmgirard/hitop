@@ -476,3 +476,86 @@ subscale_parent <- list(
   specificPhobiaIndex = c("animalInsectPhobia", "bloodInjectionPhobia",
                           "situationalPhobias")
 )
+
+# ---- PID-5 Forensic Faceted Brief Form (100 items) ---------------------------
+#
+# Typed from Table S3 of Niemeyer et al. (2022) (M162): the items printed under
+# each facet heading and the items its German columns mark "(-)"
+# (cairn/references/niemeyer2022.md), never from data-raw/pid_ffbf_items.csv
+# or the package tables. The two four-factor domains that are not APA domains
+# are typed from the paper's prose (pp. 35, 38, 39), as the authors' code
+# scores them (lines 184 and 185). test-keying.R checks
+# the package tables against these; the scoring and reliability tests
+# recompute from them.
+ffbf_reverse <- c(12, 26)
+ffbf_facets <- list(
+  "Anhedonia" = c(1, 26, 51, 76),
+  "Anxiousness" = c(2, 27, 52, 77),
+  "Attention Seeking" = c(3, 28, 53, 78),
+  "Callousness" = c(4, 29, 54, 79),
+  "Deceitfulness" = c(5, 30, 55, 80),
+  "Depressivity" = c(6, 31, 56, 81),
+  "Distractibility" = c(7, 32, 57, 82),
+  "Eccentricity" = c(8, 33, 58, 83),
+  "Emotional Lability" = c(9, 34, 59, 84),
+  "Grandiosity" = c(10, 35, 60, 85),
+  "Hostility" = c(11, 36, 61, 86),
+  "Impulsivity" = c(12, 37, 62, 87),
+  "Intimacy Avoidance" = c(13, 38, 63, 88),
+  "Irresponsibility" = c(14, 39, 64, 89),
+  "Manipulativeness" = c(15, 40, 65, 90),
+  "Perceptual Dysregulation" = c(16, 41, 66, 91),
+  "Perseveration" = c(17, 42, 67, 92),
+  "Restricted Affectivity" = c(18, 43, 68, 93),
+  "Rigid Perfectionism" = c(19, 44, 69, 94),
+  "Risk Taking" = c(20, 45, 70, 95),
+  "Separation Insecurity" = c(21, 46, 71, 96),
+  "Submissiveness" = c(22, 47, 72, 97),
+  "Suspiciousness" = c(23, 48, 73, 98),
+  "Unusual Beliefs & Experiences" = c(24, 49, 74, 99),
+  "Withdrawal" = c(25, 50, 75, 100)
+)
+# The five APA domains (the mean of the three primary facets, p. 33; the facets
+# are those of `pid_domains`), then the code's Disinhibited Aggression and
+# Insecurity.
+ffbf_domains <- list(
+  "Negative affectivity" = c("Emotional Lability", "Anxiousness", "Separation Insecurity"),
+  "Detachment" = c("Withdrawal", "Anhedonia", "Intimacy Avoidance"),
+  "Antagonism" = c("Manipulativeness", "Deceitfulness", "Grandiosity"),
+  "Disinhibition" = c("Irresponsibility", "Impulsivity", "Distractibility"),
+  "Psychoticism" = c("Unusual Beliefs & Experiences", "Eccentricity", "Perceptual Dysregulation"),
+  "Disinhibited Aggression" = c("Emotional Lability", "Hostility", "Impulsivity"),
+  "Insecurity" = c("Separation Insecurity", "Anxiousness", "Perceptual Dysregulation")
+)
+#
+# Hand-computed fixture for score_pid5(version = "FFBF") (M162, AC3). Facet
+# membership, the reverse items 12 and 26 and the domain triplets are the
+# typed tables above; the expected values and their arithmetic are in
+# test-score_pid5ffbf.R. Item i is FFBF item i, and facet k holds items k,
+# k + 25, k + 50 and k + 75 (Table S3). Rows:
+#   R1  item i answered (i - 1) %/% 25, so each facet's four items are 0, 1,
+#       2, 3 in item order
+#   R2  item i answered 3 - (i - 1) %/% 25
+#   R3  R1 with item 12 NA (the reverse item of Impulsivity is the missing one)
+#       and item 36 NA (Hostility keeps 0, 2, 3: partial sum 5, not a multiple
+#       of 3, so rounded proration and the unrounded code rule differ)
+#   R4  R2 with items 9 and 34 NA (Emotional Lability has 2 of 4 missing, so
+#       Negative affectivity and Disinhibited Aggression are NA)
+#   R5  every item 0
+#   R6  every item 3
+# Item 12 is 0 in R1 and R5 and 3 in R2 and R6; item 26 is 0 in R5 and 3 in
+# R6.
+fx_pid5ffbf <- function() {
+  i <- seq_len(100)
+  df <- as.data.frame(matrix(NA_integer_, nrow = 6, ncol = 100))
+  names(df) <- sprintf("pid5ffbf_%03d", i)
+  df[1, ] <- (i - 1L) %/% 25L
+  df[2, ] <- 3L - (i - 1L) %/% 25L
+  df[3, ] <- (i - 1L) %/% 25L
+  df[3, c(12, 36)] <- NA_integer_
+  df[4, ] <- 3L - (i - 1L) %/% 25L
+  df[4, c(9, 34)] <- NA_integer_
+  df[5, ] <- 0L
+  df[6, ] <- 3L
+  df
+}

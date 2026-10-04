@@ -59,6 +59,7 @@ Researchers can build and download English PID-5-FFBF self-report and informant 
 - 2026-10-04: plan chose a separate informant stem over D-091's shared stem. D-091 shared stems because the child items equal the adult items. FFBF informant items differ in text, and the paper collects self and informant reports on the same prisoner. Falsified by users who need informant columns named as self-report columns for `rename_pid5_items()`.
 - 2026-10-04: criteria audit (full mode, fresh Opus reader) returned 4 findings on M163, all applied. AC1 and AC2 use item-number order. AC1 names the instruction fields and the 7 domains on the scoring page. AC4 records who grants redistribution, not only Jeff's word. The new AC6 covers informant columns, which M162's defaults name and label as self-report items.
 - 2026-10-04: audit judgment on the footer: the English forms carry Table S3's notice verbatim (IP1), because it is the source's notice for this text, although it names the German version.
+- 2026-10-04: from RR08 (M162's keying review): Table S3 prints no English informant stem (its cells start with an ellipsis and use they/them, item 48 uses his/her) and no response labels beyond the end points. This plan already takes the stem and labels from the APA forms. Also, SOURCES.md OQ-7 lists five English typos that the forms will print unless Jeff signs off a correction.
 
 ## Decisions
 

@@ -425,3 +425,63 @@ test_that("BF+M facets shared with the PID-5 are subsets of the same PID-5 facet
     expect_identical(pid5_facet, rep(expected, 2), info = f)
   }
 })
+
+# ---- Source: Niemeyer et al. (2022), Table S3 and the authors' code ----
+#
+# The typed key tables (`ffbf_reverse`, `ffbf_facets`, `ffbf_domains`) live in
+# helper-fixtures.R. All 400 item texts are checked against the PDF by
+# data-raw/check_pid_ffbf_text.R, which needs the shelf copy.
+
+test_that("pid_ffbf_items numbers the 100 FFBF items 1 to 100 with four texts each", {
+  expect_true(is.integer(pid_ffbf_items$FFBF))
+  expect_identical(pid_ffbf_items$FFBF, 1:100)
+  for (col in c("Text", "TextIRF", "TextDE", "TextIRFDE")) {
+    expect_false(anyNA(pid_ffbf_items[[col]]), info = col)
+    expect_true(all(nzchar(pid_ffbf_items[[col]])), info = col)
+  }
+  # Spot texts as Table S3 prints them, under the text rule of
+  # cairn/references/niemeyer2022.md.
+  expect_identical(pid_ffbf_items$Text[12], "I usually think before I act")
+  expect_identical(pid_ffbf_items$TextIRF[50], "doesn't like spending time with the other inmates")
+  expect_identical(
+    pid_ffbf_items$TextIRFDE[93],
+    "reagiert kaum auf Dinge, bei denen andere meistens Gefühle zeigen"
+  )
+})
+
+test_that("FFBF reverse-keyed items are Table S3's two (-) items", {
+  expect_true(is.logical(pid_ffbf_items$Reverse))
+  expect_setequal(pid_ffbf_items$FFBF[pid_ffbf_items$Reverse], ffbf_reverse)
+  for (i in seq_len(nrow(pid_scales[["FFBF"]]))) {
+    itm <- pid_scales[["FFBF"]]$itemdata[[i]]
+    expect_identical(itm$Reverse, itm$FFBF %in% ffbf_reverse, info = pid_scales[["FFBF"]]$Facet[i])
+  }
+})
+
+test_that("FFBF facet -> item membership matches Table S3's facet headings", {
+  expect_length(ffbf_facets, 25)
+  expect_setequal(unlist(ffbf_facets), 1:100)
+  for (f in names(ffbf_facets)) {
+    expect_equal(sort(pid_ffbf_items$FFBF[pid_ffbf_items$Facet == f]), sort(as.integer(ffbf_facets[[f]])), info = f)
+  }
+  tbl <- pid_scales[["FFBF"]]
+  expect_setequal(tbl$Facet, names(ffbf_facets))
+  for (i in seq_len(nrow(tbl))) {
+    expect_equal(sort(tbl$itemNumbers[[i]]), sort(as.integer(ffbf_facets[[tbl$Facet[i]]])), info = tbl$Facet[i])
+  }
+  expect_identical(tbl$nItems, rep(4L, 25))
+  # Same facets, stems and order as the SF, the form it adapts.
+  expect_identical(tbl$camelCase, pid_scales[["SF"]]$camelCase)
+  expect_identical(names(tbl$itemNumbers), tbl$camelCase)
+})
+
+test_that("pid_ffbf_domains holds the 5 APA domains and the 2 forensic domains", {
+  expect_identical(pid_ffbf_domains$Domain, names(ffbf_domains))
+  expect_identical(pid_ffbf_domains$primaryFacets, unname(ffbf_domains))
+  expect_identical(pid_ffbf_domains[1:5, ], pid_domains)
+  expect_identical(
+    pid_ffbf_domains$camelCase[6:7],
+    c("disinhibitedAggression", "insecurity")
+  )
+  expect_true(all(unlist(pid_ffbf_domains$facetStems) %in% pid_scales[["FFBF"]]$camelCase))
+})

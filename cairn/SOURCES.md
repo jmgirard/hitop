@@ -54,6 +54,9 @@ status, so the table has an *external* oracle. Verified item-by-item on
 | IRF proration rounding | APA PID-5 Informant Form | p. 9 | ✅ The key prints "round up to the nearest whole number". The package applies the series' nearest-whole-number rule, halves up (D-090, from RR07). **OQ-5 resolved** |
 | IRF form text: instructions, rating prompt, stem, 0–3 labels and footer notice (`pid_irf_instructions`) | APA PID-5 Informant Form | pp. 2–7 | ✅ `data-raw/check_pid_irf_text.R` matches start, continue, prompt, the APA notice, the stem and the labels to the PDF (2026-10-04, M160). The forms print the opening paragraph, then the prompt and stem at the head of each page, and the notice in the Word footer. The response labels are stored as a copy of `pid_instructions$options`, which equal the form's column heads. Maintainer sign-off at M160's merge gate. |
 | Child forms (ages 11 to 17): item text, order and keying of the 220-item and 25-item forms; their instructions, 0–3 labels and footer notices (`pid_child_instructions`) | APA PID-5 Child Age 11–17 and PID-5-BF Child Age 11–17 (Krueger et al., 2013) | full form pp. 2–9, brief form pp. 2–3 | ✅ `data-raw/check_pid_child_text.R` finds the 245 texts in order, the reverse list, the Facet Table, the Domain Table rows and the BF key equal to `pid_items`, `pid_scales$FULL`, `pid_scales$BF` and `pid_domains`, and matches the stored instructions, notices and labels to the PDFs (2026-10-04, M161). So the child forms score as `FULL` and `BF`, and the keying tables do not change. See [apa2013pid5child](references/apa2013pid5child.md). |
+| `pid_ffbf_items`: FFBF item text (100 items, self and informant, English and German) and `Facet` → items (25 facets × 4) | Niemeyer et al. (2022), Table S3 (OSF supplement) | Table S3 pp. 1–11 | ✅ `data-raw/check_pid_ffbf_text.R` matches all 400 texts and 100 facets to a second reading of the PDF, and the 25 facet lists to the authors' code (2026-10-04, M162). The text rule is on `cairn/references/niemeyer2022.md`. Jeff signed off the keying at M162's merge question (2026-10-04). |
+| FFBF reverse-keying (items 12 and 26) | Niemeyer et al. (2022) | Table S3 "(-)" marks; article p. 32; code lines 382–388 | ✅ Table S3's "(-)" marks and code lines 382–388 name items 12 and 26; article p. 32 states that two items are reverse-coded (2026-10-04, M162) |
+| FFBF domains: 5 APA domains and the four-factor Disinhibited Aggression and Insecurity (`pid_ffbf_domains`) | Niemeyer et al. (2022) | article pp. 33, 35, 38, 39; code lines 184–190 | ✅ The APA domains take `pid_domains`; the two new domains come from the paper's prose (pp. 35, 38, 39) and match code lines 184, 185, 189 and 190 (2026-10-04, M162; D-092, RR08). The paper prints no missing-data rule, and the package applies its SF rule. |
 
 ## Sources
 
@@ -727,6 +730,14 @@ sha256 `123f0bf6675e324e…`). The IRF key carries two other copy errors: the St
 reverse list (OQ-4) and, in its 2013 edition, "Name/ID (child receiving care)"
 headers on pp. 3 and 5, which the DSM-5-TR edition fixed. Reopens on any evidence
 D-090 lists.
+
+### OQ-6: The article and Table S3 word FFBF item 10 differently (2026-10-04, M162, RR08)
+
+Niemeyer et al. (2022, p. 32) quote item 10 as an example of a moderate change, in words that differ from Table S3. Table S3 prints "To be honest: I am just more important than other inmates". The package takes Table S3, the item table of the supplement, and ships its wording. Open until the authors confirm which wording the study used.
+
+### OQ-7: Table S3's English FFBF text keeps five typos (2026-10-04, M162, RR08)
+
+`pid_ffbf_items` keeps Table S3's English wording as printed (IP1): "treatly" (item 73, self), "presense" (item 24, self and informant), "does't" (item 30, informant), "insist" for "insists" (item 44, informant) and "believes, that" (item 23, informant). M163 decides, with Jeff's sign-off, whether its English forms print them as is or corrected. A correction is a departure from the source and needs a row here.
 
 ### OQ-3: The HiTOP-SR introduction paper prints the NSSI scale's name three ways
 

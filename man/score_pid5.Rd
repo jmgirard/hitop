@@ -7,7 +7,7 @@
 score_pid5(
   data,
   items,
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   srange = c(0, 3),
   prefix = "pid_",
   missing = c("apa", "available", "complete"),
@@ -41,8 +41,11 @@ before 2.0 (\code{labelled_spss}) is refused the same way, but
 \code{na_values} or \code{na_range} attribute declares to \code{NA} first.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
-"SF", "BF", "BFPM" (the 36-item PID5BF+M), or "IRF" (the 218-item
-Informant Form). Will be automatically capitalized. (default = \code{"FULL"})}
+"SF", "BF", "BFPM" (the 36-item PID5BF+M), "IRF" (the 218-item
+Informant Form), or "FFBF" (the 100-item Forensic Faceted Brief Form).
+Will be automatically capitalized. A unique start of a name is accepted,
+but \code{"F"} is refused, because it starts both "FULL" and "FFBF".
+(default = \code{"FULL"})}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the items, used for reverse-coding. (default = \code{c(0, 3)})}
@@ -55,7 +58,7 @@ computing scale scores. \code{"apa"} (the default) follows the published APA
 scoring key: a facet or domain-item scale with more than 25\% of its items
 unanswered is set to \code{NA}, and otherwise the raw score is prorated to the
 full item count and rounded to the nearest whole number before averaging (a
-FULL, SF, IRF or BFPM domain is \code{NA} if any one of its three contributing
+FULL, SF, IRF, FFBF or BFPM domain is \code{NA} if any one of its three contributing
 facets is \code{NA}). The PID-5-IRF key prints this step as "round up to the
 nearest whole number". The package reads it as the nearest-whole-number
 rule that every other APA PID-5 key states, with halves rounded up, so an
@@ -75,7 +78,7 @@ an optional logical indicating whether to calculate a
 standard error for each scale score. For the facets, and for the brief
 form's domains and total, this is the SD of the items the respondent
 actually answered divided by the square root of how many of those items
-they answered. The FULL, SF, IRF and BFPM domain scores are means of three
+they answered. The FULL, SF, IRF, FFBF and BFPM domain scores are means of three
 facet scores rather than of items, so their standard errors are taken one
 level up: the SD of the three contributing facet scores divided by the
 square root of 3. Standard errors are \code{NA} wherever their scale score is
@@ -99,12 +102,14 @@ errors (if requested) and all original \code{data} columns (if requested)
 Calculate scale scores on the Personality Inventory for DSM-5: full version
 (PID-5, 220 items), short form version (PID-5-SF, 100 items), brief form
 version (PID-5-BF, 25 items), modified brief form (PID5BF+M, 36 items;
-Bach et al., 2020), or Informant Form (PID-5-IRF, 218 items; Markon et al.,
-2013) from item-level data.
+Bach et al., 2020), Informant Form (PID-5-IRF, 218 items; Markon et al.,
+2013), or Forensic Faceted Brief Form (PID-5-FFBF, 100 items; Niemeyer et
+al., 2022) from item-level data.
 }
 \details{
 For the FULL, SF and IRF versions, the output includes the 25 facet
-scores followed by the 5 personality-trait domain scores. Following the APA
+scores followed by the 5 personality-trait domain scores; the FFBF version
+adds 2 forensic domains after them (see below). Following the APA
 scoring key (Step 3), each domain score is the mean of the average scores of
 its 3 primary facets (the map is stored in \code{pid_domains}). The BF version
 scores its 5 domains directly from its items, and adds a \code{total} score. By
@@ -174,6 +179,66 @@ informant norms (Markon et al., 2024, Tables A–10 and A–11) are not in
 \code{pid_norms}. \code{\link[=validity_pid5]{validity_pid5()}} has no informant validity scales.
 }
 
+\subsection{The PID-5 Forensic Faceted Brief Form}{
+
+\code{version = "FFBF"} scores the PID-5 Forensic Faceted Brief Form
+(PID-5-FFBF; Niemeyer et al., 2022), an adaptation of the 100-item faceted
+short form for people in prison, with a self-report and an informant
+version. The form was validated in German. The English text in
+\link{pid_ffbf_items} is the authors' English version, and the study
+validated only the German version (p. 40). Items they did not adapt keep
+the APA PID-5 wording. Many items are rewritten for prisoners, and the
+authors numbered the form afresh, so its items are not the SF's: matched by number, 98 of the
+100 SF items fall in a different facet. Facet k, in alphabetical
+order, holds items k, k + 25, k + 50 and k + 75. Items 12 and 26 are
+reverse-scored.
+
+The output is 25 facets, named and ordered as the SF's, then 7 domains:
+the 5 APA domains of \link{pid_domains} and the two domains of the paper's
+four-factor solution that are not APA domains, Disinhibited Aggression
+(Emotional Lability, Hostility, Impulsivity) and Insecurity (Separation
+Insecurity, Anxiousness, Perceptual Dysregulation). The paper's
+four-factor Antagonism and Detachment have the facets of the APA domains
+of the same names, so they are not repeated. \link{pid_ffbf_domains} holds the
+map. The four-factor structure comes from one exploratory study of 199
+male prisoners, and the authors leave open whether Insecurity is needed
+(Niemeyer et al., 2022, p. 39). The seven domains share facets, so they
+are not independent scores.
+
+\strong{Missing data.} The paper prints no missing-data rule. Under
+\code{missing = "apa"} the package applies the full-form APA rule, as it does
+for the SF: a facet with 1 of its 4 items missing is prorated and
+rounded, a facet with 2 or more missing is \code{NA}, and a domain with an
+\code{NA} facet is \code{NA}. The authors' published analysis code scores
+differently. It takes the unrounded mean of the answered items for a
+facet with 1 item missing, and it scores a domain as the mean of its 12
+items when up to 3 of them are missing, wherever they fall. With complete
+data the two rules agree. With missing items a facet can differ by up to
+1/12 (for example 1.75 here against 1.67 for answers 0, 2 and 3), and a
+domain can be \code{NA} here where the code gives a value. The paper's
+descriptive statistics were computed under the code's rule. No \code{missing}
+mode reproduces it.
+
+\strong{Informant reports.} Informant data are scored with the same version.
+The paper averaged the responses of two informants item by item before
+scoring (p. 33), and the authors' code uses one informant's response
+where the other is missing; do that step first, for example with
+\code{rowMeans(cbind(x1, x2), na.rm = TRUE)} for each item, then set an item
+that both informants skipped (\code{NaN} from that call) to \code{NA}. Averaged responses
+can be halves, and they score like any other values. Under
+\code{missing = "apa"} the proration step rounds them too: a facet with one
+item missing and answers 0.5, 1 and 1 scores 0.75, where
+\code{missing = "available"} gives 0.833. One informant's responses score
+directly.
+
+\code{\link[=norm_pid5]{norm_pid5()}}, \code{\link[=plot_pid5]{plot_pid5()}} and \code{\link[=validity_pid5]{validity_pid5()}} do not take the FFBF,
+because no FFBF norms or validity keys are published. The FFBF facet and
+APA domain columns carry the SF's names, so \code{\link[=norm_pid5]{norm_pid5()}} converts them
+as \code{version = "SF"} with no version warning and \code{\link[=plot_pid5]{plot_pid5()}} plots the
+result; do not do that, as it compares them with SF self-report norms
+from another population.
+}
+
 \subsection{The PID-5 child forms}{
 
 \code{version = "FULL"} scores the APA's 220-item PID-5 child form for ages 11
@@ -209,9 +274,9 @@ alongside one or more \code{NA} domains} (at most 3 of the 5; blanking all five
 requires 10 unanswered items, which blanks the total as well). This is the
 published rule applied as written, not an oversight.
 
-The FULL, SF, IRF and BFPM versions have no total score: the PID-5 book
-defines one only for the brief form, and the PID5BF+M and PID-5-IRF
-sources define none.
+The FULL, SF, IRF, FFBF and BFPM versions have no total score: the PID-5
+book defines one only for the brief form, and the PID5BF+M, PID-5-IRF and
+PID-5-FFBF sources define none.
 
 \strong{Errors.} With \code{append = TRUE}, a column of \code{data} whose name this call
 would also produce is an error rather than an overwrite or a duplicated
@@ -251,6 +316,12 @@ score_pid5(sim_bfpm, items = 1:36, version = "BFPM", append = FALSE)
 irf_rows <- pid_items[!is.na(pid_items$IRF), ]
 sim_irf <- sim_pid5[sprintf("pid5_\%03d", irf_rows$FULL)]
 score_pid5(sim_irf, items = 1:218, version = "IRF", append = FALSE)
+
+# PID-5-FFBF (25 facets + 7 domains). No FFBF dataset ships; for
+# illustration, simulate answers to its 100 items.
+set.seed(1)
+sim_ffbf <- as.data.frame(matrix(sample(0:3, 500, replace = TRUE), 5, 100))
+score_pid5(sim_ffbf, items = 1:100, version = "FFBF", append = FALSE)
 
 }
 \references{
@@ -294,6 +365,13 @@ Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
 (2013). \emph{The Personality Inventory for DSM-5—Informant Form
 (PID-5-IRF)—Adult}. American Psychiatric Association. The scoring key for
 \code{version = "IRF"}.
+
+Niemeyer, L. M., Grosz, M. P., Zimmermann, J., & Back, M. D.
+(2022). Assessing maladaptive personality in the forensic context:
+Development and validation of the Personality Inventory for DSM-5
+Forensic Faceted Brief Form (PID-5-FFBF). \emph{Journal of Personality
+Assessment, 104}(1), 30-43. \doi{10.1080/00223891.2021.1923522} The
+source of the PID-5-FFBF, its items (supplement Table S3) and its domains.
 
 Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
 Skodol, A. E. (2013). \emph{The Personality Inventory for DSM-5 (PID-5)—Child

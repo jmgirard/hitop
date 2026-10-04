@@ -9,9 +9,12 @@
 #'   columns. (default = `"items"`)
 #' @param version A string specifying the PID-5 form the columns belong to:
 #'   `"FULL"` (220 items), `"SF"` (100 items), `"BF"` (25 items), `"BFPM"`
-#'   (the 36-item PID5BF+M), or `"IRF"` (the 218-item Informant Form, labelled
-#'   with its informant wording from `pid_items$TextIRF`). Matched
-#'   case-insensitively. The forms number their
+#'   (the 36-item PID5BF+M), `"IRF"` (the 218-item Informant Form, labelled
+#'   with its informant wording from `pid_items$TextIRF`), or `"FFBF"` (the
+#'   100-item Forensic Faceted Brief Form, labelled with its English
+#'   self-report text from `pid_ffbf_items$Text`, also for informant data). Matched
+#'   case-insensitively; `"F"` is refused, because it starts both
+#'   "FULL" and "FFBF". The forms number their
 #'   items independently and
 #'   score different sets of scales, so the form named here decides both the
 #'   text attached to an item column and which scale columns are recognized.
@@ -19,7 +22,7 @@
 #' @param prefix A string specifying the prefix used on the column names.
 #'   `NULL` resolves to the default for the given `target` and `version`: under
 #'   `target = "items"`, the form's own stem (`"pid5_"`, `"pid5sf_"`,
-#'   `"pid5bf_"`, `"pid5bfpm_"` or `"pid5irf_"`); for the full, short and brief forms this is
+#'   `"pid5bf_"`, `"pid5bfpm_"`, `"pid5irf_"` or `"pid5ffbf_"`); for the full, short and brief forms this is
 #'   the pattern the shipped datasets and the package's REDCap export use; under `target = "scales"`, `"pid_"`, which is what
 #'   [score_pid5()] writes under its own default `prefix`. (default = `NULL`)
 #'
@@ -60,7 +63,7 @@
 label_pid5 <- function(
   data,
   target = c("items", "scales"),
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   prefix = NULL
 ) {
   target <- match.arg(target)
@@ -71,7 +74,7 @@ label_pid5 <- function(
 
   ## Resolve the version, as `score_pid5()` does
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
 
   data_cols <- colnames(data)
 
@@ -83,17 +86,26 @@ label_pid5 <- function(
         "SF" = "pid5sf_",
         "BF" = "pid5bf_",
         "BFPM" = "pid5bfpm_",
-        "IRF" = "pid5irf_"
+        "IRF" = "pid5irf_",
+        "FFBF" = "pid5ffbf_"
       )
     }
 
     ## This form's rows, in `pid_items` row order; `expected_names` and the
     ## text column stay in step, so a match location indexes both. The
     ## informant form labels with its own wording (D-089(b)).
-    form <- pid_items[!is.na(pid_items[[version]]), ]
-    text <- if (version == "IRF") form$TextIRF else form$Text
-    max_n <- max(form[[version]])
-    expected_names <- item_names(prefix, form[[version]], max_n = max_n)
+    ## The FFBF has its own item table and labels with its English
+    ## self-report text (D-092).
+    if (version == "FFBF") {
+      numbers <- pid_ffbf_items$FFBF
+      text <- pid_ffbf_items$Text
+    } else {
+      form <- pid_items[!is.na(pid_items[[version]]), ]
+      numbers <- form[[version]]
+      text <- if (version == "IRF") form$TextIRF else form$Text
+    }
+    max_n <- max(numbers)
+    expected_names <- item_names(prefix, numbers, max_n = max_n)
     locs <- match(data_cols, expected_names)
     matched_idx <- which(!is.na(locs))
 
@@ -121,14 +133,16 @@ label_pid5 <- function(
         "SF" = "PID-5-SF",
         "BF" = "PID-5-BF",
         "BFPM" = "PID5BF+M",
-        "IRF" = "PID-5-IRF"
+        "IRF" = "PID-5-IRF",
+        "FFBF" = "PID-5-FFBF"
       )
     )
   } else if (target == "scales") {
     if (is.null(prefix)) prefix <- "pid_"
 
     ## The FULL, SF and IRF forms score 25 facets from `pid_scales[[version]]`
-    ## and 5 domains from `pid_domains`; the BFPM form scores 18 facets from
+    ## and 5 domains from `pid_domains`; the FFBF form scores 25 facets and the
+    ## 7 domains of `pid_ffbf_domains`; the BFPM form scores 18 facets from
     ## `pid_scales$BFPM` and 6 domains from `pid_bfpm_domains`; the BF form
     ## scores its 5 domains and a total directly, all six carried by
     ## `pid_scales$BF`.
@@ -139,6 +153,8 @@ label_pid5 <- function(
       pid_domains
     } else if (version == "BFPM") {
       pid_bfpm_domains
+    } else if (version == "FFBF") {
+      pid_ffbf_domains
     } else {
       NULL
     }
