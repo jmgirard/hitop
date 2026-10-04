@@ -1,6 +1,6 @@
 # M160: PID-5 informant form (IRF) Word, Qualtrics and REDCap forms
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M159
 - **Driving RR:** —
@@ -55,6 +55,8 @@ Researchers can build and download PID-5 IRF paper forms, a Qualtrics import fil
 - 2026-10-04: T5 done. NEWS entry "New PID-5 Informant Form forms"; three `_pkgdown.yml` reference rows (added in T4); README's export row ticked; DESIGN.md's goal line updated. `document()` no diff, `check_pkgdown()` no problems. The first `devtools::check()` warned on a literal © in `R/generate_docx.R` (the default footer string), written by an edit in place of the `©` escape; restored, and the rerun gives 0 errors, 0 warnings, 0 notes.
 - 2026-10-04: claim audit: 96 claims read, 6 corrected — vignettes/articles/download-pid5irf.Rmd, tests/testthat/test-generate-pid5irf.R, R/generate_docx.R, R/generate_qualtrics.R, R/generate_redcap.R
 - 2026-10-04: the corrections: the download page's customization sentence names what the generators take; the Society-footer test loops over FULL, SF, BF and BF+M; one test comment reworded and another backed by a rename assertion; the stem quoted with its ellipsis in three help pages; the response-options source comment; and a stale `check_pid_irf_text.R` comment. `test-generate-pid5irf.R` 498 passes, 0 failures. Re-read by the same reader pending.
+- 2026-10-04: the same reader re-read all 7 corrected claims once and found each accurate, with the test file passing. Its two notes on the check-script comment (check order, line length) were fixed.
+- 2026-10-04: implement done. Status set to `review`.
 
 ## Decisions
 
