@@ -74,6 +74,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - re-audit: AC3 (full) — second reader: D-016 keeps every build's row, so "no existing checksum changes" cannot fail when an adult file is rebuilt. Also, `test-artifacts.R` names `generate_redcap_` inside a regex, so grep counts it as a generator test. This is the second re-audit on AC3, which is a stop. AC3 is left at its planned wording until Jeff chooses.
 - 2026-10-04: AC3 stop resolved: Jeff chose the proposed wording (files on main byte-identical, manifest gains only the 8 child rows, the two allowed test edits named, adult signatures unchanged). It is written as AC3, and T7 is done.
 - 2026-10-04: status set to review after T7. The code is unchanged since review pass 1's `check()` (0/0/0) apart from `data-raw/check_pid_child_text.R`, which is not in the build. That script exits 0 with no differences.
+- 2026-10-04: step-7 approval: m161-pid5-child-forms approved for merge
 
 ## Decisions
 
