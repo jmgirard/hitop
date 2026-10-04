@@ -1,6 +1,6 @@
 # M162: PID-5 forensic form (FFBF) keying and scoring
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -110,6 +110,7 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - 2026-10-04: substantive amendment: AC6 names its files, words the English-text fact as "the authors' English version from Table S3, and the study validated only the German version", and forbids "translation" in the four files (`grep -i translat`). Jeff chose this wording at the stop. The deliverable is unchanged apart from that sentence.
 - 2026-10-04: claim audit: 18 claims read, 1 corrected — R/data.R, R/score_pid5.R, vignettes/pid5_scoring.Rmd, cairn/references/niemeyer2022.md. The re-read found the added clause about items replaced from the 220-item PID-5 false for 5 reworded texts (self 29, 35, 43; informant 16, 29); the clause was deleted, since AC6 does not need it.
 - 2026-10-04: T7 done. The vignette and help pages state AC6's six facts as amended, and `grep -i translat` on the four named files finds no line. Suite green. Status set to review.
+- 2026-10-04: review return 2: AC6 — the vignette states the missing-data fact without the authors' code rule's details (no rounding; a domain averaged over its 12 items). The Pass 2 fix-now findings ride this return.
 
 ## Decisions
 
@@ -131,3 +132,35 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - AC4: `characterize_bfpm.R` (IRF pairing added): 120 of 120 calls `identical()` at merge base 54507a94 and at the head, 20 of them IRF. The `"F"` tests pass: an error in the four FFBF functions, FULL output from `validity_pid5()` and `norm_pid5()` (`test-score_pid5ffbf.R`) and `plot_pid5()` (`test-plot_pid5.R`, 0 failed).
 - AC5: `test-score_pid5ffbf.R` reliability (25 facet rows, alpha recomputed), rename (number and four-text method) and label (100 item labels, 32 scale labels) tests pass.
 - AC6: FAIL. `man/score_pid5.Rd` and `man/label_pid5.Rd` carry the six facts, but `vignettes/pid5_scoring.Rmd` states only some: it lacks "validated in German", the four-factor Antagonism and Detachment as the APA domains, and `label_pid5()` using the self-report text, and its English-text sentence (after the claim audit) no longer says "the authors' translation". The rest of AC6 holds: NEWS entry, `_pkgdown.yml` rows, `devtools::check()` 0 errors, 0 warnings, 0 notes, `pkgdown::check_pkgdown()` no problems.
+
+### Pass 2 (2026-10-04)
+
+- spawned: diff-bug, blame-history, prior-review
+- AC6 (amended): FAIL. The six facts are in `man/score_pid5.Rd`, `man/label_pid5.Rd` and the vignette, and `grep -i translat` on the four files finds no line, but the vignette states the missing-data fact without its clause "does not round and averages a domain over its 12 items". Rest of AC6 holds: NEWS entry, `_pkgdown.yml` rows, `devtools::check()` 0 errors, 0 warnings, 0 notes (fresh run), `pkgdown::check_pkgdown()` no problems. `cairn_validate` passes.
+- diff-bug #1: FFBF output reuses SF column names, so `norm_pid5(version = "SF")` norms it silently; the docs give no warning — fix now.
+- diff-bug #2: `rename_pid5_items(version = "FFBF", method = "text")` can give two columns the same name when self and informant (or English and German) columns are both present — fix now (refuse duplicate targets).
+- diff-bug #3: "Most items are rewritten (18 self-report and 20 informant items are not)" undercounts the verbatim English texts — fix now (drop the counts).
+- diff-bug #4: the vignette lacks the code rule's details that AC6 names — fix now (review return 2).
+- diff-bug #5: the suggested `rowMeans(cbind(x1, x2), na.rm = TRUE)` gives NaN where both informants skip an item, and NaN reaches `missing = "complete"` output — fix now (recipe sets those items to NA).
+- diff-bug #6: README instrument lists, DESIGN.md's PID-5 version list and form-variant rule, and the CLAUDE.md header omit the FFBF — fix now.
+- diff-bug #7: `pid_ffbf_items` and `pid_ffbf_domains` are missing from `utils::globalVariables()` — fix now.
+- diff-bug #8: `version = "F"` fails with base `match.arg()`'s message and no class — follow-up, absorbed into the "PID-5 norms not yet shipped" row, which already lists the bare `match.arg()` refusal.
+- diff-bug #9: text matching is exact after `trimws()`, so export text with typographic quotes, a leading ellipsis or a final period does not match — follow-up, new candidate row.
+- diff-bug #10: SOURCES.md says the forensic domains are "read from the code" and cites lines 381–388 for the recodes, against D-092's prose sources and lines 382–388 — fix now.
+- diff-bug #11: stale comments in `label_pid5.R`, `reliability_pid5.R`, `score_engine.R`, and an unused `form_text` in the FFBF branch of `rename_pid5_items.R` — fix now.
+- diff-bug #12: `reliability_pid5()` cites Niemeyer et al. (2022) with no `@references` entry — fix now.
+- diff-bug #13: AC1's transcription sits in `helper-fixtures.R`, not `test-keying.R` — reject (false): the helper is a file of the test suite, loaded by testthat, as M159's identical AC1 used it.
+- diff-bug #14: check-script fragility (heading index, the E-marker regex broader than E14, E18, E77) — fix now (index the first heading; name the three markers).
+- blame-history #1: `globalVariables()` gap — same as diff-bug #7, fix now.
+- blame-history #2: the old `"F"` behavior is not probed on the base ref (LESSONS M031) — fix now (probe and record).
+- blame-history #3: `label_pid5()` labels FFBF informant data with self-report text, unlike the IRF — reject (planned change: Scope names it, and Jeff chose one version for both forms).
+- blame-history #4: `norm_pid5()` and `plot_pid5()` docs warn about IRF scores but not FFBF scores — same as diff-bug #1, fix now.
+- blame-history #5: stale "FULL, SF, IRF and BFPM" text in `?score_pid5` (5 domains, `calc_se`, total) — fix now.
+- blame-history #6: D-092 does not name the `pid5ffbf_` stem — reject (false as a defect): the stem follows D-055's one-stem-per-form rule unchanged, and D-entries are append-only history.
+- blame-history #7: M162 ships the item text before the redistribution permission, which M163 records — reject (planned change: Jeff chose this at the plan gate); named at the merge question.
+- blame-history #8: `characterize_bfpm.R` says "the five" against six pairings — reject (false): five versions, six pairings (SF twice).
+- blame-history #9: stale "this form's items only" comment in `rename_pid5_items()` — fix now.
+- prior-review #1: no FFBF standard-error test — fix now.
+- prior-review #2: no test that `validity_pid5()`, `norm_pid5()` and `plot_pid5()` refuse `"FFBF"` — fix now.
+- prior-review #3: no norming warning — same as diff-bug #1, fix now.
+- prior-review #4: FFBF tests lighter than the IRF sweeps (one alpha, few rename cases, no padding test) — fix now (25 alphas, 100-number and 400-text rename sweeps, a padding test).
