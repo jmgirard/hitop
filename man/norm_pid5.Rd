@@ -26,7 +26,10 @@ differ by version. These are self-report norms: do not norm scores from
 \code{score_pid5(version = "IRF")} with them. Informant scores have the full
 form's column names, so \code{version = "FULL"} accepts them without a
 warning, but the informant norms (Markon et al., 2024, Tables A–10 and
-A–11) are not in \code{pid_norms}.}
+A–11) are not in \code{pid_norms}. Nor norm scores from
+\code{score_pid5(version = "FFBF")}: they have the short form's column names,
+so \code{version = "SF"} accepts them without a warning, but no FFBF norms
+are published.}
 
 \item{srange}{The response range the items were coded on, as
 \code{c(low, high)}. Any four-option coding is accepted and reconciled to the

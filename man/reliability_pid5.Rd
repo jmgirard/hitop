@@ -100,4 +100,11 @@ form of the Personality Inventory for DSM-5 (PID-5). \emph{Assessment, 20}(3),
 370-383. \doi{10.1177/1073191113486513} The scoring key for
 \code{version = "IRF"} is the APA's \emph{The Personality Inventory for
 DSM-5—Informant Form (PID-5-IRF)—Adult} (2013).
+
+Niemeyer, L. M., Grosz, M. P., Zimmermann, J., & Back, M. D.
+(2022). Assessing maladaptive personality in the forensic context:
+Development and validation of the Personality Inventory for DSM-5
+Forensic Faceted Brief Form (PID-5-FFBF). \emph{Journal of Personality
+Assessment, 104}(1), 30-43. \doi{10.1080/00223891.2021.1923522} The
+source of \code{version = "FFBF"}.
 }

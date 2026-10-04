@@ -53,7 +53,8 @@
   `label_pid5()` also take `version = "FFBF"`. Item columns are
   `pid5ffbf_001` to `pid5ffbf_100`. Under `method = "text"`,
   `rename_pid5_items()` matches any of the form's four texts, English or
-  German, self or informant. `label_pid5()` labels items with the English
+  German, self or informant, and refuses a call in which two columns match
+  the same item. `label_pid5()` labels items with the English
   self-report text. Two new exported tables hold the form:
   `pid_ffbf_items` (each item's facet, reverse flag and four texts) and
   `pid_ffbf_domains` (the 7 domains and their facets). `pid_scales` gains an
@@ -61,7 +62,8 @@
   abbreviates `"FULL"` in `score_pid5()`, `reliability_pid5()`,
   `rename_pid5_items()` and `label_pid5()`, because it also starts `"FFBF"`;
   spell out `"FULL"`. `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do
-  not take the new version.
+  not take the new version. FFBF scores carry the short form's column names,
+  so do not norm or plot them as `version = "SF"`.
 
 * **New PID5BF+M forms.** `generate_docx_pid5bfpm()`,
   `generate_qualtrics_pid5bfpm()` and `generate_redcap_pid5bfpm()` write the

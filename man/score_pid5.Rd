@@ -78,7 +78,7 @@ an optional logical indicating whether to calculate a
 standard error for each scale score. For the facets, and for the brief
 form's domains and total, this is the SD of the items the respondent
 actually answered divided by the square root of how many of those items
-they answered. The FULL, SF, IRF and BFPM domain scores are means of three
+they answered. The FULL, SF, IRF, FFBF and BFPM domain scores are means of three
 facet scores rather than of items, so their standard errors are taken one
 level up: the SD of the three contributing facet scores divided by the
 square root of 3. Standard errors are \code{NA} wherever their scale score is
@@ -108,7 +108,8 @@ al., 2022) from item-level data.
 }
 \details{
 For the FULL, SF and IRF versions, the output includes the 25 facet
-scores followed by the 5 personality-trait domain scores. Following the APA
+scores followed by the 5 personality-trait domain scores; the FFBF version
+adds 2 forensic domains after them (see below). Following the APA
 scoring key (Step 3), each domain score is the mean of the average scores of
 its 3 primary facets (the map is stored in \code{pid_domains}). The BF version
 scores its 5 domains directly from its items, and adds a \code{total} score. By
@@ -186,9 +187,8 @@ short form for people in prison, with a self-report and an informant
 version. The form was validated in German. The English text in
 \link{pid_ffbf_items} is the authors' English version, and the study
 validated only the German version (p. 40). Items they did not adapt keep
-the APA PID-5 wording. Most items are rewritten (18
-self-report and 20 informant items are not), and the authors numbered the
-form afresh, so its items are not the SF's: matched by number, 98 of the
+the APA PID-5 wording. Many items are rewritten for prisoners, and the
+authors numbered the form afresh, so its items are not the SF's: matched by number, 98 of the
 100 SF items fall in a different facet. Facet k, in alphabetical
 order, holds items k, k + 25, k + 50 and k + 75. Items 12 and 26 are
 reverse-scored.
@@ -223,7 +223,8 @@ mode reproduces it.
 The paper averaged the responses of two informants item by item before
 scoring (p. 33), and the authors' code uses one informant's response
 where the other is missing; do that step first, for example with
-\code{rowMeans(cbind(x1, x2), na.rm = TRUE)} for each item. Averaged responses
+\code{rowMeans(cbind(x1, x2), na.rm = TRUE)} for each item, then set an item
+that both informants skipped (\code{NaN} from that call) to \code{NA}. Averaged responses
 can be halves, and they score like any other values. Under
 \code{missing = "apa"} the proration step rounds them too: a facet with one
 item missing and answers 0.5, 1 and 1 scores 0.75, where
@@ -231,7 +232,10 @@ item missing and answers 0.5, 1 and 1 scores 0.75, where
 directly.
 
 \code{\link[=norm_pid5]{norm_pid5()}}, \code{\link[=plot_pid5]{plot_pid5()}} and \code{\link[=validity_pid5]{validity_pid5()}} do not take the FFBF,
-because no FFBF norms or validity keys are published.
+because no FFBF norms or validity keys are published. FFBF scores carry
+the SF's column names, so \code{\link[=norm_pid5]{norm_pid5()}} and \code{\link[=plot_pid5]{plot_pid5()}} accept them as
+\code{version = "SF"} without a warning; do not do that, as it compares them
+with SF self-report norms from another population.
 }
 
 \subsection{The PID-5 child forms}{
@@ -269,9 +273,9 @@ alongside one or more \code{NA} domains} (at most 3 of the 5; blanking all five
 requires 10 unanswered items, which blanks the total as well). This is the
 published rule applied as written, not an oversight.
 
-The FULL, SF, IRF and BFPM versions have no total score: the PID-5 book
-defines one only for the brief form, and the PID5BF+M and PID-5-IRF
-sources define none.
+The FULL, SF, IRF, FFBF and BFPM versions have no total score: the PID-5
+book defines one only for the brief form, and the PID5BF+M, PID-5-IRF and
+PID-5-FFBF sources define none.
 
 \strong{Errors.} With \code{append = TRUE}, a column of \code{data} whose name this call
 would also produce is an error rather than an overwrite or a duplicated

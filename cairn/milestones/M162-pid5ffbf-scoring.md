@@ -60,7 +60,7 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - AC3 → T3, T4
 - AC4 → T4
 - AC5 → T3, T4
-- AC6 → T5, T7
+- AC6 → T5, T7, T8
 
 ## Tasks
 
@@ -71,6 +71,7 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - [x] T5: Update the help pages, vignette, NEWS and `_pkgdown.yml`. From RR08, the FFBF help also states: the five missing-data facts of RR08 section 4; the informant facts of section 5 (item-by-item averaging, the other informant's value when one is missing, half-integer values and the `"apa"` rounding); that FFBF item numbers are not `pid_items$SF` numbers; and the forensic domains' caveats (exploratory single sample, Insecurity's open status, shared facets). Open SOURCES.md OQ-6 (item 10's wording in the article against Table S3) and OQ-7 (the English typos the CSV keeps). Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 - [x] T6: From RR08: extend `data-raw/check_pid_ffbf_text.R` to the code's informant lists (lines 135 to 159), its original-form lists (3311 to 3361), its informant recodes, and the count of unadapted items against Table S3's a, b and c marks. Rerun it and record the run on the references page.
 - [x] T7: Review return 1: state AC6's facts in `vignettes/pid5_scoring.Rmd` and the help pages as AC6 now words them, with no "translation" claim in the four named files or the source note.
+- [ ] T8: Review return 2: state the authors' code rule's details in the vignette (AC6), and land Pass 2's fix-now findings (the Review section lists them).
 
 ## Work log
 
@@ -111,6 +112,9 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - 2026-10-04: claim audit: 18 claims read, 1 corrected — R/data.R, R/score_pid5.R, vignettes/pid5_scoring.Rmd, cairn/references/niemeyer2022.md. The re-read found the added clause about items replaced from the 220-item PID-5 false for 5 reworded texts (self 29, 35, 43; informant 16, 29); the clause was deleted, since AC6 does not need it.
 - 2026-10-04: T7 done. The vignette and help pages state AC6's six facts as amended, and `grep -i translat` on the four named files finds no line. Suite green. Status set to review.
 - 2026-10-04: review return 2: AC6 — the vignette states the missing-data fact without the authors' code rule's details (no rounding; a domain averaged over its 12 items). The Pass 2 fix-now findings ride this return.
+- 2026-10-04: T8 work: the vignette states the code rule's details (no rounding; a domain over 12 items with up to 3 missing); norming warnings in `?score_pid5`, `?norm_pid5`, `?plot_pid5`, the vignette and NEWS; the informant recipe sets NaN to NA; counts dropped from the rewritten-items sentence; stale FULL/SF/IRF/BFPM text and comments updated; `reliability_pid5()` cites Niemeyer et al.; `globalVariables()` gains the two tables; `rename_pid5_items()` refuses two columns matching one FFBF item (a planted removal fails its test); 6 new tests (standard errors, three refusals, 25 alphas, 100-number and 400-text rename sweeps, duplicate refusal, padding); README, DESIGN.md, CLAUDE.md and SOURCES.md updated; check script indexes the first heading and names E14, E18 and E77 (PASS). Suite green.
+- 2026-10-04: base-ref probe (LESSONS M031): at merge base 54507a94, `score_pid5()` and `reliability_pid5()` with `version = "F"` return output `identical()` to `"FULL"`, so the branch's `"F"` refusal is a change from that, as NEWS states.
+- 2026-10-04: diff-bug #9 went to the "PID-5 norms not yet shipped" row (exact text matching), and #8's bare `match.arg()` error is noted there too.
 
 ## Decisions
 

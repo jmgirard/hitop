@@ -140,7 +140,8 @@ label_pid5 <- function(
     if (is.null(prefix)) prefix <- "pid_"
 
     ## The FULL, SF and IRF forms score 25 facets from `pid_scales[[version]]`
-    ## and 5 domains from `pid_domains`; the BFPM form scores 18 facets from
+    ## and 5 domains from `pid_domains`; the FFBF form scores 25 facets and the
+    ## 7 domains of `pid_ffbf_domains`; the BFPM form scores 18 facets from
     ## `pid_scales$BFPM` and 6 domains from `pid_bfpm_domains`; the BF form
     ## scores its 5 domains and a total directly, all six carried by
     ## `pid_scales$BF`.

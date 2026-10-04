@@ -15,7 +15,10 @@
 #'   `score_pid5(version = "IRF")` with them. Informant scores have the full
 #'   form's column names, so `version = "FULL"` accepts them without a
 #'   warning, but the informant norms (Markon et al., 2024, Tables A–10 and
-#'   A–11) are not in `pid_norms`.
+#'   A–11) are not in `pid_norms`. Nor norm scores from
+#'   `score_pid5(version = "FFBF")`: they have the short form's column names,
+#'   so `version = "SF"` accepts them without a warning, but no FFBF norms
+#'   are published.
 #' @param srange The response range the items were coded on, as
 #'   `c(low, high)`. Any four-option coding is accepted and reconciled to the
 #'   official `c(0, 3)` range before lookup; a coding with a different number of

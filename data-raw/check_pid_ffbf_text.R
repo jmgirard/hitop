@@ -23,7 +23,7 @@
 #      c marks.
 #
 # The rule (M162 AC1): drop a parenthetical source note that begins "(G" or
-# "(E-", the "(-)" mark, a stray marker of "E" and digits, a leading ellipsis
+# "(E-", the "(-)" mark, the stray markers E14, E18 and E77, a leading ellipsis
 # and a final period; turn typographic quotes, apostrophes and the acute
 # accent into ASCII; in a German text, drop a hyphen inside a word (a hyphen
 # followed by a lowercase letter, with or without a line break); in an English
@@ -53,7 +53,7 @@ check_sha(code_file, code_sha)
 normalize <- function(x, german) {
   x <- gsub("\\((G|E)\\.?-\\s*PID[^)]*\\)", " ", x, perl = TRUE)
   x <- gsub("(-)", " ", x, fixed = TRUE)
-  x <- gsub("\\bE[0-9]+\\b", " ", x, perl = TRUE)
+  x <- gsub("\\bE(14|18|77)\\b", " ", x, perl = TRUE)
   x <- gsub("[‘’´]", "'", x)
   x <- gsub("[“”]", "\"", x)
   x <- trimws(gsub("\\s+", " ", x))
@@ -90,8 +90,8 @@ for (p in seq_len(n_pages)) {
 }
 note_at <- grep("^Note\\. \\(-\\) = reverse coded", lines)
 lines <- lines[seq_len(note_at - 1)]
-lines <- lines[grep("^Item Content of Self", lines) + 1:length(lines)]
-lines <- lines[!is.na(lines)]
+start_at <- grep("^Item Content of Self", lines)[1]
+lines <- lines[(start_at + 1):length(lines)]
 
 # Walk the lines: a facet heading sets the facet, an item-number line starts
 # an item. "84)" and "5 Item 83)" are wrapped note text, not item numbers.

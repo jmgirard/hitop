@@ -97,7 +97,6 @@ rename_pid5_items <- function(
   ## of the form's four texts: self or informant report, English or German.
   if (version == "FFBF") {
     form_numbers <- pid_ffbf_items$FFBF
-    form_text <- pid_ffbf_items$Text
     text_pool <- c(
       pid_ffbf_items$Text, pid_ffbf_items$TextIRF,
       pid_ffbf_items$TextDE, pid_ffbf_items$TextIRFDE
@@ -190,8 +189,9 @@ rename_pid5_items <- function(
       )
     }
 
-    ## Match text against this form's items only (using trimws for robustness
-    ## against surrounding whitespace, as `rename_hitopsr_items()` does)
+    ## Match text against this form's item texts only (using trimws for
+    ## robustness against surrounding whitespace, as `rename_hitopsr_items()`
+    ## does). For the FFBF the pool holds four texts per item.
     locs <- match(trimws(item_text), trimws(text_pool))
 
     if (any(is.na(locs))) {
@@ -203,6 +203,15 @@ rename_pid5_items <- function(
 
     if (length(locs) > 0) {
       matched_n <- pool_numbers[locs]
+      ## Two of the FFBF's four texts of one item (self and informant, or
+      ## English and German) would give two columns the same name.
+      dup_n <- unique(matched_n[duplicated(matched_n)])
+      if (version == "FFBF" && length(dup_n) > 0) {
+        cli::cli_abort(c(
+          "Two or more columns match the same {label} item: {.val {dup_n}}.",
+          "i" = "Rename self-report and informant columns, or English and German columns, in separate calls."
+        ))
+      }
       colnames(data)[data_locs] <- item_names(prefix, matched_n, max_n = max_n)
     }
   }

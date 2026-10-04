@@ -231,3 +231,91 @@ test_that("label_pid5() labels the 100 FFBF items and the 32 FFBF scores", {
   ))
   expect_identical(unname(slabs[1:25]), pid_scales[["SF"]]$Facet)
 })
+
+test_that("FFBF standard errors follow the facet and domain rules", {
+  d <- hush_se(score_pid5(fx_pid5ffbf(), items = 1:100, version = "FFBF",
+                          calc_se = TRUE, append = FALSE))
+  # R1 Anhedonia, items 1, 26, 51, 76 after reversing item 26: 0, 2, 2, 3.
+  expect_equal(d$pid_anhedonia_se[1], stats::sd(c(0, 2, 2, 3)) / sqrt(4))
+  # R1 Disinhibited Aggression: facets 1.5, 1.5, 2.25 (arithmetic above).
+  expect_equal(d$pid_disinhibitedAggression_se[1], stats::sd(c(1.5, 1.5, 2.25)) / sqrt(3))
+  # R4: Emotional Lability is NA, so are its standard error and the standard
+  # errors of both domains it enters.
+  expect_true(is.na(d$pid_emotionalLability_se[4]))
+  expect_true(is.na(d$pid_negativeAffectivity_se[4]))
+  expect_true(is.na(d$pid_disinhibitedAggression_se[4]))
+  expect_false(is.na(d$pid_insecurity_se[4]))
+})
+
+test_that("validity_pid5(), norm_pid5() and plot_pid5() refuse version = 'FFBF'", {
+  x <- fx_pid5ffbf()
+  for (fn in list(
+    function() validity_pid5(x, items = 1:100, version = "FFBF"),
+    function() norm_pid5(x, version = "FFBF"),
+    function() plot_pid5(x, version = "FFBF")
+  )) {
+    expect_error(fn(), 'should be one of "FULL", "SF", "BF"', fixed = TRUE)
+  }
+})
+
+test_that("reliability_pid5() gives each of the 25 FFBF facets its own alpha", {
+  set.seed(1622)
+  x <- as.data.frame(matrix(sample(0:3, 80 * 100, replace = TRUE), 80, 100))
+  r <- reliability_pid5(x, items = 1:100, version = "FFBF", omega = FALSE)
+  for (f in seq_along(ffbf_facets)) {
+    m <- as.matrix(x[, ffbf_facets[[f]]])
+    rev_cols <- ffbf_facets[[f]] %in% ffbf_reverse
+    m[, rev_cols] <- 3 - m[, rev_cols]
+    k <- ncol(m)
+    alpha <- k / (k - 1) * (1 - sum(apply(m, 2, stats::var)) / stats::var(rowSums(m)))
+    expect_equal(r$alpha[r$camelCase == ffbf_facet_stems[f]], alpha, info = names(ffbf_facets)[f])
+  }
+})
+
+test_that("rename_pid5_items() renames all 100 FFBF numbers and all 400 texts", {
+  by_number <- as.data.frame(matrix(0, 1, 100))
+  names(by_number) <- paste0("pid_", 1:100)
+  expect_identical(
+    names(rename_pid5_items(by_number, version = "FFBF")),
+    sprintf("pid5ffbf_%03d", 1:100)
+  )
+  for (col in c("Text", "TextIRF", "TextDE", "TextIRFDE")) {
+    by_text <- as.data.frame(matrix(0, 1, 100))
+    names(by_text) <- paste0("col_", 1:100)
+    out <- rename_pid5_items(
+      by_text, version = "FFBF", method = "text",
+      item_cols = names(by_text), item_text = pid_ffbf_items[[col]]
+    )
+    expect_identical(names(out), sprintf("pid5ffbf_%03d", pid_ffbf_items$FFBF), info = col)
+  }
+})
+
+test_that("rename_pid5_items() refuses two columns that match the same FFBF item", {
+  df <- data.frame(a = 1, b = 2)
+  # Item 1's English and German self-report texts, typed from Table S3.
+  expect_error(
+    rename_pid5_items(
+      df, version = "FFBF", method = "text", item_cols = c("a", "b"),
+      item_text = c(
+        "I'm not really interested in anything (e.g. leisure time activities, books, magazines, TV shows, sports)",
+        "Ich habe an nichts wirklich Interesse (z.B. Freizeitmaßnahmen, Bücher, Zeitschriften, Serien, Sport)"
+      )
+    ),
+    "Two or more columns match the same PID-5-FFBF item"
+  )
+})
+
+test_that("label_pid5(version = 'FFBF') reports unpadded and out-of-range item columns", {
+  df <- data.frame(pid5ffbf_012 = 1, pid5ffbf_12 = 1, pid5ffbf_101 = 1)
+  caught <- collect_warnings(label_pid5(df, target = "items", version = "FFBF"))
+  labeled <- caught$value
+  expect_identical(attr(labeled$pid5ffbf_012, "label"), "I usually think before I act")
+  expect_null(attr(labeled$pid5ffbf_12, "label"))
+  expect_null(attr(labeled$pid5ffbf_101, "label"))
+  expect_length(caught$warnings, 1L)
+  expect_s3_class(caught$warnings[[1]], "hitop_unpadded_items")
+  text <- warning_text(caught)
+  expect_true(grepl("pid5ffbf_12", text, fixed = TRUE))
+  expect_true(grepl("pid5ffbf_101", text, fixed = TRUE))
+  expect_true(grepl("PID-5-FFBF", text, fixed = TRUE))
+})

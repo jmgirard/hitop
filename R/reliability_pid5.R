@@ -72,6 +72,12 @@
 #'   370-383. \doi{10.1177/1073191113486513} The scoring key for
 #'   `version = "IRF"` is the APA's *The Personality Inventory for
 #'   DSM-5—Informant Form (PID-5-IRF)—Adult* (2013).
+#' @references Niemeyer, L. M., Grosz, M. P., Zimmermann, J., & Back, M. D.
+#'   (2022). Assessing maladaptive personality in the forensic context:
+#'   Development and validation of the Personality Inventory for DSM-5
+#'   Forensic Faceted Brief Form (PID-5-FFBF). *Journal of Personality
+#'   Assessment, 104*(1), 30-43. \doi{10.1080/00223891.2021.1923522} The
+#'   source of `version = "FFBF"`.
 #'
 #' @examples
 #' # Facet-level reliability for the full PID-5 (alpha only)
@@ -106,7 +112,7 @@ reliability_pid5 <- function(
   }
   items_scales <- pid_scales[[version]]$itemNumbers
   ## The canonical display names, read from the same table row for row. FULL,
-  ## SF and IRF are facet-level; BF is domain-level plus its Total row.
+  ## SF, IRF and FFBF are facet-level; BF is domain-level plus its Total row.
   scale_names <- if (version == "BF") {
     pid_scales[["BF"]]$Domain
   } else {

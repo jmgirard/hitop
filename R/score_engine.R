@@ -1,7 +1,7 @@
 #' Internal scoring engine shared by score_pid5()/score_hitopsr()/score_hitopbr()
 #'
 #' Each exported wrapper resolves only its instrument-specific data — which items
-#' reverse-key, the per-scale item-number lists, and (for PID-5 FULL/SF/IRF/BFPM)
+#' reverse-key, the per-scale item-number lists, and (for PID-5 FULL/SF/IRF/FFBF/BFPM)
 #' the domain -> facet map — and hands it here. The engine runs the whole
 #' pipeline: validate -> extract -> coerce -> reverse-key (shared prep_items) ->
 #' per-scale score (apa/available/complete) -> optional domain scores +
@@ -24,7 +24,7 @@
 #'   `"available"` averages the present items (rowMeans, na.rm = TRUE);
 #'   `"complete"` returns NA for any scale with a missing item (rowMeans,
 #'   na.rm = FALSE).
-#' @param domain_map Named list of facet-stem vectors per domain (FULL/SF/IRF/BFPM), or
+#' @param domain_map Named list of facet-stem vectors per domain (FULL/SF/IRF/FFBF/BFPM), or
 #'   NULL to skip domain scoring.
 #' @param mask_se_na Logical; if TRUE, a standard error is set to NA wherever its
 #'   scale score is NA. score_pid5() has always done this (needed for APA scales
@@ -94,7 +94,7 @@ score_engine <- function(
     validate_no_output_collision(produced, data, call = call)
   }
 
-  ## Calculate scores per scale (facets for FULL/SF/IRF/BFPM, domains for BF, scales for
+  ## Calculate scores per scale (facets for FULL/SF/IRF/FFBF/BFPM, domains for BF, scales for
   ## HiTOP-SR/BR). `missing` selects the algorithm: apa_mean applies the
   ## 25%-missing cutoff and proration; "available" averages whatever items are
   ## present; "complete" returns NA if any item is missing.
@@ -107,8 +107,9 @@ score_engine <- function(
   )
   scale_scores <- bind_columns(lapply(items_scales, scale_fun))
 
-  ## For FULL/SF/IRF/BFPM (domain_map supplied), add the domain scores (APA key
-  ## Step 3 for FULL/SF/IRF; Bach et al., 2020, for BFPM): each domain is the mean
+  ## For FULL/SF/IRF/FFBF/BFPM (domain_map supplied), add the domain scores (APA key
+  ## Step 3 for FULL/SF/IRF; Niemeyer et al., 2022, p. 33, for FFBF; Bach et al.,
+  ## 2020, for BFPM): each domain is the mean
   ## of its 3 facet average scores (map in domain_map). Under "apa"/"complete" a domain is NA if any one
   ## of its 3 primary facets is NA (na.rm = FALSE propagates the NA); under
   ## "available" it averages the facets that are present.

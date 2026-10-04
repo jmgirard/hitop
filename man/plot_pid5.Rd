@@ -22,7 +22,9 @@ a profile plot shows one respondent.}
 items), \code{"SF"} (100 items), or \code{"BF"} (25 items). Matched case-insensitively.
 The PID-5 Informant Form has no norms in this package, so \code{version} does
 not take \code{"IRF"}. Do not plot scores from \code{score_pid5(version = "IRF")}
-as \code{"FULL"}: they would be compared with self-report norms.}
+as \code{"FULL"}: they would be compared with self-report norms. Nor plot
+scores from \code{score_pid5(version = "FFBF")} as \code{"SF"}: no FFBF norms are
+published.}
 
 \item{level}{Which scales to plot. \code{"domain"} plots the five personality
 domains, plus the brief form's total. \code{"facet"} plots all 25 facets in
