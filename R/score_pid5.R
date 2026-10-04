@@ -154,9 +154,8 @@
 #'   short form for people in prison, with a self-report and an informant
 #'   version. The form was validated in German. The English text in
 #'   [pid_ffbf_items] is the authors' English version, and the study
-#'   validated only the German version (p. 40). Items they did not adapt, and
-#'   items they replaced with an item of the 220-item PID-5, take their
-#'   wording from the APA PID-5. Most items are rewritten (18
+#'   validated only the German version (p. 40). Items they did not adapt keep
+#'   the APA PID-5 wording. Most items are rewritten (18
 #'   self-report and 20 informant items are not), and the authors numbered the
 #'   form afresh, so its items are not the SF's: matched by number, 98 of the
 #'   100 SF items fall in a different facet. Facet k, in alphabetical
