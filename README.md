@@ -97,7 +97,7 @@ pak::pak("jmgirard/hitop")
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
   - [x] PID5BF+M (36)
-  - [ ] PID-5-IRF (218)
+  - [x] PID-5-IRF (218)
 
 ### Phase 2
 

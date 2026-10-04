@@ -11,7 +11,7 @@ The {hitop} package serves the HiTOP (Hierarchical Taxonomy of Psychopathology) 
 2. **Response processing:** tools for researchers to manage and process responses (scoring, validity screening, reliability estimation).
 3. **Clinical reporting:** eventually, norms, interpretation, and rendered individual reports.
 
-Goals 1 and 2 are substantially implemented for four instrument families: **PID-5** (FULL 220 / SF 100 / BF 25 / BFPM 36 / IRF 218 items; the BFPM with Word, Qualtrics and REDCap forms but no online form, and the IRF informant form scoring only until M160), **HiTOP-SR** (405 items), **HiTOP-BR** (45 items), and **HiTOP-HSUM** (650 items; data + export only — scoring awaits Society feedback). A fifth, the **HiTOP-DAT** battery (382 items from seven published measures), ships as item, answer-set and scale data only, not yet announced (M143). Its scoring waits for each measure's published key and norms (IP3). Goal 3 is future work (ROADMAP Phases 3–4).
+Goals 1 and 2 are substantially implemented for four instrument families: **PID-5** (FULL 220 / SF 100 / BF 25 / BFPM 36 / IRF 218 items; the BFPM with Word, Qualtrics and REDCap forms but no online form, and the IRF informant form with the same three forms), **HiTOP-SR** (405 items), **HiTOP-BR** (45 items), and **HiTOP-HSUM** (650 items; data + export only — scoring awaits Society feedback). A fifth, the **HiTOP-DAT** battery (382 items from seven published measures), ships as item, answer-set and scale data only, not yet announced (M143). Its scoring waits for each measure's published key and norms (IP3). Goal 3 is future work (ROADMAP Phases 3–4).
 
 ### Audience, boundary & governance
 

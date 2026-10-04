@@ -399,7 +399,7 @@ remap_itemdata <- function(x, printed_of) {
 # Society line every other form carries.
 build_docx_footer <- function(font_size, font_family, notice = NULL) {
   if (is.null(notice)) {
-    notice <- "Copyright 2024 © Hierarchical Taxonomy of Psychopathology Society"
+    notice <- "Copyright 2024 \u00a9 Hierarchical Taxonomy of Psychopathology Society"
   }
   footer_prop <- officer::fp_text(
     color = "grey",

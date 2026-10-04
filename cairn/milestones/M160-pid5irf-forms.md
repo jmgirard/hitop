@@ -41,7 +41,7 @@ Researchers can build and download PID-5 IRF paper forms, a Qualtrics import fil
 - [x] T2: Add the Qualtrics and REDCap generators, following the FULL ones.
 - [x] T3: Write the parse-back tests (AC1, AC2) in the D-010 style.
 - [x] T4: Add the rows to `data-raw/artifacts.R`, build the artifacts and stage the pkgdown copies. Write the download page and add it to the navbar. Update the page counts in `test-artifacts.R` and `test-download-pages.R`, and exempt the page from the online-strip test.
-- [ ] T5: Add NEWS and reference rows. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
+- [x] T5: Add NEWS and reference rows. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
 
@@ -52,6 +52,7 @@ Researchers can build and download PID-5 IRF paper forms, a Qualtrics import fil
 - 2026-10-04: implement choice: the APA footer notice is a new `notice` element of `pid_irf_instructions` (sysdata), taken from the form, and `check_pid_irf_text.R` now matches it to the PDF (PASS). `build_docx_footer()` and `build_hitop_doc()` gained a `notice`/`footer_notice` argument; NULL keeps the Society line, so the other forms do not change. The other sysdata objects are identical.
 - 2026-10-04: T1 to T3 done. `generate_docx_pid5irf()`, `generate_qualtrics_pid5irf()` and `generate_redcap_pid5irf()` added. `test-generate-pid5irf.R` (7 tests, 491 expectations) parses all three back against `pid_items`, `pid_irf_instructions` and the key tables typed in `helper-fixtures.R`. Planted self-report text, the Society footer and FULL scoring numbers each failed their test. The generators joined the shared smoke lists, the legend lock and the Qualtrics ID-width loop (LESSONS M158).
 - 2026-10-04: T4 done. `data-raw/artifacts.R` built the four files under instrument "PID-5-IRF" (manifest 48 to 52 rows) and staged 37 download copies. New page `download-pid5irf.Rmd` without an online strip, navbar entry "PID-5 Informant Form (IRF)". Page counts 7 to 8 in `test-artifacts.R` and `test-download-pages.R`, `pid5irf` added to `no_strip_stems`, manifest-generator counts 13 to 15 in `test-export-padding-width.R`, and two builders in `test-response-value-no-move.R`. T1 to T4 ticked: full suite 27592 passes, 0 failures.
+- 2026-10-04: T5 done. NEWS entry "New PID-5 Informant Form forms"; three `_pkgdown.yml` reference rows (added in T4); README's export row ticked; DESIGN.md's goal line updated. `document()` no diff, `check_pkgdown()` no problems. The first `devtools::check()` warned on a literal © in `R/generate_docx.R` (the default footer string), written by an edit in place of the `©` escape; restored, and the rerun gives 0 errors, 0 warnings, 0 notes.
 
 ## Decisions
 
