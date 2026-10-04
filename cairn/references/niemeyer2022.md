@@ -57,7 +57,7 @@ each facet at lines 109 to 133. Lines 3311 to 3335 repeat the lists for the orig
 Item 12 is "I usually think before I act" (Impulsivity). Item 26 is "I enjoy
 life to the extent it is possible to do so in prison" (Anhedonia). Table S3 marks both with "(-)"
 in its two German columns only. The code recodes the same two items as 3 minus the
-response (lines 381 to 388).
+response (lines 382 to 388).
 
 ### Domains (article p. 33; code lines 161 to 190)
 

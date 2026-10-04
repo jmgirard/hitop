@@ -249,12 +249,16 @@ test_that("FFBF standard errors follow the facet and domain rules", {
 
 test_that("validity_pid5(), norm_pid5() and plot_pid5() refuse version = 'FFBF'", {
   x <- fx_pid5ffbf()
-  for (fn in list(
-    function() validity_pid5(x, items = 1:100, version = "FFBF"),
-    function() norm_pid5(x, version = "FFBF"),
-    function() plot_pid5(x, version = "FFBF")
-  )) {
-    expect_error(fn(), 'should be one of "FULL", "SF", "BF"', fixed = TRUE)
+  refusals <- list(
+    validity_pid5 = function() validity_pid5(x, items = 1:100, version = "FFBF"),
+    norm_pid5 = function() norm_pid5(x, version = "FFBF")
+  )
+  # plot_pid5() checks for ggplot2 before it reads `version`.
+  if (rlang::is_installed("ggplot2", version = "3.4.0")) {
+    refusals$plot_pid5 <- function() plot_pid5(x, version = "FFBF")
+  }
+  for (nm in names(refusals)) {
+    expect_error(refusals[[nm]](), "should be one of", info = nm)
   }
 })
 

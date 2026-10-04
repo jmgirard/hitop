@@ -483,7 +483,8 @@ subscale_parent <- list(
 # each facet heading and the items its German columns mark "(-)"
 # (cairn/references/niemeyer2022.md), never from data-raw/pid_ffbf_items.csv
 # or the package tables. The two four-factor domains that are not APA domains
-# are typed from the authors' code (lines 184 and 185). test-keying.R checks
+# are typed from the paper's prose (pp. 35, 38, 39), as the authors' code
+# scores them (lines 184 and 185). test-keying.R checks
 # the package tables against these; the scoring and reliability tests
 # recompute from them.
 ffbf_reverse <- c(12, 26)

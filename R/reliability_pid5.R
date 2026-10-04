@@ -44,7 +44,8 @@
 #' @param version A string indicating the version of the PID to score: "FULL",
 #'   "SF", "BF", "BFPM" (the 36-item PID5BF+M), "IRF" (the 218-item
 #'   Informant Form), or "FFBF" (the 100-item Forensic Faceted Brief Form).
-#'   Will be automatically capitalized. (default = `"FULL"`)
+#'   Will be automatically capitalized; `"F"` is refused, because it starts both
+#'   "FULL" and "FFBF". (default = `"FULL"`)
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param alpha Optional logical; if `TRUE`, include a column of Cronbach's alpha

@@ -203,8 +203,8 @@
 #'   [norm_pid5()], [plot_pid5()] and [validity_pid5()] do not take the FFBF,
 #'   because no FFBF norms or validity keys are published. The FFBF facet and
 #'   APA domain columns carry the SF's names, so [norm_pid5()] converts them
-#'   as `version = "SF"` with no version warning and [plot_pid5()] plots
-#'   them; do not do that, as it compares them with SF self-report norms
+#'   as `version = "SF"` with no version warning and [plot_pid5()] plots the
+#'   result; do not do that, as it compares them with SF self-report norms
 #'   from another population.
 #'
 #' @details ## The PID-5 child forms
@@ -370,7 +370,7 @@ score_pid5 <- function(
   )
 
   ## Resolve this version's instrument data: which items reverse, the per-scale
-  ## item-number lists, and (FULL/SF/IRF/BFPM) the domain -> facet map. The
+  ## item-number lists, and (FULL/SF/IRF/FFBF/BFPM) the domain -> facet map. The
   ## BFPM domains are the means of their facets, as the FULL/SF domains are, so
   ## the engine scores them the same way from their own map (D-088(c), (d)).
   ## The IRF has the full form's 25 facets and 5 domains (D-089(d)). The FFBF

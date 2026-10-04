@@ -41,8 +41,19 @@ code_sha <- "41547644d7ad0b0e59993e25c01cca63c281482d71e77fadeba42661629bbcdc"
 bad <- character(0)
 note <- function(...) bad <<- c(bad, paste0(...))
 
+# Run a shell tool and stop with its name if it fails, so a missing or failing
+# pdftotext, pdfinfo or shasum is not reported as a downstream parse error.
+run <- function(cmd, args) {
+  out <- suppressWarnings(system2(cmd, args, stdout = TRUE))
+  status <- attr(out, "status")
+  if (!is.null(status) && status != 0) {
+    stop(cmd, " failed with status ", status, ".", call. = FALSE)
+  }
+  out
+}
+
 check_sha <- function(path, want) {
-  got <- system2("shasum", c("-a", "256", shQuote(path)), stdout = TRUE)
+  got <- run("shasum", c("-a", "256", shQuote(path)))
   if (sub(" .*", "", got) != want) {
     stop(path, " does not match the recorded sha256.", call. = FALSE)
   }
@@ -77,13 +88,12 @@ facet_names <- sort(unique(pid_items$Facet))
 
 # Read the PDF page by page; drop each page's first line (its page number).
 n_pages <- as.integer(sub(".*:\\s+", "", grep(
-  "^Pages:", system2("pdfinfo", shQuote(source_pdf), stdout = TRUE),
+  "^Pages:", run("pdfinfo", shQuote(source_pdf)),
   value = TRUE
 )))
 lines <- character(0)
 for (p in seq_len(n_pages)) {
-  pg <- system2("pdftotext", c("-raw", "-f", p, "-l", p, shQuote(source_pdf), "-"),
-                stdout = TRUE)
+  pg <- run("pdftotext", c("-raw", "-f", p, "-l", p, shQuote(source_pdf), "-"))
   pg <- trimws(gsub("\f", "", pg, fixed = TRUE))
   pg <- pg[nzchar(pg)]
   lines <- c(lines, pg[-1])
@@ -91,6 +101,9 @@ for (p in seq_len(n_pages)) {
 note_at <- grep("^Note\\. \\(-\\) = reverse coded", lines)
 lines <- lines[seq_len(note_at - 1)]
 start_at <- grep("^Item Content of Self", lines)[1]
+if (is.na(start_at) || start_at >= length(lines)) {
+  stop("Table S3's title line was not found before its items.", call. = FALSE)
+}
 lines <- lines[(start_at + 1):length(lines)]
 
 # Walk the lines: a facet heading sets the facet, an item-number line starts

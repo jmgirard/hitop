@@ -454,7 +454,7 @@ test_that("FFBF reverse-keyed items are Table S3's two (-) items", {
   expect_setequal(pid_ffbf_items$FFBF[pid_ffbf_items$Reverse], ffbf_reverse)
   for (i in seq_len(nrow(pid_scales[["FFBF"]]))) {
     itm <- pid_scales[["FFBF"]]$itemdata[[i]]
-    expect_identical(itm$Reverse, itm$FFBF %in% ffbf_reverse)
+    expect_identical(itm$Reverse, itm$FFBF %in% ffbf_reverse, info = pid_scales[["FFBF"]]$Facet[i])
   }
 })
 
@@ -462,12 +462,12 @@ test_that("FFBF facet -> item membership matches Table S3's facet headings", {
   expect_length(ffbf_facets, 25)
   expect_setequal(unlist(ffbf_facets), 1:100)
   for (f in names(ffbf_facets)) {
-    expect_setequal(pid_ffbf_items$FFBF[pid_ffbf_items$Facet == f], ffbf_facets[[f]])
+    expect_equal(sort(pid_ffbf_items$FFBF[pid_ffbf_items$Facet == f]), sort(as.integer(ffbf_facets[[f]])), info = f)
   }
   tbl <- pid_scales[["FFBF"]]
   expect_setequal(tbl$Facet, names(ffbf_facets))
   for (i in seq_len(nrow(tbl))) {
-    expect_setequal(tbl$itemNumbers[[i]], ffbf_facets[[tbl$Facet[i]]])
+    expect_equal(sort(tbl$itemNumbers[[i]]), sort(as.integer(ffbf_facets[[tbl$Facet[i]]])), info = tbl$Facet[i])
   }
   expect_identical(tbl$nItems, rep(4L, 25))
   # Same facets, stems and order as the SF, the form it adapts.

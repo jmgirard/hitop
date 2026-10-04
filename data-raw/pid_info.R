@@ -334,7 +334,8 @@ usethis::use_data(pid_bfpm_domains, overwrite = TRUE)
 ## PID-5-FFBF Domains (M162)
 # Niemeyer et al. (2022): the five APA domains, each the mean of its three
 # primary facets (p. 33), and the two four-factor domains that are not APA
-# domains, from the authors' code (lines 184 and 185; names as the paper prints
+# domains, from the paper's prose (pp. 35, 38, 39), as the authors' code
+# scores them (lines 184 and 185; names as the paper prints
 # them, p. 38). The paper's four-factor Antagonism and Detachment are the APA
 # domains of the same names. Same four columns as `pid_domains`.
 pid_ffbf_domains <- rbind(
