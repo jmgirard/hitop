@@ -121,7 +121,7 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-PID5BF+M (36) - *todo*
+PID5BF+M (36)
 
 ### Phase 2
 

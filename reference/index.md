@@ -89,6 +89,8 @@ community norm.
   : Generate a Word Document for the PID-5-SF
 - [`generate_docx_pid5bf()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5bf.md)
   : Generate a Word Document for the PID-5-BF
+- [`generate_docx_pid5bfpm()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5bfpm.md)
+  : Generate a Word Document for the PID5BF+M
 - [`generate_qualtrics_hitopbr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopbr.md)
   : Generate a Qualtrics Import File for the HiTOP-BR
 - [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)
@@ -99,6 +101,8 @@ community norm.
   : Generate a Qualtrics Import File for the PID-5-SF
 - [`generate_qualtrics_pid5bf()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5bf.md)
   : Generate a Qualtrics Import File for the PID-5-BF
+- [`generate_qualtrics_pid5bfpm()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5bfpm.md)
+  : Generate a Qualtrics Import File for the PID5BF+M
 - [`generate_redcap_hitopbr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopbr.md)
   : Generate a REDCap Instrument ZIP File for the HiTOP-BR
 - [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
@@ -111,6 +115,8 @@ community norm.
   : Generate a REDCap Instrument ZIP File for the PID-5-SF
 - [`generate_redcap_pid5bf()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5bf.md)
   : Generate a REDCap Instrument ZIP File for the PID-5-BF
+- [`generate_redcap_pid5bfpm()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5bfpm.md)
+  : Generate a REDCap Instrument ZIP File for the PID5BF+M
 
 ## Example Data
 
