@@ -11,7 +11,7 @@
 #   2. every item's facet, against the key's Facet Table;
 #   3. the CSV's FULL column, which maps each IRF item to the self-report item
 #      with the same facet (the IRF drops self-report items 96 and 177);
-#   4. the stored instructions (start, continue, prompt, stem) and response
+#   4. the stored instructions (start, continue, prompt, stem, notice) and response
 #      labels, against the form's text.
 #
 # It also prints the key's two reverse lists, Step 1 and the R marks in the
@@ -119,8 +119,9 @@ for (i in which(sr_facet != items$Facet)) {
 }
 sr_reverse <- items$IRF[sr$Reverse[match(items$FULL, sr$FULL)]]
 
-# 4. Instructions in R/sysdata.rda: the first-page and later-page texts and the
-# rating prompt. Quotes, apostrophes and spacing are normalized as for the item
+# 4. Instructions in R/sysdata.rda: the first-page and later-page texts, the
+# rating prompt and the APA notice, then the response labels and values, then
+# the stem. Quotes, apostrophes and spacing are normalized as for the item
 # text, but the final period is kept, so the match checks it too.
 sysdata <- new.env()
 load("R/sysdata.rda", envir = sysdata)
@@ -131,7 +132,7 @@ ascii <- function(x) {
   trimws(gsub("\\s+", " ", x))
 }
 flat <- ascii(form)
-for (part in c("start", "continue", "prompt")) {
+for (part in c("start", "continue", "prompt", "notice")) {
   if (!grepl(ascii(instr[[part]]), flat, fixed = TRUE)) {
     note("instructions$", part, " is not in the PDF text")
   }

@@ -393,8 +393,14 @@ remap_itemdata <- function(x, printed_of) {
   x[order(x$HSR), , drop = FALSE]
 }
 
-# Internal Helper: Build the shared document footer (build stamp + copyright)
-build_docx_footer <- function(font_size, font_family) {
+# Internal Helper: Build the shared document footer (build stamp + copyright).
+# `notice` replaces the Society copyright line for a form whose source prints
+# its own notice (the PID-5 Informant Form's APA line, M160); NULL keeps the
+# Society line every other form carries.
+build_docx_footer <- function(font_size, font_family, notice = NULL) {
+  if (is.null(notice)) {
+    notice <- "Copyright 2024 \u00a9 Hierarchical Taxonomy of Psychopathology Society"
+  }
   footer_prop <- officer::fp_text(
     color = "grey",
     font.size = max(6, font_size - 2),
@@ -408,10 +414,7 @@ build_docx_footer <- function(font_size, font_family) {
   )
   footer_text <- officer::fpar(
     officer::ftext(stamp, prop = footer_prop),
-    officer::ftext(
-      " \u00b7 Copyright 2024 \u00a9 Hierarchical Taxonomy of Psychopathology Society",
-      prop = footer_prop
-    ),
+    officer::ftext(paste0(" \u00b7 ", notice), prop = footer_prop),
     fp_p = officer::fp_par(text.align = "right")
   )
   officer::block_list(footer_text)
@@ -434,8 +437,13 @@ make_items_table <- function(
   printable_w,
   font_size,
   font_family,
-  opts_per_line = nrow(opts)
+  opts_per_line = nrow(opts),
+  header_note = NULL
 ) {
+  # `header_note`, when given, is one more header line under the legend,
+  # left-aligned. Header rows repeat on every page, so the PID-5 Informant
+  # Form uses it to restate its rating prompt and stem above each page's
+  # items (M160 review). NULL adds nothing, so every other form is unchanged.
   num_opts <- nrow(opts)
   # The legend prints `opts_per_line` response options per header line. The
   # default puts them all on one line -- Word then breaks that line wherever
@@ -476,6 +484,7 @@ make_items_table <- function(
     flextable::delete_part(part = "header") |>
     flextable::add_header_lines(values = legend_text) |>
     flextable::align(align = "center", part = "header") |>
+    add_header_note(header_note, after = length(legend_text)) |>
     flextable::align(j = "Text", align = "left", part = "body") |>
     flextable::align(j = opt_cols, align = "center", part = "body") |>
     flextable::valign(valign = "center", part = "body") |>
@@ -488,6 +497,17 @@ make_items_table <- function(
     flextable::fontsize(size = font_size, part = "all") |>
     flextable::font(fontname = font_family, part = "all") |>
     flextable::set_table_properties(layout = "fixed", align = "left")
+}
+
+# Internal Helper: add one left-aligned header line below the first `after`
+# header lines of an items table; a NULL note returns the table unchanged.
+add_header_note <- function(ft, note, after) {
+  if (is.null(note)) {
+    return(ft)
+  }
+  ft |>
+    flextable::add_header_lines(values = note, top = FALSE) |>
+    flextable::align(i = after + 1L, align = "left", part = "header")
 }
 
 # Internal Helper: Build the scoring flextable
@@ -616,7 +636,8 @@ build_hitop_doc <- function(
   font_size,
   font_family,
   crosswalk_msg = NULL,
-  table_3 = NULL
+  table_3 = NULL,
+  footer_notice = NULL
 ) {
   inst_prop <- officer::fp_text(
     font.size = font_size,
@@ -637,7 +658,7 @@ build_hitop_doc <- function(
 
   # Footer
   my_header <- officer::block_list(header_text)
-  my_footer <- build_docx_footer(font_size, font_family)
+  my_footer <- build_docx_footer(font_size, font_family, notice = footer_notice)
 
   my_doc <- officer::read_docx() |>
     officer::body_add_fpar(
@@ -1542,5 +1563,116 @@ generate_docx_pid5bfpm <- function(
     font_size,
     font_family,
     table_3 = t3
+  )
+}
+
+# Internal Helper: the PID-5 Informant Form's rows and instructions, shared by
+# its Word, Qualtrics and REDCap generators (M160). The rows are the 218 IRF
+# items in IRF order, with the IRF number first and `Text` replaced by the
+# informant wording (`TextIRF`, D-089(b)): the builders read `Text`, which
+# holds the self-report wording. The instruction text is the form's opening
+# paragraph, its rating prompt and the "He or she…" stem each item completes,
+# as `pid_irf_instructions` stores them; the response options are the
+# self-report form's, which the informant form prints unchanged.
+pid_irf_form <- function() {
+  items <- pid_items[!is.na(pid_items$IRF), ]
+  items <- items[order(items$IRF), ]
+  items$Text <- items$TextIRF
+  items <- items[, c("IRF", setdiff(names(items), "IRF"))]
+  # The rating prompt and stem, restated on every page (the Word table's
+  # repeated header row; a block or section header after each online page
+  # break), because an item read without its stem has no subject (M160
+  # review). The printed form repeats them at the head of each page too.
+  page_header <- paste(pid_irf_instructions$prompt, pid_irf_instructions$stem)
+  list(
+    items = items,
+    instructions = list(
+      start = paste(pid_irf_instructions$start, page_header),
+      options = pid_irf_instructions$options
+    ),
+    page_header = page_header
+  )
+}
+
+#' Generate a Word Document for the PID-5 Informant Form
+#'
+#' Write the 218-item PID-5 Informant Form (PID-5-IRF; Markon et al., 2013),
+#' on which an adult informant rates the person receiving care, as a paper
+#' form. The items are numbered 1 to 218 in the form's order, with the
+#' informant wording (`pid_items$TextIRF`). The form's opening instructions
+#' come first; its rating prompt and the stem "He or she…" that each item
+#' completes head the item table on every page, as on the printed form.
+#' The scoring page lists each of the 25 facets with its informant item
+#' numbers, marking the 14 reverse-scored items with (R), as [score_pid5()]
+#' scores them with `version = "IRF"`. The footer carries the APA copyright
+#' and permission notice the form prints.
+#'
+#' @inheritParams generate_docx_pid5
+#'
+#' @references Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
+#'   (2013). *The Personality Inventory for DSM-5—Informant Form
+#'   (PID-5-IRF)—Adult*. American Psychiatric Association. See also Markon et
+#'   al. (2013), *Assessment, 20*(3), 370-383. \doi{10.1177/1073191113486513}
+#'
+#' @examples
+#' \donttest{
+#' # Write a PID-5 Informant Form paper form to a temporary Word document
+#' generate_docx_pid5irf(file = tempfile(fileext = ".docx"))
+#' }
+#'
+#' @export
+generate_docx_pid5irf <- function(
+  file = "pid5irf.docx",
+  papersize = c("us", "a4"),
+  title = "PID-5-IRF (Informant Form)",
+  include_scoring = TRUE,
+  font_size = 10,
+  font_family = "Times New Roman"
+) {
+  papersize <- match.arg(papersize)
+  dims <- get_page_dims(papersize)
+  form <- pid_irf_form()
+
+  t1 <- make_items_table(
+    form$items,
+    "IRF",
+    form$instructions$options,
+    dims$pw,
+    font_size,
+    font_family,
+    opts_per_line = 2,
+    header_note = form$page_header
+  )
+
+  t2 <- NULL
+  if (include_scoring) {
+    scales_to_score <- pid_scales$IRF
+    names(scales_to_score)[names(scales_to_score) == "Facet"] <- "Scale"
+
+    t2 <- make_scoring_table(
+      scales_to_score,
+      "IRF",
+      dims$pw,
+      font_size,
+      font_family
+    )
+  }
+
+  scoring_msg <- "Average the responses for the following item numbers. Reverse-scored items are indicated with (R)."
+
+  build_hitop_doc(
+    file,
+    title,
+    # The opening paragraph alone: the table's repeated header row carries the
+    # rating prompt and stem, as the printed form's column head does.
+    pid_irf_instructions$start,
+    scoring_msg,
+    t1,
+    t2,
+    include_scoring,
+    dims,
+    font_size,
+    font_family,
+    footer_notice = pid_irf_instructions$notice
   )
 }

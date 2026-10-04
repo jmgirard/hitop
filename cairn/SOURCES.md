@@ -52,6 +52,7 @@ status, so the table has an *external* oracle. Verified item-by-item on
 | IRF item text (218 items) and `Facet` → items (25 facets) | APA PID-5 Informant Form (Markon et al., 2013) | pp. 2–7 form, p. 8 Facet Table | ✅ `data-raw/check_pid_irf_text.R` matches all 218 texts and 25 facets (2026-10-03, M159). Each IRF item shares its facet with the self-report item it maps to. See [apa2013pid5irf](references/apa2013pid5irf.md) |
 | IRF reverse-keying | APA PID-5 Informant Form | p. 8 Step 1 and Facet Table, p. 9 | ✅ The Facet Table's 14 R marks, by maintainer sign-off 2026-10-03 (M159, D-089). Step 1's extra 98 and 176 are read as a printing error. **OQ-4 resolved** |
 | IRF proration rounding | APA PID-5 Informant Form | p. 9 | ✅ The key prints "round up to the nearest whole number". The package applies the series' nearest-whole-number rule, halves up (D-090, from RR07). **OQ-5 resolved** |
+| IRF form text: instructions, rating prompt, stem, 0–3 labels and footer notice (`pid_irf_instructions`) | APA PID-5 Informant Form | pp. 2–7 | ✅ `data-raw/check_pid_irf_text.R` matches start, continue, prompt, the APA notice, the stem and the labels to the PDF (2026-10-04, M160). The forms print the opening paragraph, then the prompt and stem at the head of each page, and the notice in the Word footer. The response labels are stored as a copy of `pid_instructions$options`, which equal the form's column heads. Maintainer sign-off at M160's merge gate. |
 
 ## Sources
 

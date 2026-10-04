@@ -89,7 +89,7 @@ pak::pak("jmgirard/hitop")
   - [x] PID5BF+M (36)
   - [x] PID-5-IRF (218)
   - [ ] HiTOP-HSUM (650) - *waiting for feedback*
-- [ ] Add Instrument Export Functions
+- [x] Add Instrument Export Functions
   - [x] HiTOP-SR (405)
   - [x] HiTOP-BR (45)
   - [x] HiTOP-HSUM (650)
@@ -97,7 +97,7 @@ pak::pak("jmgirard/hitop")
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
   - [x] PID5BF+M (36)
-  - [ ] PID-5-IRF (218)
+  - [x] PID-5-IRF (218)
 
 ### Phase 2
 

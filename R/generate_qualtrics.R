@@ -322,6 +322,46 @@ generate_qualtrics_pid5bfpm <- function(
   )
 }
 
+#' Generate a Qualtrics Import File for the PID-5 Informant Form
+#'
+#' The 218 items of the PID-5 Informant Form (PID-5-IRF), in the form's order
+#' with the informant wording (`pid_items$TextIRF`). The instructions block
+#' ends with the form's rating prompt and the stem "He or she…" that each
+#' item completes, and the response options are the form's 0 to 3 labels.
+#' With `breaks`, a descriptive block restating the prompt and stem opens
+#' every page after the first. The
+#' question IDs are `PID5IRF_001` to `PID5IRF_218`. Score the export with
+#' `score_pid5(version = "IRF")`.
+#'
+#' @inheritParams generate_qualtrics_pid5
+#'
+#' @examples
+#' # Write a PID-5 Informant Form Qualtrics import file to a temporary location
+#' generate_qualtrics_pid5irf(file = tempfile(fileext = ".txt"))
+#'
+#' @export
+generate_qualtrics_pid5irf <- function(
+  file = "pid5irf_qualtrics.txt",
+  block_name = "PID-5-IRF",
+  id_prefix = "PID5IRF",
+  include_instructions = TRUE,
+  breaks = 15
+) {
+  form <- pid_irf_form()
+
+  build_qualtrics_txt(
+    items = form$items,
+    max_n = max(pid_items$IRF, na.rm = TRUE),
+    instructions = form$instructions,
+    file = file,
+    block_name = block_name,
+    id_prefix = id_prefix,
+    include_instructions = include_instructions,
+    breaks = breaks,
+    page_header = form$page_header
+  )
+}
+
 # Internal Helper: the item questions' `[[ID:]]` values
 #
 # One place for the IDs build_qualtrics_txt() writes, so the HiTOP-SR
@@ -341,8 +381,15 @@ build_qualtrics_txt <- function(
   id_prefix,
   include_instructions,
   breaks,
+  page_header = NULL,
   call = rlang::caller_env()
 ) {
+  # `page_header`, when given, is a descriptive block repeated at the top of
+  # every page after the first: the PID-5 Informant Form's items complete a
+  # stem ("He or she..."), so each page restates the rating prompt and stem,
+  # as the printed form does (M160 review). NULL writes no such block, so
+  # every other export is unchanged.
+  #
   # The guards live here rather than in each generate_qualtrics_*() wrapper so
   # every instrument gets them from one place; `call` defaults to the wrapper
   # that called this, so the abort blames the exported function the user wrote,
@@ -417,6 +464,15 @@ build_qualtrics_txt <- function(
       !is.null(breaks) && breaks > 0 && (i %% breaks == 0) && (i != nrow(items))
     ) {
       out <- c(out, "[[PageBreak]]", "")
+      if (!is.null(page_header)) {
+        out <- c(
+          out,
+          "[[Question:DB]]",
+          paste0("[[ID:page_header_", i %/% breaks + 1L, "]]"),
+          page_header,
+          ""
+        )
+      }
     }
   }
 

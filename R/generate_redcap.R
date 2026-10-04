@@ -329,6 +329,49 @@ generate_redcap_pid5bfpm <- function(
   )
 }
 
+#' Generate a REDCap Instrument ZIP File for the PID-5 Informant Form
+#'
+#' The 218 items of the PID-5 Informant Form (PID-5-IRF), in the form's order
+#' with the informant wording (`pid_items$TextIRF`). The instructions field
+#' ends with the form's rating prompt and the stem "He or she…" that each
+#' item completes, and the response options are the form's 0 to 3 labels.
+#' With `breaks`, the section header that starts each later page restates the
+#' prompt and stem. The
+#' item fields are `pid5irf_001` to `pid5irf_218`, the names
+#' [rename_pid5_items()] and [label_pid5()] use with `version = "IRF"`. Score
+#' them with `score_pid5(version = "IRF")`.
+#'
+#' @inheritParams generate_redcap_pid5
+#'
+#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
+#'
+#' @examples
+#' # Write a PID-5 Informant Form REDCap instrument ZIP to a temporary location
+#' generate_redcap_pid5irf(file = tempfile(fileext = ".zip"))
+#'
+#' @export
+generate_redcap_pid5irf <- function(
+  file = "pid5irf_redcap.zip",
+  form_name = "pid5irf_questionnaire",
+  required = TRUE,
+  breaks = 15
+) {
+  form <- pid_irf_form()
+
+  build_redcap_zip(
+    items = form$items,
+    max_n = max(pid_items$IRF, na.rm = TRUE),
+    instructions = form$instructions,
+    file = file,
+    instrument = "PID5IRF",
+    form_name = form_name,
+    required = required,
+    breaks = breaks,
+    page_header = form$page_header
+  )
+}
+
 # Internal Helper: the dictionary's item field names
 #
 # One place for the names build_redcap_zip() writes, so the HiTOP-SR generator
@@ -352,8 +395,14 @@ build_redcap_zip <- function(
   form_name,
   required,
   breaks,
+  page_header = NULL,
   call = rlang::caller_env()
 ) {
+  # `page_header`, when given, is the Section Header text at each page break
+  # in place of the bare "<br>", so every page after the first restates the
+  # PID-5 Informant Form's rating prompt and stem (M160 review). NULL keeps
+  # "<br>", so every other export is unchanged.
+  #
   # As in build_qualtrics_txt(): one set of guards for every instrument, with
   # `call` defaulting to the wrapper so the abort blames the exported function.
   # `form_name` takes no NULL here -- it is written into every dictionary row,
@@ -411,7 +460,8 @@ build_redcap_zip <- function(
     break_positions <- seq(from = breaks + 1, to = nrow(item_rows), by = breaks)
 
     # REDCap triggers a page break when there is text in the Section Header column
-    item_rows$`Section Header`[break_positions] <- "<br>"
+    item_rows$`Section Header`[break_positions] <-
+      if (is.null(page_header)) "<br>" else page_header
   }
 
   # 5. Build the Instructions Row
