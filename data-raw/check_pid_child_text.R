@@ -15,8 +15,8 @@
 #   4. its Domain Table primary facets against `pid_domains`;
 #   5. the child brief form's Domain Scoring table against `pid_scales$BF`;
 #   6. the stored child instructions (`pid_child_instructions` in
-#      R/sysdata.rda): each form's first-page paragraph, footer notice and
-#      response labels against its PDF text.
+#      R/sysdata.rda): each form's instruction paragraph (first item page,
+#      PDF p. 2), footer notice and response labels against its PDF text.
 #
 # It prints every difference it finds. Maintainer-run, never CI: it needs the
 # gitignored shelf and pdftotext. It exits non-zero on any difference, so a
@@ -164,7 +164,8 @@ for (k in seq_along(bf_names)) {
 if (any(grepl("[0-9]R\\b", bf[bf_key_at:length(bf)]))) note("BF child key marks a reverse item")
 
 # ---- Instructions in R/sysdata.rda -------------------------------------------
-# Each form's stored first-page paragraph and footer notice must appear in its
+# Each form's stored instruction paragraph (first item page, PDF p. 2) and
+# footer notice must appear in its
 # PDF text, and the response labels must be its column heads in order (raw
 # mode reads the heads column by column). Quotes, apostrophes and spacing are
 # normalized as for the item text, but the final period is kept, so the match

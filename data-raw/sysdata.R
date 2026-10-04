@@ -39,8 +39,9 @@ pid_irf_instructions <- list(
 ## PID-5 child form instructions, ages 11 to 17 (M161). From the APA child
 ## forms (Krueger et al., 2013; cairn/references/apa2013pid5child.md), one
 ## entry per form: `FULL` for the 220-item form and `BF` for the 25-item brief
-## form. `start` is the first page's instruction paragraph without its label
-## ("Instructions to the child receiving care:" or "Instructions:"), as
+## form. `start` is the instruction paragraph of the first item page (PDF
+## p. 2) without its label ("Instructions to the child receiving care:" or
+## "Instructions:"), as
 ## `pid_instructions$start` omits the adult label. `notice` is the line each
 ## form prints at the foot of its item pages. The items, keying and response
 ## labels are the adult forms'. data-raw/check_pid_child_text.R checks start,

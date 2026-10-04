@@ -149,8 +149,8 @@
 #'   to 17, and `version = "BF"` scores its 25-item PID-5-BF child form
 #'   (Krueger et al., 2013). The child forms print the adult forms' items in
 #'   the same order, and their keys reverse the same items and assign them to
-#'   the same facets and domains; only the instructions and the copyright
-#'   notice differ. So no separate version is needed, and data collected with
+#'   the same facets and domains. So no separate version is needed, and data
+#'   collected with
 #'   [generate_docx_pid5child()], [generate_qualtrics_pid5child()] or
 #'   [generate_redcap_pid5child()] (or their `pid5bfchild` counterparts) score
 #'   as adult data do. `pid_norms` holds no child norms, so [norm_pid5()] and

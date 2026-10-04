@@ -126,9 +126,10 @@ check_filters_matched <- function() {
 ## One note per build run, applied to every artifact rebuilt below. For the
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
-  "First build of the PID-5 child form for ages 11 to 17: the adult form's",
-  "items in the same order, the child form's instructions and its 0 to 3",
-  "response options; the Word footer carries the APA notice the form prints."
+  "First build of the PID-5 and PID-5-BF child forms for ages 11 to 17: the",
+  "adult forms' items in the same order, the child forms' instructions and",
+  "0 to 3 response options; the Word footer carries the APA notice the forms",
+  "print."
 )
 qsf_build_date <- as.Date("2026-08-19")
 qsf_note <- paste(

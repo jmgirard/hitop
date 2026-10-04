@@ -8,7 +8,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Welcome to the resources page for the Personality Inventory for DSM-5 child form for ages 11 to 17 (Krueger et al., 2013). The child completes this 220-item questionnaire about themselves. Its items, their order and their scoring key are those of the adult PID-5, and only its instructions and copyright notice differ. Here you can download ready-to-use versions of the instrument or use the `hitop` R package to customize, score, and analyze your data.
+Welcome to the resources page for the Personality Inventory for DSM-5 child form for ages 11 to 17 (Krueger et al., 2013). The child completes this 220-item questionnaire about themselves. Its items, their order and their scoring key are those of the adult PID-5. Its instructions add a label and put "right" and "wrong" in quotation marks, and the Word forms here carry the APA notice that the child form prints. Here you can download ready-to-use versions of the instrument or use the `hitop` R package to customize, score, and analyze your data.
 
 ```{r setup, include=FALSE}
 source("_download-helpers.R")

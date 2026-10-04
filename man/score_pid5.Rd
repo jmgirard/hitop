@@ -180,8 +180,8 @@ informant norms (Markon et al., 2024, Tables A–10 and A–11) are not in
 to 17, and \code{version = "BF"} scores its 25-item PID-5-BF child form
 (Krueger et al., 2013). The child forms print the adult forms' items in
 the same order, and their keys reverse the same items and assign them to
-the same facets and domains; only the instructions and the copyright
-notice differ. So no separate version is needed, and data collected with
+the same facets and domains. So no separate version is needed, and data
+collected with
 \code{\link[=generate_docx_pid5child]{generate_docx_pid5child()}}, \code{\link[=generate_qualtrics_pid5child]{generate_qualtrics_pid5child()}} or
 \code{\link[=generate_redcap_pid5child]{generate_redcap_pid5child()}} (or their \code{pid5bfchild} counterparts) score
 as adult data do. \code{pid_norms} holds no child norms, so \code{\link[=norm_pid5]{norm_pid5()}} and

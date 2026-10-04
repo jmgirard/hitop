@@ -395,7 +395,8 @@ remap_itemdata <- function(x, printed_of) {
 
 # Internal Helper: Build the shared document footer (build stamp + copyright).
 # `notice` replaces the Society copyright line for a form whose source prints
-# its own notice (the PID-5 Informant Form's APA line, M160); NULL keeps the
+# its own notice (the APA lines of the PID-5 Informant Form, M160, and the
+# PID-5 child forms, M161); NULL keeps the
 # Society line every other form carries.
 build_docx_footer <- function(font_size, font_family, notice = NULL) {
   if (is.null(notice)) {
