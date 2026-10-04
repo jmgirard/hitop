@@ -125,8 +125,8 @@
 #' and informant-report versions in English and German. Most items are
 #' rewritten for the prison setting, so they have their own table rather than
 #' columns of [pid_items]. The form was validated in German. Its English text
-#' is the authors' English version from Table S3; items they did not adapt
-#' keep the APA PID-5 wording. Scored by `score_pid5(version = "FFBF")`.
+#' is the authors' translation, from Table S3; items they did not adapt keep
+#' the APA PID-5 wording. Scored by `score_pid5(version = "FFBF")`.
 #'
 #' The texts are those of Table S3 of the form's supplement, without its
 #' source notes, its reverse marks, the stray markers E14, E18 and E77, a

@@ -184,8 +184,8 @@ informant norms (Markon et al., 2024, Tables A–10 and A–11) are not in
 (PID-5-FFBF; Niemeyer et al., 2022), an adaptation of the 100-item faceted
 short form for people in prison, with a self-report and an informant
 version. The form was validated in German. The English text in
-\link{pid_ffbf_items} is the authors' English version; items they did not
-adapt keep the APA PID-5 wording. Most items are rewritten (18
+\link{pid_ffbf_items} is the authors' translation; items they did not adapt
+keep the APA PID-5 wording. Most items are rewritten (18
 self-report and 20 informant items are not), and the authors numbered the
 form afresh, so its items are not the SF's: matched by number, 98 of the
 100 SF items fall in a different facet. Facet k, in alphabetical

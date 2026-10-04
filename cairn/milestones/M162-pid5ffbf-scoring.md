@@ -60,7 +60,7 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - AC3 → T3, T4
 - AC4 → T4
 - AC5 → T3, T4
-- AC6 → T5
+- AC6 → T5, T7
 
 ## Tasks
 
@@ -70,6 +70,7 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - [x] T4: Write the fixture and recomputation tests (AC3, AC5) and the `"F"` test. Add the IRF pairing to the characterization script and run it at the merge base and at the head (AC4).
 - [x] T5: Update the help pages, vignette, NEWS and `_pkgdown.yml`. From RR08, the FFBF help also states: the five missing-data facts of RR08 section 4; the informant facts of section 5 (item-by-item averaging, the other informant's value when one is missing, half-integer values and the `"apa"` rounding); that FFBF item numbers are not `pid_items$SF` numbers; and the forensic domains' caveats (exploratory single sample, Insecurity's open status, shared facets). Open SOURCES.md OQ-6 (item 10's wording in the article against Table S3) and OQ-7 (the English typos the CSV keeps). Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 - [x] T6: From RR08: extend `data-raw/check_pid_ffbf_text.R` to the code's informant lists (lines 135 to 159), its original-form lists (3311 to 3361), its informant recodes, and the count of unadapted items against Table S3's a, b and c marks. Rerun it and record the run on the references page.
+- [ ] T7: Review return 1: add AC6's missing facts to `vignettes/pid5_scoring.Rmd` (validated in German; the English text is the authors' translation; the four-factor Antagonism and Detachment are the APA domains; `label_pid5()` uses the self-report text).
 
 ## Work log
 
@@ -103,6 +104,9 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - 2026-10-04: claim audit: 133 claims read, 14 corrected — R/data.R, R/score_pid5.R, vignettes/pid5_scoring.Rmd, data-raw/characterize_bfpm.R, data-raw/check_pid_ffbf_text.R, data-raw/pid_info.R, tests/testthat/helper-fixtures.R. The same reader re-read the 16 corrected sites: all hold.
 - 2026-10-04: the claim audit also found that the `"F"` test did not call `plot_pid5()`, which AC4 names; `test-plot_pid5.R` gained that test. The vignette's domain chunk now prints facet names. Suite green. Status set to review.
 - 2026-10-04: review return 1: AC6 — `vignettes/pid5_scoring.Rmd` does not state three of AC6's six facts (validated in German; Antagonism and Detachment are the APA domains; `label_pid5()` uses the self-report text), and its English-text sentence does not say "the authors' translation".
+- 2026-10-04: T7 in progress: the vignette gained the three missing AC6 facts and both documents said "the authors' translation". A T7 claim audit (18 claims, 1 to correct) found "translation" unsourced: the paper never uses it, 35 English self-report texts carry APA wording, and only the German version was validated (p. 40). So AC6's own bullet is wrong.
+- 2026-10-04: re-audit: AC6 (full) — on the bullet "the authors' English version from Table S3, which the study did not validate": "did not validate" can read as "found invalid"; "the help pages" names no pages; the docs' unadapted-items clause misses replaced items.
+- 2026-10-04: re-audit: AC6 (full) — on the fixed wording: the old "translation" claim is not forbidden and stays in four files; "in at least one of A, B and C, and in D" reads two ways; "did not test" goes further than the source. The second line on AC6 is the stop.
 
 ## Decisions
 

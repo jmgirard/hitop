@@ -255,7 +255,7 @@ Scoring follows the APA informant key (Markon et al., 2013), with two readings t
 
 ## The PID-5 Forensic Faceted Brief Form
 
-The PID-5 Forensic Faceted Brief Form (PID-5-FFBF; Niemeyer, Grosz, Zimmermann & Back, 2022, [doi:10.1080/00223891.2021.1923522](https://doi.org/10.1080/00223891.2021.1923522)) adapts the 100-item faceted short form for people in prison. It has a self-report and an informant version. The study gave the items in German. The English text in `pid_ffbf_items` is the authors' English version, and items they did not adapt keep the APA PID-5 wording. Most items are rewritten, and the authors numbered the form afresh, so FFBF item numbers are not SF item numbers. Facet k, in alphabetical order, holds items k, k + 25, k + 50 and k + 75, and items 12 and 26 are reverse-scored.
+The PID-5 Forensic Faceted Brief Form (PID-5-FFBF; Niemeyer, Grosz, Zimmermann & Back, 2022, [doi:10.1080/00223891.2021.1923522](https://doi.org/10.1080/00223891.2021.1923522)) adapts the 100-item faceted short form for people in prison. It has a self-report and an informant version. The study gave the items in German, and the form was validated in German. The English text in `pid_ffbf_items` is the authors' translation, and items they did not adapt keep the APA PID-5 wording. Most items are rewritten, and the authors numbered the form afresh, so FFBF item numbers are not SF item numbers. Facet k, in alphabetical order, holds items k, k + 25, k + 50 and k + 75, and items 12 and 26 are reverse-scored.
 
 The package has no FFBF dataset. For illustration, we simulate answers to its 100 items.
 
@@ -265,7 +265,7 @@ sim_ffbf <- as.data.frame(matrix(sample(0:3, 10 * 100, replace = TRUE), 10, 100)
 names(sim_ffbf) <- sprintf("pid5ffbf_%03d", 1:100)
 ```
 
-`score_pid5()` with `version = "FFBF"` returns 25 facets, named and ordered as the SF's, then 7 domains: the 5 APA domains and the two domains of the paper's four-factor solution that are not APA domains, Disinhibited Aggression and Insecurity. `pid_ffbf_domains` lists the facets of each domain.
+`score_pid5()` with `version = "FFBF"` returns 25 facets, named and ordered as the SF's, then 7 domains: the 5 APA domains and the two domains of the paper's four-factor solution that are not APA domains, Disinhibited Aggression and Insecurity. The paper's four-factor Antagonism and Detachment have the facets of the APA domains of the same names, so they are not repeated. `pid_ffbf_domains` lists the facets of each domain.
 
 ```{r ffbf-score}
 ffbf_scores <- score_pid5(sim_ffbf, items = 1:100, version = "FFBF", append = FALSE)
@@ -278,7 +278,7 @@ The seven domains share facets, so they are not independent. The four-factor str
 
 The paper prints no missing-data rule. Under the default `missing = "apa"`, the package applies the same rule as for the SF: a facet with 1 of its 4 items missing is prorated and rounded, a facet with 2 or more missing is `NA`, and a domain with an `NA` facet is `NA`. The authors' analysis code scores missing items differently, so with missing data a facet can differ by up to 1/12 from the authors' scoring, and a domain can be `NA` where theirs has a value; `?score_pid5` gives the details.
 
-Informant data use the same version. The paper averaged the responses of two informants item by item before scoring, and the authors' code uses one informant's response where the other is missing. Do that step first, for example with `rowMeans(cbind(x1, x2), na.rm = TRUE)` for each item. `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` also take `version = "FFBF"`. No FFBF norms or validity keys are published, so `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do not take it.
+Informant data use the same version. The paper averaged the responses of two informants item by item before scoring, and the authors' code uses one informant's response where the other is missing. Do that step first, for example with `rowMeans(cbind(x1, x2), na.rm = TRUE)` for each item. `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` also take `version = "FFBF"`, and `label_pid5()` labels items with the English self-report text, for informant data too. No FFBF norms or validity keys are published, so `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do not take it.
 
 ## The PID-5 Child Forms
 
