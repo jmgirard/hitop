@@ -13,7 +13,10 @@
 #      against `pid_items$Reverse`;
 #   3. its Facet Table item lists against `pid_scales$FULL`;
 #   4. its Domain Table primary facets against `pid_domains`;
-#   5. the child brief form's Domain Scoring table against `pid_scales$BF`.
+#   5. the child brief form's Domain Scoring table against `pid_scales$BF`;
+#   6. the stored child instructions (`pid_child_instructions` in
+#      R/sysdata.rda): each form's first-page paragraph, footer notice and
+#      response labels against its PDF text.
 #
 # It prints every difference it finds. Maintainer-run, never CI: it needs the
 # gitignored shelf and pdftotext. It exits non-zero on any difference, so a
@@ -160,6 +163,35 @@ for (k in seq_along(bf_names)) {
 }
 if (any(grepl("[0-9]R\\b", bf[bf_key_at:length(bf)]))) note("BF child key marks a reverse item")
 
+# ---- Instructions in R/sysdata.rda -------------------------------------------
+# Each form's stored first-page paragraph and footer notice must appear in its
+# PDF text, and the response labels must be its column heads in order (raw
+# mode reads the heads column by column). Quotes, apostrophes and spacing are
+# normalized as for the item text, but the final period is kept, so the match
+# checks it too.
+sysdata <- new.env()
+load("R/sysdata.rda", envir = sysdata)
+ascii <- function(x) {
+  x <- gsub("[‘’]", "'", x)
+  x <- gsub("[“”]", "\"", x)
+  trimws(gsub("\\s+", " ", x))
+}
+for (form in c("FULL", "BF")) {
+  instr <- sysdata$pid_child_instructions[[form]]
+  flat <- ascii(paste(if (form == "FULL") full else bf, collapse = " "))
+  for (part in c("start", "notice")) {
+    if (!grepl(ascii(instr[[part]]), flat, fixed = TRUE)) {
+      note(form, " instructions$", part, " is not in the PDF text")
+    }
+  }
+  if (!grepl(paste(instr$options$label, collapse = " "), flat, fixed = TRUE)) {
+    note(form, " instructions$options labels are not the form's column heads, in order")
+  }
+  if (!identical(instr$options$value, 0:3)) {
+    note(form, " instructions$options values are not 0 to 3")
+  }
+}
+
 cat("Full form: ", full_pdf, " (sha256 matches)\n", sep = "")
 cat("Brief form: ", bf_pdf, " (sha256 matches)\n", sep = "")
 cat("Items read: ", length(full_text), " full, ", length(bf_text), " brief\n", sep = "")
@@ -170,4 +202,4 @@ if (length(bad)) {
   cat(paste0("  ", bad), sep = "\n")
   quit(status = 1)
 }
-cat("\nNO DIFFERENCES: 220 + 25 texts, reverse list, 25 facets, 5 domains and 5 BF domains match the package.\n")
+cat("\nNO DIFFERENCES: 220 + 25 texts, reverse list, 25 facets, 5 domains, 5 BF domains and both forms' instructions match the package.\n")

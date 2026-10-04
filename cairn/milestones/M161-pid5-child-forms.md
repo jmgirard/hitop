@@ -45,7 +45,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 ## Tasks
 
 - [x] T1: Write the `data-raw/` comparison script and the references page (AC1). A first check on 2026-10-03 found all 220 adult texts and all 25 BF texts in the child PDFs (letters-only match, order not checked). The child reverse list equals the adult list.
-- [ ] T2: Pre-implementation gate (RB tripwire: irreversible-api). Choose between new child generator functions and an argument on the existing PID-5 generators. Also choose the child item-name stems for Qualtrics and REDCap. Those stems decide whether `rename_pid5_items()` is needed before FULL or BF scoring. Then add the child instructions to `R/sysdata.rda` through `data-raw/`.
+- [x] T2: Pre-implementation gate (RB tripwire: irreversible-api). Choose between new child generator functions and an argument on the existing PID-5 generators. Also choose the child item-name stems for Qualtrics and REDCap. Those stems decide whether `rename_pid5_items()` is needed before FULL or BF scoring. Then add the child instructions to `R/sysdata.rda` through `data-raw/`.
 - [ ] T3: Build the child Word, Qualtrics and REDCap generators.
 - [ ] T4: Write the parse-back tests (AC2) and run the existing generator and artifact tests unchanged (AC3).
 - [ ] T5: Add the artifact rows, build the artifacts, stage the pkgdown copies and write the download pages. Update the page counts in `test-artifacts.R` and `test-download-pages.R`, and exempt the pages from the online-strip test.
@@ -58,7 +58,10 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 3 clear fixes and 3 judgment findings, all applied. AC1 compares against the package tables, reads "whether", and states the match rule. AC3 narrows to shipped adult artifacts and stops conflicting with AC4's page-count edits. The T2 gate adds the child item-name stems.
 - 2026-10-04: implement started on branch `m161-pid5-child-forms`, cut from main at `0b9bc3db` after M160 merged. The untracked `devel/hitopdat_*` files predate the branch and stay out of every commit. M160's `pid_irf_form()`, `page_header` and `footer_notice` patterns are available to the child generators.
 - 2026-10-04: T1 done. `data-raw/check_pid_child_text.R` finds no difference in the 220 + 25 texts, the reverse list, 25 facets, 5 domains or 5 BF domains, and goes red on 7 planted defect kinds. Page `cairn/references/apa2013pid5child.md`. The child instructions differ from `pid_instructions$start` only in the full form's label and its quotes around "right" and "wrong".
+- 2026-10-04: T2 gate (RB tripwire: irreversible-api) posed as one chip with the escalation offer. Jeff chose new child functions and the adult item names, recorded as M161-D1. `pid_child_instructions` (FULL and BF: start, notice, options) enters `R/sysdata.rda` via `data-raw/sysdata.R`. The check script gains a sixth check on it, which passes and goes red on 3 planted defects. Suite: 27632 pass, 1 fail, `test-vignette-export-coverage.R`, caused by T3's new exports reaching `NAMESPACE` mid-run. It clears when T5 links them.
 
 ## Decisions
+
+- M161-D1 (2026-10-04, T2 gate, Jeff's selection): The child forms get six new exported generators, `generate_{docx,qualtrics,redcap}_pid5child()` and `generate_{docx,qualtrics,redcap}_pid5bfchild()`. The adult generators get no new argument and do not change. The child Qualtrics and REDCap item names reuse the adult stems (`PID5_001` and `pid5_001`, `PID5BF_01` and `pid5bf_01`). A child export then scores, renames and labels with `version = "FULL"` or `"BF"` as an adult export does, with no `rename_pid5_items()` step. Cost accepted: one REDCap project cannot hold the adult and the child instrument of one form, because REDCap field names must be unique. The REDCap form names and Qualtrics block names are the child forms' own.
 
 ## Review

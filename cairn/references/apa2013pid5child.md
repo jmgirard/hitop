@@ -37,6 +37,9 @@ reads both files with `pdftotext -raw` and checks:
 3. Its Facet Table item lists against `pid_scales$FULL`.
 4. Its Domain Table primary facets against `pid_domains`.
 5. The brief form's Domain Scoring table against `pid_scales$BF`.
+6. Each form's stored first-page paragraph, footer notice and response labels
+   (`pid_child_instructions` in `R/sysdata.rda`) against its PDF text. This
+   check was added on 2026-10-04, with three planted defects that went red.
 
 Texts must match exactly after whitespace and typographic quotes are
 normalized. The script also drops a final period from the PDF text, because
