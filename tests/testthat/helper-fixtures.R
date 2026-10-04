@@ -210,6 +210,43 @@ fx_pid5bfpm <- function() {
   df
 }
 
+# ---- PID-5 Informant Form (218 items) ----------------------------------------
+#
+# Hand-computed fixture for score_pid5(version = "IRF") (M159, AC2). Facet
+# membership, the 14 R items (D-089(c)) and the domain triplets are typed from
+# the APA IRF key (cairn/references/apa2013pid5irf.md); the expected values and
+# their arithmetic are in test-score_pid5.R. Item i is IRF item i. Rows:
+#   R1  item i answered i %% 4 (answers vary within every facet)
+#   R2  item i answered 3 - i %% 4
+#   R3  R1 with item 9 NA (Submissiveness, exactly 25% of 4: prorated) and
+#       items 1, 23, 26 NA (Anhedonia, 3 of 8 = 37.5%, the fewest past 25%:
+#       NA, so Detachment is NA while Withdrawal and Intimacy Avoidance score)
+#   R4  R1 with items 11, 13, 19 NA and item 54 = 3 (Callousness prorates
+#       12 * 14 / 11 = 15.27 -> 15, where a ceiling gives 16), and
+#       Distractibility answered NA, 1, 0, 1, 0, 1, 0, 1, 0 (prorates
+#       4 * 9 / 8 = 4.5 -> 5, where base round() gives 4; Disinhibition is
+#       scored from this prorated primary facet)
+#   R5  every item 0
+# Items 98 and 176 are answered 2 and 0 in R1, R3 and R4, 1 and 3 in R2, and
+# 0 and 0 in R5, so Step 1's 16-item reverse list would change Unusual Beliefs
+# & Experiences and Depressivity in every row.
+fx_pid5irf <- function() {
+  i <- seq_len(218)
+  df <- as.data.frame(matrix(NA_integer_, nrow = 5, ncol = 218))
+  names(df) <- sprintf("pid5irf_%03d", i)
+  df[1, ] <- i %% 4L
+  df[2, ] <- 3L - i %% 4L
+  df[3, ] <- i %% 4L
+  df[3, c(9, 1, 23, 26)] <- NA_integer_
+  df[4, ] <- i %% 4L
+  df[4, c(11, 13, 19)] <- NA_integer_
+  df[4, 54] <- 3L
+  df[4, c(6, 29, 47, 68, 88, 117, 131, 143, 197)] <-
+    c(NA, 1L, 0L, 1L, 0L, 1L, 0L, 1L, 0L)
+  df[5, ] <- 0L
+  df
+}
+
 # ---- HiTOP-SR (405 items) ---------------------------------------------------
 #
 # Hand-computed fixture for score_hitopsr() (milestone M005). Item range is the

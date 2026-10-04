@@ -53,7 +53,7 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
 
   Then build the data in `data-raw/` and write the keying test (AC1). Keying content needs Jeff's sign-off before merge.
 - [x] T3: Thread the version through the four functions and add the instructions to `R/sysdata.rda`.
-- [ ] T4: Write the fixture tests (AC2, AC4). Extend M157's characterization script and run it at the merge base and at the head (AC3). In the AC2 fixture, vary answers within facets, so a wrong item list or IRF numbering shows, and include one scored domain with a prorated primary facet.
+- [x] T4: Write the fixture tests (AC2, AC4). Extend M157's characterization script and run it at the merge base and at the head (AC3). In the AC2 fixture, vary answers within facets, so a wrong item list or IRF numbering shows, and include one scored domain with a prorated primary facet.
 - [ ] T5: Update the help pages, vignette and NEWS. The `missing` help text, the IRF help section and NEWS state that the key's printed "round up" is read as the nearest-whole-number rule (D-090), and the `apa_mean()` comment points to D-090. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
@@ -74,6 +74,7 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
 - 2026-10-03: re-audit: AC2 (full) — fixed wording: 5 clear fixes (`calc_se` and `prefix` scope, oracle defined by `apa_mean()` against IP2, the over-25% probe must sit at the fewest items past the limit, tolerance, one fixture reference) and 3 judgment findings (docs statement, already in T5; varied answers and a prorated primary facet, added to T4; fixture size, kept). Second re-audit line on AC2, so the final wording goes to Jeff.
 - 2026-10-03: status back to `in-progress` after RR07; RB07 and RR07 moved to `cairn/reviews/archive/`.
 - 2026-10-03: substantive amendment: AC2 — replaced with the twice-audited wording that names D-090's round-to-nearest rule in place of "the APA rules the key prints", fixes `append`, `calc_se`, `prefix`, `missing` and the tolerance, and lists fixture cases (i) to (vi). Jeff adopted it at the stop over RR07's shorter text and stopping.
+- 2026-10-03: T4 done. `fx_pid5irf()` (5 rows, answers varying within facets) and 150 expected values typed in `test-score_pid5.R` with their arithmetic. The values came from an independent Python oracle over the key's typed tables, and the package matched all 150 before the test was written. Fixture cases (i) to (vi) are in the helper header. Planted ceiling, base `round()`, a `>=` cutoff and Step 1's reverse list each failed the value test. AC4 tests for `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()`; a planted self-report label failed the label test. `characterize_bfpm.R` gained a BFPM pairing built from `sim_pid5`; merge base `d46368c2` and head give 100 of 100 identical calls (20 BFPM). Full suite: 26695 passes, 0 failures.
 
 ## Decisions
 

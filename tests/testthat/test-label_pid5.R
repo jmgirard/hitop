@@ -337,6 +337,40 @@ test_that("label_pid5(target = 'items') pluralizes each sentence by its own colu
   }
 })
 
+# ---- PID-5 Informant Form ---------------------------------------------------
+
+test_that("label_pid5(version = 'IRF') labels its 218 items with the informant text", {
+  labeled <- label_pid5(fx_pid5irf(), target = "items", version = "IRF")
+  # Texts typed from the APA form (pp. 2 and 7), normalized as D-089(b) states.
+  typed <- c(
+    pid5irf_001 = "doesn't get as much pleasure out of things as others seem to",
+    pid5irf_098 = "sometimes hears things that aren't really there",
+    pid5irf_176 = "mentions that they will commit suicide sooner or later",
+    pid5irf_218 = "has a strict way of doing things"
+  )
+  for (nm in names(typed)) {
+    expect_identical(attr(labeled[[nm]], "label"), typed[[nm]], info = nm)
+  }
+  labels <- vapply(labeled, function(col) attr(col, "label"), character(1))
+  expect_length(labels, 218L)
+  # No informant label is the self-report wording of any item.
+  expect_false(any(labels %in% pid_items$Text))
+})
+
+test_that("label_pid5(version = 'IRF') names the FULL form's 25 facets and 5 domains", {
+  scored <- score_pid5(fx_pid5irf(), items = 1:218, version = "IRF", append = FALSE)
+  full <- score_pid5(sim_pid5, items = 1:220, append = FALSE)
+  label_of <- function(col) {
+    l <- attr(col, "label")
+    if (is.null(l)) NA_character_ else l
+  }
+  expect_identical(
+    unname(vapply(label_pid5(scored, target = "scales", version = "IRF"), label_of, character(1))),
+    unname(vapply(label_pid5(full, target = "scales", version = "FULL"), label_of, character(1)))
+  )
+  expect_false(anyNA(vapply(label_pid5(scored, target = "scales", version = "IRF"), label_of, character(1))))
+})
+
 # ---- PID5BF+M ---------------------------------------------------------------
 
 test_that("label_pid5(version = 'BFPM') labels its 36 items with their PID-5 text", {

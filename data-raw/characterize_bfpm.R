@@ -1,7 +1,10 @@
-# Maintainer-run characterization harness for the PID5BF+M version (M157).
+# Maintainer-run characterization harness for the PID5BF+M version (M157),
+# extended by M159 for the PID-5 Informant Form.
 #
 # Adding `version = "BFPM"` must not move any output of the three existing PID-5
-# forms. This script captures every call of the milestone's AC3 matrix from
+# forms, and adding `version = "IRF"` must not move any output of those three
+# or of the BFPM. No BFPM dataset ships, so its input is built from `sim_pid5`
+# columns at the BF+M item numbers. This script captures every call of the milestone's AC3 matrix from
 # whichever checkout is passed as the first argument, and writes them to the RDS
 # named by the second. Run it once against the commit the milestone branch was
 # cut from and once against the branch, then compare the two files with
@@ -61,7 +64,17 @@ forms <- list(
   list(data = "sim_pid5", version = "FULL", items = sprintf("pid5_%03d", 1:220)),
   list(data = "sim_pid5sf", version = "SF", items = sprintf("pid5sf_%03d", 1:100)),
   list(data = "ku_pid5sf", version = "SF", items = sprintf("pid5sf_%03d", 1:100)),
-  list(data = "sim_pid5bf", version = "BF", items = sprintf("pid5bf_%02d", 1:25))
+  list(data = "sim_pid5bf", version = "BF", items = sprintf("pid5bf_%02d", 1:25)),
+  list(
+    data = "sim_pid5[BFPM]", version = "BFPM", items = sprintf("pid5bfpm_%02d", 1:36),
+    build = function() {
+      rows <- pid_items[!is.na(pid_items$BFPM), ]
+      rows <- rows[order(rows$BFPM), ]
+      d <- get("sim_pid5", envir = ns)[sprintf("pid5_%03d", rows$FULL)]
+      names(d) <- sprintf("pid5bfpm_%02d", 1:36)
+      d
+    }
+  )
 )
 
 score_pid5 <- get("score_pid5", envir = ns)
@@ -71,7 +84,7 @@ label_pid5 <- get("label_pid5", envir = ns)
 
 results <- list()
 for (f in forms) {
-  dat <- get(f$data, envir = ns)
+  dat <- if (is.null(f$build)) get(f$data, envir = ns) else f$build()
 
   # score_pid5(): missing x calc_se x append
   for (miss in c("apa", "available", "complete")) {
