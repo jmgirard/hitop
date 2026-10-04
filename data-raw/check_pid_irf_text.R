@@ -11,7 +11,7 @@
 #   2. every item's facet, against the key's Facet Table;
 #   3. the CSV's FULL column, which maps each IRF item to the self-report item
 #      with the same facet (the IRF drops self-report items 96 and 177);
-#   4. the stored instructions (start, continue, prompt, stem) and response
+#   4. the stored instructions (start, continue, prompt, stem, notice) and response
 #      labels, against the form's text.
 #
 # It also prints the key's two reverse lists, Step 1 and the R marks in the
@@ -131,7 +131,7 @@ ascii <- function(x) {
   trimws(gsub("\\s+", " ", x))
 }
 flat <- ascii(form)
-for (part in c("start", "continue", "prompt")) {
+for (part in c("start", "continue", "prompt", "notice")) {
   if (!grepl(ascii(instr[[part]]), flat, fixed = TRUE)) {
     note("instructions$", part, " is not in the PDF text")
   }

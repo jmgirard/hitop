@@ -100,7 +100,8 @@ test_that("all shared-path REDCap generators produce a valid dictionary", {
     list(fn = generate_redcap_pid5,    n = 220L),
     list(fn = generate_redcap_pid5sf,  n = 100L),
     list(fn = generate_redcap_pid5bf,  n = 25L),
-    list(fn = generate_redcap_pid5bfpm, n = 36L)
+    list(fn = generate_redcap_pid5bfpm, n = 36L),
+    list(fn = generate_redcap_pid5irf, n = 218L)
   )
   for (case in cases) {
     f <- withr::local_tempfile(fileext = ".zip")

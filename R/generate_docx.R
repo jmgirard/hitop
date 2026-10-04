@@ -393,8 +393,14 @@ remap_itemdata <- function(x, printed_of) {
   x[order(x$HSR), , drop = FALSE]
 }
 
-# Internal Helper: Build the shared document footer (build stamp + copyright)
-build_docx_footer <- function(font_size, font_family) {
+# Internal Helper: Build the shared document footer (build stamp + copyright).
+# `notice` replaces the Society copyright line for a form whose source prints
+# its own notice (the PID-5 Informant Form's APA line, M160); NULL keeps the
+# Society line every other form carries.
+build_docx_footer <- function(font_size, font_family, notice = NULL) {
+  if (is.null(notice)) {
+    notice <- "Copyright 2024 © Hierarchical Taxonomy of Psychopathology Society"
+  }
   footer_prop <- officer::fp_text(
     color = "grey",
     font.size = max(6, font_size - 2),
@@ -408,10 +414,7 @@ build_docx_footer <- function(font_size, font_family) {
   )
   footer_text <- officer::fpar(
     officer::ftext(stamp, prop = footer_prop),
-    officer::ftext(
-      " \u00b7 Copyright 2024 \u00a9 Hierarchical Taxonomy of Psychopathology Society",
-      prop = footer_prop
-    ),
+    officer::ftext(paste0(" \u00b7 ", notice), prop = footer_prop),
     fp_p = officer::fp_par(text.align = "right")
   )
   officer::block_list(footer_text)
@@ -616,7 +619,8 @@ build_hitop_doc <- function(
   font_size,
   font_family,
   crosswalk_msg = NULL,
-  table_3 = NULL
+  table_3 = NULL,
+  footer_notice = NULL
 ) {
   inst_prop <- officer::fp_text(
     font.size = font_size,
@@ -637,7 +641,7 @@ build_hitop_doc <- function(
 
   # Footer
   my_header <- officer::block_list(header_text)
-  my_footer <- build_docx_footer(font_size, font_family)
+  my_footer <- build_docx_footer(font_size, font_family, notice = footer_notice)
 
   my_doc <- officer::read_docx() |>
     officer::body_add_fpar(
@@ -1542,5 +1546,109 @@ generate_docx_pid5bfpm <- function(
     font_size,
     font_family,
     table_3 = t3
+  )
+}
+
+# Internal Helper: the PID-5 Informant Form's rows and instructions, shared by
+# its Word, Qualtrics and REDCap generators (M160). The rows are the 218 IRF
+# items in IRF order, with the IRF number first and `Text` replaced by the
+# informant wording (`TextIRF`, D-089(b)): the builders read `Text`, which
+# holds the self-report wording. The instruction text is the form's opening
+# paragraph, its rating prompt and the "He or she..." stem each item completes,
+# as `pid_irf_instructions` stores them; the response options are its own.
+pid_irf_form <- function() {
+  items <- pid_items[!is.na(pid_items$IRF), ]
+  items <- items[order(items$IRF), ]
+  items$Text <- items$TextIRF
+  items <- items[, c("IRF", setdiff(names(items), "IRF"))]
+  list(
+    items = items,
+    instructions = list(
+      start = paste(
+        pid_irf_instructions$start,
+        pid_irf_instructions$prompt,
+        pid_irf_instructions$stem
+      ),
+      options = pid_irf_instructions$options
+    )
+  )
+}
+
+#' Generate a Word Document for the PID-5 Informant Form
+#'
+#' Write the 218-item PID-5 Informant Form (PID-5-IRF; Markon et al., 2013),
+#' on which an adult informant rates the person receiving care, as a paper
+#' form. The items are numbered 1 to 218 in the form's order, with the
+#' informant wording (`pid_items$TextIRF`). The instructions end with the
+#' form's rating prompt and the stem "He or she..." that each item completes.
+#' The scoring page lists each of the 25 facets with its informant item
+#' numbers, marking the 14 reverse-scored items with (R), as [score_pid5()]
+#' scores them with `version = "IRF"`. The footer carries the APA copyright
+#' and permission notice the form prints.
+#'
+#' @inheritParams generate_docx_pid5
+#'
+#' @references Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
+#'   (2013). *The Personality Inventory for DSM-5—Informant Form
+#'   (PID-5-IRF)—Adult*. American Psychiatric Association. See also Markon et
+#'   al. (2013), *Assessment, 20*(3), 370-383. \doi{10.1177/1073191113486513}
+#'
+#' @examples
+#' \donttest{
+#' # Write a PID-5 Informant Form paper form to a temporary Word document
+#' generate_docx_pid5irf(file = tempfile(fileext = ".docx"))
+#' }
+#'
+#' @export
+generate_docx_pid5irf <- function(
+  file = "pid5irf.docx",
+  papersize = c("us", "a4"),
+  title = "PID-5-IRF (Informant Form)",
+  include_scoring = TRUE,
+  font_size = 10,
+  font_family = "Times New Roman"
+) {
+  papersize <- match.arg(papersize)
+  dims <- get_page_dims(papersize)
+  form <- pid_irf_form()
+
+  t1 <- make_items_table(
+    form$items,
+    "IRF",
+    form$instructions$options,
+    dims$pw,
+    font_size,
+    font_family,
+    opts_per_line = 2
+  )
+
+  t2 <- NULL
+  if (include_scoring) {
+    scales_to_score <- pid_scales$IRF
+    names(scales_to_score)[names(scales_to_score) == "Facet"] <- "Scale"
+
+    t2 <- make_scoring_table(
+      scales_to_score,
+      "IRF",
+      dims$pw,
+      font_size,
+      font_family
+    )
+  }
+
+  scoring_msg <- "Average the responses for the following item numbers. Reverse-scored items are indicated with (R)."
+
+  build_hitop_doc(
+    file,
+    title,
+    form$instructions$start,
+    scoring_msg,
+    t1,
+    t2,
+    include_scoring,
+    dims,
+    font_size,
+    font_family,
+    footer_notice = pid_irf_instructions$notice
   )
 }

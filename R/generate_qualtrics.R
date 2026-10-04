@@ -322,6 +322,43 @@ generate_qualtrics_pid5bfpm <- function(
   )
 }
 
+#' Generate a Qualtrics Import File for the PID-5 Informant Form
+#'
+#' The 218 items of the PID-5 Informant Form (PID-5-IRF), in the form's order
+#' with the informant wording (`pid_items$TextIRF`). The instructions block
+#' ends with the form's rating prompt and the stem "He or she..." that each
+#' item completes, and the response options are the form's 0 to 3 labels. The
+#' question IDs are `PID5IRF_001` to `PID5IRF_218`. Score the export with
+#' `score_pid5(version = "IRF")`.
+#'
+#' @inheritParams generate_qualtrics_pid5
+#'
+#' @examples
+#' # Write a PID-5 Informant Form Qualtrics import file to a temporary location
+#' generate_qualtrics_pid5irf(file = tempfile(fileext = ".txt"))
+#'
+#' @export
+generate_qualtrics_pid5irf <- function(
+  file = "pid5irf_qualtrics.txt",
+  block_name = "PID-5-IRF",
+  id_prefix = "PID5IRF",
+  include_instructions = TRUE,
+  breaks = 15
+) {
+  form <- pid_irf_form()
+
+  build_qualtrics_txt(
+    items = form$items,
+    max_n = max(pid_items$IRF, na.rm = TRUE),
+    instructions = form$instructions,
+    file = file,
+    block_name = block_name,
+    id_prefix = id_prefix,
+    include_instructions = include_instructions,
+    breaks = breaks
+  )
+}
+
 # Internal Helper: the item questions' `[[ID:]]` values
 #
 # One place for the IDs build_qualtrics_txt() writes, so the HiTOP-SR
