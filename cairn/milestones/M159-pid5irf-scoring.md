@@ -1,6 +1,6 @@
 # M159: PID-5 informant form (IRF) keying and scoring
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M157
 - **Driving RR:** —
@@ -53,8 +53,8 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
 
   Then build the data in `data-raw/` and write the keying test (AC1). Keying content needs Jeff's sign-off before merge.
 - [x] T3: Thread the version through the four functions and add the instructions to `R/sysdata.rda`.
-- [ ] T4: Write the fixture tests (AC2, AC4). Extend M157's characterization script and run it at the merge base and at the head (AC3).
-- [ ] T5: Update the help pages, vignette and NEWS. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
+- [ ] T4: Write the fixture tests (AC2, AC4). Extend M157's characterization script and run it at the merge base and at the head (AC3). In the AC2 fixture, vary answers within facets, so a wrong item list or IRF numbering shows, and include one scored domain with a prorated primary facet.
+- [ ] T5: Update the help pages, vignette and NEWS. The `missing` help text, the IRF help section and NEWS state that the key's printed "round up" is read as the nearest-whole-number rule (D-090), and the `apa_mean()` comment points to D-090. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
 
@@ -69,7 +69,13 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
 - 2026-10-03: implement choice: `pid_irf_instructions` keeps the form's later-page text (`continue`), its rating prompt and its "He or she…" stem beside `start`, so M160's Word form can print them. The response options are a copy of `pid_instructions$options`, as the form prints the same labels.
 - 2026-10-03: T4 stop (ip-touching tripwire, emerged mid-work): the IRF key (p. 9) says to "round up to the nearest whole number" after proration. Both child keys on the shelf and the self-report key quoted in SOURCES.md say "round to the nearest whole number", and `apa_mean()` rounds half up for every version. AC2's fixture cannot be typed until the rule is settled. Jeff chose escalation via `/milestone-brief` over round-up (recommended), round-to-nearest and stopping.
 - 2026-10-03: blocked on RB07 (`cairn/reviews/RB07-irf-proration-rounding.md`, advisory, no binding criteria). The brief commit sits on the milestone branch, not on main, because this milestone's tracking lives on the branch.
+- 2026-10-03: RR07 ingested (Fable, advisory). Verdict: keep round-half-up for the IRF, no code change (D-090). Spot check: the Level 2 Anxiety key's worked example (23.33 to 23) and its sha256 match the RR. Triage: recs 1, 3, 4 (SOURCES.md and the references page now), 5 and 6 applied; rec 4's help and NEWS text and rec 7 (`apa_mean()` comment) scheduled in T5; rec 2 (AC2 wording) goes through the amendment protocol; recs 8 to 10 rejected as the RR recommends (no ceiling, no version-specific rule or warning, no change to other versions). Finding 1 of the first audit showed D-009's own text writes base `round()`, so D-090 cites the SOURCES.md half-up note instead.
+- 2026-10-03: re-audit: AC2 (full) — RR07's wording: 6 clear fixes (D-009 citation, unscoped value claim, the 98/176 clause did not bind, 25% probe, domain-NA probe, column order and `append`) and 5 judgment findings. Judgments decided toward the narrower promise: fixture probes stay in AC2, "more than 25%" kept, other missing modes and the two shorter facets left to the shared engine and AC1; the "round up" statement in docs went to T5, not AC5.
+- 2026-10-03: re-audit: AC2 (full) — fixed wording: 5 clear fixes (`calc_se` and `prefix` scope, oracle defined by `apa_mean()` against IP2, the over-25% probe must sit at the fewest items past the limit, tolerance, one fixture reference) and 3 judgment findings (docs statement, already in T5; varied answers and a prorated primary facet, added to T4; fixture size, kept). Second re-audit line on AC2, so the final wording goes to Jeff.
+- 2026-10-03: status back to `in-progress` after RR07; RB07 and RR07 moved to `cairn/reviews/archive/`.
 
 ## Decisions
+
+- 2026-10-03 (T4, from RR07): the IRF prorates with the nearest-whole-number rule, halves up, through the unchanged `apa_mean()`. The key's printed "round up" is read as a wording lapse. Cross-cutting, so recorded as D-090.
 
 ## Review

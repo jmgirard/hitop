@@ -98,8 +98,23 @@ Eccentricity, Perceptual Dysregulation).
 The rule is the self-report key's rule. A facet's average is its raw sum divided by
 its item count. If more than 25% of a facet's items are unanswered, the facet score
 is not used. At 25% or less, the raw score is prorated. The partial raw score is
-multiplied by the item count, divided by the items answered and rounded up. A domain score is the mean
-of its 3 facet averages and is not computed if any of the 3 cannot be computed.
+multiplied by the item count and divided by the items answered. The key then says:
+"If the result is a fraction, round up to the nearest whole number." A domain score
+is the mean of its 3 facet averages and is not computed if any of the 3 cannot be
+computed.
+
+The package does not apply a ceiling. Every other APA key in the series says
+"round to the nearest whole number", and two with worked examples round 23.33 to 23
+and 26.67 to 27. Resolved as OQ-5 in `cairn/SOURCES.md` and D-090, from RR07.
+
+### Editions
+
+The shelf copy and the live DSM-5-TR PDF differ only in the page-1
+permission-request URL. The 2013 DSM-5 edition
+(<https://www.psychiatry.org/File%20Library/Psychiatrists/Practice/DSM/APA_DSM5_The-Personality-Inventory-for-DSM-5-Full-Version-Informant.pdf>)
+prints "Name/ID (child receiving care)" in the headers of pp. 3 and 5, a second copy
+error from a template form. The DSM-5-TR edition fixed those headers and kept the
+Step 1 list and "round up" (RR07, read 2026-10-03).
 
 ## Traces to
 
