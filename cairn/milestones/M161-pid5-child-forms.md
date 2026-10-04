@@ -1,6 +1,6 @@
 # M161: PID-5 child forms (ages 11 to 17)
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M158
 - **Driving RR:** —
@@ -32,7 +32,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - [x] AC2: The child Word forms (full and BF, US and A4) parse back to exactly the `pid_items` FULL and BF items in order. Each form carries the child instructions and response labels transcribed from the APA child forms. The child Qualtrics files and REDCap zips parse back to the same items, instructions and labels. The tests are in the D-010 style.
 - [ ] AC3: The shipped adult artifacts do not change. No existing `hitop_artifacts` checksum changes on this branch. The existing generator tests pass with no edit to their expectations. If T2 adds an argument to the existing generators, a parse-back test also shows that each adult generator's output with non-default arguments is unchanged.
 - [x] AC4: The child files ship in `inst/extdata/` and `pkgdown/assets/downloads/`. Each is byte-identical to the file that its `hitop_artifacts` row records. Download pages link each one and carry no online-form strip. The page counts in `test-artifacts.R` and `test-download-pages.R` and the strip test's exemption admit the new pages. Those are the only edits to the expectations of those two files.
-- [ ] AC5: The `score_pid5()` help page and the scoring vignette say that `version = "FULL"` or `"BF"` scores the child forms. Both cite the APA child forms. NEWS.md and the `_pkgdown.yml` reference index list the new generators. `devtools::check()` reports 0 errors and 0 warnings, and `pkgdown::check_pkgdown()` passes.
+- [x] AC5: The `score_pid5()` help page and the scoring vignette say that `version = "FULL"` or `"BF"` scores the child forms. Both cite the APA child forms. NEWS.md and the `_pkgdown.yml` reference index list the new generators. `devtools::check()` reports 0 errors and 0 warnings, and `pkgdown::check_pkgdown()` passes.
 
 ## Coverage
 
@@ -64,6 +64,8 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - 2026-10-04: T6 done. Added a `score_pid5()` details section and reference, a scoring vignette section, a NEWS entry and 6 reference-index entries. `pkgdown::check_pkgdown()` reports no problems. `devtools::check()` reports 0 errors, 0 warnings and 0 notes; it ran before the claim-audit fixes, and a rerun on the final state follows.
 - claim audit: 35 claims read, 8 corrected — R/score_pid5.R, vignettes/pid5_scoring.Rmd, vignettes/articles/download-pid5child.Rmd, vignettes/articles/download-pid5bfchild.Rmd, data-raw/artifacts.R, data-raw/check_pid_child_text.R, data-raw/sysdata.R (plus the stale `build_docx_footer()` comment in R/generate_docx.R). The same reader re-read all corrections and found them correct. The fix to the `build_notes` wording restored `data/hitop_artifacts.rda` from main and reran `artifacts.R`, so the 8 child rows and files were rebuilt. The 52 adult rows are unchanged.
 - 2026-10-04: status set to review. `devtools::check()` on the final state (98c13b6f) reports 0 errors, 0 warnings and 0 notes.
+- 2026-10-04: amendment return: AC1 — "Texts match exactly after whitespace and typographic quotes are normalized and a final period is dropped, because `pid_items$Text` stores none."
+- 2026-10-04: amendment return: AC3 — "The existing generator tests pass with no edit to their expectations, except that the two tests that enumerate every shipped online export (`test-export-padding-width.R` and `test-response-value-no-move.R`) gain the four child online exports and nothing else."
 
 ## Decisions
 
@@ -77,3 +79,5 @@ Pass 1 (2026-10-04), branch head 38b19117, main not moved since the cut (0b9bc3d
 - AC2: met. `test-generate-pid5child.R` parses fresh builds: Word in US and A4, Qualtrics and REDCap, both forms. It compares them with `pid_items` and with instructions, notice and labels typed from the PDFs, in the D-010 style. A separate parse of the 8 shipped files in `inst/extdata/` found items in order, the stored child instructions, labels and APA notice all TRUE for every file.
 - AC3: not met as written. All 37 files in main's manifest keep their md5 on the branch, and the only added files are the 8 child files. `test-generate_docx.R`, `test-generate_qualtrics.R`, `test-generate_redcap.R`, `test-generate-pid5irf.R` and `test-generate-pid5bfpm.R` are unedited, and T2 added no argument to an adult generator. But `test-export-padding-width.R`, which exercises the generators, had two expectations changed from 15 to 19. `test-response-value-no-move.R`, which rebuilds every flat-text export, gained 4 builders. AC3 says the existing generator tests pass with no edit to their expectations. This is an amendment return: no expectation about an adult export changed.
 - AC4: met. The md5 of all 8 child files in `inst/extdata/` and `pkgdown/assets/downloads/` matches their latest `hitop_artifacts` row. `download-pid5child.Rmd` and `download-pid5bfchild.Rmd` link their 4 files each and have no online strip. The diffs of `test-artifacts.R` and `test-download-pages.R` touch only the three 8-to-10 page counts, `no_strip_stems` and its comments.
+- AC5: met. `man/score_pid5.Rd` has the subsection "The PID-5 child forms": `version = "FULL"` or `"BF"` scores the child forms, citing Krueger et al. (2013), with a reference to both APA child forms. `vignettes/pid5_scoring.Rmd` has the section "The PID-5 Child Forms" with the same statement and full citation. NEWS.md names all 6 new generators, and `_pkgdown.yml` lists each one once. `devtools::check()` on 05ab08fb's code reports 0 errors, 0 warnings and 0 notes, and `pkgdown::check_pkgdown()` reports no problems.
+- Consistency gate: `cairn_validate.py` exits 0 with 32 advisory WARNs, none from this branch's records except a stray D-010 token warning on the AC2 line. `devtools::document()` leaves no diff. The branch does not touch README.Rmd. NEWS.md has the entry, and `check()` has 0 NOTEs.

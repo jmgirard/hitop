@@ -12,7 +12,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M158 | PID5BF+M forms | done | M157 | normal | milestones/archive/M158-pid5bfpm-forms.md |
 | M159 | PID-5 informant form keying and scoring | done | M157 | normal | milestones/archive/M159-pid5irf-scoring.md |
 | M160 | PID-5 informant forms | done | M159 | normal | milestones/archive/M160-pid5irf-forms.md |
-| M161 | PID-5 child forms | review | M158 | normal | milestones/M161-pid5-child-forms.md |
+| M161 | PID-5 child forms | in-progress | M158 | normal | milestones/M161-pid5-child-forms.md |
 
 ## Candidates
 
