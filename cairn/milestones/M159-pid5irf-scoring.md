@@ -1,6 +1,6 @@
 # M159: PID-5 informant form (IRF) keying and scoring
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** M157
 - **Driving RR:** —
@@ -68,6 +68,7 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
 - 2026-10-03: T3 done. `score_pid5()`, `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` take `version = "IRF"` (218 items, `pid_domains` map, `pid5irf_` stem, label "PID-5-IRF"). The text paths read `TextIRF`. New internal `pid_irf_instructions` (start, continue, prompt, stem, the self-report options); the other sysdata objects are identical. The check script now also matches start, continue and prompt to the PDF, and a planted prompt edit failed it. Full suite: 26635 passes, 0 failures.
 - 2026-10-03: implement choice: `pid_irf_instructions` keeps the form's later-page text (`continue`), its rating prompt and its "He or she…" stem beside `start`, so M160's Word form can print them. The response options are a copy of `pid_instructions$options`, as the form prints the same labels.
 - 2026-10-03: T4 stop (ip-touching tripwire, emerged mid-work): the IRF key (p. 9) says to "round up to the nearest whole number" after proration. Both child keys on the shelf and the self-report key quoted in SOURCES.md say "round to the nearest whole number", and `apa_mean()` rounds half up for every version. AC2's fixture cannot be typed until the rule is settled. Jeff chose escalation via `/milestone-brief` over round-up (recommended), round-to-nearest and stopping.
+- 2026-10-03: blocked on RB07 (`cairn/reviews/RB07-irf-proration-rounding.md`, advisory, no binding criteria). The brief commit sits on the milestone branch, not on main, because this milestone's tracking lives on the branch.
 
 ## Decisions
 
