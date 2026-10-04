@@ -1,13 +1,13 @@
 # M160: PID-5 informant form (IRF) Word, Qualtrics and REDCap forms
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M159
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — three new exported generators and their downloads
-- **Branch/PR:** —
+- **Branch/PR:** m160-pid5irf-forms
 
 ## Goal
 
@@ -47,6 +47,7 @@ Researchers can build and download PID-5 IRF paper forms, a Qualtrics import fil
 
 - 2026-10-03: created by /milestone-plan, together with M157 to M159 and M161.
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 3 clear fixes and 1 judgment finding, all applied. AC1 binds the scoring table to IRF numbers and the footer notice. AC2 separates REDCap names from Qualtrics IDs. AC3 counts four files and exempts the page from the online-strip test.
+- 2026-10-04: implement started on branch `m160-pid5irf-forms`, cut from main at `79b9c052` after M159 merged. The untracked `devel/hitopdat_*` files predate the branch and stay out of every commit. Read with D-089, D-090 and the M159 review's deferred note: the generators read `pid_items$Text`, so the IRF ones must use `TextIRF` (row "PID-5 norms not yet shipped").
 
 ## Decisions
 
