@@ -11,7 +11,11 @@
 #'   must be numeric (or logical) and each may be named only once.
 #' @param version Which PID-5 version the scores came from: `"FULL"` (220
 #'   items), `"SF"` (100 items), or `"BF"` (25 items). The normative tables
-#'   differ by version.
+#'   differ by version. These are self-report norms: do not norm scores from
+#'   `score_pid5(version = "IRF")` with them. Informant scores have the full
+#'   form's column names, so `version = "FULL"` accepts them without a
+#'   warning, but the informant norms (Markon et al., 2024, Tables A–10 and
+#'   A–11) are not in `pid_norms`.
 #' @param srange The response range the items were coded on, as
 #'   `c(low, high)`. Any four-option coding is accepted and reconciled to the
 #'   official `c(0, 3)` range before lookup; a coding with a different number of

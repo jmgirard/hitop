@@ -7,8 +7,8 @@
 #'
 #' @inheritParams score_pid5
 #' @param version A string indicating the version of the PID to score: "FULL",
-#'   "SF", or "BF". Will be automatically capitalized. The PID5BF+M has no
-#'   validity scales. (default = `"FULL"`)
+#'   "SF", or "BF". Will be automatically capitalized. The PID5BF+M and the
+#'   PID-5 Informant Form have no validity scales. (default = `"FULL"`)
 #'
 #' @return A \link[tibble]{tibble} containing all validity scores and all
 #'   original `data` columns (if requested)

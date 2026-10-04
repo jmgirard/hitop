@@ -9,9 +9,10 @@
 # Ported from the PID-5-only fork (milestone M001). This repo's `pid_items` uses
 # columns FULL / SF / BF where the fork used PID5 / PID5FSF / PID5BF. The BF
 # `Domain` structure (5 domains x 5 items) is verified against the APA PID-5-BF
-# Domain Scoring table in the BF block below (M006). The FULL/SF primary-facet ->
-# domain map (`pid_domains`, driving score_pid5(version = "FULL"/"SF") domain
-# output) is verified against the APA full-form Domain Table in the final block (M007).
+# Domain Scoring table in the BF block below (M006). The FULL/SF/IRF primary-facet
+# -> domain map (`pid_domains`, driving score_pid5(version = "FULL"/"SF"/"IRF")
+# domain output) is verified against the APA full-form Domain Table (M007) and
+# the IRF key's Domain Table (M159).
 
 # ---- Source: APA official PID-5 scoring key (Krueger et al., 2013), page 8 ----
 
@@ -215,9 +216,9 @@ test_that("BF is 25 items, 1:25, exactly 5 per domain, none reverse-keyed", {
 })
 
 # ---- Source: APA PID-5 scoring key (Krueger et al., 2013), p. 8 Domain Table --
-# FULL/SF domain scores average the 3 facets contributing PRIMARILY to each
+# FULL/SF/IRF domain scores average the 3 facets contributing PRIMARILY to each
 # domain (Step 3). That 15-facet primary map is stored in `pid_domains` and drives
-# score_pid5(version = "FULL"/"SF") domain output (M007). Verify the map against the
+# score_pid5(version = "FULL"/"SF"/"IRF") domain output (M007). Verify the map against the
 # published Domain Table, independent of how `pid_domains` was built. NOTE: this
 # is the 3-primary-facet subset, NOT the broader 21-facet `pid_items$Domain`
 # grouping used for the BF.
@@ -350,6 +351,67 @@ test_that("pid_bfpm_domains holds the key sheet's 6 domains of 3 facets each", {
   shared <- match(pid_domains$Domain, pid_bfpm_domains$Domain)
   expect_false(anyNA(shared))
   expect_identical(pid_bfpm_domains$camelCase[shared], pid_domains$camelCase)
+})
+
+# ---- Source: APA PID-5 Informant Form (Markon et al., 2013), p. 8 ----
+#
+# The typed key tables (`irf_reverse`, `irf_facets`, `irf_domains`) live in
+# helper-fixtures.R, typed from the key's Facet Table and Domain Table
+# (cairn/references/apa2013pid5irf.md), never from data-raw/pid_irf_items.csv,
+# so the scoring and reliability tests share them. All 218 item texts are
+# checked against the PDF by data-raw/check_pid_irf_text.R, which needs the
+# shelf copy.
+
+test_that("pid_items$IRF numbers the 218 informant items 1 to 218 in APA order", {
+  expect_true(is.integer(pid_items$IRF))
+  irf_rows <- pid_items[!is.na(pid_items$IRF), ]
+  expect_identical(irf_rows$IRF, 1:218)
+  # The IRF has no counterpart to self-report items 96 and 177.
+  expect_identical(pid_items$FULL[is.na(pid_items$IRF)], c(96L, 177L))
+  expect_false(anyNA(irf_rows$TextIRF))
+  expect_true(all(is.na(pid_items$TextIRF[is.na(pid_items$IRF)])))
+  # Text anchors typed from the form (PDF pp. 2, 4, 6 and 7), normalized as
+  # cairn/references/apa2013pid5irf.md states (no stem or leading ellipsis, no
+  # final period, ASCII apostrophes).
+  irf_text <- function(n) irf_rows$TextIRF[irf_rows$IRF == n]
+  expect_identical(
+    irf_text(1),
+    "doesn't get as much pleasure out of things as others seem to"
+  )
+  expect_identical(irf_text(98), "sometimes hears things that aren't really there")
+  expect_identical(
+    irf_text(176),
+    "mentions that they will commit suicide sooner or later"
+  )
+  expect_identical(irf_text(218), "has a strict way of doing things")
+})
+
+test_that("IRF reverse-keyed items are the 14 R marks of the key's Facet Table", {
+  expect_setequal(pid_items$IRF[pid_items$Reverse & !is.na(pid_items$IRF)], irf_reverse)
+  # Step 1's extra two items are not reversed (D-089(c)).
+  expect_false(any(pid_items$Reverse[pid_items$IRF %in% c(98, 176)]))
+})
+
+test_that("IRF facet -> item membership matches the key's Facet Table", {
+  expect_length(irf_facets, 25)
+  expect_setequal(unlist(irf_facets), 1:218)
+  for (f in names(irf_facets)) {
+    expect_setequal(pid_items$IRF[pid_items$Facet == f & !is.na(pid_items$IRF)], irf_facets[[f]])
+  }
+  tbl <- pid_scales[["IRF"]]
+  expect_setequal(tbl$Facet, names(irf_facets))
+  for (i in seq_len(nrow(tbl))) {
+    expect_setequal(tbl$itemNumbers[[i]], irf_facets[[tbl$Facet[i]]])
+  }
+  expect_identical(tbl$nItems, lengths(irf_facets[tbl$Facet], use.names = FALSE))
+  # Same facets and stems as the full form, so the domain map carries over.
+  expect_identical(tbl$camelCase, pid_scales[["FULL"]]$camelCase)
+  expect_identical(names(tbl$itemNumbers), tbl$camelCase)
+})
+
+test_that("IRF domains match the key's Domain Table through pid_domains", {
+  expect_identical(pid_domains$primaryFacets, irf_domains)
+  expect_true(all(unlist(pid_domains$facetStems) %in% pid_scales[["IRF"]]$camelCase))
 })
 
 test_that("BF+M facets shared with the PID-5 are subsets of the same PID-5 facet", {

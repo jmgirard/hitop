@@ -35,7 +35,8 @@ test_that("every shipped table with an nItems column stores it as integer", {
     c(
       "hitopsr_scales", "hitopsr_subscales", "hitopbr_scales",
       "hitopdat_scales", "hitopsr_devstats", "hitopbr_devstats",
-      "pid_scales$FULL", "pid_scales$SF", "pid_scales$BF", "pid_scales$BFPM"
+      "pid_scales$FULL", "pid_scales$SF", "pid_scales$BF", "pid_scales$BFPM",
+      "pid_scales$IRF"
     )
   )
   for (nm in names(hits)) {

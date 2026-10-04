@@ -309,6 +309,61 @@ test_that("rename_pid5_items warns when fewer than all items are renamed", {
   expect_silent(rename_pid5_items(full_bf, version = "BF"))
 })
 
+# PID-5 Informant Form -----------------------------------------------------------
+
+test_that("version = 'IRF' renames the 218 items to pid5irf_001 to pid5irf_218", {
+  df <- as.data.frame(matrix(
+    0,
+    nrow = 2,
+    ncol = 218,
+    dimnames = list(NULL, paste0("pid_", 1:218))
+  ))
+  expect_silent(res <- rename_pid5_items(df, version = "irf"))
+  expect_identical(colnames(res), sprintf("pid5irf_%03d", 1:218))
+})
+
+test_that("version = 'IRF' matches all 218 informant texts, in any column order", {
+  # The columns are given in reverse IRF order, so a text matched to the
+  # wrong number shows in the names.
+  irf <- 218:1
+  texts <- pid_items$TextIRF[match(irf, pid_items$IRF)]
+  cols <- paste0("q", seq_along(irf))
+  df <- as.data.frame(matrix(0, nrow = 1, ncol = 218, dimnames = list(NULL, cols)))
+  expect_silent(
+    res <- rename_pid5_items(
+      df, version = "IRF", method = "text", item_cols = cols, item_text = texts
+    )
+  )
+  expect_identical(colnames(res), sprintf("pid5irf_%03d", irf))
+})
+
+test_that("version = 'IRF' matches the informant wording, not the self-report text", {
+  # Informant texts typed from the APA form (PDF pp. 2 and 6), normalized as
+  # cairn/references/apa2013pid5irf.md states (no stem or leading ellipsis, no
+  # final period, ASCII apostrophes).
+  df <- data.frame(q1 = 1, q2 = 2, q3 = 3)
+  caught <- collect_warnings(
+    rename_pid5_items(
+      df,
+      version = "IRF",
+      method = "text",
+      item_cols = c("q1", "q2", "q3"),
+      item_text = c(
+        "mentions that they will commit suicide sooner or later",
+        "doesn't get as much pleasure out of things as others seem to",
+        "I don't get as much pleasure out of things as others seem to"
+      )
+    )
+  )
+  expect_identical(colnames(caught$value), c("pid5irf_176", "pid5irf_001", "q3"))
+  # The self-report wording of item 1 matches no informant item.
+  classes <- vapply(caught$warnings, function(w) class(w)[1], character(1))
+  expect_true("hitop_unmatched_items" %in% classes)
+  expect_true("hitop_incomplete_rename" %in% classes)
+  messages <- vapply(caught$warnings, conditionMessage, character(1))
+  expect_true(any(grepl("Only 2 out of 218 PID-5-IRF items", messages, fixed = TRUE)))
+})
+
 # PID5BF+M ---------------------------------------------------------------------
 
 test_that("version = 'BFPM' renames the 36 items to pid5bfpm_01 to pid5bfpm_36", {

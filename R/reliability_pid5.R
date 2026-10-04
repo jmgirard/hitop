@@ -3,10 +3,13 @@
 #' Compute per-scale internal-consistency reliability — Cronbach's alpha and
 #' McDonald's omega — for the Personality Inventory for DSM-5: full version
 #' (PID-5, 220 items), short form (PID-5-SF, 100 items), brief form (PID-5-BF,
-#' 25 items), or modified brief form (PID5BF+M, 36 items). Reliability is
-#' estimated on the reverse-keyed item responses, at the facet level for FULL/SF
-#' and the domain level for BF (the same scales [score_pid5()] outputs, before
-#' FULL/SF domain aggregation). The BF version also returns a `Total` row
+#' 25 items), modified brief form (PID5BF+M, 36 items), or Informant Form
+#' (PID-5-IRF, 218 items; Markon et al., 2013). Reliability is
+#' estimated on the reverse-keyed item responses, at the facet level for
+#' FULL/SF/IRF and the domain level for BF (the same scales [score_pid5()]
+#' outputs, before FULL/SF/IRF domain aggregation). The IRF facets are the full
+#' form's 25, numbered by informant item and reverse-keyed as the APA IRF key's
+#' Facet Table marks (see [score_pid5()]). The BF version also returns a `Total` row
 #' covering all 25 items; note that this scale spans five heterogeneous domains,
 #' so its internal consistency is not comparable to a domain's and is reported
 #' without further interpretation.
@@ -37,8 +40,8 @@
 #'   `haven::zap_missing()` leaves it unchanged, so set the values its
 #'   `na_values` or `na_range` attribute declares to `NA` first.
 #' @param version A string indicating the version of the PID to score: "FULL",
-#'   "SF", "BF", or "BFPM" (the 36-item PID5BF+M). Will be automatically
-#'   capitalized. (default = `"FULL"`)
+#'   "SF", "BF", "BFPM" (the 36-item PID5BF+M), or "IRF" (the 218-item
+#'   Informant Form). Will be automatically capitalized. (default = `"FULL"`)
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param alpha Optional logical; if `TRUE`, include a column of Cronbach's alpha
@@ -60,6 +63,13 @@
 #'   `score_*()` output, read from the same keying-table row), `nItems`
 #'   (integer), and (when requested) `alpha` and `omega`.
 #'
+#' @references Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
+#'   (2013). The development and psychometric properties of an informant-report
+#'   form of the Personality Inventory for DSM-5 (PID-5). *Assessment, 20*(3),
+#'   370-383. \doi{10.1177/1073191113486513} The scoring key for
+#'   `version = "IRF"` is the APA's *The Personality Inventory for
+#'   DSM-5—Informant Form (PID-5-IRF)—Adult* (2013).
+#'
 #' @examples
 #' # Facet-level reliability for the full PID-5 (alpha only)
 #' reliability_pid5(sim_pid5, items = 1:220, version = "FULL", omega = FALSE)
@@ -68,19 +78,20 @@
 reliability_pid5 <- function(
   data,
   items,
-  version = c("FULL", "SF", "BF", "BFPM"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
   srange = c(0, 3),
   alpha = TRUE,
   omega = TRUE
 ) {
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF"))
   n_items <- switch(
     version,
     "FULL" = 220,
     "SF" = 100,
     "BF" = 25,
     "BFPM" = 36,
+    "IRF" = 218,
     cli::cli_abort("Invalid `version` argument")
   )
 
@@ -88,8 +99,8 @@ reliability_pid5 <- function(
     pid_items[pid_items$Reverse == TRUE, version, drop = TRUE]
   )
   items_scales <- pid_scales[[version]]$itemNumbers
-  ## The canonical display names, read from the same table row for row. FULL and
-  ## SF are facet-level; BF is domain-level plus its Total row.
+  ## The canonical display names, read from the same table row for row. FULL,
+  ## SF and IRF are facet-level; BF is domain-level plus its Total row.
   scale_names <- if (version == "BF") {
     pid_scales[["BF"]]$Domain
   } else {

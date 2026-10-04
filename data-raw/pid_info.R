@@ -54,6 +54,45 @@ pid_items <- tibble::add_column(
   BFPM = pid_bfpm_key$BFPM[match(pid_items$FULL, pid_bfpm_key$FULL)],
   .after = "BF"
 )
+
+## PID-5 Informant Form (Markon et al., 2013; D-089). One row per IRF item: its
+## IRF number, the self-report item it maps to, the facet the APA key's Facet
+## Table gives it, and its text without the "He or she..." stem. The IRF has no
+## counterpart to self-report items 96 and 177, so IRF n is self-report n,
+## n + 1 or n + 2. data-raw/check_pid_irf_text.R checks the CSV against the
+## shelf PDF (cairn/references/apa2013pid5irf.md). The IRF rows share `Facet`,
+## `Domain` and `Reverse` with their self-report rows: the stopifnot() below
+## holds the facets equal, and the shared reverse flags are the key's 14 R marks
+## (D-089(c), tested in test-keying.R).
+pid_irf_items <- readr::read_csv(
+  "data-raw/pid_irf_items.csv",
+  col_types = readr::cols(
+    IRF = readr::col_integer(),
+    FULL = readr::col_integer(),
+    Facet = readr::col_character(),
+    Text = readr::col_character()
+  )
+)
+stopifnot(
+  identical(pid_irf_items$IRF, 1:218),
+  !anyDuplicated(pid_irf_items$FULL),
+  all(pid_irf_items$FULL %in% pid_items$FULL),
+  identical(
+    pid_irf_items$Facet,
+    pid_items$Facet[match(pid_irf_items$FULL, pid_items$FULL)]
+  )
+)
+irf_row <- match(pid_items$FULL, pid_irf_items$FULL)
+pid_items <- tibble::add_column(
+  pid_items,
+  IRF = pid_irf_items$IRF[irf_row],
+  .after = "BFPM"
+)
+pid_items <- tibble::add_column(
+  pid_items,
+  TextIRF = pid_irf_items$Text[irf_row],
+  .after = "Text"
+)
 usethis::use_data(pid_items, overwrite = TRUE)
 
 # ------------------------------------------------------------------------------
@@ -153,11 +192,32 @@ pid5bfpm_scales <-
   )
 names(pid5bfpm_scales$itemNumbers) <- pid5bfpm_scales$camelCase
 
+## The PID-5 Informant Form facets (D-089): the 25 FULL facets in the same
+## order, numbered by IRF item and carrying the informant text. Domains come
+## from `pid_domains`, as for FULL and SF.
+pid5irf_scales <-
+  pid_items |>
+  dplyr::select(-Domain) |>
+  tidyr::drop_na(IRF) |>
+  dplyr::select(Facet, IRF, Reverse, Text = TextIRF) |>
+  tidyr::nest(
+    itemdata = c(IRF, Reverse, Text),
+    .by = Facet
+  ) |>
+  dplyr::mutate(
+    nItems = purrr::map_int(itemdata, nrow),
+    itemNumbers = purrr::map(itemdata, "IRF"),
+    camelCase = snakecase::to_any_case(Facet, case = "lower_camel")
+  )
+names(pid5irf_scales$itemNumbers) <- pid5irf_scales$camelCase
+stopifnot(identical(pid5irf_scales$Facet, pid5_scales$Facet))
+
 pid_scales <- list(
   FULL = pid5_scales,
   SF = pid5sf_scales,
   BF = pid5bf_scales,
-  BFPM = pid5bfpm_scales
+  BFPM = pid5bfpm_scales,
+  IRF = pid5irf_scales
 )
 usethis::use_data(pid_scales, overwrite = TRUE)
 

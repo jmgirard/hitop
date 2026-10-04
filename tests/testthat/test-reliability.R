@@ -217,6 +217,42 @@ test_that("reliability_pid5(BFPM) returns 18 facet rows, then 6 domain rows", {
   expect_equal(rel$alpha, expected)
 })
 
+test_that("reliability_pid5(IRF) returns the 25 facets over the key's IRF items", {
+  x <- fx_pid5irf()
+  rel <- reliability_pid5(x, items = 1:218, version = "IRF", omega = FALSE)
+  full <- reliability_pid5(sim_pid5, items = 1:220, version = "FULL", omega = FALSE)
+  expect_identical(rel$Scale, full$Scale)
+  expect_identical(rel$camelCase, full$camelCase)
+  # Facet sizes typed from the key's Facet Table: the IRF has one Anxiousness
+  # and one Suspiciousness item fewer than the full form.
+  sizes <- c(
+    anhedonia = 8, suspiciousness = 6, riskTaking = 14, impulsivity = 6,
+    eccentricity = 13, distractibility = 9, restrictedAffectivity = 7,
+    submissiveness = 4, withdrawal = 10, callousness = 14,
+    separationInsecurity = 7, attentionSeeking = 8, emotionalLability = 7,
+    depressivity = 14, hostility = 10, irresponsibility = 7,
+    rigidPerfectionism = 10, perceptualDysregulation = 12, grandiosity = 6,
+    deceitfulness = 10, perseveration = 9, anxiousness = 8,
+    intimacyAvoidance = 6, unusualBeliefsExperiences = 8, manipulativeness = 5
+  )
+  expect_identical(rel$nItems, as.integer(sizes[rel$camelCase]))
+  # Alpha for every facet over the items the key's Facet Table lists, R items
+  # reversed as 3 - x (typed tables in helper-fixtures.R). Random answers, so
+  # a wrong item in any facet list moves that facet's alpha.
+  set.seed(1590)
+  di <- as.data.frame(matrix(sample(0:3, 60 * 218, replace = TRUE), 60, 218))
+  rel_r <- reliability_pid5(di, items = 1:218, version = "IRF", omega = FALSE)
+  di[irf_reverse] <- 3 - di[irf_reverse]
+  expect_identical(rel_r$Scale, full$Scale)
+  for (f in names(irf_facets)) {
+    expect_equal(
+      rel_r$alpha[rel_r$Scale == f],
+      calc_alpha(di[irf_facets[[f]]]),
+      info = f
+    )
+  }
+})
+
 test_that("reliability_pid5(BFPM) fits no 2-item omega and raises no warning", {
   skip_if_not_installed("lavaan")
   # Each domain's 6 items share one factor, so the 6 domain models fit cleanly

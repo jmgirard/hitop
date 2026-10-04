@@ -1,8 +1,9 @@
 # Ground-truth oracle tests for score_pid5(). Expected values are hand-computed
 # in helper-fixtures.R from the published PID-5 keys, never read from the code.
 #
-# score_pid5() outputs 25 facets + 5 domains for FULL/SF (M007) and 5 domains for
-# BF. FULL/SF domains average the 3 primary facets of each domain (APA Step 3);
+# score_pid5() outputs 25 facets + 5 domains for FULL/SF (M007) and IRF (M159)
+# and 5 domains for BF. FULL/SF/IRF domains average the 3 primary facets of each
+# domain (APA Step 3);
 # the primary-facet map (`pid_domains`) is verified against the APA source in
 # test-keying.R. The BF 5-domain structure is verified there too (M006).
 
@@ -661,6 +662,329 @@ test_that("BFPM refuses a data frame with the wrong number of items", {
   expect_error(
     score_pid5(x, items = 1:35, version = "BFPM"),
     "Expected 36 items but got 35",
+    fixed = TRUE
+  )
+})
+
+# ---- PID-5 Informant Form (M159, AC2) ----------------------------------------
+#
+# Expected values for fx_pid5irf() (helper-fixtures.R), worked out from the APA
+# IRF key and D-090: reverse the 14 R items as 3 - x (shown as "xR"); a facet
+# with more than 25% of its items missing is NA; otherwise the prorated raw
+# (partial sum * n / answered) is rounded to the nearest whole number, halves
+# up, and divided by n; a domain is the mean of its 3 primary facets (the key's
+# Domain Table), NA if any is NA. Each line lists the item values after
+# reversal, in Facet Table order.
+# anhedonia (items 1, 23, 26, 30, 123, 154, 156, 187)
+#   R1: 1+3+2+1R+3+1R+0+3; 14/8
+#   R2: 2+0+1+2R+0+2R+3+0; 10/8
+#   R3: NA+NA+NA+1R+3+1R+0+3; 3 of 8 missing -> NA
+#   R4: 1+3+2+1R+3+1R+0+3; 14/8
+#   R5: 0+0+0+3R+0+3R+0+0; 6/8
+# anxiousness (items 79, 93, 95, 108, 109, 129, 140, 173)
+#   R1: 3+1+3+0+1+1+0+1; 10/8
+#   R2: 0+2+0+3+2+2+3+2; 14/8
+#   R3: 3+1+3+0+1+1+0+1; 10/8
+#   R4: 3+1+3+0+1+1+0+1; 10/8
+#   R5: 0+0+0+0+0+0+0+0; 0/8
+# attentionSeeking (items 14, 43, 74, 110, 112, 172, 189, 209)
+#   R1: 2+3+2+2+0+0+1+1; 11/8
+#   R2: 1+0+1+1+3+3+2+2; 13/8
+#   R3: 2+3+2+2+0+0+1+1; 11/8
+#   R4: 2+3+2+2+0+0+1+1; 11/8
+#   R5: 0+0+0+0+0+0+0+0; 0/8
+# callousness (items 11, 13, 19, 54, 72, 73, 90, 152, 165, 181, 196, 198, 205, 206)
+#   R1: 3+1+3+2+0+1+1R+0+1+1+0+2+1+2; 18/14
+#   R2: 0+2+0+1+3+2+2R+3+2+2+3+1+2+1; 24/14
+#   R3: 3+1+3+2+0+1+1R+0+1+1+0+2+1+2; 18/14
+#   R4: NA+NA+NA+3+0+1+1R+0+1+1+0+2+1+2; prorated 12*14/11 = 15.27 -> 15; 15/14
+#   R5: 0+0+0+0+0+0+3R+0+0+0+0+0+0+0; 3/14
+# deceitfulness (items 41, 53, 56, 76, 125, 133, 141, 204, 212, 216)
+#   R1: 1+1+0+0+1+1+2R+0+0+0; 6/10
+#   R2: 2+2+3+3+2+2+1R+3+3+3; 24/10
+#   R3: 1+1+0+0+1+1+2R+0+0+0; 6/10
+#   R4: 1+1+0+0+1+1+2R+0+0+0; 6/10
+#   R5: 0+0+0+0+0+0+3R+0+0+0; 3/10
+# depressivity (items 27, 61, 66, 81, 86, 103, 118, 147, 150, 162, 167, 168, 176, 210)
+#   R1: 3+1+2+1+2+3+2+3+2+2+3+0+0+2; 26/14
+#   R2: 0+2+1+2+1+0+1+0+1+1+0+3+3+1; 16/14
+#   R3: 3+1+2+1+2+3+2+3+2+2+3+0+0+2; 26/14
+#   R4: 3+1+2+1+2+3+2+3+2+2+3+0+0+2; 26/14
+#   R5: 0+0+0+0+0+0+0+0+0+0+0+0+0+0; 0/14
+# distractibility (items 6, 29, 47, 68, 88, 117, 131, 143, 197)
+#   R1: 2+1+3+0+0+1+3+3+1; 14/9
+#   R2: 1+2+0+3+3+2+0+0+2; 13/9
+#   R3: 2+1+3+0+0+1+3+3+1; 14/9
+#   R4: NA+1+0+1+0+1+0+1+0; prorated 4*9/8 = 4.5 -> 5; 5/9
+#   R5: 0+0+0+0+0+0+0+0+0; 0/9
+# eccentricity (items 5, 21, 24, 25, 33, 52, 55, 70, 71, 151, 171, 183, 203)
+#   R1: 1+1+0+1+1+0+3+2+3+3+3+3+3; 24/13
+#   R2: 2+2+3+2+2+3+0+1+0+0+0+0+0; 15/13
+#   R3: 1+1+0+1+1+0+3+2+3+3+3+3+3; 24/13
+#   R4: 1+1+0+1+1+0+3+2+3+3+3+3+3; 24/13
+#   R5: 0+0+0+0+0+0+0+0+0+0+0+0+0; 0/13
+# emotionalLability (items 18, 62, 101, 121, 137, 164, 179)
+#   R1: 2+2+1+1+1+0+3; 10/7
+#   R2: 1+1+2+2+2+3+0; 11/7
+#   R3: 2+2+1+1+1+0+3; 10/7
+#   R4: 2+2+1+1+1+0+3; 10/7
+#   R5: 0+0+0+0+0+0+0; 0/7
+# grandiosity (items 40, 65, 113, 177, 185, 195)
+#   R1: 0+1+1+1+1+3; 7/6
+#   R2: 3+2+2+2+2+0; 11/6
+#   R3: 0+1+1+1+1+3; 7/6
+#   R4: 0+1+1+1+1+3; 7/6
+#   R5: 0+0+0+0+0+0; 0/6
+# hostility (items 28, 32, 38, 85, 92, 115, 157, 169, 186, 214)
+#   R1: 0+0+2+1+0+3+1+1+2+2; 12/10
+#   R2: 3+3+1+2+3+0+2+2+1+1; 18/10
+#   R3: 0+0+2+1+0+3+1+1+2+2; 12/10
+#   R4: 0+0+2+1+0+3+1+1+2+2; 12/10
+#   R5: 0+0+0+0+0+0+0+0+0+0; 0/10
+# impulsivity (items 4, 16, 17, 22, 58, 202)
+#   R1: 0+0+1+2+1R+2; 6/6
+#   R2: 3+3+2+1+2R+1; 12/6
+#   R3: 0+0+1+2+1R+2; 6/6
+#   R4: 0+0+1+2+1R+2; 6/6
+#   R5: 0+0+0+0+3R+0; 3/6
+# intimacyAvoidance (items 89, 96, 107, 119, 144, 201)
+#   R1: 1+3R+3+3+0+1; 11/6
+#   R2: 2+0R+0+0+3+2; 7/6
+#   R3: 1+3R+3+3+0+1; 11/6
+#   R4: 1+3R+3+3+0+1; 11/6
+#   R5: 0+3R+0+0+0+0; 3/6
+# irresponsibility (items 31, 128, 155, 159, 170, 199, 208)
+#   R1: 3+0+3+3+2+3+3R; 17/7
+#   R2: 0+3+0+0+1+0+0R; 4/7
+#   R3: 3+0+3+3+2+3+3R; 17/7
+#   R4: 3+0+3+3+2+3+3R; 17/7
+#   R5: 0+0+0+0+0+0+3R; 3/7
+# manipulativeness (items 106, 124, 161, 178, 217)
+#   R1: 2+0+1+2+1; 6/5
+#   R2: 1+3+2+1+2; 9/5
+#   R3: 2+0+1+2+1; 6/5
+#   R4: 2+0+1+2+1; 6/5
+#   R5: 0+0+0+0+0; 0/5
+# perceptualDysregulation (items 36, 37, 42, 44, 59, 77, 83, 153, 190, 191, 211, 215)
+#   R1: 0+1+2+0+3+1+3+1+2+3+3+3; 22/12
+#   R2: 3+2+1+3+0+2+0+2+1+0+0+0; 14/12
+#   R3: 0+1+2+0+3+1+3+1+2+3+3+3; 22/12
+#   R4: 0+1+2+0+3+1+3+1+2+3+3+3; 22/12
+#   R5: 0+0+0+0+0+0+0+0+0+0+0+0; 0/12
+# perseveration (items 46, 51, 60, 78, 80, 99, 120, 127, 136)
+#   R1: 2+3+0+2+0+3+0+3+0; 13/9
+#   R2: 1+0+3+1+3+0+3+0+3; 14/9
+#   R3: 2+3+0+2+0+3+0+3+0; 13/9
+#   R4: 2+3+0+2+0+3+0+3+0; 13/9
+#   R5: 0+0+0+0+0+0+0+0+0; 0/9
+# restrictedAffectivity (items 8, 45, 84, 91, 100, 166, 182)
+#   R1: 0+1+0+3+0+2+2; 8/7
+#   R2: 3+2+3+0+3+1+1; 13/7
+#   R3: 0+1+0+3+0+2+2; 8/7
+#   R4: 0+1+0+3+0+2+2; 8/7
+#   R5: 0+0+0+0+0+0+0; 0/7
+# rigidPerfectionism (items 34, 49, 104, 114, 122, 134, 139, 175, 194, 218)
+#   R1: 2+1+0+2+2+2+3+3+2+2; 19/10
+#   R2: 1+2+3+1+1+1+0+0+1+1; 11/10
+#   R3: 2+1+0+2+2+2+3+3+2+2; 19/10
+#   R4: 2+1+0+2+2+2+3+3+2+2; 19/10
+#   R5: 0+0+0+0+0+0+0+0+0+0; 0/10
+# riskTaking (items 3, 7, 35, 39, 48, 67, 69, 87, 97, 111, 158, 163, 193, 213)
+#   R1: 3+0R+0R+3+0+3+1+0R+2R+3+2+0R+1+2R; 20/14
+#   R2: 0+3R+3R+0+3+0+2+3R+1R+0+1+3R+2+1R; 22/14
+#   R3: 3+0R+0R+3+0+3+1+0R+2R+3+2+0R+1+2R; 20/14
+#   R4: 3+0R+0R+3+0+3+1+0R+2R+3+2+0R+1+2R; 20/14
+#   R5: 0+3R+3R+0+0+0+0+3R+3R+0+0+3R+0+3R; 18/14
+# separationInsecurity (items 12, 50, 57, 64, 126, 148, 174)
+#   R1: 0+2+1+0+2+0+2; 7/7
+#   R2: 3+1+2+3+1+3+1; 14/7
+#   R3: 0+2+1+0+2+0+2; 7/7
+#   R4: 0+2+1+0+2+0+2; 7/7
+#   R5: 0+0+0+0+0+0+0; 0/7
+# submissiveness (items 9, 15, 63, 200)
+#   R1: 1+3+3+0; 7/4
+#   R2: 2+0+0+3; 5/4
+#   R3: NA+3+3+0; prorated 6*4/3 = 8 -> 8; 8/4
+#   R4: 1+3+3+0; 7/4
+#   R5: 0+0+0+0; 0/4
+# suspiciousness (items 2, 102, 116, 130, 132, 188)
+#   R1: 2+2+0+1R+0+0; 5/6
+#   R2: 1+1+3+2R+3+3; 13/6
+#   R3: 2+2+0+1R+0+0; 5/6
+#   R4: 2+2+0+1R+0+0; 5/6
+#   R5: 0+0+0+3R+0+0; 3/6
+# unusualBeliefsExperiences (items 94, 98, 105, 138, 142, 149, 192, 207)
+#   R1: 2+2+1+2+2+1+0+3; 13/8
+#   R2: 1+1+2+1+1+2+3+0; 11/8
+#   R3: 2+2+1+2+2+1+0+3; 13/8
+#   R4: 2+2+1+2+2+1+0+3; 13/8
+#   R5: 0+0+0+0+0+0+0+0; 0/8
+# withdrawal (items 10, 20, 75, 82, 135, 145, 146, 160, 180, 184)
+#   R1: 2+0+3+2+3+1+2+0+0+0; 13/10
+#   R2: 1+3+0+1+0+2+1+3+3+3; 17/10
+#   R3: 2+0+3+2+3+1+2+0+0+0; 13/10
+#   R4: 2+0+3+2+3+1+2+0+0+0; 13/10
+#   R5: 0+0+0+0+0+0+0+0+0+0; 0/10
+# negativeAffectivity = mean of emotionalLability, anxiousness, separationInsecurity
+#   R1: (10/7 + 5/4 + 1)/3
+#   R2: (11/7 + 7/4 + 2)/3
+#   R3: (10/7 + 5/4 + 1)/3
+#   R4: (10/7 + 5/4 + 1)/3
+#   R5: (0 + 0 + 0)/3
+# detachment = mean of withdrawal, anhedonia, intimacyAvoidance
+#   R1: (13/10 + 7/4 + 11/6)/3
+#   R2: (17/10 + 5/4 + 7/6)/3
+#   R3: NA (a facet is NA)
+#   R4: (13/10 + 7/4 + 11/6)/3
+#   R5: (0 + 3/4 + 1/2)/3
+# antagonism = mean of manipulativeness, deceitfulness, grandiosity
+#   R1: (6/5 + 3/5 + 7/6)/3
+#   R2: (9/5 + 12/5 + 11/6)/3
+#   R3: (6/5 + 3/5 + 7/6)/3
+#   R4: (6/5 + 3/5 + 7/6)/3
+#   R5: (0 + 3/10 + 0)/3
+# disinhibition = mean of irresponsibility, impulsivity, distractibility
+#   R1: (17/7 + 1 + 14/9)/3
+#   R2: (4/7 + 2 + 13/9)/3
+#   R3: (17/7 + 1 + 14/9)/3
+#   R4: (17/7 + 1 + 5/9)/3
+#   R5: (3/7 + 1/2 + 0)/3
+# psychoticism = mean of unusualBeliefsExperiences, eccentricity, perceptualDysregulation
+#   R1: (13/8 + 24/13 + 11/6)/3
+#   R2: (11/8 + 15/13 + 7/6)/3
+#   R3: (13/8 + 24/13 + 11/6)/3
+#   R4: (13/8 + 24/13 + 11/6)/3
+#   R5: (0 + 0 + 0)/3
+irf_expected <- list(
+  anhedonia = c(7 / 4, 5 / 4, NA, 7 / 4, 3 / 4),
+  anxiousness = c(5 / 4, 7 / 4, 5 / 4, 5 / 4, 0),
+  attentionSeeking = c(11 / 8, 13 / 8, 11 / 8, 11 / 8, 0),
+  callousness = c(9 / 7, 12 / 7, 9 / 7, 15 / 14, 3 / 14),
+  deceitfulness = c(3 / 5, 12 / 5, 3 / 5, 3 / 5, 3 / 10),
+  depressivity = c(13 / 7, 8 / 7, 13 / 7, 13 / 7, 0),
+  distractibility = c(14 / 9, 13 / 9, 14 / 9, 5 / 9, 0),
+  eccentricity = c(24 / 13, 15 / 13, 24 / 13, 24 / 13, 0),
+  emotionalLability = c(10 / 7, 11 / 7, 10 / 7, 10 / 7, 0),
+  grandiosity = c(7 / 6, 11 / 6, 7 / 6, 7 / 6, 0),
+  hostility = c(6 / 5, 9 / 5, 6 / 5, 6 / 5, 0),
+  impulsivity = c(1, 2, 1, 1, 1 / 2),
+  intimacyAvoidance = c(11 / 6, 7 / 6, 11 / 6, 11 / 6, 1 / 2),
+  irresponsibility = c(17 / 7, 4 / 7, 17 / 7, 17 / 7, 3 / 7),
+  manipulativeness = c(6 / 5, 9 / 5, 6 / 5, 6 / 5, 0),
+  perceptualDysregulation = c(11 / 6, 7 / 6, 11 / 6, 11 / 6, 0),
+  perseveration = c(13 / 9, 14 / 9, 13 / 9, 13 / 9, 0),
+  restrictedAffectivity = c(8 / 7, 13 / 7, 8 / 7, 8 / 7, 0),
+  rigidPerfectionism = c(19 / 10, 11 / 10, 19 / 10, 19 / 10, 0),
+  riskTaking = c(10 / 7, 11 / 7, 10 / 7, 10 / 7, 9 / 7),
+  separationInsecurity = c(1, 2, 1, 1, 0),
+  submissiveness = c(7 / 4, 5 / 4, 2, 7 / 4, 0),
+  suspiciousness = c(5 / 6, 13 / 6, 5 / 6, 5 / 6, 1 / 2),
+  unusualBeliefsExperiences = c(13 / 8, 11 / 8, 13 / 8, 13 / 8, 0),
+  withdrawal = c(13 / 10, 17 / 10, 13 / 10, 13 / 10, 0),
+  negativeAffectivity = c(103 / 84, 149 / 84, 103 / 84, 103 / 84, 0),
+  detachment = c(293 / 180, 247 / 180, NA, 293 / 180, 5 / 12),
+  antagonism = c(89 / 90, 181 / 90, 89 / 90, 89 / 90, 1 / 10),
+  disinhibition = c(314 / 189, 253 / 189, 314 / 189, 251 / 189, 13 / 42),
+  psychoticism = c(1655 / 936, 1153 / 936, 1655 / 936, 1655 / 936, 0)
+)
+
+test_that("IRF output is the FULL form's 30 columns, same names and order", {
+  x <- fx_pid5irf()
+  f <- score_pid5(x, items = 1:218, version = "IRF", append = FALSE)
+  expect_identical(
+    names(f),
+    names(score_pid5(sim_pid5, items = 1:220, append = FALSE))
+  )
+  expect_setequal(sub("^pid_", "", names(f)), names(irf_expected))
+  g <- score_pid5(x, items = 1:218, version = "IRF", prefix = "x_", append = FALSE)
+  expect_identical(
+    names(g),
+    names(score_pid5(sim_pid5, items = 1:220, prefix = "x_", append = FALSE))
+  )
+})
+
+test_that("IRF scores match hand-computed values under the APA rule (D-090)", {
+  f <- score_pid5(
+    fx_pid5irf(), items = 1:218, version = "IRF", missing = "apa",
+    srange = c(0, 3), calc_se = FALSE, append = FALSE
+  )
+  for (nm in names(irf_expected)) {
+    expect_equal(f[[paste0("pid_", nm)]], irf_expected[[nm]], info = nm)
+  }
+  # The probes the fixture header names, stated against the rules they rule out.
+  # Callousness R4: a ceiling would give 16 / 14 = 8 / 7.
+  expect_false(isTRUE(all.equal(f$pid_callousness[4], 8 / 7)))
+  # Distractibility R4: base round(4.5) = 4 would give 4 / 9.
+  expect_false(isTRUE(all.equal(f$pid_distractibility[4], 4 / 9)))
+  # Step 1's 16-item list would also reverse items 98 and 176: R1 would then
+  # give Unusual Beliefs & Experiences (13 - 2 + 1) / 8 = 3 / 2 and
+  # Depressivity (26 - 0 + 3) / 14 = 29 / 14.
+  expect_false(isTRUE(all.equal(f$pid_unusualBeliefsExperiences[1], 3 / 2)))
+  expect_false(isTRUE(all.equal(f$pid_depressivity[1], 29 / 14)))
+})
+
+test_that("IRF version is matched case-insensitively and by abbreviation", {
+  x <- fx_pid5irf()
+  ref <- score_pid5(x, items = 1:218, version = "IRF", append = FALSE)
+  expect_identical(score_pid5(x, items = 1:218, version = "irf", append = FALSE), ref)
+  expect_identical(score_pid5(x, items = 1:218, version = "I", append = FALSE), ref)
+})
+
+test_that("IRF independent recomputation from the key's typed tables, each missing mode", {
+  # Random answers with scattered NAs, so a wrong item in any facet list or a
+  # shifted IRF number moves some facet. The facet lists, reverse items and
+  # domain triplets are typed from the key (helper-fixtures.R); the facet
+  # stems are typed in `irf_expected`, in the same alphabetical facet order.
+  set.seed(159)
+  n <- 40
+  x <- as.data.frame(matrix(sample(0:3, n * 218, replace = TRUE), n, 218))
+  x[matrix(stats::runif(n * 218) < 0.04, n, 218)] <- NA
+  rev_x <- x
+  rev_x[irf_reverse] <- 3 - rev_x[irf_reverse]
+  facet_stems <- names(irf_expected)[1:25]
+  domain_stems <- names(irf_expected)[26:30]
+  apa <- function(m) {
+    k <- ncol(m)
+    apply(m, 1, function(v) {
+      a <- sum(!is.na(v))
+      if ((k - a) / k > 0.25) return(NA_real_)
+      floor(sum(v, na.rm = TRUE) * k / a + 0.5) / k
+    })
+  }
+  for (mode in c("apa", "available", "complete")) {
+    facet <- lapply(irf_facets, function(i) {
+      m <- as.matrix(rev_x[, i])
+      if (mode == "apa") apa(m) else rowMeans(m, na.rm = mode == "available")
+    })
+    names(facet) <- facet_stems
+    pkg <- score_pid5(x, items = 1:218, version = "IRF", missing = mode, append = FALSE)
+    for (nm in facet_stems) {
+      expect_equal(pkg[[paste0("pid_", nm)]], facet[[nm]], info = paste(mode, nm))
+    }
+    for (d in seq_along(irf_domains)) {
+      fs <- facet_stems[match(irf_domains[[d]], names(irf_facets))]
+      expected <- rowMeans(as.data.frame(facet[fs]), na.rm = mode == "available")
+      expect_equal(pkg[[paste0("pid_", domain_stems[d])]], expected, info = paste(mode, d))
+    }
+  }
+})
+
+test_that("IRF standard errors follow the facet and domain rules", {
+  d <- hush_se(score_pid5(fx_pid5irf(), items = 1:218, version = "IRF",
+                          calc_se = TRUE, append = FALSE))
+  # R1 Anhedonia, items after reversal 1, 3, 2, 1, 3, 1, 0, 3 (arithmetic in
+  # the block above): SD over 8 items / sqrt(8).
+  expect_equal(d$pid_anhedonia_se[1], stats::sd(c(1, 3, 2, 1, 3, 1, 0, 3)) / sqrt(8))
+  # R1 Detachment: facets 13/10, 7/4, 11/6, so SD of the 3 / sqrt(3).
+  expect_equal(d$pid_detachment_se[1], stats::sd(c(13 / 10, 7 / 4, 11 / 6)) / sqrt(3))
+  # R3 Detachment is NA, and so is its standard error.
+  expect_true(is.na(d$pid_detachment_se[3]))
+})
+
+test_that("IRF refuses a data frame with the wrong number of items", {
+  expect_error(
+    score_pid5(fx_pid5irf(), items = 1:217, version = "IRF"),
+    "Expected 218 items but got 217",
     fixed = TRUE
   )
 })

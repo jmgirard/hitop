@@ -2,10 +2,15 @@
 #'
 #' Information about the items in different versions of the PID-5.
 #'
-#' @format A \link[tibble]{tibble} with 220 rows and 16 columns:
+#' @format A \link[tibble]{tibble} with 220 rows and 18 columns:
 #' \describe{
 #'   \item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form (integer)}
 #'   \item{BFPM}{Item number on the PID5BF+M, the 36-item modified brief form (integer). Its keying is in `pid_scales$BFPM` and [pid_bfpm_domains]}
+#'   \item{IRF}{Item number on the PID-5 Informant Form, the 218-item
+#'   informant-report form (integer). It is `NA` on self-report items 96 and
+#'   177, which the informant form does not have, so IRF item n is self-report
+#'   item n, n + 1 or n + 2. Each informant item shares its row's facet and
+#'   reverse keying}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
 #'   \item{INC,INCS}{Item number on the response inconsistency scale full and short forms (integer)}
 #'   \item{ORS,ORSS}{Item number on the overreporting scale full and short forms (integer)}
@@ -16,6 +21,12 @@
 #'   membership is held only in `pid_scales$BFPM`}
 #'   \item{Domain}{Name of the domain}
 #'   \item{Text}{Item text, copyright APA}
+#'   \item{TextIRF}{Informant Form item text, copyright APA, from Markon, K.
+#'   E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013), *The
+#'   Personality Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult*,
+#'   American Psychiatric Association. Each item completes the stem "He or
+#'   she..."; this column does not include the stem, the leading ellipsis or
+#'   the final period, and uses straight quotes and apostrophes}
 #' }
 #' @examples
 #' pid_items
@@ -28,16 +39,19 @@
 #' by `reliability_pid5()` and by the printed scoring table in
 #' `generate_docx_pid5*()`, so adding or removing a row changes all three.
 #'
-#' @format A named \link{list} of length 4 (elements `FULL`, `SF`, `BF`, and
-#'   `BFPM`), one per PID-5 version. Each element is a \link[tibble]{tibble}
-#'   with one row per scale and 5 columns:
+#' @format A named \link{list} of length 5 (elements `FULL`, `SF`, `BF`,
+#'   `BFPM`, and `IRF`), one per PID-5 version. Each element is a
+#'   \link[tibble]{tibble} with one row per scale and 5 columns:
 #' \describe{
 #'   \item{Facet (named `Domain` in the BF element)}{Name of the scale: the
-#'   facet for the FULL, SF, and BFPM versions, the domain for the BF version.
-#'   The BF element carries a sixth row, `Total`, which is not a domain but the
-#'   whole 25-item form scored as one scale (see [score_pid5()]). The BFPM
-#'   element holds the 18 facets of the PID5BF+M, 2 items each, grouped by
-#'   domain in the order of its key; its domains are in [pid_bfpm_domains]}
+#'   facet for the FULL, SF, BFPM, and IRF versions, the domain for the BF
+#'   version. The BF element carries a sixth row, `Total`, which is not a
+#'   domain but the whole 25-item form scored as one scale (see
+#'   [score_pid5()]). The BFPM element holds the 18 facets of the PID5BF+M, 2
+#'   items each, grouped by domain in the order of its key; its domains are in
+#'   [pid_bfpm_domains]. The IRF element holds the 25 facets of the Informant
+#'   Form in the FULL element's order, numbered by informant item, with the
+#'   informant text in `itemdata`}
 #'   \item{itemdata}{A list column containing one item-data tibble per scale; its item-number column is an integer}
 #'   \item{nItems}{The number of items in the scale (integer)}
 #'   \item{itemNumbers}{A list column containing one integer item-number vector per scale}
@@ -50,9 +64,10 @@
 #' Personality Inventory for DSM-5 Domain Data
 #'
 #' The map from each of the 5 PID-5 personality-trait domains to the 3 facets
-#' contributing primarily to it, used to compute domain scores for the FULL and
-#' SF versions (APA scoring key Step 3). This is the 15-facet primary subset, not
-#' the broader `pid_items$Domain` grouping.
+#' contributing primarily to it, used to compute domain scores for the FULL, SF
+#' and IRF versions (APA scoring keys, Step 3; the PID-5 Informant Form's Domain
+#' Table names the same primary facets). This is the 15-facet primary subset,
+#' not the broader `pid_items$Domain` grouping.
 #'
 #' @format A \link[tibble]{tibble} with 5 rows and 4 columns:
 #' \describe{

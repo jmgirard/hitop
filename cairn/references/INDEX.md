@@ -23,4 +23,5 @@
 - [postgresql2026limits.md](postgresql2026limits.md) — PostgreSQL 18 documentation, Appendix K (read 2026-10-01): 1,600 columns per table and a row that must fit in one 8,192-byte page, behind hitop-form's Supabase column check.
 - [fuberlin2020pid5bfpm.md](fuberlin2020pid5bfpm.md) — The FU Berlin PID5BF+M key sheet (German, 2020), p. 2: each of the 36 items' PID-5 number, its facet and domain, and the scoring rule behind the `BFPM` keying.
 - [bach2020.md](bach2020.md) — Bach et al. (2020), *Psychopathology* 53, 179-188: the PID5BF+M development paper, its six anankastia items, its domain rule (p. 181) and its English facet names (Table 2).
+- [apa2013pid5irf.md](apa2013pid5irf.md) — The APA PID-5 Informant Form (Markon et al., 2013): its 218 item texts, its Facet and Domain Tables, the self-report alignment, and the two reverse lists that disagree on items 98 and 176.
 - [rfc9110.md](rfc9110.md) — RFC 9110, *HTTP Semantics*, section 4.1 (read 2026-10-01): senders and recipients are asked to support URIs of at least 8,000 octets, behind the Study Link Builder's long-link warning.

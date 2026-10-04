@@ -18,9 +18,10 @@ pid_domains
 }
 \description{
 The map from each of the 5 PID-5 personality-trait domains to the 3 facets
-contributing primarily to it, used to compute domain scores for the FULL and
-SF versions (APA scoring key Step 3). This is the 15-facet primary subset, not
-the broader \code{pid_items$Domain} grouping.
+contributing primarily to it, used to compute domain scores for the FULL, SF
+and IRF versions (APA scoring keys, Step 3; the PID-5 Informant Form's Domain
+Table names the same primary facets). This is the 15-facet primary subset,
+not the broader \code{pid_items$Domain} grouping.
 }
 \examples{
 pid_domains

@@ -14,9 +14,30 @@
   returns the 18 facets and then the 6 domains. The keying is in a new
   `pid_items$BFPM` column and a new `pid_scales$BFPM` element. A new
   dataset, `pid_bfpm_domains`, maps each domain to its 3 facets.
-  `pid_items` now has 16 columns, and `pid_scales` has 4 elements.
   `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do not take the new
   version.
+
+* **`score_pid5()` scores the PID-5 Informant Form.** `version = "IRF"`
+  scores the 218-item informant-report form of Markon et al. (2013), on
+  which an informant rates the person receiving care. It returns the full
+  form's 25 facets and 5 domains under the same column names. The form has
+  no counterpart to self-report items 96 and 177, so its Anxiousness and
+  Suspiciousness facets each have one item fewer. Fourteen items are
+  reverse-scored, the ones the APA key's Facet Table marks; the key's Step 1
+  list also names items 98 and 176, which are not reversed. The informant key
+  says to "round up" a fractional prorated raw score. The package applies the
+  nearest-whole-number rule of the other APA PID-5 keys, so informant and
+  self-report facets prorate the same way. `reliability_pid5()`,
+  `rename_pid5_items()` and `label_pid5()` also take `version = "IRF"`, and
+  `label_pid5()` labels items with the informant wording. Item columns are
+  `pid5irf_001` to `pid5irf_218`. `pid_items` gains an `IRF` column (each
+  informant item's number) and a `TextIRF` column (its wording), and
+  `pid_scales` gains an `IRF` element. `pid_items` now has 18 columns, and
+  `pid_scales` has 5 elements. `IRF` sits after `BFPM`, so the columns from
+  `Reverse` to `Text` each move one place right; code that reads `pid_items`
+  by position needs updating. Informant scores carry the full form's column
+  names, so do not norm or plot them as `version = "FULL"`. `validity_pid5()`, `norm_pid5()` and
+  `plot_pid5()` do not take the new version.
 
 * **New PID5BF+M forms.** `generate_docx_pid5bfpm()`,
   `generate_qualtrics_pid5bfpm()` and `generate_redcap_pid5bfpm()` write the

@@ -15,7 +15,8 @@
 ## stages the site copy, so the file, its row and its copy stay in step.
 ##
 ## One instrument table can carry more than one form: `pid_items` numbers the
-## FULL, SF and BF forms in three columns, each NA on the rows its form omits.
+## FULL, SF, BF, BFPM and IRF forms in five columns, each NA on the rows its
+## form omits.
 ## A spec's `number_col` selects the form. The writer, its row selection and
 ## the format it writes are in `R/json_export.R` (`write_instrument_json()`,
 ## unexported).

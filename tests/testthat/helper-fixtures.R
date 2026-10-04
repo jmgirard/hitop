@@ -210,6 +210,86 @@ fx_pid5bfpm <- function() {
   df
 }
 
+# ---- PID-5 Informant Form (218 items) ----------------------------------------
+#
+# The APA IRF key's tables (M159), typed from its Facet Table and Domain Table
+# (cairn/references/apa2013pid5irf.md), never from data-raw/pid_irf_items.csv.
+# The reverse list is the Facet Table's R marks, which D-089(c) chose over
+# Step 1's list (Step 1 adds 98 and 176). test-keying.R checks the package
+# tables against these; the scoring and reliability tests recompute from them.
+irf_reverse <- c(7, 30, 35, 58, 87, 90, 96, 97, 130, 141, 154, 163, 208, 213)
+irf_facets <- list(
+  "Anhedonia" = c(1, 23, 26, 30, 123, 154, 156, 187),
+  "Anxiousness" = c(79, 93, 95, 108, 109, 129, 140, 173),
+  "Attention Seeking" = c(14, 43, 74, 110, 112, 172, 189, 209),
+  "Callousness" = c(11, 13, 19, 54, 72, 73, 90, 152, 165, 181, 196, 198, 205, 206),
+  "Deceitfulness" = c(41, 53, 56, 76, 125, 133, 141, 204, 212, 216),
+  "Depressivity" = c(27, 61, 66, 81, 86, 103, 118, 147, 150, 162, 167, 168, 176, 210),
+  "Distractibility" = c(6, 29, 47, 68, 88, 117, 131, 143, 197),
+  "Eccentricity" = c(5, 21, 24, 25, 33, 52, 55, 70, 71, 151, 171, 183, 203),
+  "Emotional Lability" = c(18, 62, 101, 121, 137, 164, 179),
+  "Grandiosity" = c(40, 65, 113, 177, 185, 195),
+  "Hostility" = c(28, 32, 38, 85, 92, 115, 157, 169, 186, 214),
+  "Impulsivity" = c(4, 16, 17, 22, 58, 202),
+  "Intimacy Avoidance" = c(89, 96, 107, 119, 144, 201),
+  "Irresponsibility" = c(31, 128, 155, 159, 170, 199, 208),
+  "Manipulativeness" = c(106, 124, 161, 178, 217),
+  "Perceptual Dysregulation" = c(36, 37, 42, 44, 59, 77, 83, 153, 190, 191, 211, 215),
+  "Perseveration" = c(46, 51, 60, 78, 80, 99, 120, 127, 136),
+  "Restricted Affectivity" = c(8, 45, 84, 91, 100, 166, 182),
+  "Rigid Perfectionism" = c(34, 49, 104, 114, 122, 134, 139, 175, 194, 218),
+  "Risk Taking" = c(3, 7, 35, 39, 48, 67, 69, 87, 97, 111, 158, 163, 193, 213),
+  "Separation Insecurity" = c(12, 50, 57, 64, 126, 148, 174),
+  "Submissiveness" = c(9, 15, 63, 200),
+  "Suspiciousness" = c(2, 102, 116, 130, 132, 188),
+  "Unusual Beliefs & Experiences" = c(94, 98, 105, 138, 142, 149, 192, 207),
+  "Withdrawal" = c(10, 20, 75, 82, 135, 145, 146, 160, 180, 184)
+)
+# The key prints "Negative Affect"; the package keeps "Negative affectivity"
+# (D-089(d)), so the domains are matched by their primary facets.
+irf_domains <- list(
+  c("Emotional Lability", "Anxiousness", "Separation Insecurity"),
+  c("Withdrawal", "Anhedonia", "Intimacy Avoidance"),
+  c("Manipulativeness", "Deceitfulness", "Grandiosity"),
+  c("Irresponsibility", "Impulsivity", "Distractibility"),
+  c("Unusual Beliefs & Experiences", "Eccentricity", "Perceptual Dysregulation")
+)
+#
+# Hand-computed fixture for score_pid5(version = "IRF") (M159, AC2). Facet
+# membership, the 14 R items (D-089(c)) and the domain triplets are typed from
+# the APA IRF key (cairn/references/apa2013pid5irf.md); the expected values and
+# their arithmetic are in test-score_pid5.R. Item i is IRF item i. Rows:
+#   R1  item i answered i %% 4 (answers vary within every facet)
+#   R2  item i answered 3 - i %% 4
+#   R3  R1 with item 9 NA (Submissiveness, exactly 25% of 4: prorated) and
+#       items 1, 23, 26 NA (Anhedonia, 3 of 8 = 37.5%, the fewest past 25%:
+#       NA, so Detachment is NA while Withdrawal and Intimacy Avoidance score)
+#   R4  R1 with items 11, 13, 19 NA and item 54 = 3 (Callousness prorates
+#       12 * 14 / 11 = 15.27 -> 15, where a ceiling gives 16), and
+#       Distractibility answered NA, 1, 0, 1, 0, 1, 0, 1, 0 (prorates
+#       4 * 9 / 8 = 4.5 -> 5, where base round() gives 4; Disinhibition is
+#       scored from this prorated primary facet)
+#   R5  every item 0
+# Items 98 and 176 are answered 2 and 0 in R1, R3 and R4, 1 and 3 in R2, and
+# 0 and 0 in R5, so Step 1's 16-item reverse list would change Unusual Beliefs
+# & Experiences and Depressivity in every row.
+fx_pid5irf <- function() {
+  i <- seq_len(218)
+  df <- as.data.frame(matrix(NA_integer_, nrow = 5, ncol = 218))
+  names(df) <- sprintf("pid5irf_%03d", i)
+  df[1, ] <- i %% 4L
+  df[2, ] <- 3L - i %% 4L
+  df[3, ] <- i %% 4L
+  df[3, c(9, 1, 23, 26)] <- NA_integer_
+  df[4, ] <- i %% 4L
+  df[4, c(11, 13, 19)] <- NA_integer_
+  df[4, 54] <- 3L
+  df[4, c(6, 29, 47, 68, 88, 117, 131, 143, 197)] <-
+    c(NA, 1L, 0L, 1L, 0L, 1L, 0L, 1L, 0L)
+  df[5, ] <- 0L
+  df
+}
+
 # ---- HiTOP-SR (405 items) ---------------------------------------------------
 #
 # Hand-computed fixture for score_hitopsr() (milestone M005). Item range is the

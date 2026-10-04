@@ -7,7 +7,7 @@
 reliability_pid5(
   data,
   items,
-  version = c("FULL", "SF", "BF", "BFPM"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
   srange = c(0, 3),
   alpha = TRUE,
   omega = TRUE
@@ -37,8 +37,8 @@ before 2.0 (\code{labelled_spss}) is refused the same way, but
 \code{na_values} or \code{na_range} attribute declares to \code{NA} first.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
-"SF", "BF", or "BFPM" (the 36-item PID5BF+M). Will be automatically
-capitalized. (default = \code{"FULL"})}
+"SF", "BF", "BFPM" (the 36-item PID5BF+M), or "IRF" (the 218-item
+Informant Form). Will be automatically capitalized. (default = \code{"FULL"})}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the items, used for reverse-coding. (default = \code{c(0, 3)})}
@@ -61,10 +61,13 @@ it), \code{camelCase} (the stem that names the scale's column in the matching
 Compute per-scale internal-consistency reliability — Cronbach's alpha and
 McDonald's omega — for the Personality Inventory for DSM-5: full version
 (PID-5, 220 items), short form (PID-5-SF, 100 items), brief form (PID-5-BF,
-25 items), or modified brief form (PID5BF+M, 36 items). Reliability is
-estimated on the reverse-keyed item responses, at the facet level for FULL/SF
-and the domain level for BF (the same scales \code{\link[=score_pid5]{score_pid5()}} outputs, before
-FULL/SF domain aggregation). The BF version also returns a \code{Total} row
+25 items), modified brief form (PID5BF+M, 36 items), or Informant Form
+(PID-5-IRF, 218 items; Markon et al., 2013). Reliability is
+estimated on the reverse-keyed item responses, at the facet level for
+FULL/SF/IRF and the domain level for BF (the same scales \code{\link[=score_pid5]{score_pid5()}}
+outputs, before FULL/SF/IRF domain aggregation). The IRF facets are the full
+form's 25, numbered by informant item and reverse-keyed as the APA IRF key's
+Facet Table marks (see \code{\link[=score_pid5]{score_pid5()}}). The BF version also returns a \code{Total} row
 covering all 25 items; note that this scale spans five heterogeneous domains,
 so its internal consistency is not comparable to a domain's and is reported
 without further interpretation.
@@ -86,4 +89,12 @@ with fewer, no model is fitted and omega is \code{NA}.
 # Facet-level reliability for the full PID-5 (alpha only)
 reliability_pid5(sim_pid5, items = 1:220, version = "FULL", omega = FALSE)
 
+}
+\references{
+Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
+(2013). The development and psychometric properties of an informant-report
+form of the Personality Inventory for DSM-5 (PID-5). \emph{Assessment, 20}(3),
+370-383. \doi{10.1177/1073191113486513} The scoring key for
+\code{version = "IRF"} is the APA's \emph{The Personality Inventory for
+DSM-5—Informant Form (PID-5-IRF)—Adult} (2013).
 }

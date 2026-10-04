@@ -337,6 +337,80 @@ test_that("label_pid5(target = 'items') pluralizes each sentence by its own colu
   }
 })
 
+# ---- PID-5 Informant Form ---------------------------------------------------
+
+test_that("label_pid5(version = 'IRF') labels its 218 items with the informant text", {
+  labeled <- label_pid5(fx_pid5irf(), target = "items", version = "IRF")
+  # Texts typed from the APA form (PDF pp. 2, 4, 6 and 7), normalized as
+  # cairn/references/apa2013pid5irf.md states (no stem or leading ellipsis, no
+  # final period, ASCII apostrophes).
+  typed <- c(
+    pid5irf_001 = "doesn't get as much pleasure out of things as others seem to",
+    pid5irf_098 = "sometimes hears things that aren't really there",
+    pid5irf_176 = "mentions that they will commit suicide sooner or later",
+    pid5irf_218 = "has a strict way of doing things"
+  )
+  for (nm in names(typed)) {
+    expect_identical(attr(labeled[[nm]], "label"), typed[[nm]], info = nm)
+  }
+  labels <- vapply(labeled, function(col) attr(col, "label"), character(1))
+  expect_length(labels, 218L)
+  # No informant label is the self-report wording of any item.
+  expect_false(any(labels %in% pid_items$Text))
+  # Every column carries the text stored for its own informant number.
+  for (nm in names(labeled)) {
+    number <- as.integer(sub("^pid5irf_", "", nm))
+    expect_identical(
+      attr(labeled[[nm]], "label"),
+      pid_items$TextIRF[match(number, pid_items$IRF)],
+      info = nm
+    )
+  }
+})
+
+test_that("label_pid5(version = 'IRF') reports unpadded and out-of-range item columns", {
+  df <- data.frame(pid5irf_098 = 1, pid5irf_98 = 1, pid5irf_219 = 1)
+  caught <- collect_warnings(label_pid5(df, target = "items", version = "IRF"))
+  labeled <- caught$value
+  expect_identical(
+    attr(labeled$pid5irf_098, "label"),
+    "sometimes hears things that aren't really there"
+  )
+  expect_null(attr(labeled$pid5irf_98, "label"))
+  expect_null(attr(labeled$pid5irf_219, "label"))
+  expect_length(caught$warnings, 1L)
+  expect_s3_class(caught$warnings[[1]], "hitop_unpadded_items")
+  text <- warning_text(caught)
+  expect_true(grepl("pid5irf_98", text, fixed = TRUE))
+  expect_true(grepl("pid5irf_219", text, fixed = TRUE))
+  expect_true(grepl("PID-5-IRF", text, fixed = TRUE))
+})
+
+test_that("validity_pid5(), norm_pid5() and plot_pid5() refuse version = 'IRF'", {
+  x <- fx_pid5irf()
+  for (fn in list(
+    function() validity_pid5(x, items = 1:218, version = "IRF"),
+    function() norm_pid5(x, version = "IRF"),
+    function() plot_pid5(x, version = "IRF")
+  )) {
+    expect_error(fn(), 'should be one of "FULL", "SF", "BF"', fixed = TRUE)
+  }
+})
+
+test_that("label_pid5(version = 'IRF') names the FULL form's 25 facets and 5 domains", {
+  scored <- score_pid5(fx_pid5irf(), items = 1:218, version = "IRF", append = FALSE)
+  full <- score_pid5(sim_pid5, items = 1:220, append = FALSE)
+  label_of <- function(col) {
+    l <- attr(col, "label")
+    if (is.null(l)) NA_character_ else l
+  }
+  expect_identical(
+    unname(vapply(label_pid5(scored, target = "scales", version = "IRF"), label_of, character(1))),
+    unname(vapply(label_pid5(full, target = "scales", version = "FULL"), label_of, character(1)))
+  )
+  expect_false(anyNA(vapply(label_pid5(scored, target = "scales", version = "IRF"), label_of, character(1))))
+})
+
 # ---- PID5BF+M ---------------------------------------------------------------
 
 test_that("label_pid5(version = 'BFPM') labels its 36 items with their PID-5 text", {
