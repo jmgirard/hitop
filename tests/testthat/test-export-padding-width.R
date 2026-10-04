@@ -204,7 +204,7 @@ test_that("only the HiTOP-HSUM Qualtrics survey has no generator in this package
   # means a generator appearing for it later turns this red rather than
   # silently dropping it from the rebuild comparison below.
   expect_identical(files[!has_generator], "hitophsum_qualtrics.qsf")
-  expect_equal(sum(has_generator), 11L)
+  expect_equal(sum(has_generator), 13L)
 })
 
 # This is a no-regression lock, not a content oracle: it asserts only that the
@@ -215,7 +215,7 @@ test_that("only the HiTOP-HSUM Qualtrics survey has no generator in this package
 test_that("a fresh default build reproduces every shipped export's item names", {
   extdata <- system.file("extdata", package = "hitop")
   files <- Filter(has_manifest_generator, online_manifest())
-  expect_equal(length(files), 11L)
+  expect_equal(length(files), 13L)
 
   for (f in files) {
     ext <- paste0(".", tools::file_ext(f))

@@ -39,10 +39,10 @@ Researchers can build and download PID5BF+M paper forms, a Qualtrics import file
 ## Tasks
 
 - [x] T1: Settle the English instructions and response labels for the form. When Jeff uploads Bach et al. (2020) or Johannes Zimmermann's materials, take them from there. If neither source gives English text, put the APA PID-5 text to Jeff at the pre-implementation gate. Store the result in `R/sysdata.rda` through `data-raw/`, as a new object or a reuse of `pid_instructions`. Record the source in SOURCES.md. (RB tripwire: ip-touching)
-- [ ] T2: Add the BF+M Word generator in `R/generate_docx.R`, following `generate_docx_pid5bf()`.
-- [ ] T3: Add the Qualtrics and REDCap generators, following the BF ones.
-- [ ] T4: Write the parse-back tests (AC1, AC2) in the D-010 style.
-- [ ] T5: Add the rows to `data-raw/artifacts.R`, build the artifacts and stage the pkgdown copies. Write the download page and add it to the navbar. Update the page counts in `test-artifacts.R` and `test-download-pages.R`, and exempt the page from the online-strip test.
+- [x] T2: Add the BF+M Word generator in `R/generate_docx.R`, following `generate_docx_pid5bf()`.
+- [x] T3: Add the Qualtrics and REDCap generators, following the BF ones.
+- [x] T4: Write the parse-back tests (AC1, AC2) in the D-010 style.
+- [x] T5: Add the rows to `data-raw/artifacts.R`, build the artifacts and stage the pkgdown copies. Write the download page and add it to the navbar. Update the page counts in `test-artifacts.R` and `test-download-pages.R`, and exempt the page from the online-strip test.
 - [ ] T6: Add NEWS and reference rows. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
@@ -58,6 +58,7 @@ Researchers can build and download PID5BF+M paper forms, a Qualtrics import file
 - 2026-10-03: catch-up: the previous session left T2 and T3 code uncommitted (the three generators, `make_domain_table()`, a `table_3` slot in `build_hitop_doc()`, and the `docx_domain_rows()` test helper). This session found it in the tree and commits it here.
 - 2026-10-03: implement choice: the BF+M domain map prints as a second table after the facet table (Domain, "Average of these facet scores"), in `pid_bfpm_domains` order. The scoring line says to average items for a facet, then average the three facets for a domain. This answers the RR06 note.
 - 2026-10-03: T4 tests written in `test-generate-pid5bfpm.R` (123 expectations pass). Planted defects (reversed item order in Word and REDCap, reversed domain rows) turned 7 of them red. The full suite has one failure: the vignette export-coverage test lists the three new generators, which T5's download page will link. T2 to T4 stay unticked until the suite is clean.
+- 2026-10-03: T5 done. `data-raw/artifacts.R` built the four files under instrument "PID5BF+M" (4 new manifest rows, 44 to 48) and staged them. New page `download-pid5bfpm.Rmd` has no online strip; navbar entry "PID-5 Modified Brief Form (BF+M)". Page counts 6 to 7 in `test-artifacts.R` and `test-download-pages.R`, and a `no_strip_stems` set exempts the page. Two lock tests also needed the new exports: generator counts 11 to 13 in `test-export-padding-width.R`, and two builders in `test-response-value-no-move.R`. T2 to T5 ticked: full suite 0 failures, 26532 passes.
 
 ## Decisions
 

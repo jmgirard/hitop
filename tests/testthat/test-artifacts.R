@@ -81,7 +81,7 @@ test_that("download-page links point at the staged site copies", {
   skip_if(!dir.exists(articles), "vignettes/articles not available")
   m <- latest_manifest()
   pages <- list.files(articles, pattern = "^download-.*\\.Rmd$", full.names = TRUE)
-  expect_length(pages, 6)
+  expect_length(pages, 7)
 
   linked <- character(0)
   for (page in pages) {
@@ -169,7 +169,7 @@ test_that("download pages link the centralized import-instructions article", {
   }
 
   pages <- list.files(articles, pattern = "^download-.*\\.Rmd$", full.names = TRUE)
-  expect_length(pages, 6)
+  expect_length(pages, 7)
   for (page in pages) {
     text <- paste(readLines(page, warn = FALSE), collapse = "\n")
     # REDCap card links the article's REDCap section.

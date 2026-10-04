@@ -31,7 +31,7 @@ extdata <- "inst/extdata"
 ## below still reads every file from disk, which is how a replaced HSUM QSF
 ## (built elsewhere, by devel/qualtrics_hitophsum.R) gains its row without
 ## churning the checksum of any artifact this script does rebuild.
-rebuild_stems <- c("pid5", "pid5sf", "pid5bf")
+rebuild_stems <- "pid5bfpm"
 
 ## Restrict the rebuild to specific output formats, e.g. c("docx"); NULL rebuilds
 ## every format for the selected stems. Format matters independently of stem: a
@@ -40,7 +40,7 @@ rebuild_stems <- c("pid5", "pid5sf", "pid5bf")
 ## exports emit), and because DOCX/zip rebuilds are not byte-deterministic, a
 ## needless rebuild churns a checksum and records a manifest revision that isn't
 ## one. Restrict to the format whose content actually changed.
-rebuild_formats <- "json"
+rebuild_formats <- c("docx", "qualtrics", "redcap")
 
 ## Both filters are plain string matches, so a typo ("pid5_bf"), a case slip
 ## ("DOCX"), or the manifest's own format vocabulary ("docx_us") would match
@@ -126,9 +126,9 @@ check_filters_matched <- function() {
 ## One note per build run, applied to every artifact rebuilt below. For the
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
-  "First build of the PID-5 JSON exports, one file per form: the items of",
-  "that form, the response options and the instructions as the keying tables",
-  "hold them, for a web form outside the package to read."
+  "First build of the PID5BF+M forms: the 36 items in BF+M order with their",
+  "PID-5 text, and the instructions and response options of the other PID-5",
+  "forms."
 )
 qsf_build_date <- as.Date("2026-08-19")
 qsf_note <- paste(
@@ -147,6 +147,7 @@ docx_specs <- list(
   list(fn = generate_docx_pid5, stem = "pid5", instrument = "PID-5"),
   list(fn = generate_docx_pid5sf, stem = "pid5sf", instrument = "PID-5-SF"),
   list(fn = generate_docx_pid5bf, stem = "pid5bf", instrument = "PID-5-BF"),
+  list(fn = generate_docx_pid5bfpm, stem = "pid5bfpm", instrument = "PID5BF+M"),
   list(fn = generate_docx_hitopsr, stem = "hitopsr", instrument = "HiTOP-SR"),
   list(fn = generate_docx_hitopbr, stem = "hitopbr", instrument = "HiTOP-BR"),
   list(
@@ -169,6 +170,7 @@ qualtrics_specs <- list(
   list(fn = generate_qualtrics_pid5, stem = "pid5", instrument = "PID-5"),
   list(fn = generate_qualtrics_pid5sf, stem = "pid5sf", instrument = "PID-5-SF"),
   list(fn = generate_qualtrics_pid5bf, stem = "pid5bf", instrument = "PID-5-BF"),
+  list(fn = generate_qualtrics_pid5bfpm, stem = "pid5bfpm", instrument = "PID5BF+M"),
   list(fn = generate_qualtrics_hitopsr, stem = "hitopsr", instrument = "HiTOP-SR"),
   list(fn = generate_qualtrics_hitopbr, stem = "hitopbr", instrument = "HiTOP-BR")
 )
@@ -181,6 +183,7 @@ redcap_specs <- list(
   list(fn = generate_redcap_pid5, stem = "pid5", instrument = "PID-5"),
   list(fn = generate_redcap_pid5sf, stem = "pid5sf", instrument = "PID-5-SF"),
   list(fn = generate_redcap_pid5bf, stem = "pid5bf", instrument = "PID-5-BF"),
+  list(fn = generate_redcap_pid5bfpm, stem = "pid5bfpm", instrument = "PID5BF+M"),
   list(fn = generate_redcap_hitopsr, stem = "hitopsr", instrument = "HiTOP-SR"),
   list(fn = generate_redcap_hitopbr, stem = "hitopbr", instrument = "HiTOP-BR"),
   list(

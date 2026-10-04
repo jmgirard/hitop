@@ -1,11 +1,16 @@
 # Locks what the instrument download pages render (vignettes/articles/
 # download-*.Rmd): three cards in the row, an online-form strip under it on
-# the five pages with a JSON export and none on the HSUM page, and an anchor
+# the five pages with a JSON export and none on the HSUM and PID5BF+M pages,
+# and an anchor
 # to every manifest file. Each page's `downloads` chunk is extracted with
 # knitr::purl() and evaluated against the sourced helpers, so the checks read
 # rendered HTML rather than page source. Also locks the Instruments menu of
 # `_pkgdown.yml` and the overview page's step list. Source-checkout only:
 # neither vignettes/articles nor _pkgdown.yml is installed.
+
+# The pages with no JSON export, so no online-form strip: the HSUM and the
+# PID5BF+M, which the online form does not offer.
+no_strip_stems <- c("hitophsum", "pid5bfpm")
 
 articles_dir <- function() {
   testthat::test_path("..", "..", "vignettes", "articles")
@@ -58,7 +63,7 @@ test_that("each download page renders exactly three cards in its row", {
   skip_if(!dir.exists(articles_dir()), "vignettes/articles not available")
   skip_if_not_installed("knitr")
   pages <- download_pages()
-  expect_length(pages, 6)
+  expect_length(pages, 7)
   for (page in pages) {
     fences <- render_downloads_chunk(page)
     row <- fences[startsWith(fences, '<div class="row mt-4 hitop-downloads">')]
@@ -68,14 +73,14 @@ test_that("each download page renders exactly three cards in its row", {
   }
 })
 
-test_that("the five form-backed pages render one online strip and the HSUM page none", {
+test_that("the five form-backed pages render one online strip and the other two none", {
   skip_if(!dir.exists(articles_dir()), "vignettes/articles not available")
   skip_if_not_installed("knitr")
   for (page in download_pages()) {
     stem <- page_stem(page)
     fences <- render_downloads_chunk(page)
     is_strip <- startsWith(fences, '<section class="hitop-online"')
-    if (stem == "hitophsum") {
+    if (stem %in% no_strip_stems) {
       expect_equal(sum(is_strip), 0, info = basename(page))
       expect_no_match(paste(fences, collapse = "\n"), "hitop-online", fixed = TRUE)
       next
@@ -131,7 +136,7 @@ test_that("the online strip names the Study Link Builder and the online form", {
   skip_if(!dir.exists(articles_dir()), "vignettes/articles not available")
   skip_if_not_installed("knitr")
   pages <- download_pages()
-  pages <- pages[page_stem(pages) != "hitophsum"]
+  pages <- pages[!page_stem(pages) %in% no_strip_stems]
   expect_length(pages, 5)
   for (page in pages) {
     fences <- render_downloads_chunk(page)
