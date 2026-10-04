@@ -80,6 +80,7 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
 - 2026-10-03: claim audit: 300 claims read, 13 corrected — vignettes/pid5_scoring.Rmd, tests/testthat/test-keying.R, tests/testthat/test-label_pid5.R, tests/testthat/test-rename_pid5_items.R, data-raw/check_pid_irf_text.R, data-raw/characterize_bfpm.R, R/score_pid5.R, R/data.R, R/rename_pid5_items.R
 - 2026-10-03: the same reader re-read all 13 corrected claims once and found each accurate. It confirmed that the check script now fails when a stored instruction's final "." is changed. The item-98 quote on the references page was fixed too.
 - 2026-10-03: implement done. Status set to `review`.
+- 2026-10-04: step-7 approval: m159-pid5irf-scoring approved for merge. The approval also signs off the keying: the 14 Facet Table reverse items (D-089(c)) and the nearest-whole-number proration that departs from the key's printed "round up" (D-090), as the merge question stated.
 
 ## Decisions
 
