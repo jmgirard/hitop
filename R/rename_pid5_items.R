@@ -17,8 +17,8 @@
 #'   (default = `"FULL"`)
 #' @param method A string specifying the matching method: `"number"` to rename
 #'   columns spelled `from_prefix` followed by an item number, or `"text"` to
-#'   match against the literal item prompt text in `pid_items$Text`.
-#'   (default = `"number"`)
+#'   match against the literal item prompt text in `pid_items$Text`
+#'   (`pid_items$TextIRF` for `version = "IRF"`). (default = `"number"`)
 #'
 #'   The forms number their items independently, so `"number"` reads the
 #'   digits as an item number of the form named by `version`: under

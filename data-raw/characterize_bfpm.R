@@ -58,7 +58,7 @@ capture_call <- function(fun, call_args) {
   list(value = value, conditions = conds)
 }
 
-# The four dataset pairings, each with the version it is scored as and its item
+# The five dataset pairings, each with the version it is scored as and its item
 # column names.
 forms <- list(
   list(data = "sim_pid5", version = "FULL", items = sprintf("pid5_%03d", 1:220)),

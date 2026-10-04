@@ -49,7 +49,7 @@ Step 1 lists 16 items to reverse: 7, 30, 35, 58, 87, 90, 96, 97, 98, 130, 141, 1
 163, 176, 208 and 213. The page-9 instructions repeat the same 16. Step 2 says that
 the Step 1 items are marked R in the Facet Table, but the table marks 14: 7, 30, 35,
 58, 87, 90, 96, 97, 130, 141, 154, 163, 208 and 213. Items 98 and 176 carry no R.
-Item 98 is "sometimes hears things that are not really there" (Unusual Beliefs &
+Item 98 is "sometimes hears things that aren't really there" (Unusual Beliefs &
 Experiences). Item 176 is "mentions that they will commit suicide sooner or later"
 (Depressivity). The
 self-report reverse flags, carried across the mapping above, give the same 14

@@ -406,7 +406,9 @@ test_that("pid_items$IRF numbers the 218 informant items 1 to 218 in APA order",
   expect_identical(pid_items$FULL[is.na(pid_items$IRF)], c(96L, 177L))
   expect_false(anyNA(irf_rows$TextIRF))
   expect_true(all(is.na(pid_items$TextIRF[is.na(pid_items$IRF)])))
-  # Text anchors typed from the form (pp. 2 and 7), normalized as D-089(b) says.
+  # Text anchors typed from the form (PDF pp. 2, 4, 6 and 7), normalized as
+  # cairn/references/apa2013pid5irf.md states (no stem or leading ellipsis, no
+  # final period, ASCII apostrophes).
   irf_text <- function(n) irf_rows$TextIRF[irf_rows$IRF == n]
   expect_identical(
     irf_text(1),

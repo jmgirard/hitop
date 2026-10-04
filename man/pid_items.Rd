@@ -25,7 +25,7 @@ membership is held only in \code{pid_scales$BFPM}}
 \item{Domain}{Name of the domain}
 \item{Text}{Item text, copyright APA}
 \item{TextIRF}{Informant Form item text, copyright APA. Each item
-completes the stem "He or she..."; the stem is not stored}
+completes the stem "He or she..."; this column does not include the stem}
 }
 }
 \source{

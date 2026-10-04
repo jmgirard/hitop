@@ -323,8 +323,9 @@ test_that("version = 'IRF' renames the 218 items to pid5irf_001 to pid5irf_218",
 })
 
 test_that("version = 'IRF' matches the informant wording, not the self-report text", {
-  # Informant texts typed from the APA form (pp. 2 and 7), normalized as
-  # D-089(b) states.
+  # Informant texts typed from the APA form (PDF pp. 2 and 6), normalized as
+  # cairn/references/apa2013pid5irf.md states (no stem or leading ellipsis, no
+  # final period, ASCII apostrophes).
   df <- data.frame(q1 = 1, q2 = 2, q3 = 3)
   caught <- collect_warnings(
     rename_pid5_items(

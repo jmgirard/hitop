@@ -22,7 +22,7 @@
 #'   \item{Domain}{Name of the domain}
 #'   \item{Text}{Item text, copyright APA}
 #'   \item{TextIRF}{Informant Form item text, copyright APA. Each item
-#'   completes the stem "He or she..."; the stem is not stored}
+#'   completes the stem "He or she..."; this column does not include the stem}
 #' }
 #' @source Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013).
 #'   *The Personality Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult*.

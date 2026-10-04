@@ -3,17 +3,21 @@
 # data-raw/pid_irf_items.csv was built from `pdftotext -layout` output of the
 # shelf copy of the APA PID-5-IRF form and scoring key. This script reads the
 # same PDF a second way, `pdftotext -raw`, which keeps reading order rather
-# than page layout, and checks three things against the CSV:
+# than page layout, and checks three things against the CSV and one against
+# R/sysdata.rda:
 #
 #   1. all 218 item texts, after the CSV's normalization (no leading ellipsis,
 #      no final period, ASCII quotes and apostrophes);
 #   2. every item's facet, against the key's Facet Table;
 #   3. the CSV's FULL column, which maps each IRF item to the self-report item
-#      with the same facet (the IRF drops self-report items 96 and 177).
+#      with the same facet (the IRF drops self-report items 96 and 177);
+#   4. the stored instructions (start, continue, prompt) and response labels,
+#      against the form's text.
 #
 # It also prints the key's two reverse lists, Step 1 and the R marks in the
-# Facet Table, which disagree on items 98 and 176. Which list governs is
-# recorded in cairn/SOURCES.md.
+# Facet Table, which disagree on items 98 and 176, and the self-report reverse
+# flags carried across the mapping. Which list governs is recorded in
+# cairn/SOURCES.md.
 #
 # Maintainer-run, never CI: it needs the gitignored shelf and pdftotext. It
 # exits non-zero on any departure, so a printed report cannot be mistaken for
@@ -116,14 +120,19 @@ for (i in which(sr_facet != items$Facet)) {
 sr_reverse <- items$IRF[sr$Reverse[match(items$FULL, sr$FULL)]]
 
 # 4. Instructions in R/sysdata.rda: the first-page and later-page texts and the
-# rating prompt, normalized as the item text is (the stored text keeps its
-# final period, so the comparison adds it back).
+# rating prompt. Quotes, apostrophes and spacing are normalized as for the item
+# text, but the final period is kept, so the match checks it too.
 sysdata <- new.env()
 load("R/sysdata.rda", envir = sysdata)
 instr <- sysdata$pid_irf_instructions
-flat <- normalize(form)
+ascii <- function(x) {
+  x <- gsub("[‘’]", "'", x)
+  x <- gsub("[“”]", "\"", x)
+  trimws(gsub("\\s+", " ", x))
+}
+flat <- ascii(form)
 for (part in c("start", "continue", "prompt")) {
-  if (!grepl(normalize(instr[[part]]), paste0(flat, "."), fixed = TRUE)) {
+  if (!grepl(ascii(instr[[part]]), flat, fixed = TRUE)) {
     note("instructions$", part, " is not in the PDF text")
   }
 }
@@ -147,4 +156,4 @@ if (length(bad)) {
   cat(paste0("  ", bad), sep = "\n")
   quit(status = 1)
 }
-cat("\nPASS: 218 texts, 25 facets and the FULL mapping match the key.\n")
+cat("\nPASS: 218 texts, 25 facets, the FULL mapping and the instructions match the key.\n")

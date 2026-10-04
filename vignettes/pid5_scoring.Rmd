@@ -232,7 +232,7 @@ print(reliability_pid5(sim_bfpm, items = 1:36, version = "BFPM"), n = 24)
 
 ## The PID-5 Informant Form
 
-The PID-5 Informant Form (PID-5-IRF; Markon et al., 2013, [doi:10.1177/1073191113486513](https://doi.org/10.1177/1073191113486513)) is the APA's 218-item form on which someone who knows the person, such as a partner or relative, rates them. It has the full form's 25 facets and 5 domains. It has no counterpart to self-report items 96 and 177, so its Anxiousness and Suspiciousness facets each have one item fewer. The `pid_items$IRF` column gives each informant item's number, `pid_items$TextIRF` its wording (each item completes the stem "He or she..."), and the package names its item columns `pid5irf_001` to `pid5irf_218`.
+The PID-5 Informant Form (PID-5-IRF; Markon et al., 2013, [doi:10.1177/1073191113486513](https://doi.org/10.1177/1073191113486513)) is the APA's 218-item form on which an adult informant rates the person receiving care. It has the full form's 25 facets and 5 domains. It has no counterpart to self-report items 96 and 177, so its Anxiousness and Suspiciousness facets each have one item fewer. The `pid_items$IRF` column gives each informant item's number, `pid_items$TextIRF` its wording (each item completes the stem "He or she..."), and the package names its item columns `pid5irf_001` to `pid5irf_218`.
 
 The package has no simulated informant dataset. For illustration, we take the 218 self-report items that the informant items map to from `sim_pid5` and rename them.
 
@@ -251,7 +251,7 @@ irf_scores
 
 Scoring follows the APA informant key (Markon et al., 2013), with two readings that `?score_pid5` explains. Fourteen items are reverse-scored, the ones the key's Facet Table marks R; the key's Step 1 list also names items 98 and 176, which are not reversed. And the key says to "round up" a fractional prorated raw score; the package applies the nearest-whole-number rule of the other APA PID-5 keys, so informant and self-report facets prorate the same way.
 
-`reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` also take `version = "IRF"`, and `label_pid5()` labels items with the informant wording. No validity scales or norms for the informant form are on the package's source shelf, so `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do not take it.
+`reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` also take `version = "IRF"`, and `label_pid5()` labels items with the informant wording. No validity scales for the informant form are on the package's source shelf, and its norms (Markon et al., 2024, Tables A–10 and A–11) are not yet in `pid_norms`, so `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do not take it.
 
 ## Collecting Responses Online with hitop-form
 

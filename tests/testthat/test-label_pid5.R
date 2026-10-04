@@ -341,7 +341,9 @@ test_that("label_pid5(target = 'items') pluralizes each sentence by its own colu
 
 test_that("label_pid5(version = 'IRF') labels its 218 items with the informant text", {
   labeled <- label_pid5(fx_pid5irf(), target = "items", version = "IRF")
-  # Texts typed from the APA form (pp. 2 and 7), normalized as D-089(b) states.
+  # Texts typed from the APA form (PDF pp. 2, 4, 6 and 7), normalized as
+  # cairn/references/apa2013pid5irf.md states (no stem or leading ellipsis, no
+  # final period, ASCII apostrophes).
   typed <- c(
     pid5irf_001 = "doesn't get as much pleasure out of things as others seem to",
     pid5irf_098 = "sometimes hears things that aren't really there",

@@ -59,7 +59,7 @@
 #'   standard error for each scale score. For the facets, and for the brief
 #'   form's domains and total, this is the SD of the items the respondent
 #'   actually answered divided by the square root of how many of those items
-#'   they answered. The FULL, SF and BFPM domain scores are means of three
+#'   they answered. The FULL, SF, IRF and BFPM domain scores are means of three
 #'   facet scores rather than of items, so their standard errors are taken one
 #'   level up: the SD of the three contributing facet scores divided by the
 #'   square root of 3. Standard errors are `NA` wherever their scale score is
@@ -74,7 +74,7 @@
 #' @param append An optional logical indicating whether the new columns should
 #'   be added to the end of the `data` input. (default = `TRUE`)
 #'
-#' @details For the FULL and SF versions, the output includes the 25 facet
+#' @details For the FULL, SF and IRF versions, the output includes the 25 facet
 #'   scores followed by the 5 personality-trait domain scores. Following the APA
 #'   scoring key (Step 3), each domain score is the mean of the average scores of
 #'   its 3 primary facets (the map is stored in `pid_domains`). The BF version
@@ -131,8 +131,9 @@
 #'   The key prints its proration step as "round up to the nearest whole
 #'   number". The package applies the nearest-whole-number rule of every other
 #'   APA PID-5 key, halves up (see `missing`). The choice matters only under
-#'   `missing = "apa"`, for a facet with 1 to 25% of its items unanswered whose
-#'   prorated raw score has a fractional part below one half. There the
+#'   `missing = "apa"`, for a facet with at least one but no more than 25% of
+#'   its items unanswered whose prorated raw score has a fractional part
+#'   strictly between 0 and one half. There the
 #'   package's facet score is 1/n lower than a ceiling would give, for a facet
 #'   of n items.
 #'
