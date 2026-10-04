@@ -1,13 +1,13 @@
 # M162: PID-5 forensic form (FFBF) keying and scoring
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, IP3, GP1, GP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — a new `version` value on exported scoring functions and two new exported tables
-- **Branch/PR:** —
+- **Branch/PR:** m162-pid5ffbf-scoring
 
 ## Goal
 
@@ -64,8 +64,8 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 
 ## Tasks
 
-- [ ] T1: Write the references page `cairn/references/niemeyer2022.md` (paper, Table S3, code, and the local codebook as a pre-final draft) and its INDEX line. Add the SOURCES.md row. Transcribe Table S3 into `data-raw/pid_ffbf_items.csv`. Write `data-raw/check_pid_ffbf_text.R` (AC1) and record its run on the references page. Compare the facet lists, reverse items and domain facets with the code. (RB tripwire: ip-touching)
-- [ ] T2: Build `pid_ffbf_items`, `pid_ffbf_domains` and `pid_scales$FFBF` in `data-raw/pid_info.R`, and document them in `R/data.R`. Write the keying tests (AC1, AC2). Keying content needs Jeff's sign-off before merge.
+- [x] T1: Write the references page `cairn/references/niemeyer2022.md` (paper, Table S3, code, and the local codebook as a pre-final draft) and its INDEX line. Add the SOURCES.md row. Transcribe Table S3 into `data-raw/pid_ffbf_items.csv`. Write `data-raw/check_pid_ffbf_text.R` (AC1) and record its run on the references page. Compare the facet lists, reverse items and domain facets with the code. (RB tripwire: ip-touching)
+- [x] T2: Build `pid_ffbf_items`, `pid_ffbf_domains` and `pid_scales$FFBF` in `data-raw/pid_info.R`, and document them in `R/data.R`. Write the keying tests (AC1, AC2). Keying content needs Jeff's sign-off before merge.
 - [ ] T3: Thread `"FFBF"` through `score_pid5()` (reverse flags from `pid_ffbf_items`, domains from `pid_ffbf_domains`), `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()`.
 - [ ] T4: Write the fixture and recomputation tests (AC3, AC5) and the `"F"` test. Add the IRF pairing to the characterization script and run it at the merge base and at the head (AC4).
 - [ ] T5: Update the help pages, vignette, NEWS and `_pkgdown.yml`. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
@@ -81,6 +81,14 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - 2026-10-04: plan chose a 7-row `pid_ffbf_domains` table over domain rows in `pid_scales$FFBF`, following D-088(c). Falsified by a domain rule that is not a mean of 3 facets.
 - 2026-10-04: criteria audit (full mode, fresh Opus reader) found that Table S3 and the code agree on all 25 facets, the reverse items 12 and 26 and both forensic domains. It returned 9 findings on M162, all applied. AC1 now uses item-number order and a text rule, and it binds the texts, not the record. AC3 fixes the column order and replaces probes that could not fail. AC4 names the IRF pairing and adds the `"F"` test. AC6 adds the missing-data and informant facts.
 - 2026-10-04: audit judgment on AC5, decided toward the narrower promise: `reliability_pid5()` returns the 25 facet rows, as for the SF, not 32 rows with domains as for the BF+M.
+- 2026-10-04: implement started on branch m162-pid5ffbf-scoring. Untracked devel/hitopdat_* files predate this milestone and stay unstaged.
+- 2026-10-04: T1 done. `data-raw/pid_ffbf_items.csv` built from `pdftotext -bbox` word positions (builder kept in the session scratchpad, method on the references page). `data-raw/check_pid_ffbf_text.R` reads the PDF with `pdftotext -raw` and the code file: PASS. Seven planted defects (moved, changed and dropped words, wrong facet, extra reverse flag, a changed shipped text, a reordered shipped table) each exit 1. References page `niemeyer2022.md`, INDEX line and three SOURCES.md rows added.
+- 2026-10-04: T1 found three source facts the AC1 rule did not name: stray markers E14, E18 and E77 (not E14 alone), syllable hyphens inside German words ("Ge-fühle", "Be-ziehungen"), and an acute accent in "doesn´t". The CSV follows a rule that covers them. AC1's wording awaits Jeff (stop below).
+- 2026-10-04: re-audit: AC1 (full) — 4 findings, all taken toward the narrower promise: the script reads the shipped `pid_ffbf_items`, the test transcription is stated as Table S3's, the three markers are named, and the claim is "four cells in reading order".
+- 2026-10-04: re-audit: AC1 (full) — 3 findings on the fixed wording: the reading-order claim can still pass a word moved across a cell boundary where all four cells share one raw line (item 36); name the ASCII targets and the hyphen cases exactly; state the line-join and space rule. The second line on AC1 is the stop, so no further reader runs.
+- 2026-10-04: T2 done. `pid_ffbf_items` (100 x 7), `pid_ffbf_domains` (7 rows) and `pid_scales$FFBF` built by `data-raw/pid_info.R`; the five older `pid_scales` elements are `identical()` to HEAD and the other `data/` files are byte-identical. Docs in `R/data.R`. Typed key tables in `helper-fixtures.R`, keying tests in `test-keying.R`, `test-column-shape.R` admits the new element. Full suite green apart from the known skips.
+- 2026-10-04: implement chose the FULL facet order for `pid_scales$FFBF` over Table S3's alphabetical order, so FFBF output columns line up with the other 25-facet versions. Falsified by a user need to read output in form order.
+- 2026-10-04: implement named the two forensic domains as the paper prints them ("Disinhibited Aggression", "Insecurity") under D-018, while the APA rows keep `pid_domains` spelling.
 
 ## Decisions
 

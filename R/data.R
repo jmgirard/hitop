@@ -39,19 +39,22 @@
 #' by `reliability_pid5()` and by the printed scoring table in
 #' `generate_docx_pid5*()`, so adding or removing a row changes all three.
 #'
-#' @format A named \link{list} of length 5 (elements `FULL`, `SF`, `BF`,
-#'   `BFPM`, and `IRF`), one per PID-5 version. Each element is a
+#' @format A named \link{list} of length 6 (elements `FULL`, `SF`, `BF`,
+#'   `BFPM`, `IRF`, and `FFBF`), one per PID-5 version. Each element is a
 #'   \link[tibble]{tibble} with one row per scale and 5 columns:
 #' \describe{
 #'   \item{Facet (named `Domain` in the BF element)}{Name of the scale: the
-#'   facet for the FULL, SF, BFPM, and IRF versions, the domain for the BF
+#'   facet for the FULL, SF, BFPM, IRF, and FFBF versions, the domain for the BF
 #'   version. The BF element carries a sixth row, `Total`, which is not a
 #'   domain but the whole 25-item form scored as one scale (see
 #'   [score_pid5()]). The BFPM element holds the 18 facets of the PID5BF+M, 2
 #'   items each, grouped by domain in the order of its key; its domains are in
 #'   [pid_bfpm_domains]. The IRF element holds the 25 facets of the Informant
 #'   Form in the FULL element's order, numbered by informant item, with the
-#'   informant text in `itemdata`}
+#'   informant text in `itemdata`. The FFBF element holds the 25 facets of the
+#'   PID-5 Forensic Faceted Brief Form in the FULL element's order, numbered by
+#'   FFBF item, with the English self-report text in `itemdata`; its items are
+#'   in [pid_ffbf_items] and its domains in [pid_ffbf_domains]}
 #'   \item{itemdata}{A list column containing one item-data tibble per scale; its item-number column is an integer}
 #'   \item{nItems}{The number of items in the scale (integer)}
 #'   \item{itemNumbers}{A list column containing one integer item-number vector per scale}
@@ -114,6 +117,76 @@
 #' @examples
 #' pid_bfpm_domains
 "pid_bfpm_domains"
+
+#' PID-5 Forensic Faceted Brief Form Item Data
+#'
+#' The 100 items of the PID-5 Forensic Faceted Brief Form (PID-5-FFBF), an
+#' adaptation of the PID-5 faceted short form for people in prison, with self-
+#' and informant-report versions in English and German. Most items are
+#' rewritten for the prison setting, so they have their own table rather than
+#' columns of [pid_items]. The form was validated in German; the English text
+#' is the authors' translation. Scored by `score_pid5(version = "FFBF")`.
+#'
+#' The texts are those of Table S3 of the form's supplement, without its
+#' source notes, its reverse marks, a leading ellipsis, or the final period,
+#' and with straight quotes and apostrophes. Hyphens that split a German word
+#' across a syllable are removed. The printed wording is otherwise kept,
+#' typos included.
+#'
+#' @format A \link[tibble]{tibble} with 100 rows and 7 columns:
+#' \describe{
+#'   \item{FFBF}{Item number on the PID-5-FFBF (integer)}
+#'   \item{Facet}{Name of the PID-5 facet, spelled as in `pid_items$Facet`. Each
+#'   facet has 4 items: facet k, in alphabetical order, holds items k, k + 25,
+#'   k + 50, and k + 75}
+#'   \item{Reverse}{Whether the item needs to be reverse scored (items 12 and
+#'   26)}
+#'   \item{Text}{Self-report item text, English}
+#'   \item{TextIRF}{Informant-report item text, English, without a subject
+#'   (each item reads after the name of the person rated)}
+#'   \item{TextDE}{Self-report item text, German}
+#'   \item{TextIRFDE}{Informant-report item text, German, without a subject}
+#' }
+#' @source Niemeyer, L. M., Grosz, M. P., Zimmermann, J., & Back, M. D.
+#'   (2022). Assessing maladaptive personality in the forensic context:
+#'   Development and validation of the Personality Inventory for DSM-5
+#'   Forensic Faceted Brief Form (PID-5-FFBF). *Journal of Personality
+#'   Assessment, 104*(1), 30-43. \doi{10.1080/00223891.2021.1923522}. Item
+#'   text from its supplement, Table S3 (<https://osf.io/fzyvr/>): Copyright
+#'   2013 American Psychiatric Association, German version 2015, developed
+#'   with permission from Hogrefe and the APA.
+#' @examples
+#' pid_ffbf_items
+"pid_ffbf_items"
+
+#' PID-5 Forensic Faceted Brief Form Domain Data
+#'
+#' The map from each of the 7 domains that `score_pid5(version = "FFBF")`
+#' returns to its 3 facets. The first 5 rows are the APA domains of
+#' [pid_domains], each the mean of its 3 primary facets (Niemeyer et al.,
+#' 2022, p. 33). The last 2 rows are the domains of the paper's four-factor
+#' solution that are not APA domains, Disinhibited Aggression and Insecurity,
+#' with the facets of the authors' analysis code. The paper's four-factor
+#' Antagonism and Detachment have the facets of the APA domains of the same
+#' names, so they are not repeated.
+#'
+#' @format A \link[tibble]{tibble} with 7 rows and 4 columns, the columns of
+#'   [pid_domains]:
+#' \describe{
+#'   \item{Domain}{Name of the domain. The APA domains are spelled as in
+#'   [pid_domains] and the two forensic domains as the paper prints them}
+#'   \item{camelCase}{The domain name in camel case (the score-output column stem)}
+#'   \item{primaryFacets}{A list column of the 3 facet names per domain}
+#'   \item{facetStems}{A list column of those 3 facet names in camel case (the facet score-output column stems)}
+#' }
+#' @source Niemeyer, L. M., Grosz, M. P., Zimmermann, J., & Back, M. D.
+#'   (2022). *Journal of Personality Assessment, 104*(1), 30-43.
+#'   \doi{10.1080/00223891.2021.1923522}. The four-factor domain facets are
+#'   from the authors' analysis code on the paper's OSF project
+#'   (<https://osf.io/m42gn/>).
+#' @examples
+#' pid_ffbf_domains
+"pid_ffbf_domains"
 
 #' Personality Inventory for DSM-5 Normative Tables
 #'

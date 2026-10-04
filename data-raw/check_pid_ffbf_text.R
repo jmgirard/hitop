@@ -1,0 +1,228 @@
+# Check the PID-5-FFBF transcription against Table S3 and the authors' code
+# (M162, AC1 and AC2)
+#
+# data-raw/pid_ffbf_items.csv, from which data-raw/pid_info.R builds the shipped
+# `pid_ffbf_items` that this script reads, was built from the word positions that
+# `pdftotext -bbox` reports for Table S3 of Niemeyer et al. (2022): each word
+# went to the cell its column and row place it in. This script reads the same
+# PDF a second way, `pdftotext -raw`, which keeps each cell's lines together in
+# the order self German, self English, informant German, informant English.
+# For each item it looks for the split of the item's lines into four runs that
+# gives the table's four texts under the rule below. So every word must be in
+# the table, in its cell in reading order. It also checks:
+#
+#   1. the item numbers, 1 to 100, each once;
+#   2. each item's facet, read from the facet heading above it;
+#   3. the reverse items, read from the "(-)" mark in both German cells;
+#   4. against the authors' code: each facet's four self-report items, the two
+#      recoded items, and the facets of the two four-factor domains that are
+#      not APA domains.
+#
+# The rule (M162 AC1): drop a parenthetical source note that begins "(G" or
+# "(E-", the "(-)" mark, a stray marker of "E" and digits, a leading ellipsis
+# and a final period; turn typographic quotes, apostrophes and the acute
+# accent into ASCII; in a German text, drop a hyphen inside a word (a hyphen
+# followed by a lowercase letter, with or without a line break); in an English
+# text, join a word split at a hyphen by a line break, keeping the hyphen.
+#
+# Maintainer-run, never CI: it needs the gitignored shelf and pdftotext. It
+# exits non-zero on any departure, so a printed report cannot be mistaken for
+# a pass. Source: cairn/references/niemeyer2022.md.
+
+source_pdf <- "cairn/references/sources/niemeyer2022_tableS3.pdf"
+source_sha <- "d0a04a14237d4ff6cd54c9cf97cd761a32080a84061c8d90a5eb9c5e231330b4"
+code_file <- "cairn/references/sources/niemeyer2022_code.R"
+code_sha <- "41547644d7ad0b0e59993e25c01cca63c281482d71e77fadeba42661629bbcdc"
+
+bad <- character(0)
+note <- function(...) bad <<- c(bad, paste0(...))
+
+check_sha <- function(path, want) {
+  got <- system2("shasum", c("-a", "256", shQuote(path)), stdout = TRUE)
+  if (sub(" .*", "", got) != want) {
+    stop(path, " does not match the recorded sha256.", call. = FALSE)
+  }
+}
+check_sha(source_pdf, source_sha)
+check_sha(code_file, code_sha)
+
+normalize <- function(x, german) {
+  x <- gsub("\\((G|E)\\.?-\\s*PID[^)]*\\)", " ", x, perl = TRUE)
+  x <- gsub("(-)", " ", x, fixed = TRUE)
+  x <- gsub("\\bE[0-9]+\\b", " ", x, perl = TRUE)
+  x <- gsub("[‘’´]", "'", x)
+  x <- gsub("[“”]", "\"", x)
+  x <- trimws(gsub("\\s+", " ", x))
+  x <- sub("^(…|\\.\\.\\.)\\s*", "", x)
+  if (german) {
+    x <- gsub("(\\w)- ?(?=[a-zäöüß])", "\\1", x, perl = TRUE)
+  } else {
+    x <- gsub("(\\w)- (\\w)", "\\1-\\2", x, perl = TRUE)
+  }
+  sub("\\.$", "", trimws(x))
+}
+
+load("data/pid_ffbf_items.rda")
+items <- as.data.frame(pid_ffbf_items)
+if (!identical(items$FFBF, 1:100)) note("pid_ffbf_items is not items 1 to 100 in order")
+cols <- c("TextDE", "Text", "TextIRFDE", "TextIRF")
+german <- c(TRUE, FALSE, TRUE, FALSE)
+
+load("data/pid_items.rda")
+facet_names <- sort(unique(pid_items$Facet))
+
+# Read the PDF page by page; drop each page's first line (its page number).
+n_pages <- as.integer(sub(".*:\\s+", "", grep(
+  "^Pages:", system2("pdfinfo", shQuote(source_pdf), stdout = TRUE),
+  value = TRUE
+)))
+lines <- character(0)
+for (p in seq_len(n_pages)) {
+  pg <- system2("pdftotext", c("-raw", "-f", p, "-l", p, shQuote(source_pdf), "-"),
+                stdout = TRUE)
+  pg <- trimws(gsub("\f", "", pg, fixed = TRUE))
+  pg <- pg[nzchar(pg)]
+  lines <- c(lines, pg[-1])
+}
+note_at <- grep("^Note\\. \\(-\\) = reverse coded", lines)
+lines <- lines[seq_len(note_at - 1)]
+lines <- lines[grep("^Item Content of Self", lines) + 1:length(lines)]
+lines <- lines[!is.na(lines)]
+
+# Walk the lines: a facet heading sets the facet, an item-number line starts
+# an item. "84)" and "5 Item 83)" are wrapped note text, not item numbers.
+item_re <- "^([0-9]{1,3})[a-f]*( (.*))?$"
+cur_facet <- NA_character_
+seen <- list()
+cur <- NULL
+flush <- function() {
+  if (!is.null(cur)) seen[[length(seen) + 1]] <<- cur
+}
+for (ln in lines) {
+  ln <- trimws(ln)
+  if (ln %in% facet_names) {
+    flush(); cur <- NULL
+    cur_facet <- ln
+  } else if (grepl(item_re, ln) && !grepl("^[0-9]+ Item|^[0-9]+\\)", ln)) {
+    flush()
+    num <- as.integer(sub(item_re, "\\1", ln))
+    rest <- sub(item_re, "\\3", ln)
+    cur <- list(num = num, facet = cur_facet, lines = if (nzchar(rest)) rest else character(0))
+  } else if (!is.null(cur)) {
+    cur$lines <- c(cur$lines, ln)
+  }
+}
+flush()
+
+nums <- vapply(seen, `[[`, integer(1), "num")
+if (!identical(sort(nums), 1:100)) {
+  note("PDF item numbers are not 1 to 100, each once: ", toString(nums))
+}
+
+# Split an item's words into four runs, in order, whose texts are the table's
+# four texts under the rule. Two cells can share a line in -raw output, so
+# the split points are word positions. Backtracking tries every point at which
+# a run matches, since a run can match at two points (a trailing "(-)").
+split_four <- function(x, want) {
+  w <- unlist(strsplit(paste(x, collapse = " "), " ", fixed = TRUE))
+  w <- w[nzchar(w)]
+  go <- function(from, k) {
+    if (k > 4) return(from > length(w))
+    if (from > length(w)) return(FALSE)
+    for (to in from:length(w)) {
+      if (normalize(paste(w[from:to], collapse = " "), german[k]) == want[k] &&
+          go(to + 1, k + 1)) {
+        return(TRUE)
+      }
+    }
+    FALSE
+  }
+  go(1, 1)
+}
+
+pdf_reverse <- integer(0)
+for (it in seen) {
+  row <- items[items$FFBF == it$num, ]
+  if (nrow(row) != 1) next
+  if (!identical(row$Facet, it$facet)) {
+    note("item ", it$num, ": table facet ", row$Facet, ", PDF heading ", it$facet)
+  }
+  want <- unlist(row[cols])
+  if (!split_four(it$lines, want)) {
+    note("item ", it$num, ": no split of the PDF lines gives the table's four texts")
+  }
+  if (grepl("(-)", paste(it$lines, collapse = " "), fixed = TRUE)) {
+    pdf_reverse <- c(pdf_reverse, it$num)
+  }
+}
+pdf_reverse <- sort(pdf_reverse)
+if (!identical(pdf_reverse, sort(items$FFBF[items$Reverse]))) {
+  note("reverse items: PDF marks ", toString(pdf_reverse), ", table flags ",
+       toString(items$FFBF[items$Reverse]))
+}
+
+# The authors' code: facet item lists (self report), recodes, domains.
+code <- readLines(code_file, encoding = "UTF-8", warn = FALSE)
+code_facets <- c(
+  insec = "Separation Insecurity", anxiou = "Anxiousness",
+  emotion = "Emotional Lability", submiss = "Submissiveness",
+  persev = "Perseveration", withdraw = "Withdrawal",
+  intim = "Intimacy Avoidance", anhed = "Anhedonia",
+  affect = "Restricted Affectivity", depress = "Depressivity",
+  suspic = "Suspiciousness", manipu = "Manipulativeness",
+  deceit = "Deceitfulness", grandios = "Grandiosity",
+  callou = "Callousness", attent = "Attention Seeking",
+  hostil = "Hostility", impuls = "Impulsivity",
+  irres = "Irresponsibility", perfect = "Rigid Perfectionism",
+  distract = "Distractibility", risk = "Risk Taking",
+  beliefs = "Unusual Beliefs & Experiences",
+  dysreg = "Perceptual Dysregulation", eccent = "Eccentricity"
+)
+for (stem in names(code_facets)) {
+  ln <- grep(paste0("^", stem, "_self\\.nam\\s*<-\\s*self\\.nam"), code,
+             value = TRUE, perl = TRUE)
+  # The code defines each list twice, first for the FFBF (item names with
+  # "_N_" for adapted items) and later for the original form; both must agree.
+  if (length(ln) == 0) {
+    note("code: no self-report list for ", stem)
+    next
+  }
+  csv <- sort(items$FFBF[items$Facet == code_facets[[stem]]])
+  for (one in ln) {
+    got <- sort(as.integer(regmatches(one, gregexpr("(?<=PID)[0-9]+", one, perl = TRUE))[[1]]))
+    if (!identical(got, csv)) {
+      note("code: ", stem, " lists ", toString(got), ", table ", toString(csv))
+    }
+  }
+}
+recoded <- sort(as.integer(unique(sub(
+  "^data\\$PID([0-9]+)_N_self <- 3 - .*", "\\1",
+  grep("^data\\$PID[0-9]+_N_self <- 3 - ", code, value = TRUE)
+))))
+if (!identical(recoded, sort(items$FFBF[items$Reverse]))) {
+  note("code recodes ", toString(recoded), ", table flags ",
+       toString(items$FFBF[items$Reverse]))
+}
+dom_line <- function(k) {
+  ln <- grep(paste0("^domain4_self_i\\.nam\\[\\[", k, "\\]\\] <- c\\("), code, value = TRUE)
+  stems <- regmatches(ln, gregexpr("[a-z]+(?=_self\\.nam)", ln, perl = TRUE))[[1]]
+  unname(code_facets[stems])
+}
+code_da <- dom_line(3)
+code_ins <- dom_line(4)
+
+cat("Source: ", source_pdf, "\n", sep = "")
+cat("sha256: ", source_sha, " (matches)\n", sep = "")
+cat("Code: ", code_file, " (sha256 matches)\n", sep = "")
+cat("Items read from the PDF: ", length(seen), "\n", sep = "")
+cat("Reverse items (PDF, table, code): ", toString(pdf_reverse), "\n", sep = "")
+cat("Code domain 3 (Disinhibited Aggression): ", toString(code_da), "\n", sep = "")
+cat("Code domain 4 (Insecurity): ", toString(code_ins), "\n", sep = "")
+
+if (length(bad)) {
+  cat("\nFAIL (", length(bad), "):\n", sep = "")
+  cat(paste0("  ", bad), sep = "\n")
+  quit(status = 1)
+}
+cat("\nPASS: 400 texts, 100 facets and 2 reverse items match Table S3;",
+    "25 facet lists and the recodes match the authors' code.\n")

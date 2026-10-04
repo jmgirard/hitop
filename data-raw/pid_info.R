@@ -95,6 +95,30 @@ pid_items <- tibble::add_column(
 )
 usethis::use_data(pid_items, overwrite = TRUE)
 
+## PID-5 Forensic Faceted Brief Form (Niemeyer et al., 2022; M162). One row per
+## FFBF item, in item-number order: its facet as Table S3's heading prints it,
+## its reverse flag (Table S3's "(-)" marks), and its text in four versions:
+## self report English and German, informant report English and German. Most
+## items are rewritten for prisoners and match no 220-item row, so the form has
+## its own table rather than `pid_items` columns. data-raw/check_pid_ffbf_text.R
+## checks the CSV against the shelf PDF and the authors' code
+## (cairn/references/niemeyer2022.md).
+pid_ffbf_items <- readr::read_csv(
+  "data-raw/pid_ffbf_items.csv",
+  col_types = readr::cols(
+    FFBF = readr::col_integer(),
+    Reverse = readr::col_logical(),
+    .default = readr::col_character()
+  )
+)
+stopifnot(
+  identical(pid_ffbf_items$FFBF, 1:100),
+  all(pid_ffbf_items$Facet %in% pid_items$Facet),
+  all(table(pid_ffbf_items$Facet) == 4L),
+  !anyNA(pid_ffbf_items)
+)
+usethis::use_data(pid_ffbf_items, overwrite = TRUE)
+
 # ------------------------------------------------------------------------------
 
 ## PID Scales
@@ -212,12 +236,33 @@ pid5irf_scales <-
 names(pid5irf_scales$itemNumbers) <- pid5irf_scales$camelCase
 stopifnot(identical(pid5irf_scales$Facet, pid5_scales$Facet))
 
+## The PID-5-FFBF facets (M162): the 25 facets in the FULL order, so output
+## columns line up with the other 25-facet versions, numbered by FFBF item and
+## carrying the English self-report text. Domains come from `pid_ffbf_domains`.
+pid5ffbf_scales <-
+  pid_ffbf_items |>
+  dplyr::select(Facet, FFBF, Reverse, Text) |>
+  tidyr::nest(
+    itemdata = c(FFBF, Reverse, Text),
+    .by = Facet
+  )
+pid5ffbf_scales <- pid5ffbf_scales[match(pid5_scales$Facet, pid5ffbf_scales$Facet), ]
+pid5ffbf_scales <- dplyr::mutate(
+  pid5ffbf_scales,
+  nItems = purrr::map_int(itemdata, nrow),
+  itemNumbers = purrr::map(itemdata, "FFBF"),
+  camelCase = snakecase::to_any_case(Facet, case = "lower_camel")
+)
+names(pid5ffbf_scales$itemNumbers) <- pid5ffbf_scales$camelCase
+stopifnot(identical(pid5ffbf_scales$Facet, pid5_scales$Facet))
+
 pid_scales <- list(
   FULL = pid5_scales,
   SF = pid5sf_scales,
   BF = pid5bf_scales,
   BFPM = pid5bfpm_scales,
-  IRF = pid5irf_scales
+  IRF = pid5irf_scales,
+  FFBF = pid5ffbf_scales
 )
 usethis::use_data(pid_scales, overwrite = TRUE)
 
@@ -282,5 +327,34 @@ pid_bfpm_domains$facetStems <- lapply(
   function(f) snakecase::to_any_case(f, case = "lower_camel")
 )
 usethis::use_data(pid_bfpm_domains, overwrite = TRUE)
+
+# ------------------------------------------------------------------------------
+
+## PID-5-FFBF Domains (M162)
+# Niemeyer et al. (2022): the five APA domains, each the mean of its three
+# primary facets (p. 33), and the two four-factor domains that are not APA
+# domains, from the authors' code (lines 184 and 185; names as the paper prints
+# them, p. 38). The paper's four-factor Antagonism and Detachment are the APA
+# domains of the same names. Same four columns as `pid_domains`.
+pid_ffbf_domains <- rbind(
+  pid_domains[, c("Domain", "primaryFacets")],
+  tibble::tibble(
+    Domain = c("Disinhibited Aggression", "Insecurity"),
+    primaryFacets = list(
+      c("Emotional Lability", "Hostility", "Impulsivity"),
+      c("Separation Insecurity", "Anxiousness", "Perceptual Dysregulation")
+    )
+  )
+)
+pid_ffbf_domains$camelCase <- snakecase::to_any_case(
+  pid_ffbf_domains$Domain,
+  case = "lower_camel"
+)
+pid_ffbf_domains$facetStems <- lapply(
+  pid_ffbf_domains$primaryFacets,
+  function(f) snakecase::to_any_case(f, case = "lower_camel")
+)
+pid_ffbf_domains <- pid_ffbf_domains[, c("Domain", "camelCase", "primaryFacets", "facetStems")]
+usethis::use_data(pid_ffbf_domains, overwrite = TRUE)
 
 # pid_instructions (administration text) is internal data — see data-raw/sysdata.R
