@@ -170,3 +170,35 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - prior-review #2: no test that `validity_pid5()`, `norm_pid5()` and `plot_pid5()` refuse `"FFBF"` — fix now.
 - prior-review #3: no norming warning — same as diff-bug #1, fix now.
 - prior-review #4: FFBF tests lighter than the IRF sweeps (one alpha, few rename cases, no padding test) — fix now (25 alphas, 100-number and 400-text rename sweeps, a padding test).
+
+### Pass 3 (2026-10-04)
+
+- spawned: diff-bug, blame-history, prior-review
+- AC1: `check_pid_ffbf_text.R` exit 0, PASS; `test-keying.R` 27 tests, 337 expectations, 0 failed. Box stays ticked on this evidence.
+- AC2: `test-keying.R` FFBF domain test passes (same run). Box stays ticked.
+- AC3: `test-score_pid5ffbf.R` 16 tests, 231 expectations, 0 failed (hand values, 1 to 4 range, three-mode recomputation). Box stays ticked.
+- AC4: characterization 120 of 120 `identical()` (pass 1 run; no scoring code changed since, T8 touched docs, tests and the FFBF-only rename refusal); the `"F"` tests pass in `test-score_pid5ffbf.R` and `test-plot_pid5.R`. Box stays ticked.
+- AC5: reliability, rename and label FFBF tests pass, now with 25 alphas and full sweeps. Box stays ticked.
+- AC6: the six facts are in `vignettes/pid5_scoring.Rmd` (validated in German only; English version from Table S3; same version and item-by-item averaging; Antagonism and Detachment; the SF rule and the code's no-rounding, 12-item domain rule; `label_pid5()` self-report text) and in `man/score_pid5.Rd`, `man/pid_ffbf_items.Rd` or `man/label_pid5.Rd`; `grep -i translat` on the four files finds no line; NEWS and `_pkgdown.yml` rows present; `cairn_validate` passes. `devtools::check()` and `pkgdown::check_pkgdown()` are re-run after the pass-3 fixes below.
+- diff-bug #1: the duplicate refusal's hint ("separate calls") still yields two `pid5ffbf_001` columns on one data frame — fix now (hint names a separate data frame or `prefix` per form).
+- diff-bug #2: the FFBF refusal test calls `plot_pid5()` with no ggplot2 skip — fix now.
+- diff-bug #3: `@return` of `rename_pid5_items()` omits the new refusal — fix now.
+- diff-bug #4: `@param method` names only `pid_items` texts — fix now.
+- diff-bug #5: the description omits `pid5ffbf_001` to `pid5ffbf_100` — fix now.
+- diff-bug #6: `version` docs of `reliability_pid5()`, `label_pid5()` and `rename_pid5_items()` omit the `"F"` refusal — fix now.
+- diff-bug #7: duplicate targets stay silent for the other versions — follow-up (pre-existing; noted on the "PID-5 norms not yet shipped" row).
+- diff-bug #8: "plot_pid5() plots them" misdescribes its input (normed columns) — fix now.
+- diff-bug #9: README's export list shows complete while FFBF has no export — fix now (unchecked FFBF row).
+- diff-bug #10: the refusal test expects straight quotes from `match.arg()` — fix now (match "should be one of").
+- diff-bug #11: check-script index when the heading is the last line — fix now (guard).
+- blame-history #1: the new refusal is unclassed and its test asserts prose — reject (planned shape: it matches the function's three other unclassed refusals, and D-034 classes conditions a caller is meant to catch).
+- blame-history #2: the guard is FFBF-only — same as diff-bug #7, follow-up.
+- blame-history #3: stale provenance in `pid_info.R`, `helper-fixtures.R` and the references page (lines 381 to 388) — fix now.
+- blame-history #4: same as diff-bug #8, fix now.
+- blame-history #5: D-092 says "Most" items are rewritten, the docs "Many" — reject (false as a conflict: both hold, since 82 of 100 self-report items are adapted).
+- prior-review #1: keying-test loops lack `info` (LESSONS M032) — fix now.
+- prior-review #2: `R/score_pid5.R` comment "(FULL/SF/IRF/BFPM) the domain -> facet map" omits FFBF — fix now.
+- prior-review #3: NEWS's IRF entry says `pid_scales` has 5 elements, the FFBF entry 6 — fix now (drop the IRF entry's count).
+- prior-review #4: same as diff-bug #3, fix now.
+- prior-review #5: the check script does not test `system2()` status (LESSONS M047) — fix now.
+- prior-review #6: the refusal loop lacks `info` — fix now.
