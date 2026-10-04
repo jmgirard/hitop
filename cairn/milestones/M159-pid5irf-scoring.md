@@ -1,13 +1,13 @@
 # M159: PID-5 informant form (IRF) keying and scoring
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M157
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, IP3, GP2
 - **Resolves:** —
 - **Surface tier:** user-facing — a new `version` value on exported scoring functions and new keying data
-- **Branch/PR:** —
+- **Branch/PR:** m159-pid5irf-scoring
 
 ## Goal
 
@@ -60,6 +60,7 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
 
 - 2026-10-03: created by /milestone-plan, together with M157, M158, M160 and M161. It depends on M157 so that the two version additions do not collide in the same functions.
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 3 clear fixes and 2 judgment findings, all applied. The key's two reverse lists disagree (16 in Step 1, 14 marked R), so AC1 takes the list the T2 gate chooses. AC2 probes the 25% boundary. AC3 reuses M157's characterization script. The T2 gate adds the item-name stem.
+- 2026-10-03: implement started on branch `m159-pid5irf-scoring`, cut from main at `d46368c2` after M158 merged. The untracked `devel/hitopdat_*` files predate the branch and stay out of every commit.
 
 ## Decisions
 
