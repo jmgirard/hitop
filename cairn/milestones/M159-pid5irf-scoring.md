@@ -45,7 +45,7 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
 
 ## Tasks
 
-- [ ] T1: Write the references page for the APA IRF key and add the SOURCES.md row. Transcribe the 218 items and check the transcription against the PDF text by a script run on the shelf copy.
+- [x] T1: Write the references page for the APA IRF key and add the SOURCES.md row. Transcribe the 218 items and check the transcription against the PDF text by a script run on the shelf copy.
 - [ ] T2: Pre-implementation gate. Put three questions to Jeff:
   - Which reverse list governs, Step 1's 16 items or the facet table's 14? This is keying content and needs Jeff's sign-off. Record it as an open question in SOURCES.md. (RB tripwire: ip-touching)
   - Does the IRF go in a column of `pid_items` or in a separate table? The audit reported that the IRF lacks self-report items 96 and 177, so the row alignment shifts before item 96. A column holds informant text beside the self-report text. (RB tripwire: irreversible-api)
@@ -61,6 +61,8 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
 - 2026-10-03: created by /milestone-plan, together with M157, M158, M160 and M161. It depends on M157 so that the two version additions do not collide in the same functions.
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 3 clear fixes and 2 judgment findings, all applied. The key's two reverse lists disagree (16 in Step 1, 14 marked R), so AC1 takes the list the T2 gate chooses. AC2 probes the 25% boundary. AC3 reuses M157's characterization script. The T2 gate adds the item-name stem.
 - 2026-10-03: implement started on branch `m159-pid5irf-scoring`, cut from main at `d46368c2` after M158 merged. The untracked `devel/hitopdat_*` files predate the branch and stay out of every commit.
+- 2026-10-03: T1 done. `data-raw/pid_irf_items.csv` holds the 218 items (IRF number, mapped self-report number, facet, text), built from `pdftotext -layout`. `data-raw/check_pid_irf_text.R` reads the shelf PDF with `pdftotext -raw` and passes on all 218 texts, 25 facets and the mapping. A planted wrong word and facet gave 4 failures. New references page `apa2013pid5irf.md`, two SOURCES.md rows and OQ-4.
+- 2026-10-03: implement choice: the IRF text drops the leading ellipsis and the final period and uses ASCII quotes, as `pid_items.csv` does for the self-report text. The check normalizes the PDF the same way. The IRF has no counterpart to self-report items 96 and 177, both reverse-keyed. Mapped across, the self-report reverse flags give the Facet Table's 14 R marks, not Step 1's 16.
 
 ## Decisions
 

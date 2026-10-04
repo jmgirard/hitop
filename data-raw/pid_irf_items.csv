@@ -1,0 +1,219 @@
+IRF,FULL,Facet,Text
+1,1,Anhedonia,doesn't get as much pleasure out of things as others seem to
+2,2,Suspiciousness,believes people are out to get them
+3,3,Risk Taking,is reckless
+4,4,Impulsivity,acts totally on impulse
+5,5,Eccentricity,often has unusual ideas
+6,6,Distractibility,loses track of conversations because other things catch their attention
+7,7,Risk Taking,avoids risky situations
+8,8,Restricted Affectivity,"can be a ""cold fish"" when it comes to their emotions"
+9,9,Submissiveness,changes what they do depending on what others want
+10,10,Withdrawal,prefers not to get too close to people
+11,11,Callousness,often gets into physical fights
+12,12,Separation Insecurity,dreads being without someone to love them
+13,13,Callousness,is rude and unfriendly
+14,14,Attention Seeking,does things to make sure people notice them
+15,15,Submissiveness,usually does what others think they should do
+16,16,Impulsivity,usually does things on impulse without thinking about what might happen as a result
+17,17,Impulsivity,can't stop making rash decisions even though they know better
+18,18,Emotional Lability,changes in emotion for no good reason
+19,19,Callousness,really doesn't care if they make other people suffer
+20,20,Withdrawal,keeps to themselves
+21,21,Eccentricity,often says things that are odd or strange
+22,22,Impulsivity,always does things on the spur of the moment
+23,23,Anhedonia,is not very interested in anything
+24,24,Eccentricity,behaves in a weird way
+25,25,Eccentricity,thinks about things in a really strange way
+26,26,Anhedonia,almost never enjoys life
+27,27,Depressivity,often feels like nothing they do really matters
+28,28,Hostility,snaps at people over little things that irritate them
+29,29,Distractibility,can't concentrate on anything
+30,30,Anhedonia,is an energetic person
+31,31,Irresponsibility,is irresponsible
+32,32,Hostility,can be mean
+33,33,Eccentricity,has thoughts that often go off in odd or unusual directions
+34,34,Rigid Perfectionism,spends too much time making sure things are exactly in place
+35,35,Risk Taking,avoids risky sports and activities
+36,36,Perceptual Dysregulation,seems to have trouble telling the difference between dreams and waking life
+37,37,Perceptual Dysregulation,talks about weird sensations (like feeling that parts of their body feel like they're dead or not really them)
+38,38,Hostility,is easily angered
+39,39,Risk Taking,has no limits when it comes to doing dangerous things
+40,40,Grandiosity,thinks they are just more important than other people
+41,41,Deceitfulness,makes up stories about things that happened that are totally untrue
+42,42,Perceptual Dysregulation,claims strange problems with memory that are difficult to explain
+43,43,Attention Seeking,does things just to make people admire them
+44,44,Perceptual Dysregulation,reports seeing weird things (like ordinary objects changing shapes)
+45,45,Restricted Affectivity,doesn't have very long-lasting emotional reactions to things
+46,46,Perseveration,"finds it hard to stop an activity, even when it's time to do so"
+47,47,Distractibility,is not good at planning ahead
+48,48,Risk Taking,does a lot of things that others consider risky
+49,49,Rigid Perfectionism,focuses too much on minor details
+50,50,Separation Insecurity,worries a lot about being alone
+51,51,Perseveration,has missed out on things because they were busy trying to get something they were doing exactly right
+52,52,Eccentricity,often has thoughts that don't make sense
+53,53,Deceitfulness,often makes up things about themselves to help them get what they want
+54,54,Callousness,is not really bothered to see other people get hurt
+55,55,Eccentricity,often says really weird things
+56,56,Deceitfulness,often flatters people in order to get something
+57,57,Separation Insecurity,would rather be in a bad relationship than be alone
+58,58,Impulsivity,usually thinks before they act
+59,59,Perceptual Dysregulation,often talks about seeing vivid images (like dreams spilling into waking life)
+60,60,Perseveration,"keeps approaching things the same way, even when it isn't working"
+61,61,Depressivity,is very dissatisfied with themselves
+62,62,Emotional Lability,has much stronger emotional reactions than almost everyone else
+63,63,Submissiveness,does what other people tell them to do
+64,64,Separation Insecurity,"can't stand being left alone, even for a few hours"
+65,65,Grandiosity,thinks too highly of themselves
+66,66,Depressivity,sees the future as really hopeless
+67,67,Risk Taking,likes to take risks
+68,68,Distractibility,can't achieve goals because other things capture their attention
+69,69,Risk Taking,doesn't let something being risky stop them from doing it
+70,70,Eccentricity,is quite odd or unusual
+71,71,Eccentricity,has strange and unpredictable thoughts
+72,72,Callousness,doesn't care about other people's feelings
+73,73,Callousness,disregards others to get what they want
+74,74,Attention Seeking,loves getting the attention of other people
+75,75,Withdrawal,goes out of their way to avoid any kind of group activity
+76,76,Deceitfulness,can be sneaky if it means getting what they want
+77,77,Perceptual Dysregulation,often seems to see things as unfamiliar or strange
+78,78,Perseveration,finds it hard to shift from one activity to another
+79,79,Anxiousness,worries a lot about terrible things that might happen
+80,80,Perseveration,has trouble changing how they are doing something even if what they are doing isn't going well
+81,81,Depressivity,thinks the world would be better off if they were dead
+82,82,Withdrawal,keeps their distance from people
+83,83,Perceptual Dysregulation,often can't seem to control what they think about
+84,84,Restricted Affectivity,doesn't get emotional
+85,85,Hostility,"resents being told what to do, even by people in charge"
+86,86,Depressivity,often seems ashamed about little things
+87,87,Risk Taking,avoids anything that might be even a little bit dangerous
+88,88,Distractibility,has trouble pursuing specific goals even for short periods of time
+89,89,Intimacy Avoidance,prefers to keep romance out of their life
+90,90,Callousness,would never harm another person
+91,91,Restricted Affectivity,doesn't show emotions strongly
+92,92,Hostility,has a very short temper
+93,93,Anxiousness,often worries that something bad will happen due to mistakes they made in the past
+94,94,Unusual Beliefs & Experiences,thinks they have unusual abilities (like sometimes knowing exactly what someone is thinking)
+95,95,Anxiousness,is very nervous about the future
+96,97,Intimacy Avoidance,enjoys being in love
+97,98,Risk Taking,prefers to play it safe rather than take unnecessary chances
+98,99,Unusual Beliefs & Experiences,sometimes hears things that aren't really there
+99,100,Perseveration,gets fixated on certain things and can't stop
+100,101,Restricted Affectivity,is difficult to read emotionally
+101,102,Emotional Lability,is a highly emotional person
+102,103,Suspiciousness,worries about others taking advantage of them
+103,104,Depressivity,often feels like a failure
+104,105,Rigid Perfectionism,finds it simply not acceptable if they do not do something absolutely perfectly
+105,106,Unusual Beliefs & Experiences,"often has unusual experiences, such as sensing the presence of someone who isn't actually there"
+106,107,Manipulativeness,is good at making people do what they want them to do
+107,108,Intimacy Avoidance,breaks off relationships if they start to get close
+108,109,Anxiousness,is always worrying about something
+109,110,Anxiousness,worries about almost everything
+110,111,Attention Seeking,likes standing out in a crowd
+111,112,Risk Taking,doesn't mind a little risk now and then
+112,113,Attention Seeking,often displays bold behavior that grabs peoples' attention
+113,114,Grandiosity,thinks they are better than almost everyone else
+114,115,Rigid Perfectionism,has a need to have everything all arranged
+115,116,Hostility,always makes sure they get back at people who wrong them
+116,117,Suspiciousness,is always on his/her guard for someone trying to trick or harm them
+117,118,Distractibility,has trouble keeping their mind focused on what needs to be done
+118,119,Depressivity,talks about suicide a lot
+119,120,Intimacy Avoidance,is just not very interested in having sexual relationships
+120,121,Perseveration,gets stuck on things a lot
+121,122,Emotional Lability,"gets emotional easily, often for very little reason"
+122,123,Rigid Perfectionism,insists on absolute perfection in everything they do even though it drives other people crazy
+123,124,Anhedonia,almost never feels happy about their day-to-day activities
+124,125,Manipulativeness,finds sweet-talking others helps them get what they want
+125,126,Deceitfulness,sometimes exaggerates or lies about themselves to get ahead
+126,127,Separation Insecurity,fears being alone in life more than anything else
+127,128,Perseveration,"gets stuck on one way of doing things, even when it's clear it won't work"
+128,129,Irresponsibility,is often pretty careless with their own and others' things
+129,130,Anxiousness,is a very anxious person
+130,131,Suspiciousness,thinks people are basically trustworthy
+131,132,Distractibility,is easily distracted
+132,133,Suspiciousness,often thinks they are being mistreated
+133,134,Deceitfulness,doesn't hesitate to cheat if it gets them ahead
+134,135,Rigid Perfectionism,checks things several times to make sure they are perfect
+135,136,Withdrawal,doesn't like spending time with others
+136,137,Perseveration,feels compelled to go on with things even when it makes little sense to do so
+137,138,Emotional Lability,has emotions that can change from moment to moment
+138,139,Unusual Beliefs & Experiences,has seen things that weren't really there
+139,140,Rigid Perfectionism,believes it is important that things are done in a certain way
+140,141,Anxiousness,always expects the worst to happen
+141,142,Deceitfulness,tries to tell the truth even when it's hard
+142,143,Unusual Beliefs & Experiences,believes that some people can move things with their minds
+143,144,Distractibility,can't focus on things for very long
+144,145,Intimacy Avoidance,steers clear of romantic relationships
+145,146,Withdrawal,is not interested in making friends
+146,147,Withdrawal,says as little as possible when dealing with people
+147,148,Depressivity,thinks they are useless as a person
+148,149,Separation Insecurity,will do just about anything to keep someone from abandoning them
+149,150,Unusual Beliefs & Experiences,thinks they can influence people by literally sending their thoughts to them
+150,151,Depressivity,thinks that life looks pretty bleak
+151,152,Eccentricity,thinks about things in odd ways that don't make sense to most people
+152,153,Callousness,doesn't care if their actions hurt others
+153,154,Perceptual Dysregulation,"sometimes thinks their thoughts are being ""controlled"" by someone else"
+154,155,Anhedonia,really lives life to the fullest
+155,156,Irresponsibility,seems to make promises that they don't intend to keep
+156,157,Anhedonia,does not seem to feel good about anything
+157,158,Hostility,gets irritated easily by all sorts of things
+158,159,Risk Taking,does what they want regardless of how unsafe it might be
+159,160,Irresponsibility,often forgets to pay their bills
+160,161,Withdrawal,doesn't like to get too close to people
+161,162,Manipulativeness,is good at conning people
+162,163,Depressivity,finds everything pointless
+163,164,Risk Taking,never takes risks
+164,165,Emotional Lability,gets emotional over every little thing
+165,166,Callousness,believes it is no big deal if they hurt other peoples' feelings
+166,167,Restricted Affectivity,never shows emotions to others
+167,168,Depressivity,often feels just miserable
+168,169,Depressivity,feels worthless as a person
+169,170,Hostility,is usually pretty hostile
+170,171,Irresponsibility,has skipped town to avoid responsibilities
+171,172,Eccentricity,has a number of odd quirks or habits
+172,173,Attention Seeking,likes being a person who gets noticed
+173,174,Anxiousness,is always fearful or on edge about bad things that might happen
+174,175,Separation Insecurity,never wants to be alone
+175,176,Rigid Perfectionism,"keeps trying to make things perfect, even when they have gotten them as good as they're likely to get"
+176,178,Depressivity,mentions that they will commit suicide sooner or later
+177,179,Grandiosity,exaggerates their own achievements
+178,180,Manipulativeness,can certainly turn on the charm if they need to get their way
+179,181,Emotional Lability,has unpredictable emotions
+180,182,Withdrawal,doesn't deal with people unless they have to
+181,183,Callousness,doesn't care about other peoples' problems
+182,184,Restricted Affectivity,doesn't react much to things that seem to make others emotional
+183,185,Eccentricity,has several habits that are eccentric or strange
+184,186,Withdrawal,avoids social events
+185,187,Grandiosity,thinks they deserve special treatment
+186,188,Hostility,is really angry when people insult them in even a minor way
+187,189,Anhedonia,rarely gets enthusiastic about anything
+188,190,Suspiciousness,suspects that their friends betray them a lot
+189,191,Attention Seeking,craves attention
+190,192,Perceptual Dysregulation,sometimes thinks someone else is removing thoughts from their head
+191,193,Perceptual Dysregulation,has periods in which they feel disconnected from the world or from themselves
+192,194,Unusual Beliefs & Experiences,often makes unusual connections between things
+193,195,Risk Taking,doesn't think about getting hurt when they are doing things that might be dangerous
+194,196,Rigid Perfectionism,simply won't put up with things being out of their proper places
+195,197,Grandiosity,"often ""looks down"" on others"
+196,198,Callousness,sometimes hits people
+197,199,Distractibility,gets pulled off-task by even minor distractions
+198,200,Callousness,enjoys making people in control look stupid
+199,201,Irresponsibility,just skips appointments or meetings if they are not in the mood
+200,202,Submissiveness,tries to do what others want them to do
+201,203,Intimacy Avoidance,prefers being alone to having a close romantic partner
+202,204,Impulsivity,is very impulsive
+203,205,Eccentricity,often has thoughts that make sense to them but that other people say are strange
+204,206,Deceitfulness,uses people to get what they want
+205,207,Callousness,doesn't feel guilty about things they have done that have hurt other people
+206,208,Callousness,is not friendly most of the time
+207,209,Unusual Beliefs & Experiences,talks about really weird experiences that are difficult for them to explain
+208,210,Irresponsibility,follows through on commitments
+209,211,Attention Seeking,likes to draw attention to themselves
+210,212,Depressivity,feels guilty much of the time
+211,213,Perceptual Dysregulation,"often ""zones out"" for periods of time"
+212,214,Deceitfulness,lies easily
+213,215,Risk Taking,hates to take chances
+214,216,Hostility,can be nasty and short with others
+215,217,Perceptual Dysregulation,"talks about feeling like things are unreal, or more real than usual"
+216,218,Deceitfulness,will stretch the truth if it's to their advantage
+217,219,Manipulativeness,finds it is easy to take advantage of others
+218,220,Rigid Perfectionism,has a strict way of doing things
