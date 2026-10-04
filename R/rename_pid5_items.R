@@ -12,8 +12,10 @@
 #' @param data A data frame containing the PID-5 items.
 #' @param version A string specifying the PID-5 form the items belong to:
 #'   `"FULL"` (220 items), `"SF"` (100 items), `"BF"` (25 items), `"BFPM"`
-#'   (the 36-item PID5BF+M), or `"IRF"` (the 218-item Informant Form, whose
-#'   text matches `pid_items$TextIRF`). Matched case-insensitively.
+#'   (the 36-item PID5BF+M), `"IRF"` (the 218-item Informant Form, whose
+#'   text matches `pid_items$TextIRF`), or `"FFBF"` (the 100-item Forensic
+#'   Faceted Brief Form, whose text matches any of the four texts in
+#'   [pid_ffbf_items]: self or informant report, English or German). Matched case-insensitively.
 #'   (default = `"FULL"`)
 #' @param method A string specifying the matching method: `"number"` to rename
 #'   columns spelled `from_prefix` followed by an item number, or `"text"` to
@@ -39,7 +41,7 @@
 #' @param prefix A string pasted literally before each standardized item
 #'   number, which is zero-padded to the width of the form's largest item
 #'   number. `NULL` resolves to the form's own stem: `"pid5_"`, `"pid5sf_"`,
-#'   `"pid5bf_"`, `"pid5bfpm_"` or `"pid5irf_"`. (default = `NULL`)
+#'   `"pid5bf_"`, `"pid5bfpm_"`, `"pid5irf_"` or `"pid5ffbf_"`. (default = `NULL`)
 #'
 #' @return A data frame with renamed column names for the matched PID-5 items.
 #'   Columns that could not be matched keep their names. Under

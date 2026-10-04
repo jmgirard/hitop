@@ -37,8 +37,9 @@ before 2.0 (\code{labelled_spss}) is refused the same way, but
 \code{na_values} or \code{na_range} attribute declares to \code{NA} first.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
-"SF", "BF", "BFPM" (the 36-item PID5BF+M), or "IRF" (the 218-item
-Informant Form). Will be automatically capitalized. (default = \code{"FULL"})}
+"SF", "BF", "BFPM" (the 36-item PID5BF+M), "IRF" (the 218-item
+Informant Form), or "FFBF" (the 100-item Forensic Faceted Brief Form).
+Will be automatically capitalized. (default = \code{"FULL"})}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the items, used for reverse-coding. (default = \code{c(0, 3)})}
@@ -61,11 +62,13 @@ it), \code{camelCase} (the stem that names the scale's column in the matching
 Compute per-scale internal-consistency reliability — Cronbach's alpha and
 McDonald's omega — for the Personality Inventory for DSM-5: full version
 (PID-5, 220 items), short form (PID-5-SF, 100 items), brief form (PID-5-BF,
-25 items), modified brief form (PID5BF+M, 36 items), or Informant Form
-(PID-5-IRF, 218 items; Markon et al., 2013). Reliability is
+25 items), modified brief form (PID5BF+M, 36 items), Informant Form
+(PID-5-IRF, 218 items; Markon et al., 2013), or Forensic Faceted Brief Form
+(PID-5-FFBF, 100 items; Niemeyer et al., 2022). Reliability is
 estimated on the reverse-keyed item responses, at the facet level for
-FULL/SF/IRF and the domain level for BF (the same scales \code{\link[=score_pid5]{score_pid5()}}
-outputs, before FULL/SF/IRF domain aggregation). The IRF facets are the full
+FULL/SF/IRF/FFBF and the domain level for BF (the same scales \code{\link[=score_pid5]{score_pid5()}}
+outputs, before FULL/SF/IRF/FFBF domain aggregation). The FFBF facets are its
+25 four-item facets in the SF's order (see \code{\link[=score_pid5]{score_pid5()}}). The IRF facets are the full
 form's 25, numbered by informant item and reverse-keyed as the APA IRF key's
 Facet Table marks (see \code{\link[=score_pid5]{score_pid5()}}). The BF version also returns a \code{Total} row
 covering all 25 items; note that this scale spans five heterogeneous domains,

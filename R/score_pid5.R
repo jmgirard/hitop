@@ -3,8 +3,9 @@
 #' Calculate scale scores on the Personality Inventory for DSM-5: full version
 #' (PID-5, 220 items), short form version (PID-5-SF, 100 items), brief form
 #' version (PID-5-BF, 25 items), modified brief form (PID5BF+M, 36 items;
-#' Bach et al., 2020), or Informant Form (PID-5-IRF, 218 items; Markon et al.,
-#' 2013) from item-level data.
+#' Bach et al., 2020), Informant Form (PID-5-IRF, 218 items; Markon et al.,
+#' 2013), or Forensic Faceted Brief Form (PID-5-FFBF, 100 items; Niemeyer et
+#' al., 2022) from item-level data.
 #'
 #' @param data A data frame containing (at least) all the PID items (numerically
 #'   scored and in order).
@@ -29,8 +30,11 @@
 #'   `haven::zap_missing()` leaves it unchanged, so set the values its
 #'   `na_values` or `na_range` attribute declares to `NA` first.
 #' @param version A string indicating the version of the PID to score: "FULL",
-#'   "SF", "BF", "BFPM" (the 36-item PID5BF+M), or "IRF" (the 218-item
-#'   Informant Form). Will be automatically capitalized. (default = `"FULL"`)
+#'   "SF", "BF", "BFPM" (the 36-item PID5BF+M), "IRF" (the 218-item
+#'   Informant Form), or "FFBF" (the 100-item Forensic Faceted Brief Form).
+#'   Will be automatically capitalized. A unique start of a name is accepted,
+#'   but `"F"` is refused, because it starts both "FULL" and "FFBF".
+#'   (default = `"FULL"`)
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param prefix An optional string to add before each scale column name. If no
@@ -40,7 +44,7 @@
 #'   scoring key: a facet or domain-item scale with more than 25% of its items
 #'   unanswered is set to `NA`, and otherwise the raw score is prorated to the
 #'   full item count and rounded to the nearest whole number before averaging (a
-#'   FULL, SF, IRF or BFPM domain is `NA` if any one of its three contributing
+#'   FULL, SF, IRF, FFBF or BFPM domain is `NA` if any one of its three contributing
 #'   facets is `NA`). The PID-5-IRF key prints this step as "round up to the
 #'   nearest whole number". The package reads it as the nearest-whole-number
 #'   rule that every other APA PID-5 key states, with halves rounded up, so an
@@ -143,6 +147,58 @@
 #'   informant norms (Markon et al., 2024, Tables A–10 and A–11) are not in
 #'   `pid_norms`. [validity_pid5()] has no informant validity scales.
 #'
+#' @details ## The PID-5 Forensic Faceted Brief Form
+#'
+#'   `version = "FFBF"` scores the PID-5 Forensic Faceted Brief Form
+#'   (PID-5-FFBF; Niemeyer et al., 2022), an adaptation of the 100-item faceted
+#'   short form for people in prison, with a self-report and an informant
+#'   version. The form was validated in German; the English text in
+#'   [pid_ffbf_items] is the authors' translation. Its items are rewritten and
+#'   numbered by the authors, so they are not the SF's: matched by number, 98
+#'   of the 100 SF items fall in a different facet. Facet k, in alphabetical
+#'   order, holds items k, k + 25, k + 50 and k + 75. Items 12 and 26 are
+#'   reverse-scored.
+#'
+#'   The output is 25 facets, named and ordered as the SF's, then 7 domains:
+#'   the 5 APA domains of [pid_domains] and the two domains of the paper's
+#'   four-factor solution that are not APA domains, Disinhibited Aggression
+#'   (Emotional Lability, Hostility, Impulsivity) and Insecurity (Separation
+#'   Insecurity, Anxiousness, Perceptual Dysregulation). The paper's
+#'   four-factor Antagonism and Detachment have the facets of the APA domains
+#'   of the same names, so they are not repeated. [pid_ffbf_domains] holds the
+#'   map. The four-factor structure comes from one exploratory study of 199
+#'   male prisoners, and the authors leave open whether Insecurity is needed
+#'   (Niemeyer et al., 2022, p. 39). The seven domains share facets, so they
+#'   are not independent scores.
+#'
+#'   **Missing data.** The paper prints no missing-data rule. Under
+#'   `missing = "apa"` the package applies the full-form APA rule, as it does
+#'   for the SF: a facet with 1 of its 4 items missing is prorated and
+#'   rounded, a facet with 2 or more missing is `NA`, and a domain with an
+#'   `NA` facet is `NA`. The authors' published analysis code scores
+#'   differently. It takes the unrounded mean of the answered items for a
+#'   facet with 1 item missing, and it scores a domain as the mean of its 12
+#'   items when up to 3 of them are missing, wherever they fall. With complete
+#'   data the two rules agree. With missing items a facet can differ by up to
+#'   1/12 (for example 1.75 here against 1.67 for answers 0, 2 and 3), and a
+#'   domain can be `NA` here where the code gives a value. The paper's
+#'   descriptive statistics were computed under the code's rule. No `missing`
+#'   mode reproduces it.
+#'
+#'   **Informant reports.** Informant data are scored with the same version.
+#'   The paper averaged the responses of two informants item by item before
+#'   scoring, and used the one informant's response where the other was
+#'   missing; do that step first, for example with
+#'   `rowMeans(cbind(x1, x2), na.rm = TRUE)` for each item. Averaged responses
+#'   can be halves, and they score like any other values. Under
+#'   `missing = "apa"` the proration step rounds them too: a facet with one
+#'   item missing and answers 0.5, 1 and 1 scores 0.75, where
+#'   `missing = "available"` gives 0.833. One informant's responses score
+#'   directly.
+#'
+#'   [norm_pid5()], [plot_pid5()] and [validity_pid5()] do not take the FFBF,
+#'   because no FFBF norms or validity keys are published.
+#'
 #' @details ## The PID-5 child forms
 #'
 #'   `version = "FULL"` scores the APA's 220-item PID-5 child form for ages 11
@@ -232,6 +288,12 @@
 #'   (2013). *The Personality Inventory for DSM-5—Informant Form
 #'   (PID-5-IRF)—Adult*. American Psychiatric Association. The scoring key for
 #'   `version = "IRF"`.
+#' @references Niemeyer, L. M., Grosz, M. P., Zimmermann, J., & Back, M. D.
+#'   (2022). Assessing maladaptive personality in the forensic context:
+#'   Development and validation of the Personality Inventory for DSM-5
+#'   Forensic Faceted Brief Form (PID-5-FFBF). *Journal of Personality
+#'   Assessment, 104*(1), 30-43. \doi{10.1080/00223891.2021.1923522} The
+#'   source of the PID-5-FFBF, its items (supplement Table S3) and its domains.
 #' @references Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
 #'   Skodol, A. E. (2013). *The Personality Inventory for DSM-5 (PID-5)—Child
 #'   Age 11–17* and *The Personality Inventory for DSM-5—Brief Form
@@ -265,6 +327,12 @@
 #' irf_rows <- pid_items[!is.na(pid_items$IRF), ]
 #' sim_irf <- sim_pid5[sprintf("pid5_%03d", irf_rows$FULL)]
 #' score_pid5(sim_irf, items = 1:218, version = "IRF", append = FALSE)
+#'
+#' # PID-5-FFBF (25 facets + 7 domains). No FFBF dataset ships; for
+#' # illustration, simulate answers to its 100 items.
+#' set.seed(1)
+#' sim_ffbf <- as.data.frame(matrix(sample(0:3, 500, replace = TRUE), 5, 100))
+#' score_pid5(sim_ffbf, items = 1:100, version = "FFBF", append = FALSE)
 #'
 #' @export
 score_pid5 <- function(

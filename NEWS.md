@@ -39,6 +39,30 @@
   names, so do not norm or plot them as `version = "FULL"`. `validity_pid5()`, `norm_pid5()` and
   `plot_pid5()` do not take the new version.
 
+* **`score_pid5()` scores the PID-5 Forensic Faceted Brief Form.**
+  `version = "FFBF"` scores the 100-item PID-5-FFBF of Niemeyer et al.
+  (2022), an adaptation of the faceted short form for people in prison, with
+  self-report and informant versions. It returns 25 facets, named and ordered
+  as the SF's, then the 5 APA domains and the two forensic domains of the
+  paper's four-factor solution, Disinhibited Aggression and Insecurity. Items
+  12 and 26 are reverse-scored. The paper prints no missing-data rule, so the
+  default `missing = "apa"` applies the SF's rule; the authors' analysis code
+  scores missing items differently, as the help page explains. Informant data
+  use the same version, after the user averages two informants item by item
+  as the paper did. `reliability_pid5()`, `rename_pid5_items()` and
+  `label_pid5()` also take `version = "FFBF"`. Item columns are
+  `pid5ffbf_001` to `pid5ffbf_100`. Under `method = "text"`,
+  `rename_pid5_items()` matches any of the form's four texts, English or
+  German, self or informant. `label_pid5()` labels items with the English
+  self-report text. Two new exported tables hold the form:
+  `pid_ffbf_items` (each item's facet, reverse flag and four texts) and
+  `pid_ffbf_domains` (the 7 domains and their facets). `pid_scales` gains an
+  `FFBF` element and now has 6 elements. `version = "F"` no longer
+  abbreviates `"FULL"` in `score_pid5()`, `reliability_pid5()`,
+  `rename_pid5_items()` and `label_pid5()`, because it also starts `"FFBF"`;
+  spell out `"FULL"`. `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do
+  not take the new version.
+
 * **New PID5BF+M forms.** `generate_docx_pid5bfpm()`,
   `generate_qualtrics_pid5bfpm()` and `generate_redcap_pid5bfpm()` write the
   36 items in BF+M order with their PID-5 text, and the PID-5 instructions

@@ -20,8 +20,10 @@ columns. (default = \code{"items"})}
 
 \item{version}{A string specifying the PID-5 form the columns belong to:
 \code{"FULL"} (220 items), \code{"SF"} (100 items), \code{"BF"} (25 items), \code{"BFPM"}
-(the 36-item PID5BF+M), or \code{"IRF"} (the 218-item Informant Form, labelled
-with its informant wording from \code{pid_items$TextIRF}). Matched
+(the 36-item PID5BF+M), \code{"IRF"} (the 218-item Informant Form, labelled
+with its informant wording from \code{pid_items$TextIRF}), or \code{"FFBF"} (the
+100-item Forensic Faceted Brief Form, labelled with its English
+self-report text from \code{pid_ffbf_items$Text}, also for informant data). Matched
 case-insensitively. The forms number their
 items independently and
 score different sets of scales, so the form named here decides both the
@@ -31,7 +33,7 @@ text attached to an item column and which scale columns are recognized.
 \item{prefix}{A string specifying the prefix used on the column names.
 \code{NULL} resolves to the default for the given \code{target} and \code{version}: under
 \code{target = "items"}, the form's own stem (\code{"pid5_"}, \code{"pid5sf_"},
-\code{"pid5bf_"}, \code{"pid5bfpm_"} or \code{"pid5irf_"}); for the full, short and brief forms this is
+\code{"pid5bf_"}, \code{"pid5bfpm_"}, \code{"pid5irf_"} or \code{"pid5ffbf_"}); for the full, short and brief forms this is
 the pattern the shipped datasets and the package's REDCap export use; under \code{target = "scales"}, \code{"pid_"}, which is what
 \code{\link[=score_pid5]{score_pid5()}} writes under its own default \code{prefix}. (default = \code{NULL})
 

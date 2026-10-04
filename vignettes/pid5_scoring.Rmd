@@ -253,6 +253,32 @@ Scoring follows the APA informant key (Markon et al., 2013), with two readings t
 
 `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` also take `version = "IRF"`, and `label_pid5()` labels items with the informant wording. No validity scales for the informant form are on the package's source shelf, and its norms (Markon et al., 2024, Tables A–10 and A–11) are not yet in `pid_norms`, so `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do not take it. Because informant scores carry the full form's column names, `norm_pid5()` and `plot_pid5()` would accept them as `version = "FULL"` without complaint; do not do that, as it compares informant ratings with self-report norms.
 
+## The PID-5 Forensic Faceted Brief Form
+
+The PID-5 Forensic Faceted Brief Form (PID-5-FFBF; Niemeyer, Grosz, Zimmermann & Back, 2022, [doi:10.1080/00223891.2021.1923522](https://doi.org/10.1080/00223891.2021.1923522)) adapts the 100-item faceted short form for people in prison. It has a self-report and an informant version. The study gave the items in German, and the English text in `pid_ffbf_items` is the authors' translation. The items are rewritten and numbered by the authors, so FFBF item numbers are not SF item numbers. Facet k, in alphabetical order, holds items k, k + 25, k + 50 and k + 75, and items 12 and 26 are reverse-scored.
+
+The package has no FFBF dataset. For illustration, we simulate answers to its 100 items.
+
+```{r ffbf-data}
+set.seed(2022)
+sim_ffbf <- as.data.frame(matrix(sample(0:3, 10 * 100, replace = TRUE), 10, 100))
+names(sim_ffbf) <- sprintf("pid5ffbf_%03d", 1:100)
+```
+
+`score_pid5()` with `version = "FFBF"` returns 25 facets, named and ordered as the SF's, then 7 domains: the 5 APA domains and the two domains of the paper's four-factor solution that are not APA domains, Disinhibited Aggression and Insecurity. `pid_ffbf_domains` lists the facets of each domain.
+
+```{r ffbf-score}
+ffbf_scores <- score_pid5(sim_ffbf, items = 1:100, version = "FFBF", append = FALSE)
+ffbf_scores
+pid_ffbf_domains[, c("Domain", "primaryFacets")]
+```
+
+The seven domains share facets, so they are not independent. The four-factor structure comes from one exploratory study of 199 male prisoners, and the authors leave open whether Insecurity is needed.
+
+The paper prints no missing-data rule. Under the default `missing = "apa"`, the package applies the same rule as for the SF: a facet with 1 of its 4 items missing is prorated and rounded, a facet with 2 or more missing is `NA`, and a domain with an `NA` facet is `NA`. The authors' analysis code scores missing items differently, so with missing data the package's scores can differ slightly from the paper's descriptive statistics; `?score_pid5` gives the details.
+
+Informant data use the same version. The paper averaged the responses of two informants item by item before scoring, and used one informant's response where the other's was missing. Do that step first, for example with `rowMeans(cbind(x1, x2), na.rm = TRUE)` for each item. `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` also take `version = "FFBF"`. No FFBF norms or validity keys are published, so `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do not take it.
+
 ## The PID-5 Child Forms
 
 The APA also publishes child forms of the PID-5 and the PID-5-BF for ages 11 to 17 (Krueger, Derringer, Markon, Watson & Skodol, 2013, *The Personality Inventory for DSM-5 (PID-5)—Child Age 11–17* and *The Personality Inventory for DSM-5—Brief Form (PID-5-BF)—Child Age 11–17*, American Psychiatric Association). They print the adult forms' items in the same order, and their scoring keys reverse the same items and assign them to the same facets and domains. The full child form's instructions add a label and put "right" and "wrong" in quotation marks, and the brief child form's instructions are the adult paragraph. So `score_pid5()` scores the 220-item child form with `version = "FULL"` and the 25-item child form with `version = "BF"`, exactly as it scores the adult forms.

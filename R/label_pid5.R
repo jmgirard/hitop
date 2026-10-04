@@ -9,8 +9,10 @@
 #'   columns. (default = `"items"`)
 #' @param version A string specifying the PID-5 form the columns belong to:
 #'   `"FULL"` (220 items), `"SF"` (100 items), `"BF"` (25 items), `"BFPM"`
-#'   (the 36-item PID5BF+M), or `"IRF"` (the 218-item Informant Form, labelled
-#'   with its informant wording from `pid_items$TextIRF`). Matched
+#'   (the 36-item PID5BF+M), `"IRF"` (the 218-item Informant Form, labelled
+#'   with its informant wording from `pid_items$TextIRF`), or `"FFBF"` (the
+#'   100-item Forensic Faceted Brief Form, labelled with its English
+#'   self-report text from `pid_ffbf_items$Text`, also for informant data). Matched
 #'   case-insensitively. The forms number their
 #'   items independently and
 #'   score different sets of scales, so the form named here decides both the
@@ -19,7 +21,7 @@
 #' @param prefix A string specifying the prefix used on the column names.
 #'   `NULL` resolves to the default for the given `target` and `version`: under
 #'   `target = "items"`, the form's own stem (`"pid5_"`, `"pid5sf_"`,
-#'   `"pid5bf_"`, `"pid5bfpm_"` or `"pid5irf_"`); for the full, short and brief forms this is
+#'   `"pid5bf_"`, `"pid5bfpm_"`, `"pid5irf_"` or `"pid5ffbf_"`); for the full, short and brief forms this is
 #'   the pattern the shipped datasets and the package's REDCap export use; under `target = "scales"`, `"pid_"`, which is what
 #'   [score_pid5()] writes under its own default `prefix`. (default = `NULL`)
 #'

@@ -19,8 +19,10 @@ rename_pid5_items(
 
 \item{version}{A string specifying the PID-5 form the items belong to:
 \code{"FULL"} (220 items), \code{"SF"} (100 items), \code{"BF"} (25 items), \code{"BFPM"}
-(the 36-item PID5BF+M), or \code{"IRF"} (the 218-item Informant Form, whose
-text matches \code{pid_items$TextIRF}). Matched case-insensitively.
+(the 36-item PID5BF+M), \code{"IRF"} (the 218-item Informant Form, whose
+text matches \code{pid_items$TextIRF}), or \code{"FFBF"} (the 100-item Forensic
+Faceted Brief Form, whose text matches any of the four texts in
+\link{pid_ffbf_items}: self or informant report, English or German). Matched case-insensitively.
 (default = \code{"FULL"})}
 
 \item{method}{A string specifying the matching method: \code{"number"} to rename
@@ -51,7 +53,7 @@ to match the exports. (default = \code{"pid_"})}
 \item{prefix}{A string pasted literally before each standardized item
 number, which is zero-padded to the width of the form's largest item
 number. \code{NULL} resolves to the form's own stem: \code{"pid5_"}, \code{"pid5sf_"},
-\code{"pid5bf_"}, \code{"pid5bfpm_"} or \code{"pid5irf_"}. (default = \code{NULL})}
+\code{"pid5bf_"}, \code{"pid5bfpm_"}, \code{"pid5irf_"} or \code{"pid5ffbf_"}. (default = \code{NULL})}
 }
 \value{
 A data frame with renamed column names for the matched PID-5 items.

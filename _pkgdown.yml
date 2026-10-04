@@ -171,6 +171,8 @@ reference:
   - pid_scales
   - pid_domains
   - pid_bfpm_domains
+  - pid_ffbf_items
+  - pid_ffbf_domains
   - pid_norms
   - hitop_artifacts
 - title: Deprecated
