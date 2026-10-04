@@ -1,6 +1,6 @@
 # M161: PID-5 child forms (ages 11 to 17)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M158
 - **Driving RR:** —
@@ -30,7 +30,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 
 - [ ] AC1: A references page records whether the child forms share the adult forms' items and keying. It reports a comparison run by a `data-raw/` script on the shelf copies. The script checks the 220 item texts and the 25 BF item texts in order against `pid_items$Text`. Texts match exactly after whitespace and typographic quotes are normalized and a final period is dropped from each text, because `pid_items$Text` stores none. It also checks the child reverse list, facet table and domain tables against `pid_items$Reverse`, `pid_scales$FULL`, `pid_scales$BF` and `pid_domains`. The page names the script and its run date, and it lists every difference found, or none.
 - [x] AC2: The child Word forms (full and BF, US and A4) parse back to exactly the `pid_items` FULL and BF items in order. Each form carries the child instructions and response labels transcribed from the APA child forms. The child Qualtrics files and REDCap zips parse back to the same items, instructions and labels. The tests are in the D-010 style.
-- [ ] AC3: The shipped adult artifacts do not change. No existing `hitop_artifacts` checksum changes on this branch. The existing generator tests pass with no edit to their expectations. If T2 adds an argument to the existing generators, a parse-back test also shows that each adult generator's output with non-default arguments is unchanged.
+- [ ] AC3: The shipped adult artifacts do not change. `hitop_artifacts` gains only the 8 child rows, and every row on main is unchanged. No file under `inst/extdata/` or `pkgdown/assets/downloads/` that exists on main differs from main's copy. Every test file on main that calls a `generate_*()` function passes with no edit to its expectations, except that `test-export-padding-width.R`'s two export counts change from 15 to 19 and `test-response-value-no-move.R`'s builder list gains the four child online exports' builders. No other line of those two files changes. AC4 governs `test-artifacts.R` and `test-download-pages.R`. The adult generators' signatures do not change.
 - [x] AC4: The child files ship in `inst/extdata/` and `pkgdown/assets/downloads/`. Each is byte-identical to the file that its `hitop_artifacts` row records. Download pages link each one and carry no online-form strip. The page counts in `test-artifacts.R` and `test-download-pages.R` and the strip test's exemption admit the new pages. Those are the only edits to the expectations of those two files.
 - [x] AC5: The `score_pid5()` help page and the scoring vignette say that `version = "FULL"` or `"BF"` scores the child forms. Both cite the APA child forms. NEWS.md and the `_pkgdown.yml` reference index list the new generators. `devtools::check()` reports 0 errors and 0 warnings, and `pkgdown::check_pkgdown()` passes.
 
@@ -50,7 +50,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - [x] T4: Write the parse-back tests (AC2) and run the existing generator and artifact tests unchanged (AC3).
 - [x] T5: Add the artifact rows, build the artifacts, stage the pkgdown copies and write the download pages. Update the page counts in `test-artifacts.R` and `test-download-pages.R`, and exempt the pages from the online-strip test.
 - [x] T6: Update the help pages, vignette, NEWS and reference index. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
-- [ ] T7: Apply the AC1 and AC3 amendment returns from review pass 1: re-audit the amended wording, and tighten `data-raw/check_pid_child_text.R` as the AC1 audit found.
+- [x] T7: Apply the AC1 and AC3 amendment returns from review pass 1: re-audit the amended wording, and tighten `data-raw/check_pid_child_text.R` as the AC1 audit found.
 
 ## Work log
 
@@ -72,6 +72,8 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - re-audit: AC1 (full) — second reader: nothing on the criterion. Two page sentences were aligned with it ("from each text", and the provenance line naming both keys). AC1's amended wording is written.
 - re-audit: AC3 (full) — first reader: 4 findings. Two counts rising is not "gaining" an export. "Existing generator tests" named no procedure, so the domain was undefined. The T2 conditional is dead under M161-D1. "The two tests" should read "test files". Wording tightened.
 - re-audit: AC3 (full) — second reader: D-016 keeps every build's row, so "no existing checksum changes" cannot fail when an adult file is rebuilt. Also, `test-artifacts.R` names `generate_redcap_` inside a regex, so grep counts it as a generator test. This is the second re-audit on AC3, which is a stop. AC3 is left at its planned wording until Jeff chooses.
+- 2026-10-04: AC3 stop resolved: Jeff chose the proposed wording (files on main byte-identical, manifest gains only the 8 child rows, the two allowed test edits named, adult signatures unchanged). It is written as AC3, and T7 is done.
+- 2026-10-04: status set to review after T7. The code is unchanged since review pass 1's `check()` (0/0/0) apart from `data-raw/check_pid_child_text.R`, which is not in the build. That script exits 0 with no differences.
 
 ## Decisions
 
