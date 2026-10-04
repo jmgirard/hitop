@@ -40,8 +40,7 @@ pool. That was wrong (corrected M162): Table S3 and the code are on OSF.
 The authors adapted the 100-item PID-5 Faceted Brief Form (Maples et al., 2015) for
 prisoners, in German, for self and informant report. The study gave all items in
 German (p. 33). Table S3 prints each item in four versions: self report German and
-English, informant report German and English. The English text is the authors'
-translation. Items are answered from 0 ("very false") to 3 ("very true"), as in the
+English, informant report German and English. The English text is the authors' English version, and the paper validated only the German version (p. 40; corrected M162). Items are answered from 0 ("very false") to 3 ("very true"), as in the
 German PID-5 (p. 33). Informant reports from two raters were averaged item by item
 before scoring (p. 33). Two items are reverse-coded (p. 32). The form was used "with
 permission from Hogrefe and the APA" (p. 32).
