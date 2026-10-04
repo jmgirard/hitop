@@ -3,7 +3,7 @@
 **Provenance.** Ingested 2026-10-04 by M162 from four files on the gitignored shelf, listed below.
 Pagination: journal pages for the article (pp. 30–43). PDF pages for Table S3, which
 numbers its pages 1 to 11.
-Extraction: verified 2026-10-04 by `data-raw/check_pid_ffbf_text.R` against Table S3 (all 400 texts, the 100 facets and the reverse marks) and the authors' code (the 25 facet lists, the recodes and the two four-factor domains) — observed 2026-10-04.
+Extraction: verified 2026-10-04 by `data-raw/check_pid_ffbf_text.R` against Table S3 (all 400 texts, the 100 facets, the reverse marks and the a, b and c footnote marks) and the authors' code (the self and informant facet lists for the FFBF and the original form, the self and informant recodes, the two four-factor domains for both forms, and the unadapted items) — observed 2026-10-04.
 
 - `cairn/references/sources/niemeyer2022.pdf`, the article (14 pages, sha256
   `43bfac3d6582fb5b87e370a3c7d40dbce6c87dde124cbea6e5c8a6a61ef3cb2f`).
@@ -109,6 +109,6 @@ included ("does't", item 30). Hyphenation and the accent are typesetting, so the
 `data-raw/check_pid_ffbf_text.R` reads Table S3 a second way, with `pdftotext -raw`.
 For each item, it finds a split of the item's words into four runs that equal the CSV's four
 texts under the same rule. It also checks the facets, the reverse marks and the code's
-facet lists and recodes. Run 2026-10-04: PASS. Five defects were planted one at a time in a copy of the
+facet lists, recodes, forensic domains and unadapted items (extended by M162 T6 after RR08). Run 2026-10-04: PASS. Five defects were planted one at a time in a copy of the
 CSV, and each made it exit 1. They were a word moved between cells, a changed word, a dropped word, a wrong facet and an
 extra reverse flag.
