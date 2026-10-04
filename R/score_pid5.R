@@ -28,8 +28,8 @@
 #'   `haven::zap_missing()` leaves it unchanged, so set the values its
 #'   `na_values` or `na_range` attribute declares to `NA` first.
 #' @param version A string indicating the version of the PID to score: "FULL",
-#'   "SF", "BF", or "BFPM" (the 36-item PID5BF+M). Will be automatically
-#'   capitalized. (default = `"FULL"`)
+#'   "SF", "BF", "BFPM" (the 36-item PID5BF+M), or "IRF" (the 218-item
+#'   Informant Form). Will be automatically capitalized. (default = `"FULL"`)
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param prefix An optional string to add before each scale column name. If no
@@ -197,7 +197,7 @@
 score_pid5 <- function(
   data,
   items,
-  version = c("FULL", "SF", "BF", "BFPM"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
   srange = c(0, 3),
   prefix = "pid_",
   missing = c("apa", "available", "complete"),
@@ -207,7 +207,7 @@ score_pid5 <- function(
   ## Resolve the version and its item count (shared arg validation runs in the
   ## engine; version is PID-specific and resolved here)
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF"))
   missing <- match.arg(missing)
   n_items <- switch(
     version,
@@ -215,18 +215,20 @@ score_pid5 <- function(
     "SF" = 100,
     "BF" = 25,
     "BFPM" = 36,
+    "IRF" = 218,
     cli::cli_abort("Invalid `version` argument")
   )
 
   ## Resolve this version's instrument data: which items reverse, the per-scale
-  ## item-number lists, and (FULL/SF/BFPM) the domain -> facet map. The BFPM
-  ## domains are the means of their facets, as the FULL/SF domains are, so the
-  ## engine scores them the same way from their own map (D-088(c), (d)).
+  ## item-number lists, and (FULL/SF/IRF/BFPM) the domain -> facet map. The
+  ## BFPM domains are the means of their facets, as the FULL/SF domains are, so
+  ## the engine scores them the same way from their own map (D-088(c), (d)).
+  ## The IRF has the full form's 25 facets and 5 domains (D-089(d)).
   reverse_items <- drop_na(
     pid_items[pid_items$Reverse == TRUE, version, drop = TRUE]
   )
   items_scales <- pid_scales[[version]]$itemNumbers
-  domain_map <- if (version %in% c("FULL", "SF")) {
+  domain_map <- if (version %in% c("FULL", "SF", "IRF")) {
     setNames(pid_domains$facetStems, pid_domains$camelCase)
   } else if (version == "BFPM") {
     setNames(pid_bfpm_domains$facetStems, pid_bfpm_domains$camelCase)

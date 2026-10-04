@@ -8,8 +8,10 @@
 #'   columns with questionnaire text, or `"scales"` to label computed scale
 #'   columns. (default = `"items"`)
 #' @param version A string specifying the PID-5 form the columns belong to:
-#'   `"FULL"` (220 items), `"SF"` (100 items), `"BF"` (25 items), or `"BFPM"`
-#'   (the 36-item PID5BF+M). Matched case-insensitively. The forms number their
+#'   `"FULL"` (220 items), `"SF"` (100 items), `"BF"` (25 items), `"BFPM"`
+#'   (the 36-item PID5BF+M), or `"IRF"` (the 218-item Informant Form, labelled
+#'   with its informant wording from `pid_items$TextIRF`). Matched
+#'   case-insensitively. The forms number their
 #'   items independently and
 #'   score different sets of scales, so the form named here decides both the
 #'   text attached to an item column and which scale columns are recognized.
@@ -17,7 +19,7 @@
 #' @param prefix A string specifying the prefix used on the column names.
 #'   `NULL` resolves to the default for the given `target` and `version`: under
 #'   `target = "items"`, the form's own stem (`"pid5_"`, `"pid5sf_"`,
-#'   `"pid5bf_"` or `"pid5bfpm_"`); for the full, short and brief forms this is
+#'   `"pid5bf_"`, `"pid5bfpm_"` or `"pid5irf_"`); for the full, short and brief forms this is
 #'   the pattern the shipped datasets and the package's REDCap export use; under `target = "scales"`, `"pid_"`, which is what
 #'   [score_pid5()] writes under its own default `prefix`. (default = `NULL`)
 #'
@@ -51,7 +53,7 @@
 label_pid5 <- function(
   data,
   target = c("items", "scales"),
-  version = c("FULL", "SF", "BF", "BFPM"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
   prefix = NULL
 ) {
   target <- match.arg(target)
@@ -62,7 +64,7 @@ label_pid5 <- function(
 
   ## Resolve the version, as `score_pid5()` does
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF"))
 
   data_cols <- colnames(data)
 
@@ -73,13 +75,16 @@ label_pid5 <- function(
         "FULL" = "pid5_",
         "SF" = "pid5sf_",
         "BF" = "pid5bf_",
-        "BFPM" = "pid5bfpm_"
+        "BFPM" = "pid5bfpm_",
+        "IRF" = "pid5irf_"
       )
     }
 
     ## This form's rows, in `pid_items` row order; `expected_names` and the
-    ## text column stay in step, so a match location indexes both.
+    ## text column stay in step, so a match location indexes both. The
+    ## informant form labels with its own wording (D-089(b)).
     form <- pid_items[!is.na(pid_items[[version]]), ]
+    text <- if (version == "IRF") form$TextIRF else form$Text
     max_n <- max(form[[version]])
     expected_names <- item_names(prefix, form[[version]], max_n = max_n)
     locs <- match(data_cols, expected_names)
@@ -92,7 +97,7 @@ label_pid5 <- function(
       )
     } else {
       for (i in matched_idx) {
-        attr(data[[i]], "label") <- form$Text[locs[i]]
+        attr(data[[i]], "label") <- text[locs[i]]
       }
     }
     ## The report runs whether or not anything matched, and after the no-match
@@ -108,21 +113,22 @@ label_pid5 <- function(
         "FULL" = "PID-5",
         "SF" = "PID-5-SF",
         "BF" = "PID-5-BF",
-        "BFPM" = "PID5BF+M"
+        "BFPM" = "PID5BF+M",
+        "IRF" = "PID-5-IRF"
       )
     )
   } else if (target == "scales") {
     if (is.null(prefix)) prefix <- "pid_"
 
-    ## The FULL and SF forms score 25 facets from `pid_scales[[version]]` and 5
-    ## domains from `pid_domains`; the BFPM form scores 18 facets from
+    ## The FULL, SF and IRF forms score 25 facets from `pid_scales[[version]]`
+    ## and 5 domains from `pid_domains`; the BFPM form scores 18 facets from
     ## `pid_scales$BFPM` and 6 domains from `pid_bfpm_domains`; the BF form
     ## scores its 5 domains and a total directly, all six carried by
     ## `pid_scales$BF`.
     tbl <- pid_scales[[version]]
     stems <- tbl$camelCase
     names_out <- if (version == "BF") tbl$Domain else tbl$Facet
-    domains <- if (version %in% c("FULL", "SF")) {
+    domains <- if (version %in% c("FULL", "SF", "IRF")) {
       pid_domains
     } else if (version == "BFPM") {
       pid_bfpm_domains

@@ -115,6 +115,25 @@ for (i in which(sr_facet != items$Facet)) {
 }
 sr_reverse <- items$IRF[sr$Reverse[match(items$FULL, sr$FULL)]]
 
+# 4. Instructions in R/sysdata.rda: the first-page and later-page texts and the
+# rating prompt, normalized as the item text is (the stored text keeps its
+# final period, so the comparison adds it back).
+sysdata <- new.env()
+load("R/sysdata.rda", envir = sysdata)
+instr <- sysdata$pid_irf_instructions
+flat <- normalize(form)
+for (part in c("start", "continue", "prompt")) {
+  if (!grepl(normalize(instr[[part]]), paste0(flat, "."), fixed = TRUE)) {
+    note("instructions$", part, " is not in the PDF text")
+  }
+}
+if (!identical(instr$options$label, c(
+  "Very False or Often False", "Sometimes or Somewhat False",
+  "Sometimes or Somewhat True", "Very True or Often True"
+))) {
+  note("instructions$options labels differ from the form's column heads")
+}
+
 cat("Source: ", source_pdf, "\n", sep = "")
 cat("sha256: ", source_sha, " (matches)\n", sep = "")
 cat("Items read from the PDF: ", length(num), "\n", sep = "")

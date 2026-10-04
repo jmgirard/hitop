@@ -6,12 +6,15 @@
 #' REDCap and Qualtrics exports write and the shipped datasets carry:
 #' `pid5_001` to `pid5_220` for the full form, `pid5sf_001` to `pid5sf_100` for
 #' the short form, and `pid5bf_01` to `pid5bf_25` for the brief form. The
-#' PID5BF+M names, `pid5bfpm_01` to `pid5bfpm_36`, follow the same pattern.
+#' PID5BF+M names, `pid5bfpm_01` to `pid5bfpm_36`, and the Informant Form
+#' names, `pid5irf_001` to `pid5irf_218`, follow the same pattern.
 #'
 #' @param data A data frame containing the PID-5 items.
 #' @param version A string specifying the PID-5 form the items belong to:
-#'   `"FULL"` (220 items), `"SF"` (100 items), `"BF"` (25 items), or `"BFPM"`
-#'   (the 36-item PID5BF+M). Matched case-insensitively. (default = `"FULL"`)
+#'   `"FULL"` (220 items), `"SF"` (100 items), `"BF"` (25 items), `"BFPM"`
+#'   (the 36-item PID5BF+M), or `"IRF"` (the 218-item Informant Form, whose
+#'   text matches `pid_items$TextIRF`). Matched case-insensitively.
+#'   (default = `"FULL"`)
 #' @param method A string specifying the matching method: `"number"` to rename
 #'   columns spelled `from_prefix` followed by an item number, or `"text"` to
 #'   match against the literal item prompt text in `pid_items$Text`.
@@ -34,7 +37,7 @@
 #' @param prefix A string pasted literally before each standardized item
 #'   number, which is zero-padded to the width of the form's largest item
 #'   number. `NULL` resolves to the form's own stem: `"pid5_"`, `"pid5sf_"`,
-#'   `"pid5bf_"` or `"pid5bfpm_"`. (default = `NULL`)
+#'   `"pid5bf_"`, `"pid5bfpm_"` or `"pid5irf_"`. (default = `NULL`)
 #'
 #' @return A data frame with renamed column names for the matched PID-5 items.
 #'   Columns that could not be matched keep their names. Under
@@ -59,7 +62,7 @@
 #' @export
 rename_pid5_items <- function(
   data,
-  version = c("FULL", "SF", "BF", "BFPM"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
   method = c("number", "text"),
   item_cols = NULL,
   item_text = NULL,
@@ -75,10 +78,12 @@ rename_pid5_items <- function(
 
   ## Resolve the version, as `score_pid5()` does
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF"))
 
-  ## Resolve this form's rows, its output stem and its padding width
+  ## Resolve this form's rows, its text, its output stem and its padding
+  ## width. The informant form has its own wording (D-089(b)).
   form <- pid_items[!is.na(pid_items[[version]]), ]
+  form_text <- if (version == "IRF") form$TextIRF else form$Text
   form_numbers <- form[[version]]
   n_items <- length(form_numbers)
   max_n <- max(form_numbers)
@@ -88,7 +93,8 @@ rename_pid5_items <- function(
       "FULL" = "pid5_",
       "SF" = "pid5sf_",
       "BF" = "pid5bf_",
-      "BFPM" = "pid5bfpm_"
+      "BFPM" = "pid5bfpm_",
+      "IRF" = "pid5irf_"
     )
   }
   label <- switch(
@@ -96,7 +102,8 @@ rename_pid5_items <- function(
     "FULL" = "PID-5",
     "SF" = "PID-5-SF",
     "BF" = "PID-5-BF",
-    "BFPM" = "PID5BF+M"
+    "BFPM" = "PID5BF+M",
+    "IRF" = "PID-5-IRF"
   )
 
   ## Track matched standard item numbers for the final summary warning
@@ -158,7 +165,7 @@ rename_pid5_items <- function(
 
     ## Match text against this form's items only (using trimws for robustness
     ## against surrounding whitespace, as `rename_hitopsr_items()` does)
-    locs <- match(trimws(item_text), trimws(form$Text))
+    locs <- match(trimws(item_text), trimws(form_text))
 
     if (any(is.na(locs))) {
       missing_idx <- which(is.na(locs))

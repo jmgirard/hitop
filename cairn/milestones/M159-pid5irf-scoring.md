@@ -52,7 +52,7 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
   - What are the version string and the item-name stem for `rename_pid5_items()` and the M160 exports?
 
   Then build the data in `data-raw/` and write the keying test (AC1). Keying content needs Jeff's sign-off before merge.
-- [ ] T3: Thread the version through the four functions and add the instructions to `R/sysdata.rda`.
+- [x] T3: Thread the version through the four functions and add the instructions to `R/sysdata.rda`.
 - [ ] T4: Write the fixture tests (AC2, AC4). Extend M157's characterization script and run it at the merge base and at the head (AC3).
 - [ ] T5: Update the help pages, vignette and NEWS. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
@@ -65,6 +65,8 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
 - 2026-10-03: implement choice: the IRF text drops the leading ellipsis and the final period and uses ASCII quotes, as `pid_items.csv` does for the self-report text. The check normalizes the PDF the same way. The IRF has no counterpart to self-report items 96 and 177, both reverse-keyed. Mapped across, the self-report reverse flags give the Facet Table's 14 R marks, not Step 1's 16.
 - 2026-10-03: T2 gate: Jeff chose the Facet Table's 14 reverse items, two new `pid_items` columns (`IRF`, `TextIRF`), and `version = "IRF"` with `pid5irf_001` names. The tripwire escalation was offered and not taken. This is keying sign-off for the reverse list. Recorded as D-089, and OQ-4 is resolved.
 - 2026-10-03: T2 done. `data-raw/pid_info.R` adds `IRF` after `BFPM` and `TextIRF` after `Text`, and builds `pid_scales$IRF` (25 facets in FULL order). Domains reuse `pid_domains`. Five keying tests type the key's reverse list, Facet Table, Domain Table and four text anchors. Planting Step 1's list and a moved Withdrawal item failed two of them. `test-column-shape.R`'s hand list of `pid_scales` elements gained `IRF`. Full suite: 0 failures.
+- 2026-10-03: T3 done. `score_pid5()`, `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` take `version = "IRF"` (218 items, `pid_domains` map, `pid5irf_` stem, label "PID-5-IRF"). The text paths read `TextIRF`. New internal `pid_irf_instructions` (start, continue, prompt, stem, the self-report options); the other sysdata objects are identical. The check script now also matches start, continue and prompt to the PDF, and a planted prompt edit failed it. Full suite: 26635 passes, 0 failures.
+- 2026-10-03: implement choice: `pid_irf_instructions` keeps the form's later-page text (`continue`), its rating prompt and its "He or she…" stem beside `start`, so M160's Word form can print them. The response options are a copy of `pid_instructions$options`, as the form prints the same labels.
 
 ## Decisions
 

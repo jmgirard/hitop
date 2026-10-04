@@ -20,6 +20,20 @@ pid_instructions <- list(
   )
 )
 
+## PID-5 Informant Form instructions (D-089). From the APA form (Markon et al.,
+## 2013; cairn/references/apa2013pid5irf.md): `start` heads the first page and
+## `continue` the later pages; `prompt` and `stem` head the item column, each
+## item completing the stem. The response labels are the self-report form's.
+## data-raw/check_pid_irf_text.R checks start, continue and prompt against the
+## shelf PDF.
+pid_irf_instructions <- list(
+  start = "This is a list of things different people might say about others. We are interested in how you would describe the person you are rating. There are no right or wrong answers. So you can describe him/her as honestly as possible, we will keep your responses confidential. We'd like you to take your time and read each statement carefully, selecting the response that best describes him/her.",
+  continue = "Please continue to complete the questionnaire. We are interested in how you would describe the person you are rating. There are no right or wrong answers. So you can describe him/her as honestly as possible, we will keep your responses confidential. We'd like you to take your time and read each statement carefully, selecting the response that best describes him/her.",
+  prompt = "Please rate how true or false each of the following statements are of the person you are rating.",
+  stem = "He or she…",
+  options = pid_instructions$options
+)
+
 ## HiTOP-SR instructions
 hitopsr_instructions <-
   list(
@@ -66,6 +80,7 @@ hitopdat_instructions <- list(
 
 usethis::use_data(
   pid_instructions,
+  pid_irf_instructions,
   hitopsr_instructions,
   hitopbr_instructions,
   hitophsum_instructions,

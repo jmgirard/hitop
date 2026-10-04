@@ -7,7 +7,7 @@
 score_pid5(
   data,
   items,
-  version = c("FULL", "SF", "BF", "BFPM"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
   srange = c(0, 3),
   prefix = "pid_",
   missing = c("apa", "available", "complete"),
@@ -41,8 +41,8 @@ before 2.0 (\code{labelled_spss}) is refused the same way, but
 \code{na_values} or \code{na_range} attribute declares to \code{NA} first.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
-"SF", "BF", or "BFPM" (the 36-item PID5BF+M). Will be automatically
-capitalized. (default = \code{"FULL"})}
+"SF", "BF", "BFPM" (the 36-item PID5BF+M), or "IRF" (the 218-item
+Informant Form). Will be automatically capitalized. (default = \code{"FULL"})}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the items, used for reverse-coding. (default = \code{c(0, 3)})}
