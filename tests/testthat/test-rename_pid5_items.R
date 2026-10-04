@@ -322,6 +322,21 @@ test_that("version = 'IRF' renames the 218 items to pid5irf_001 to pid5irf_218",
   expect_identical(colnames(res), sprintf("pid5irf_%03d", 1:218))
 })
 
+test_that("version = 'IRF' matches all 218 informant texts, in any column order", {
+  # The columns are given in reverse IRF order, so a text matched to the
+  # wrong number shows in the names.
+  irf <- 218:1
+  texts <- pid_items$TextIRF[match(irf, pid_items$IRF)]
+  cols <- paste0("q", seq_along(irf))
+  df <- as.data.frame(matrix(0, nrow = 1, ncol = 218, dimnames = list(NULL, cols)))
+  expect_silent(
+    res <- rename_pid5_items(
+      df, version = "IRF", method = "text", item_cols = cols, item_text = texts
+    )
+  )
+  expect_identical(colnames(res), sprintf("pid5irf_%03d", irf))
+})
+
 test_that("version = 'IRF' matches the informant wording, not the self-report text", {
   # Informant texts typed from the APA form (PDF pp. 2 and 6), normalized as
   # cairn/references/apa2013pid5irf.md states (no stem or leading ellipsis, no

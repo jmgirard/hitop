@@ -24,14 +24,13 @@ Rigid Perfectionism items into its three anankastia facets, whose item
 membership is held only in \code{pid_scales$BFPM}}
 \item{Domain}{Name of the domain}
 \item{Text}{Item text, copyright APA}
-\item{TextIRF}{Informant Form item text, copyright APA. Each item
-completes the stem "He or she..."; this column does not include the stem}
+\item{TextIRF}{Informant Form item text, copyright APA, from Markon, K.
+E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013), \emph{The
+Personality Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult},
+American Psychiatric Association. Each item completes the stem "He or
+she..."; this column does not include the stem, the leading ellipsis or
+the final period, and uses straight quotes and apostrophes}
 }
-}
-\source{
-Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013).
-\emph{The Personality Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult}.
-American Psychiatric Association.
 }
 \usage{
 pid_items

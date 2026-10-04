@@ -26,7 +26,9 @@ text matches \code{pid_items$TextIRF}). Matched case-insensitively.
 \item{method}{A string specifying the matching method: \code{"number"} to rename
 columns spelled \code{from_prefix} followed by an item number, or \code{"text"} to
 match against the literal item prompt text in \code{pid_items$Text}
-(\code{pid_items$TextIRF} for \code{version = "IRF"}). (default = \code{"number"})
+(\code{pid_items$TextIRF} for \code{version = "IRF"}, whose text has no "He or
+she..." stem, leading ellipsis or final period, so text copied from the
+printed informant form needs those removed first). (default = \code{"number"})
 
 The forms number their items independently, so \code{"number"} reads the
 digits as an item number of the form named by \code{version}: under

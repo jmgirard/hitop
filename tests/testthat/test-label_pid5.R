@@ -357,6 +357,44 @@ test_that("label_pid5(version = 'IRF') labels its 218 items with the informant t
   expect_length(labels, 218L)
   # No informant label is the self-report wording of any item.
   expect_false(any(labels %in% pid_items$Text))
+  # Every column carries the text stored for its own informant number.
+  for (nm in names(labeled)) {
+    number <- as.integer(sub("^pid5irf_", "", nm))
+    expect_identical(
+      attr(labeled[[nm]], "label"),
+      pid_items$TextIRF[match(number, pid_items$IRF)],
+      info = nm
+    )
+  }
+})
+
+test_that("label_pid5(version = 'IRF') reports unpadded and out-of-range item columns", {
+  df <- data.frame(pid5irf_098 = 1, pid5irf_98 = 1, pid5irf_219 = 1)
+  caught <- collect_warnings(label_pid5(df, target = "items", version = "IRF"))
+  labeled <- caught$value
+  expect_identical(
+    attr(labeled$pid5irf_098, "label"),
+    "sometimes hears things that aren't really there"
+  )
+  expect_null(attr(labeled$pid5irf_98, "label"))
+  expect_null(attr(labeled$pid5irf_219, "label"))
+  expect_length(caught$warnings, 1L)
+  expect_s3_class(caught$warnings[[1]], "hitop_unpadded_items")
+  text <- warning_text(caught)
+  expect_true(grepl("pid5irf_98", text, fixed = TRUE))
+  expect_true(grepl("pid5irf_219", text, fixed = TRUE))
+  expect_true(grepl("PID-5-IRF", text, fixed = TRUE))
+})
+
+test_that("validity_pid5(), norm_pid5() and plot_pid5() refuse version = 'IRF'", {
+  x <- fx_pid5irf()
+  for (fn in list(
+    function() validity_pid5(x, items = 1:218, version = "IRF"),
+    function() norm_pid5(x, version = "IRF"),
+    function() plot_pid5(x, version = "IRF")
+  )) {
+    expect_error(fn(), 'should be one of "FULL", "SF", "BF"', fixed = TRUE)
+  }
 })
 
 test_that("label_pid5(version = 'IRF') names the FULL form's 25 facets and 5 domains", {

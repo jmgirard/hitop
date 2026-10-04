@@ -18,7 +18,9 @@
 #' @param method A string specifying the matching method: `"number"` to rename
 #'   columns spelled `from_prefix` followed by an item number, or `"text"` to
 #'   match against the literal item prompt text in `pid_items$Text`
-#'   (`pid_items$TextIRF` for `version = "IRF"`). (default = `"number"`)
+#'   (`pid_items$TextIRF` for `version = "IRF"`, whose text has no "He or
+#'   she..." stem, leading ellipsis or final period, so text copied from the
+#'   printed informant form needs those removed first). (default = `"number"`)
 #'
 #'   The forms number their items independently, so `"number"` reads the
 #'   digits as an item number of the form named by `version`: under

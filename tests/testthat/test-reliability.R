@@ -236,21 +236,20 @@ test_that("reliability_pid5(IRF) returns the 25 facets over the key's IRF items"
     intimacyAvoidance = 6, unusualBeliefsExperiences = 8, manipulativeness = 5
   )
   expect_identical(rel$nItems, as.integer(sizes[rel$camelCase]))
-  # Alpha over items typed from the key, R items reversed as 3 - x.
-  di <- as.data.frame(lapply(x, as.numeric))
-  rev_items <- function(cols, r) {
-    d <- di[cols]
-    d[as.character(r)] <- 3 - d[as.character(r)]
-    d
-  }
-  names(di) <- as.character(1:218)
-  typed <- list(
-    anhedonia = rev_items(as.character(c(1, 23, 26, 30, 123, 154, 156, 187)), c(30, 154)),
-    anxiousness = rev_items(as.character(c(79, 93, 95, 108, 109, 129, 140, 173)), integer(0)),
-    suspiciousness = rev_items(as.character(c(2, 102, 116, 130, 132, 188)), 130)
-  )
-  for (nm in names(typed)) {
-    expect_equal(rel$alpha[rel$camelCase == nm], calc_alpha(typed[[nm]]), info = nm)
+  # Alpha for every facet over the items the key's Facet Table lists, R items
+  # reversed as 3 - x (typed tables in helper-fixtures.R). Random answers, so
+  # a wrong item in any facet list moves that facet's alpha.
+  set.seed(1590)
+  di <- as.data.frame(matrix(sample(0:3, 60 * 218, replace = TRUE), 60, 218))
+  rel_r <- reliability_pid5(di, items = 1:218, version = "IRF", omega = FALSE)
+  di[irf_reverse] <- 3 - di[irf_reverse]
+  expect_identical(rel_r$Scale, full$Scale)
+  for (f in names(irf_facets)) {
+    expect_equal(
+      rel_r$alpha[rel_r$Scale == f],
+      calc_alpha(di[irf_facets[[f]]]),
+      info = f
+    )
   }
 })
 

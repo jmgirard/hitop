@@ -308,7 +308,7 @@ test_that("every expectation inside a loop names its iteration on failure", {
 
 # Every (version, level, metric) combination `plot_pid5()` accepts, enumerated
 # from the function's own `version` choices rather than hand-listed (not from
-# `names(pid_scales)`, which also holds BFPM). Which levels a version offers is
+# `names(pid_scales)`, which also holds BFPM and IRF). Which levels a version offers is
 # read off its scales table: the forms that score facets name them in a `Facet`
 # column, and the brief form -- which has no facet scores to plot -- names
 # domains instead. So the two brief-form facet cases `plot_pid5()` aborts are

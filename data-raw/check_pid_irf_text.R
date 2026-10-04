@@ -11,8 +11,8 @@
 #   2. every item's facet, against the key's Facet Table;
 #   3. the CSV's FULL column, which maps each IRF item to the self-report item
 #      with the same facet (the IRF drops self-report items 96 and 177);
-#   4. the stored instructions (start, continue, prompt) and response labels,
-#      against the form's text.
+#   4. the stored instructions (start, continue, prompt, stem) and response
+#      labels, against the form's text.
 #
 # It also prints the key's two reverse lists, Step 1 and the R marks in the
 # Facet Table, which disagree on items 98 and 176, and the self-report reverse
@@ -136,11 +136,15 @@ for (part in c("start", "continue", "prompt")) {
     note("instructions$", part, " is not in the PDF text")
   }
 }
-if (!identical(instr$options$label, c(
-  "Very False or Often False", "Sometimes or Somewhat False",
-  "Sometimes or Somewhat True", "Very True or Often True"
-))) {
-  note("instructions$options labels differ from the form's column heads")
+if (!grepl(paste(instr$options$label, collapse = " "), flat, fixed = TRUE)) {
+  note("instructions$options labels are not the form's column heads, in order")
+}
+if (!identical(instr$options$value, 0:3)) {
+  note("instructions$options values are not 0 to 3")
+}
+if (!grepl(paste("statements are of the person you are rating.", instr$stem),
+           flat, fixed = TRUE)) {
+  note("instructions$stem does not follow the prompt in the PDF text")
 }
 
 cat("Source: ", source_pdf, "\n", sep = "")

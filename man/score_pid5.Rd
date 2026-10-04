@@ -166,6 +166,12 @@ its items unanswered whose prorated raw score has a fractional part
 strictly between 0 and one half. There the
 package's facet score is 1/n lower than a ceiling would give, for a facet
 of n items.
+
+Informant scores have the full form's column names, and nothing in the
+output records the version. Do not pass them to \code{\link[=norm_pid5]{norm_pid5()}} or
+\code{\link[=plot_pid5]{plot_pid5()}} as \code{version = "FULL"}: those use self-report norms, and the
+informant norms (Markon et al., 2024, Tables A–10 and A–11) are not in
+\code{pid_norms}. \code{\link[=validity_pid5]{validity_pid5()}} has no informant validity scales.
 }
 
 \subsection{The PID-5-BF total score}{

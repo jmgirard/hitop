@@ -9,9 +9,10 @@
 # Ported from the PID-5-only fork (milestone M001). This repo's `pid_items` uses
 # columns FULL / SF / BF where the fork used PID5 / PID5FSF / PID5BF. The BF
 # `Domain` structure (5 domains x 5 items) is verified against the APA PID-5-BF
-# Domain Scoring table in the BF block below (M006). The FULL/SF primary-facet ->
-# domain map (`pid_domains`, driving score_pid5(version = "FULL"/"SF") domain
-# output) is verified against the APA full-form Domain Table in the final block (M007).
+# Domain Scoring table in the BF block below (M006). The FULL/SF/IRF primary-facet
+# -> domain map (`pid_domains`, driving score_pid5(version = "FULL"/"SF"/"IRF")
+# domain output) is verified against the APA full-form Domain Table (M007) and
+# the IRF key's Domain Table (M159).
 
 # ---- Source: APA official PID-5 scoring key (Krueger et al., 2013), page 8 ----
 
@@ -215,9 +216,9 @@ test_that("BF is 25 items, 1:25, exactly 5 per domain, none reverse-keyed", {
 })
 
 # ---- Source: APA PID-5 scoring key (Krueger et al., 2013), p. 8 Domain Table --
-# FULL/SF domain scores average the 3 facets contributing PRIMARILY to each
+# FULL/SF/IRF domain scores average the 3 facets contributing PRIMARILY to each
 # domain (Step 3). That 15-facet primary map is stored in `pid_domains` and drives
-# score_pid5(version = "FULL"/"SF") domain output (M007). Verify the map against the
+# score_pid5(version = "FULL"/"SF"/"IRF") domain output (M007). Verify the map against the
 # published Domain Table, independent of how `pid_domains` was built. NOTE: this
 # is the 3-primary-facet subset, NOT the broader 21-facet `pid_items$Domain`
 # grouping used for the BF.
@@ -354,49 +355,12 @@ test_that("pid_bfpm_domains holds the key sheet's 6 domains of 3 facets each", {
 
 # ---- Source: APA PID-5 Informant Form (Markon et al., 2013), p. 8 ----
 #
-# Typed from the key's Facet Table and Domain Table
-# (cairn/references/apa2013pid5irf.md), never from data-raw/pid_irf_items.csv.
-# The reverse list is the Facet Table's R marks, which D-089(c) chose over
-# Step 1's list (Step 1 adds 98 and 176). All 218 item texts are checked
-# against the PDF by data-raw/check_pid_irf_text.R, which needs the shelf copy.
-
-irf_reverse <- c(7, 30, 35, 58, 87, 90, 96, 97, 130, 141, 154, 163, 208, 213)
-irf_facets <- list(
-  "Anhedonia" = c(1, 23, 26, 30, 123, 154, 156, 187),
-  "Anxiousness" = c(79, 93, 95, 108, 109, 129, 140, 173),
-  "Attention Seeking" = c(14, 43, 74, 110, 112, 172, 189, 209),
-  "Callousness" = c(11, 13, 19, 54, 72, 73, 90, 152, 165, 181, 196, 198, 205, 206),
-  "Deceitfulness" = c(41, 53, 56, 76, 125, 133, 141, 204, 212, 216),
-  "Depressivity" = c(27, 61, 66, 81, 86, 103, 118, 147, 150, 162, 167, 168, 176, 210),
-  "Distractibility" = c(6, 29, 47, 68, 88, 117, 131, 143, 197),
-  "Eccentricity" = c(5, 21, 24, 25, 33, 52, 55, 70, 71, 151, 171, 183, 203),
-  "Emotional Lability" = c(18, 62, 101, 121, 137, 164, 179),
-  "Grandiosity" = c(40, 65, 113, 177, 185, 195),
-  "Hostility" = c(28, 32, 38, 85, 92, 115, 157, 169, 186, 214),
-  "Impulsivity" = c(4, 16, 17, 22, 58, 202),
-  "Intimacy Avoidance" = c(89, 96, 107, 119, 144, 201),
-  "Irresponsibility" = c(31, 128, 155, 159, 170, 199, 208),
-  "Manipulativeness" = c(106, 124, 161, 178, 217),
-  "Perceptual Dysregulation" = c(36, 37, 42, 44, 59, 77, 83, 153, 190, 191, 211, 215),
-  "Perseveration" = c(46, 51, 60, 78, 80, 99, 120, 127, 136),
-  "Restricted Affectivity" = c(8, 45, 84, 91, 100, 166, 182),
-  "Rigid Perfectionism" = c(34, 49, 104, 114, 122, 134, 139, 175, 194, 218),
-  "Risk Taking" = c(3, 7, 35, 39, 48, 67, 69, 87, 97, 111, 158, 163, 193, 213),
-  "Separation Insecurity" = c(12, 50, 57, 64, 126, 148, 174),
-  "Submissiveness" = c(9, 15, 63, 200),
-  "Suspiciousness" = c(2, 102, 116, 130, 132, 188),
-  "Unusual Beliefs & Experiences" = c(94, 98, 105, 138, 142, 149, 192, 207),
-  "Withdrawal" = c(10, 20, 75, 82, 135, 145, 146, 160, 180, 184)
-)
-# The key prints "Negative Affect"; the package keeps "Negative affectivity"
-# (D-089(d)), so the domains are matched by their primary facets.
-irf_domains <- list(
-  c("Emotional Lability", "Anxiousness", "Separation Insecurity"),
-  c("Withdrawal", "Anhedonia", "Intimacy Avoidance"),
-  c("Manipulativeness", "Deceitfulness", "Grandiosity"),
-  c("Irresponsibility", "Impulsivity", "Distractibility"),
-  c("Unusual Beliefs & Experiences", "Eccentricity", "Perceptual Dysregulation")
-)
+# The typed key tables (`irf_reverse`, `irf_facets`, `irf_domains`) live in
+# helper-fixtures.R, typed from the key's Facet Table and Domain Table
+# (cairn/references/apa2013pid5irf.md), never from data-raw/pid_irf_items.csv,
+# so the scoring and reliability tests share them. All 218 item texts are
+# checked against the PDF by data-raw/check_pid_irf_text.R, which needs the
+# shelf copy.
 
 test_that("pid_items$IRF numbers the 218 informant items 1 to 218 in APA order", {
   expect_true(is.integer(pid_items$IRF))

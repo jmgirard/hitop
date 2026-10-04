@@ -1,8 +1,9 @@
 # Ground-truth oracle tests for score_pid5(). Expected values are hand-computed
 # in helper-fixtures.R from the published PID-5 keys, never read from the code.
 #
-# score_pid5() outputs 25 facets + 5 domains for FULL/SF (M007) and 5 domains for
-# BF. FULL/SF domains average the 3 primary facets of each domain (APA Step 3);
+# score_pid5() outputs 25 facets + 5 domains for FULL/SF (M007) and IRF (M159)
+# and 5 domains for BF. FULL/SF/IRF domains average the 3 primary facets of each
+# domain (APA Step 3);
 # the primary-facet map (`pid_domains`) is verified against the APA source in
 # test-keying.R. The BF 5-domain structure is verified there too (M006).
 
@@ -927,6 +928,57 @@ test_that("IRF version is matched case-insensitively and by abbreviation", {
   ref <- score_pid5(x, items = 1:218, version = "IRF", append = FALSE)
   expect_identical(score_pid5(x, items = 1:218, version = "irf", append = FALSE), ref)
   expect_identical(score_pid5(x, items = 1:218, version = "I", append = FALSE), ref)
+})
+
+test_that("IRF independent recomputation from the key's typed tables, each missing mode", {
+  # Random answers with scattered NAs, so a wrong item in any facet list or a
+  # shifted IRF number moves some facet. The facet lists, reverse items and
+  # domain triplets are typed from the key (helper-fixtures.R); the facet
+  # stems are typed in `irf_expected`, in the same alphabetical facet order.
+  set.seed(159)
+  n <- 40
+  x <- as.data.frame(matrix(sample(0:3, n * 218, replace = TRUE), n, 218))
+  x[matrix(stats::runif(n * 218) < 0.04, n, 218)] <- NA
+  rev_x <- x
+  rev_x[irf_reverse] <- 3 - rev_x[irf_reverse]
+  facet_stems <- names(irf_expected)[1:25]
+  domain_stems <- names(irf_expected)[26:30]
+  apa <- function(m) {
+    k <- ncol(m)
+    apply(m, 1, function(v) {
+      a <- sum(!is.na(v))
+      if ((k - a) / k > 0.25) return(NA_real_)
+      floor(sum(v, na.rm = TRUE) * k / a + 0.5) / k
+    })
+  }
+  for (mode in c("apa", "available", "complete")) {
+    facet <- lapply(irf_facets, function(i) {
+      m <- as.matrix(rev_x[, i])
+      if (mode == "apa") apa(m) else rowMeans(m, na.rm = mode == "available")
+    })
+    names(facet) <- facet_stems
+    pkg <- score_pid5(x, items = 1:218, version = "IRF", missing = mode, append = FALSE)
+    for (nm in facet_stems) {
+      expect_equal(pkg[[paste0("pid_", nm)]], facet[[nm]], info = paste(mode, nm))
+    }
+    for (d in seq_along(irf_domains)) {
+      fs <- facet_stems[match(irf_domains[[d]], names(irf_facets))]
+      expected <- rowMeans(as.data.frame(facet[fs]), na.rm = mode == "available")
+      expect_equal(pkg[[paste0("pid_", domain_stems[d])]], expected, info = paste(mode, d))
+    }
+  }
+})
+
+test_that("IRF standard errors follow the facet and domain rules", {
+  d <- hush_se(score_pid5(fx_pid5irf(), items = 1:218, version = "IRF",
+                          calc_se = TRUE, append = FALSE))
+  # R1 Anhedonia, items after reversal 1, 3, 2, 1, 3, 1, 0, 3 (arithmetic in
+  # the block above): SD over 8 items / sqrt(8).
+  expect_equal(d$pid_anhedonia_se[1], stats::sd(c(1, 3, 2, 1, 3, 1, 0, 3)) / sqrt(8))
+  # R1 Detachment: facets 13/10, 7/4, 11/6, so SD of the 3 / sqrt(3).
+  expect_equal(d$pid_detachment_se[1], stats::sd(c(13 / 10, 7 / 4, 11 / 6)) / sqrt(3))
+  # R3 Detachment is NA, and so is its standard error.
+  expect_true(is.na(d$pid_detachment_se[3]))
 })
 
 test_that("IRF refuses a data frame with the wrong number of items", {

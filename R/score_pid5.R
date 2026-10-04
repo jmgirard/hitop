@@ -137,6 +137,12 @@
 #'   package's facet score is 1/n lower than a ceiling would give, for a facet
 #'   of n items.
 #'
+#'   Informant scores have the full form's column names, and nothing in the
+#'   output records the version. Do not pass them to [norm_pid5()] or
+#'   [plot_pid5()] as `version = "FULL"`: those use self-report norms, and the
+#'   informant norms (Markon et al., 2024, Tables A–10 and A–11) are not in
+#'   `pid_norms`. [validity_pid5()] has no informant validity scales.
+#'
 #' @details ## The PID-5-BF total score
 #'
 #'   `version = "BF"` returns a `total` column after its 5 domains. Markon et al.

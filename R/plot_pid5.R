@@ -11,6 +11,9 @@
 #'   a profile plot shows one respondent.
 #' @param version Which PID-5 version the scores came from: `"FULL"` (220
 #'   items), `"SF"` (100 items), or `"BF"` (25 items). Matched case-insensitively.
+#'   The PID-5 Informant Form has no norms in this package, so `version` does
+#'   not take `"IRF"`. Do not plot scores from `score_pid5(version = "IRF")`
+#'   as `"FULL"`: they would be compared with self-report norms.
 #' @param level Which scales to plot. `"domain"` plots the five personality
 #'   domains, plus the brief form's total. `"facet"` plots all 25 facets in
 #'   panels, and is available for `"FULL"` and `"SF"` only -- the brief form has

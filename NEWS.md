@@ -33,7 +33,10 @@
   `pid5irf_001` to `pid5irf_218`. `pid_items` gains an `IRF` column (each
   informant item's number) and a `TextIRF` column (its wording), and
   `pid_scales` gains an `IRF` element. `pid_items` now has 18 columns, and
-  `pid_scales` has 5 elements. `validity_pid5()`, `norm_pid5()` and
+  `pid_scales` has 5 elements. `IRF` sits after `BFPM`, so the columns from
+  `Reverse` to `Text` each move one place right; code that reads `pid_items`
+  by position needs updating. Informant scores carry the full form's column
+  names, so do not norm or plot them as `version = "FULL"`. `validity_pid5()`, `norm_pid5()` and
   `plot_pid5()` do not take the new version.
 
 * **New PID5BF+M forms.** `generate_docx_pid5bfpm()`,

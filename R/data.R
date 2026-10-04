@@ -21,12 +21,13 @@
 #'   membership is held only in `pid_scales$BFPM`}
 #'   \item{Domain}{Name of the domain}
 #'   \item{Text}{Item text, copyright APA}
-#'   \item{TextIRF}{Informant Form item text, copyright APA. Each item
-#'   completes the stem "He or she..."; this column does not include the stem}
+#'   \item{TextIRF}{Informant Form item text, copyright APA, from Markon, K.
+#'   E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013), *The
+#'   Personality Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult*,
+#'   American Psychiatric Association. Each item completes the stem "He or
+#'   she..."; this column does not include the stem, the leading ellipsis or
+#'   the final period, and uses straight quotes and apostrophes}
 #' }
-#' @source Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013).
-#'   *The Personality Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult*.
-#'   American Psychiatric Association.
 #' @examples
 #' pid_items
 "pid_items"
@@ -63,9 +64,10 @@
 #' Personality Inventory for DSM-5 Domain Data
 #'
 #' The map from each of the 5 PID-5 personality-trait domains to the 3 facets
-#' contributing primarily to it, used to compute domain scores for the FULL and
-#' SF versions (APA scoring key Step 3). This is the 15-facet primary subset, not
-#' the broader `pid_items$Domain` grouping.
+#' contributing primarily to it, used to compute domain scores for the FULL, SF
+#' and IRF versions (APA scoring keys, Step 3; the PID-5 Informant Form's Domain
+#' Table names the same primary facets). This is the 15-facet primary subset,
+#' not the broader `pid_items$Domain` grouping.
 #'
 #' @format A \link[tibble]{tibble} with 5 rows and 4 columns:
 #' \describe{
