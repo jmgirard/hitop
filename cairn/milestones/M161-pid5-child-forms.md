@@ -1,6 +1,6 @@
 # M161: PID-5 child forms (ages 11 to 17)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M158
 - **Driving RR:** —
@@ -63,6 +63,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - 2026-10-04: T5 done, T3 and T4 boxes ticked. `data-raw/artifacts.R` built the 8 child files, and the manifest gained 8 rows, all child files. All 52 earlier rows are unchanged and no shipped adult file changed. Pages `download-pid5child.Rmd` and `download-pid5bfchild.Rmd` and two Instruments menu entries were added. Page counts went from 8 to 10, and the strip exemption gained `pid5child` and `pid5bfchild`. Three manifest-coverage tests failed on the 4 new online exports, as their comments say they will. Fix: `test-export-padding-width.R` counts 15 to 19 and `test-response-value-no-move.R` gains 4 builders. These are not generator tests under AC3, and no expectation about an adult export changed. The full suite then had 27823 pass and 3 fail, all 3 in those files. The rerun of those files and the page tests passes.
 - 2026-10-04: T6 done. Added a `score_pid5()` details section and reference, a scoring vignette section, a NEWS entry and 6 reference-index entries. `pkgdown::check_pkgdown()` reports no problems. `devtools::check()` reports 0 errors, 0 warnings and 0 notes; it ran before the claim-audit fixes, and a rerun on the final state follows.
 - claim audit: 35 claims read, 8 corrected — R/score_pid5.R, vignettes/pid5_scoring.Rmd, vignettes/articles/download-pid5child.Rmd, vignettes/articles/download-pid5bfchild.Rmd, data-raw/artifacts.R, data-raw/check_pid_child_text.R, data-raw/sysdata.R (plus the stale `build_docx_footer()` comment in R/generate_docx.R). The same reader re-read all corrections and found them correct. The fix to the `build_notes` wording restored `data/hitop_artifacts.rda` from main and reran `artifacts.R`, so the 8 child rows and files were rebuilt. The 52 adult rows are unchanged.
+- 2026-10-04: status set to review. `devtools::check()` on the final state (98c13b6f) reports 0 errors, 0 warnings and 0 notes.
 
 ## Decisions
 
