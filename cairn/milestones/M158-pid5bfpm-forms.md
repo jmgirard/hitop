@@ -63,6 +63,7 @@ Researchers can build and download PID5BF+M paper forms, a Qualtrics import file
 - 2026-10-03: claim audit: 60 claims read, 3 corrected — NEWS.md, R/generate_redcap.R, tests/testthat/test-generate-pid5bfpm.R
 - 2026-10-03: the three corrections replace the claim that `score_pid5()` reads the `pid5bfpm_` names. It scores the columns passed in `items`, and the names are the `rename_pid5_items()` and `label_pid5()` defaults. The same reader re-read all three as accurate. The reader also noted that the BF+M scoring line keeps the PID-5 family sentence about (R) marks, though no BF+M item is reverse-keyed. That sentence stays, as on the BF form.
 - 2026-10-03: implement done. Status set to `review`.
+- 2026-10-03: step-7 approval: m158-pid5bfpm-forms approved for merge
 
 ## Decisions
 
