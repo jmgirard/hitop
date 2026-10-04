@@ -54,6 +54,8 @@
     <li><a class="dropdown-item" href="../articles/download-pid5bf.html">PID-5 Brief Form (BF)</a></li>
     <li><a class="dropdown-item" href="../articles/download-pid5bfpm.html">PID-5 Modified Brief Form (BF+M)</a></li>
     <li><a class="dropdown-item" href="../articles/download-pid5irf.html">PID-5 Informant Form (IRF)</a></li>
+    <li><a class="dropdown-item" href="../articles/download-pid5child.html">PID-5 Child Form, Ages 11-17</a></li>
+    <li><a class="dropdown-item" href="../articles/download-pid5bfchild.html">PID-5 Brief Child Form, Ages 11-17</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="https://jmgirard.github.io/hitop-builder/">Module Builder</a></li>
     <li><a class="dropdown-item" href="https://jmgirard.github.io/hitop-form/link.html">Study Link Builder</a></li>
@@ -685,6 +687,36 @@ Because informant scores carry the full form’s column names,
 <code><a href="../reference/norm_pid5.html">norm_pid5()</a></code> and <code><a href="../reference/plot_pid5.html">plot_pid5()</a></code> would accept them
 as <code>version = "FULL"</code> without complaint; do not do that, as
 it compares informant ratings with self-report norms.</p>
+</div>
+<div class="section level2">
+<h2 id="the-pid-5-child-forms">The PID-5 Child Forms<a class="anchor" aria-label="anchor" href="#the-pid-5-child-forms"></a>
+</h2>
+<p>The APA also publishes child forms of the PID-5 and the PID-5-BF for
+ages 11 to 17 (Krueger, Derringer, Markon, Watson &amp; Skodol, 2013,
+<em>The Personality Inventory for DSM-5 (PID-5)—Child Age 11–17</em> and
+<em>The Personality Inventory for DSM-5—Brief Form (PID-5-BF)—Child Age
+11–17</em>, American Psychiatric Association). They print the adult
+forms’ items in the same order, and their scoring keys reverse the same
+items and assign them to the same facets and domains. The full child
+form’s instructions add a label and put “right” and “wrong” in quotation
+marks, and the brief child form’s instructions are the adult paragraph.
+So <code><a href="../reference/score_pid5.html">score_pid5()</a></code> scores the 220-item child form with
+<code>version = "FULL"</code> and the 25-item child form with
+<code>version = "BF"</code>, exactly as it scores the adult forms.</p>
+<p><code><a href="../reference/generate_docx_pid5child.html">generate_docx_pid5child()</a></code>,
+<code><a href="../reference/generate_qualtrics_pid5child.html">generate_qualtrics_pid5child()</a></code> and
+<code><a href="../reference/generate_redcap_pid5child.html">generate_redcap_pid5child()</a></code> write the full child form, and
+the <code>pid5bfchild</code> functions write the brief one. Their online
+exports use the adult item names (Qualtrics <code>PID5_001</code> to
+<code>PID5_220</code> and <code>PID5BF_01</code> to
+<code>PID5BF_25</code>, REDCap <code>pid5_001</code> to
+<code>pid5_220</code> and <code>pid5bf_01</code> to
+<code>pid5bf_25</code>), so child data need no renaming before scoring.
+The package has no child norms, so do not pass child scores to
+<code><a href="../reference/norm_pid5.html">norm_pid5()</a></code> or <code><a href="../reference/plot_pid5.html">plot_pid5()</a></code>. No source on the
+package’s shelf gives validity cut scores for the child forms either, so
+the cut scores <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code> applies are not established
+for child data.</p>
 </div>
 <div class="section level2">
 <h2 id="collecting-responses-online-with-hitop-form">Collecting Responses Online with hitop-form<a class="anchor" aria-label="anchor" href="#collecting-responses-online-with-hitop-form"></a>

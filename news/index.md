@@ -100,6 +100,31 @@
   REDCap files are on a new PID-5 Informant Form download page. The
   online form does not offer the informant form.
 
+- **New PID-5 child forms for ages 11 to 17.**
+  [`generate_docx_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5child.md),
+  [`generate_qualtrics_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5child.md)
+  and
+  [`generate_redcap_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5child.md)
+  write the APA’s 220-item PID-5 child form, and
+  [`generate_docx_pid5bfchild()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5bfchild.md),
+  [`generate_qualtrics_pid5bfchild()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5bfchild.md)
+  and
+  [`generate_redcap_pid5bfchild()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5bfchild.md)
+  write its 25-item brief child form (Krueger et al., 2013). The child
+  forms print the adult forms’ items in the same order with the same
+  scoring key. So the new forms carry the adult items, the child
+  instructions and the 0 to 3 response options. The Word footer carries
+  the APA notice that the child forms print.
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+  scores them with `version = "FULL"` and `version = "BF"`. The
+  Qualtrics question IDs and REDCap fields are the adult forms’
+  (`PID5_001` and `pid5_001` to 220, `PID5BF_01` and `pid5bf_01` to 25),
+  so child data need no renaming before scoring. One REDCap project
+  therefore cannot hold both the adult and the child instrument of a
+  form. Ready-made Word (US and A4), Qualtrics and REDCap files are on
+  two new download pages. The package has no child norms, and the online
+  form does not offer the child forms.
+
 - **The `reliability_*()` functions report omega as `NA` for a scale
   with fewer than 3 items.** A one-factor model of 2 items is not
   identified, so no model is fitted. No PID-5, HiTOP-SR or HiTOP-BR

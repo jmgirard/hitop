@@ -208,6 +208,29 @@ norms (Markon et al., 2024, Tables A–10 and A–11) are not in
 [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
 has no informant validity scales.
 
+### The PID-5 child forms
+
+`version = "FULL"` scores the APA's 220-item PID-5 child form for ages
+11 to 17, and `version = "BF"` scores its 25-item PID-5-BF child form
+(Krueger et al., 2013). The child forms print the adult forms' items in
+the same order, and their keys reverse the same items and assign them to
+the same facets and domains. So no separate version is needed, and data
+collected with
+[`generate_docx_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5child.md),
+[`generate_qualtrics_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5child.md)
+or
+[`generate_redcap_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5child.md)
+(or their `pid5bfchild` counterparts) score as adult data do.
+`pid_norms` holds no child norms, so
+[`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+and
+[`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+would compare child scores with norms from another population. The child
+forms print no validity scales, and no source on this package's shelf
+gives validity cut scores for them, so the cut scores
+[`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
+applies are not established for child data.
+
 ### The PID-5-BF total score
 
 `version = "BF"` returns a `total` column after its 5 domains. Markon et
@@ -286,6 +309,12 @@ the Personality Inventory for DSM-5 (PID-5). *Assessment, 20*(3),
 Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013).
 *The Personality Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult*.
 American Psychiatric Association. The scoring key for `version = "IRF"`.
+
+Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., & Skodol, A.
+E. (2013). *The Personality Inventory for DSM-5 (PID-5)—Child Age 11–17*
+and *The Personality Inventory for DSM-5—Brief Form (PID-5-BF)—Child Age
+11–17*. American Psychiatric Association. The child forms that
+`version = "FULL"` and `version = "BF"` also score.
 
 ## Examples
 

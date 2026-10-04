@@ -18,8 +18,9 @@ instrument:
 - **Questions file (`.txt`)** — a Qualtrics *Advanced Format* text file
   containing the questions, imported into a survey you create. The
   **PID-5** (Full/SF/BF), **PID5BF+M**, **PID-5 Informant Form**,
-  **HiTOP-SR**, and **HiTOP-BR** ship as `.txt`. See [Importing a
-  Qualtrics questions file](#qualtrics-txt).
+  **PID-5 child forms** (full and brief), **HiTOP-SR**, and **HiTOP-BR**
+  ship as `.txt`. See [Importing a Qualtrics questions
+  file](#qualtrics-txt).
 
 REDCap always ships as an instrument `.zip`. See [Importing a REDCap
 instrument](#redcap-zip).

@@ -12,8 +12,12 @@
   Instrument](https://jmgirard.github.io/hitop/articles/download-pid5.md):
 - [PID-5-BF
   Instrument](https://jmgirard.github.io/hitop/articles/download-pid5bf.md):
+- [PID-5-BF Child Form
+  Instrument](https://jmgirard.github.io/hitop/articles/download-pid5bfchild.md):
 - [PID5BF+M
   Instrument](https://jmgirard.github.io/hitop/articles/download-pid5bfpm.md):
+- [PID-5 Child Form
+  Instrument](https://jmgirard.github.io/hitop/articles/download-pid5child.md):
 - [PID-5 Informant Form
   Instrument](https://jmgirard.github.io/hitop/articles/download-pid5irf.md):
 - [PID-5-SF

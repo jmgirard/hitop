@@ -687,6 +687,39 @@ and
 would accept them as `version = "FULL"` without complaint; do not do
 that, as it compares informant ratings with self-report norms.
 
+## The PID-5 Child Forms
+
+The APA also publishes child forms of the PID-5 and the PID-5-BF for
+ages 11 to 17 (Krueger, Derringer, Markon, Watson & Skodol, 2013, *The
+Personality Inventory for DSM-5 (PID-5)—Child Age 11–17* and *The
+Personality Inventory for DSM-5—Brief Form (PID-5-BF)—Child Age 11–17*,
+American Psychiatric Association). They print the adult forms’ items in
+the same order, and their scoring keys reverse the same items and assign
+them to the same facets and domains. The full child form’s instructions
+add a label and put “right” and “wrong” in quotation marks, and the
+brief child form’s instructions are the adult paragraph. So
+[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+scores the 220-item child form with `version = "FULL"` and the 25-item
+child form with `version = "BF"`, exactly as it scores the adult forms.
+
+[`generate_docx_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5child.md),
+[`generate_qualtrics_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5child.md)
+and
+[`generate_redcap_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5child.md)
+write the full child form, and the `pid5bfchild` functions write the
+brief one. Their online exports use the adult item names (Qualtrics
+`PID5_001` to `PID5_220` and `PID5BF_01` to `PID5BF_25`, REDCap
+`pid5_001` to `pid5_220` and `pid5bf_01` to `pid5bf_25`), so child data
+need no renaming before scoring. The package has no child norms, so do
+not pass child scores to
+[`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+or
+[`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md).
+No source on the package’s shelf gives validity cut scores for the child
+forms either, so the cut scores
+[`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
+applies are not established for child data.
+
 ## Collecting Responses Online with hitop-form
 
 [hitop-form](https://jmgirard.github.io/hitop-form/) is an online form

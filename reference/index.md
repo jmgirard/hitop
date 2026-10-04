@@ -93,6 +93,10 @@ community norm.
   : Generate a Word Document for the PID5BF+M
 - [`generate_docx_pid5irf()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5irf.md)
   : Generate a Word Document for the PID-5 Informant Form
+- [`generate_docx_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5child.md)
+  : Generate a Word Document for the PID-5 Child Form (Ages 11 to 17)
+- [`generate_docx_pid5bfchild()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5bfchild.md)
+  : Generate a Word Document for the PID-5-BF Child Form (Ages 11 to 17)
 - [`generate_qualtrics_hitopbr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopbr.md)
   : Generate a Qualtrics Import File for the HiTOP-BR
 - [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)
@@ -107,6 +111,12 @@ community norm.
   : Generate a Qualtrics Import File for the PID5BF+M
 - [`generate_qualtrics_pid5irf()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5irf.md)
   : Generate a Qualtrics Import File for the PID-5 Informant Form
+- [`generate_qualtrics_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5child.md)
+  : Generate a Qualtrics Import File for the PID-5 Child Form (Ages 11
+  to 17)
+- [`generate_qualtrics_pid5bfchild()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5bfchild.md)
+  : Generate a Qualtrics Import File for the PID-5-BF Child Form (Ages
+  11 to 17)
 - [`generate_redcap_hitopbr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopbr.md)
   : Generate a REDCap Instrument ZIP File for the HiTOP-BR
 - [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
@@ -123,6 +133,12 @@ community norm.
   : Generate a REDCap Instrument ZIP File for the PID5BF+M
 - [`generate_redcap_pid5irf()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5irf.md)
   : Generate a REDCap Instrument ZIP File for the PID-5 Informant Form
+- [`generate_redcap_pid5child()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5child.md)
+  : Generate a REDCap Instrument ZIP File for the PID-5 Child Form (Ages
+  11 to 17)
+- [`generate_redcap_pid5bfchild()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5bfchild.md)
+  : Generate a REDCap Instrument ZIP File for the PID-5-BF Child Form
+  (Ages 11 to 17)
 
 ## Example Data
 

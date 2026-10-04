@@ -12,9 +12,9 @@ to support clinical workflows and individual practitioner needs.
 - **Scoring & Utilities:** Automated scoring algorithms and
   data-cleaning functions for multiple instrument variants, including
   the Personality Inventory for DSM-5 (PID-5, PID-5-SF, PID-5-BF,
-  PID5BF+M, PID-5-IRF), the HiTOP Self-Report (HiTOP-SR), the HiTOP
-  Brief Report (HiTOP-BR), and the HiTOP Harmful Substance Use Module
-  (HiTOP-HSUM).
+  PID5BF+M, PID-5-IRF, and the PID-5 and PID-5-BF child forms for ages
+  11 to 17), the HiTOP Self-Report (HiTOP-SR), the HiTOP Brief Report
+  (HiTOP-BR), and the HiTOP Harmful Substance Use Module (HiTOP-HSUM).
 - **Instrument Downloads:** Direct access to downloadable assessment
   resources, including standard paper forms, as well as ready-to-import
   configuration files for popular data collection platforms like
@@ -56,6 +56,8 @@ PID5BF+M (36)
 
 PID-5-IRF (218)
 
+PID-5 Child (220) and PID-5-BF Child (25)
+
 Add Scoring Functions
 
 HiTOP-SR (405)
@@ -71,6 +73,8 @@ PID-5-BF (25)
 PID5BF+M (36)
 
 PID-5-IRF (218)
+
+PID-5 Child (220) and PID-5-BF Child (25)
 
 HiTOP-HSUM (650) - *waiting for feedback*
 
@@ -96,6 +100,8 @@ PID5BF+M (36)
 
 PID-5-IRF (218)
 
+PID-5 Child (220) and PID-5-BF Child (25)
+
 HiTOP-HSUM (650) - *waiting for feedback*
 
 Add Scoring Tutorials
@@ -113,6 +119,8 @@ PID-5-BF (25)
 PID5BF+M (36)
 
 PID-5-IRF (218)
+
+PID-5 Child (220) and PID-5-BF Child (25)
 
 HiTOP-HSUM (650) - *waiting for feedback*
 
@@ -133,6 +141,8 @@ PID-5-BF (25)
 PID5BF+M (36)
 
 PID-5-IRF (218)
+
+PID-5 Child (220) and PID-5-BF Child (25)
 
 ### Phase 2
 

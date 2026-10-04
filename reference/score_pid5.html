@@ -41,6 +41,8 @@ Bach et al., 2020), or Informant Form (PID-5-IRF, 218 items; Markon et al.,
     <li><a class="dropdown-item" href="../articles/download-pid5bf.html">PID-5 Brief Form (BF)</a></li>
     <li><a class="dropdown-item" href="../articles/download-pid5bfpm.html">PID-5 Modified Brief Form (BF+M)</a></li>
     <li><a class="dropdown-item" href="../articles/download-pid5irf.html">PID-5 Informant Form (IRF)</a></li>
+    <li><a class="dropdown-item" href="../articles/download-pid5child.html">PID-5 Child Form, Ages 11-17</a></li>
+    <li><a class="dropdown-item" href="../articles/download-pid5bfchild.html">PID-5 Brief Child Form, Ages 11-17</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="https://jmgirard.github.io/hitop-builder/">Module Builder</a></li>
     <li><a class="dropdown-item" href="https://jmgirard.github.io/hitop-form/link.html">Study Link Builder</a></li>
@@ -274,6 +276,25 @@ informant norms (Markon et al., 2024, Tables A–10 and A–11) are not in
 </div>
 
 <div class="section">
+<h3 id="the-pid-child-forms">The PID-5 child forms<a class="anchor" aria-label="anchor" href="#the-pid-child-forms"></a></h3>
+
+
+<p><code>version = "FULL"</code> scores the APA's 220-item PID-5 child form for ages 11
+to 17, and <code>version = "BF"</code> scores its 25-item PID-5-BF child form
+(Krueger et al., 2013). The child forms print the adult forms' items in
+the same order, and their keys reverse the same items and assign them to
+the same facets and domains. So no separate version is needed, and data
+collected with
+<code><a href="generate_docx_pid5child.html">generate_docx_pid5child()</a></code>, <code><a href="generate_qualtrics_pid5child.html">generate_qualtrics_pid5child()</a></code> or
+<code><a href="generate_redcap_pid5child.html">generate_redcap_pid5child()</a></code> (or their <code>pid5bfchild</code> counterparts) score
+as adult data do. <code>pid_norms</code> holds no child norms, so <code><a href="norm_pid5.html">norm_pid5()</a></code> and
+<code><a href="plot_pid5.html">plot_pid5()</a></code> would compare child scores with norms from another
+population. The child forms print no validity scales, and no source on
+this package's shelf gives validity cut scores for them, so the cut
+scores <code><a href="validity_pid5.html">validity_pid5()</a></code> applies are not established for child data.</p>
+</div>
+
+<div class="section">
 <h3 id="the-pid-bf-total-score">The PID-5-BF total score<a class="anchor" aria-label="anchor" href="#the-pid-bf-total-score"></a></h3>
 
 
@@ -342,6 +363,11 @@ form of the Personality Inventory for DSM-5 (PID-5). <em>Assessment, 20</em>(3),
 (2013). <em>The Personality Inventory for DSM-5—Informant Form
 (PID-5-IRF)—Adult</em>. American Psychiatric Association. The scoring key for
 <code>version = "IRF"</code>.</p>
+<p>Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &amp;
+Skodol, A. E. (2013). <em>The Personality Inventory for DSM-5 (PID-5)—Child
+Age 11–17</em> and <em>The Personality Inventory for DSM-5—Brief Form
+(PID-5-BF)—Child Age 11–17</em>. American Psychiatric Association. The child
+forms that <code>version = "FULL"</code> and <code>version = "BF"</code> also score.</p>
     </div>
 
     <div class="section level2">
