@@ -1,7 +1,7 @@
 # Locks what the instrument download pages render (vignettes/articles/
 # download-*.Rmd): three cards in the row, an online-form strip under it on
-# the five pages with a JSON export and none on the HSUM, PID5BF+M and
-# PID-5-IRF pages,
+# the five pages with a JSON export and none on the HSUM, PID5BF+M,
+# PID-5-IRF and two PID-5 child form pages,
 # and an anchor
 # to every manifest file. Each page's `downloads` chunk is extracted with
 # knitr::purl() and evaluated against the sourced helpers, so the checks read
@@ -10,8 +10,9 @@
 # neither vignettes/articles nor _pkgdown.yml is installed.
 
 # The pages with no JSON export, so no online-form strip: the HSUM, the
-# PID5BF+M and the PID-5-IRF, which the online form does not offer.
-no_strip_stems <- c("hitophsum", "pid5bfpm", "pid5irf")
+# PID5BF+M, the PID-5-IRF and the two PID-5 child forms, which the online
+# form does not offer.
+no_strip_stems <- c("hitophsum", "pid5bfpm", "pid5irf", "pid5child", "pid5bfchild")
 
 articles_dir <- function() {
   testthat::test_path("..", "..", "vignettes", "articles")
@@ -64,7 +65,7 @@ test_that("each download page renders exactly three cards in its row", {
   skip_if(!dir.exists(articles_dir()), "vignettes/articles not available")
   skip_if_not_installed("knitr")
   pages <- download_pages()
-  expect_length(pages, 8)
+  expect_length(pages, 10)
   for (page in pages) {
     fences <- render_downloads_chunk(page)
     row <- fences[startsWith(fences, '<div class="row mt-4 hitop-downloads">')]

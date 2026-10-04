@@ -143,6 +143,22 @@
 #'   informant norms (Markon et al., 2024, Tables A–10 and A–11) are not in
 #'   `pid_norms`. [validity_pid5()] has no informant validity scales.
 #'
+#' @details ## The PID-5 child forms
+#'
+#'   `version = "FULL"` scores the APA's 220-item PID-5 child form for ages 11
+#'   to 17, and `version = "BF"` scores its 25-item PID-5-BF child form
+#'   (Krueger et al., 2013). The child forms print the adult forms' items in
+#'   the same order, and their keys reverse the same items and assign them to
+#'   the same facets and domains. So no separate version is needed, and data
+#'   collected with
+#'   [generate_docx_pid5child()], [generate_qualtrics_pid5child()] or
+#'   [generate_redcap_pid5child()] (or their `pid5bfchild` counterparts) score
+#'   as adult data do. `pid_norms` holds no child norms, so [norm_pid5()] and
+#'   [plot_pid5()] would compare child scores with norms from another
+#'   population. The child forms print no validity scales, and no source on
+#'   this package's shelf gives validity cut scores for them, so the cut
+#'   scores [validity_pid5()] applies are not established for child data.
+#'
 #' @details ## The PID-5-BF total score
 #'
 #'   `version = "BF"` returns a `total` column after its 5 domains. Markon et al.
@@ -216,6 +232,11 @@
 #'   (2013). *The Personality Inventory for DSM-5—Informant Form
 #'   (PID-5-IRF)—Adult*. American Psychiatric Association. The scoring key for
 #'   `version = "IRF"`.
+#' @references Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
+#'   Skodol, A. E. (2013). *The Personality Inventory for DSM-5 (PID-5)—Child
+#'   Age 11–17* and *The Personality Inventory for DSM-5—Brief Form
+#'   (PID-5-BF)—Child Age 11–17*. American Psychiatric Association. The child
+#'   forms that `version = "FULL"` and `version = "BF"` also score.
 #'
 #' @examples
 #' # Score the full PID-5 (25 facets + 5 domains) from the simulated data

@@ -174,6 +174,23 @@ informant norms (Markon et al., 2024, Tables A–10 and A–11) are not in
 \code{pid_norms}. \code{\link[=validity_pid5]{validity_pid5()}} has no informant validity scales.
 }
 
+\subsection{The PID-5 child forms}{
+
+\code{version = "FULL"} scores the APA's 220-item PID-5 child form for ages 11
+to 17, and \code{version = "BF"} scores its 25-item PID-5-BF child form
+(Krueger et al., 2013). The child forms print the adult forms' items in
+the same order, and their keys reverse the same items and assign them to
+the same facets and domains. So no separate version is needed, and data
+collected with
+\code{\link[=generate_docx_pid5child]{generate_docx_pid5child()}}, \code{\link[=generate_qualtrics_pid5child]{generate_qualtrics_pid5child()}} or
+\code{\link[=generate_redcap_pid5child]{generate_redcap_pid5child()}} (or their \code{pid5bfchild} counterparts) score
+as adult data do. \code{pid_norms} holds no child norms, so \code{\link[=norm_pid5]{norm_pid5()}} and
+\code{\link[=plot_pid5]{plot_pid5()}} would compare child scores with norms from another
+population. The child forms print no validity scales, and no source on
+this package's shelf gives validity cut scores for them, so the cut
+scores \code{\link[=validity_pid5]{validity_pid5()}} applies are not established for child data.
+}
+
 \subsection{The PID-5-BF total score}{
 
 \code{version = "BF"} returns a \code{total} column after its 5 domains. Markon et al.
@@ -277,4 +294,10 @@ Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
 (2013). \emph{The Personality Inventory for DSM-5—Informant Form
 (PID-5-IRF)—Adult}. American Psychiatric Association. The scoring key for
 \code{version = "IRF"}.
+
+Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
+Skodol, A. E. (2013). \emph{The Personality Inventory for DSM-5 (PID-5)—Child
+Age 11–17} and \emph{The Personality Inventory for DSM-5—Brief Form
+(PID-5-BF)—Child Age 11–17}. American Psychiatric Association. The child
+forms that \code{version = "FULL"} and \code{version = "BF"} also score.
 }

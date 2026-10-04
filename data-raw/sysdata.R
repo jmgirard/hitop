@@ -36,6 +36,29 @@ pid_irf_instructions <- list(
   options = pid_instructions$options
 )
 
+## PID-5 child form instructions, ages 11 to 17 (M161). From the APA child
+## forms (Krueger et al., 2013; cairn/references/apa2013pid5child.md), one
+## entry per form: `FULL` for the 220-item form and `BF` for the 25-item brief
+## form. `start` is the instruction paragraph of the first item page (PDF
+## p. 2) without its label ("Instructions to the child receiving care:" or
+## "Instructions:"), as
+## `pid_instructions$start` omits the adult label. `notice` is the line each
+## form prints at the foot of its item pages. The items, keying and response
+## labels are the adult forms'. data-raw/check_pid_child_text.R checks start,
+## notice and the labels against the shelf PDFs.
+pid_child_instructions <- list(
+  FULL = list(
+    start = "This is a list of things different people might say about themselves. We are interested in how you would describe yourself. There are no \"right\" or \"wrong\" answers. So you can describe yourself as honestly as possible, we will keep your responses confidential. We'd like you to take your time and read each statement carefully, selecting the response that best describes you.",
+    notice = "Krueger RF, Derringer J, Markon KE, Watson D, Skodol AE. Copyright © 2013 American Psychiatric Association. All rights reserved. This material can be reproduced without permission by researchers and by clinicians for use with their patients.",
+    options = pid_instructions$options
+  ),
+  BF = list(
+    start = "This is a list of things different people might say about themselves. We are interested in how you would describe yourself. There are no right or wrong answers. So you can describe yourself as honestly as possible, we will keep your responses confidential. We'd like you to take your time and read each statement carefully, selecting the response that best describes you.",
+    notice = "Krueger RF, Derringer J, Markon KE, Watson D, Skodol AE. Copyright © 2013 American Psychiatric Association. All Rights Reserved. This material can be reproduced without permission by researchers and by clinicians for use with their patients.",
+    options = pid_instructions$options
+  )
+)
+
 ## HiTOP-SR instructions
 hitopsr_instructions <-
   list(
@@ -83,6 +106,7 @@ hitopdat_instructions <- list(
 usethis::use_data(
   pid_instructions,
   pid_irf_instructions,
+  pid_child_instructions,
   hitopsr_instructions,
   hitopbr_instructions,
   hitophsum_instructions,

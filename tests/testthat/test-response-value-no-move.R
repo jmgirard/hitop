@@ -27,6 +27,8 @@ flat_text_builders <- list(
   pid5bf_qualtrics.txt = function(file) generate_qualtrics_pid5bf(file = file),
   pid5bfpm_qualtrics.txt = function(file) generate_qualtrics_pid5bfpm(file = file),
   pid5irf_qualtrics.txt = function(file) generate_qualtrics_pid5irf(file = file),
+  pid5child_qualtrics.txt = function(file) generate_qualtrics_pid5child(file = file),
+  pid5bfchild_qualtrics.txt = function(file) generate_qualtrics_pid5bfchild(file = file),
   hitopsr_qualtrics.txt = function(file) generate_qualtrics_hitopsr(file = file),
   hitopbr_qualtrics.txt = function(file) generate_qualtrics_hitopbr(file = file),
   pid5_redcap.zip = function(file) generate_redcap_pid5(file = file),
@@ -34,6 +36,8 @@ flat_text_builders <- list(
   pid5bf_redcap.zip = function(file) generate_redcap_pid5bf(file = file),
   pid5bfpm_redcap.zip = function(file) generate_redcap_pid5bfpm(file = file),
   pid5irf_redcap.zip = function(file) generate_redcap_pid5irf(file = file),
+  pid5child_redcap.zip = function(file) generate_redcap_pid5child(file = file),
+  pid5bfchild_redcap.zip = function(file) generate_redcap_pid5bfchild(file = file),
   hitopsr_redcap.zip = function(file) generate_redcap_hitopsr(file = file),
   hitopbr_redcap.zip = function(file) generate_redcap_hitopbr(file = file),
   hitophsum_redcap.zip = function(file) generate_redcap_hitophsum(file = file)

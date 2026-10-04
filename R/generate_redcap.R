@@ -372,6 +372,96 @@ generate_redcap_pid5irf <- function(
   )
 }
 
+#' Generate a REDCap Instrument ZIP File for the PID-5 Child Form (Ages 11 to 17)
+#'
+#' The 220 items of the PID-5 child form for ages 11 to 17, which are the
+#' adult full form's items in the same order with the same keying, and the
+#' child form's instructions and response options. The item fields are the
+#' adult form's, `pid5_001` to `pid5_220`, the names [rename_pid5_items()]
+#' and [label_pid5()] use with `version = "FULL"`. Score them with
+#' `score_pid5(version = "FULL")`. Because the field names are the adult
+#' form's, one REDCap project cannot hold this instrument and the one
+#' [generate_redcap_pid5()] writes.
+#'
+#' @inheritParams generate_redcap_pid5
+#'
+#' @references Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
+#'   Skodol, A. E. (2013). *The Personality Inventory for DSM-5
+#'   (PID-5)—Child Age 11–17*. American Psychiatric Association.
+#'
+#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
+#'
+#' @examples
+#' # Write a PID-5 child form REDCap instrument ZIP to a temporary location
+#' generate_redcap_pid5child(file = tempfile(fileext = ".zip"))
+#'
+#' @export
+generate_redcap_pid5child <- function(
+  file = "pid5child_redcap.zip",
+  form_name = "pid5child_questionnaire",
+  required = TRUE,
+  breaks = 15
+) {
+  form <- pid_child_form("FULL")
+
+  build_redcap_zip(
+    items = form$items,
+    max_n = max(pid_items$FULL, na.rm = TRUE),
+    instructions = form$instructions,
+    file = file,
+    instrument = "PID5",
+    form_name = form_name,
+    required = required,
+    breaks = breaks
+  )
+}
+
+#' Generate a REDCap Instrument ZIP File for the PID-5-BF Child Form (Ages 11 to 17)
+#'
+#' The 25 items of the PID-5-BF child form for ages 11 to 17, which are the
+#' adult brief form's items in the same order with the same keying, and the
+#' child form's instructions and response options. The item fields are the
+#' adult form's, `pid5bf_01` to `pid5bf_25`, the names [rename_pid5_items()]
+#' and [label_pid5()] use with `version = "BF"`. Score them with
+#' `score_pid5(version = "BF")`. Because the field names are the adult
+#' form's, one REDCap project cannot hold this instrument and the one
+#' [generate_redcap_pid5bf()] writes.
+#'
+#' @inheritParams generate_redcap_pid5
+#'
+#' @references Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
+#'   Skodol, A. E. (2013). *The Personality Inventory for DSM-5—Brief Form
+#'   (PID-5-BF)—Child Age 11–17*. American Psychiatric Association.
+#'
+#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
+#'
+#' @examples
+#' # Write a PID-5-BF child form REDCap instrument ZIP to a temporary location
+#' generate_redcap_pid5bfchild(file = tempfile(fileext = ".zip"))
+#'
+#' @export
+generate_redcap_pid5bfchild <- function(
+  file = "pid5bfchild_redcap.zip",
+  form_name = "pid5bfchild_questionnaire",
+  required = TRUE,
+  breaks = 15
+) {
+  form <- pid_child_form("BF")
+
+  build_redcap_zip(
+    items = form$items,
+    max_n = max(pid_items$BF, na.rm = TRUE),
+    instructions = form$instructions,
+    file = file,
+    instrument = "PID5BF",
+    form_name = form_name,
+    required = required,
+    breaks = breaks
+  )
+}
+
 # Internal Helper: the dictionary's item field names
 #
 # One place for the names build_redcap_zip() writes, so the HiTOP-SR generator

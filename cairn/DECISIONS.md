@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-091 (2026-10-04): The PID-5 child forms score as `FULL` and `BF` and share their adult form's item stems (annotates D-055's one-stem-per-form rule; promotes M161-D1)
+
+**Context:** M161 adds the APA PID-5 child forms for ages 11 to 17, full (220 items) and brief (25 items). `data-raw/check_pid_child_text.R` finds their item texts, order, reverse keys, facets and domains equal to the adult `FULL` and `BF` tables (`cairn/references/apa2013pid5child.md`). D-055 gives each form its own item stem because the forms number their items independently, so one stem would name different items alike.
+
+**Decision:** The child forms are not a new `version`: `score_pid5()` scores them as `FULL` and `BF`. Six new generators, `generate_{docx,qualtrics,redcap}_pid5child()` and `generate_{docx,qualtrics,redcap}_pid5bfchild()`, write them, and the adult generators get no new argument. Their online exports use the adult stems: Qualtrics `PID5_` and `PID5BF_`, REDCap `pid5_` and `pid5bf_`. A child form numbers the same items as its adult form, so the shared stem names the same item alike, which D-055's reason allows. Jeff chose both at M161's T2 gate. Rejected: an argument on the adult generators (it would exist on two of the three versions and need locks on the adult output); child stems such as `pid5c_` (one REDCap project could hold both forms, but `label_pid5()` would need a `rename_pid5_items()` call first).
+
+**Consequences:** Child and adult data stack in the same columns and need no renaming. One REDCap project cannot hold the adult and the child instrument of one form, because REDCap field names must be unique; NEWS and the REDCap help pages say so. Evidence that reopens: a child form edition whose items, order or keying differ from the adult form's, or researchers who routinely need both forms in one REDCap project.
+
 ### D-090 (2026-10-03): The PID-5 Informant Form prorates with the shared nearest-whole-number rule, not the key's printed "round up" (extends D-009 to the IRF; from RB07/RR07)
 
 **Context:** The APA PID-5 Informant Form key (p. 9) says "If the result is a fraction, round up to the nearest whole number" after proration. Every other APA emerging-measure key RR07 read says "round to the nearest whole number": the adult self-report key in its 2013 and DSM-5-TR editions, the adult brief form, both child forms, three Level 2 measures and two severity measures. Two of them carry worked examples, and Level 2 Anxiety rounds 20 × 7 / 6 = 23.33 down to 23. The informant key carries two other copy errors: the Step 1 reverse list (D-089(c)) and, in its 2013 edition, "child receiving care" page headers. Its DSM-5-TR edition fixed the headers and kept the scoring text. Jeff sent the question to an independent review (RB07/RR07, `cairn/reviews/archive/`).
