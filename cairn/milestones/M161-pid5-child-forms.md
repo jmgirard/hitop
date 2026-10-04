@@ -44,7 +44,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 
 ## Tasks
 
-- [ ] T1: Write the `data-raw/` comparison script and the references page (AC1). A first check on 2026-10-03 found all 220 adult texts and all 25 BF texts in the child PDFs (letters-only match, order not checked). The child reverse list equals the adult list.
+- [x] T1: Write the `data-raw/` comparison script and the references page (AC1). A first check on 2026-10-03 found all 220 adult texts and all 25 BF texts in the child PDFs (letters-only match, order not checked). The child reverse list equals the adult list.
 - [ ] T2: Pre-implementation gate (RB tripwire: irreversible-api). Choose between new child generator functions and an argument on the existing PID-5 generators. Also choose the child item-name stems for Qualtrics and REDCap. Those stems decide whether `rename_pid5_items()` is needed before FULL or BF scoring. Then add the child instructions to `R/sysdata.rda` through `data-raw/`.
 - [ ] T3: Build the child Word, Qualtrics and REDCap generators.
 - [ ] T4: Write the parse-back tests (AC2) and run the existing generator and artifact tests unchanged (AC3).
@@ -57,6 +57,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - 2026-10-03: plan chose to score the child forms with the existing FULL and BF versions over a new child version. The first text check found the same items and reverse list. Falsified by any difference in T1's comparison.
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 3 clear fixes and 3 judgment findings, all applied. AC1 compares against the package tables, reads "whether", and states the match rule. AC3 narrows to shipped adult artifacts and stops conflicting with AC4's page-count edits. The T2 gate adds the child item-name stems.
 - 2026-10-04: implement started on branch `m161-pid5-child-forms`, cut from main at `0b9bc3db` after M160 merged. The untracked `devel/hitopdat_*` files predate the branch and stay out of every commit. M160's `pid_irf_form()`, `page_header` and `footer_notice` patterns are available to the child generators.
+- 2026-10-04: T1 done. `data-raw/check_pid_child_text.R` finds no difference in the 220 + 25 texts, the reverse list, 25 facets, 5 domains or 5 BF domains, and goes red on 7 planted defect kinds. Page `cairn/references/apa2013pid5child.md`. The child instructions differ from `pid_instructions$start` only in the full form's label and its quotes around "right" and "wrong".
 
 ## Decisions
 
