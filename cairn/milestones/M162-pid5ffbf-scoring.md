@@ -117,6 +117,7 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - 2026-10-04: diff-bug #9 went to the "PID-5 norms not yet shipped" row (exact text matching), and #8's bare `match.arg()` error is noted there too.
 - 2026-10-04: claim audit: 45 claims read, 7 corrected — NEWS.md, R/norm_pid5.R, R/score_pid5.R, vignettes/pid5_scoring.Rmd, cairn/DESIGN.md, cairn/SOURCES.md (the SF-norming warning now says only the two forensic domains are reported as not covered; prorated facets also move domain values; `pid_ffbf_items` has its own DESIGN description; the reverse-key source row names what each source says). Re-read pending.
 - 2026-10-04: T8 done. The same reader re-read the 7 corrected claims: all hold. Suite green. Status set to review.
+- 2026-10-04: review pass 3 settled 22 findings: 18 fix now (16 distinct, fixed in b958cdc1, and 2 duplicates of them), 2 follow-up (one issue, on the "PID-5 norms not yet shipped" row), 2 rejected. No finding showed a criterion failing, so no return.
 
 ## Decisions
 
@@ -179,26 +180,26 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - AC3: `test-score_pid5ffbf.R` 16 tests, 231 expectations, 0 failed (hand values, 1 to 4 range, three-mode recomputation). Box stays ticked.
 - AC4: characterization 120 of 120 `identical()` (pass 1 run; no scoring code changed since, T8 touched docs, tests and the FFBF-only rename refusal); the `"F"` tests pass in `test-score_pid5ffbf.R` and `test-plot_pid5.R`. Box stays ticked.
 - AC5: reliability, rename and label FFBF tests pass, now with 25 alphas and full sweeps. Box stays ticked.
-- AC6: the six facts are in `vignettes/pid5_scoring.Rmd` (validated in German only; English version from Table S3; same version and item-by-item averaging; Antagonism and Detachment; the SF rule and the code's no-rounding, 12-item domain rule; `label_pid5()` self-report text) and in `man/score_pid5.Rd`, `man/pid_ffbf_items.Rd` or `man/label_pid5.Rd`; `grep -i translat` on the four files finds no line; NEWS and `_pkgdown.yml` rows present; `cairn_validate` passes. `devtools::check()` and `pkgdown::check_pkgdown()` are re-run after the pass-3 fixes below.
-- diff-bug #1: the duplicate refusal's hint ("separate calls") still yields two `pid5ffbf_001` columns on one data frame — fix now (hint names a separate data frame or `prefix` per form).
-- diff-bug #2: the FFBF refusal test calls `plot_pid5()` with no ggplot2 skip — fix now.
-- diff-bug #3: `@return` of `rename_pid5_items()` omits the new refusal — fix now.
-- diff-bug #4: `@param method` names only `pid_items` texts — fix now.
-- diff-bug #5: the description omits `pid5ffbf_001` to `pid5ffbf_100` — fix now.
-- diff-bug #6: `version` docs of `reliability_pid5()`, `label_pid5()` and `rename_pid5_items()` omit the `"F"` refusal — fix now.
+- AC6: the six facts are in `vignettes/pid5_scoring.Rmd` (validated in German only; English version from Table S3; same version and item-by-item averaging; Antagonism and Detachment; the SF rule and the code's no-rounding, 12-item domain rule; `label_pid5()` self-report text) and in `man/score_pid5.Rd`, `man/pid_ffbf_items.Rd` or `man/label_pid5.Rd`; `grep -i translat` on the four files finds no line; NEWS and `_pkgdown.yml` rows present; `cairn_validate` passes. `devtools::check()` and `pkgdown::check_pkgdown()` are re-run after the pass-3 fixes below (results in the line after the findings).
+- diff-bug #1: the duplicate refusal's hint ("separate calls") still yields two `pid5ffbf_001` columns on one data frame — fix now (hint names a separate data frame or `prefix` per form), fixed b958cdc1.
+- diff-bug #2: the FFBF refusal test calls `plot_pid5()` with no ggplot2 skip — fix now, fixed b958cdc1.
+- diff-bug #3: `@return` of `rename_pid5_items()` omits the new refusal — fix now, fixed b958cdc1.
+- diff-bug #4: `@param method` names only `pid_items` texts — fix now, fixed b958cdc1.
+- diff-bug #5: the description omits `pid5ffbf_001` to `pid5ffbf_100` — fix now, fixed b958cdc1.
+- diff-bug #6: `version` docs of `reliability_pid5()`, `label_pid5()` and `rename_pid5_items()` omit the `"F"` refusal — fix now, fixed b958cdc1.
 - diff-bug #7: duplicate targets stay silent for the other versions — follow-up (pre-existing; noted on the "PID-5 norms not yet shipped" row).
-- diff-bug #8: "plot_pid5() plots them" misdescribes its input (normed columns) — fix now.
-- diff-bug #9: README's export list shows complete while FFBF has no export — fix now (unchecked FFBF row).
-- diff-bug #10: the refusal test expects straight quotes from `match.arg()` — fix now (match "should be one of").
-- diff-bug #11: check-script index when the heading is the last line — fix now (guard).
+- diff-bug #8: "plot_pid5() plots them" misdescribes its input (normed columns) — fix now, fixed b958cdc1.
+- diff-bug #9: README's export list shows complete while FFBF has no export — fix now (unchecked FFBF row), fixed b958cdc1.
+- diff-bug #10: the refusal test expects straight quotes from `match.arg()` — fix now (match "should be one of"), fixed b958cdc1.
+- diff-bug #11: check-script index when the heading is the last line — fix now (guard), fixed b958cdc1.
 - blame-history #1: the new refusal is unclassed and its test asserts prose — reject (planned shape: it matches the function's three other unclassed refusals, and D-034 classes conditions a caller is meant to catch).
 - blame-history #2: the guard is FFBF-only — same as diff-bug #7, follow-up.
-- blame-history #3: stale provenance in `pid_info.R`, `helper-fixtures.R` and the references page (lines 381 to 388) — fix now.
+- blame-history #3: stale provenance in `pid_info.R`, `helper-fixtures.R` and the references page (lines 381 to 388) — fix now, fixed b958cdc1.
 - blame-history #4: same as diff-bug #8, fix now.
 - blame-history #5: D-092 says "Most" items are rewritten, the docs "Many" — reject (false as a conflict: both hold, since 82 of 100 self-report items are adapted).
-- prior-review #1: keying-test loops lack `info` (LESSONS M032) — fix now.
-- prior-review #2: `R/score_pid5.R` comment "(FULL/SF/IRF/BFPM) the domain -> facet map" omits FFBF — fix now.
-- prior-review #3: NEWS's IRF entry says `pid_scales` has 5 elements, the FFBF entry 6 — fix now (drop the IRF entry's count).
+- prior-review #1: keying-test loops lack `info` (LESSONS M032) — fix now, fixed b958cdc1.
+- prior-review #2: `R/score_pid5.R` comment "(FULL/SF/IRF/BFPM) the domain -> facet map" omits FFBF — fix now, fixed b958cdc1.
+- prior-review #3: NEWS's IRF entry says `pid_scales` has 5 elements, the FFBF entry 6 — fix now (drop the IRF entry's count), fixed b958cdc1.
 - prior-review #4: same as diff-bug #3, fix now.
-- prior-review #5: the check script does not test `system2()` status (LESSONS M047) — fix now.
-- prior-review #6: the refusal loop lacks `info` — fix now.
+- prior-review #5: the check script does not test `system2()` status (LESSONS M047) — fix now, fixed b958cdc1.
+- prior-review #6: the refusal loop lacks `info` — fix now, fixed b958cdc1.
