@@ -6,7 +6,7 @@
 \usage{
 rename_pid5_items(
   data,
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   method = c("number", "text"),
   item_cols = NULL,
   item_text = NULL,

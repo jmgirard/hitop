@@ -7,7 +7,7 @@
 label_pid5(
   data,
   target = c("items", "scales"),
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   prefix = NULL
 )
 }

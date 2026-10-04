@@ -78,13 +78,13 @@
 reliability_pid5 <- function(
   data,
   items,
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   srange = c(0, 3),
   alpha = TRUE,
   omega = TRUE
 ) {
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
   n_items <- switch(
     version,
     "FULL" = 220,
@@ -92,12 +92,15 @@ reliability_pid5 <- function(
     "BF" = 25,
     "BFPM" = 36,
     "IRF" = 218,
+    "FFBF" = 100,
     cli::cli_abort("Invalid `version` argument")
   )
 
-  reverse_items <- drop_na(
-    pid_items[pid_items$Reverse == TRUE, version, drop = TRUE]
-  )
+  reverse_items <- if (version == "FFBF") {
+    pid_ffbf_items$FFBF[pid_ffbf_items$Reverse]
+  } else {
+    drop_na(pid_items[pid_items$Reverse == TRUE, version, drop = TRUE])
+  }
   items_scales <- pid_scales[[version]]$itemNumbers
   ## The canonical display names, read from the same table row for row. FULL,
   ## SF and IRF are facet-level; BF is domain-level plus its Total row.

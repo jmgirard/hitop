@@ -7,7 +7,7 @@
 reliability_pid5(
   data,
   items,
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   srange = c(0, 3),
   alpha = TRUE,
   omega = TRUE

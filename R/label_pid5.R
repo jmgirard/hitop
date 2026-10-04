@@ -60,7 +60,7 @@
 label_pid5 <- function(
   data,
   target = c("items", "scales"),
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   prefix = NULL
 ) {
   target <- match.arg(target)
@@ -71,7 +71,7 @@ label_pid5 <- function(
 
   ## Resolve the version, as `score_pid5()` does
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
 
   data_cols <- colnames(data)
 
@@ -83,17 +83,26 @@ label_pid5 <- function(
         "SF" = "pid5sf_",
         "BF" = "pid5bf_",
         "BFPM" = "pid5bfpm_",
-        "IRF" = "pid5irf_"
+        "IRF" = "pid5irf_",
+        "FFBF" = "pid5ffbf_"
       )
     }
 
     ## This form's rows, in `pid_items` row order; `expected_names` and the
     ## text column stay in step, so a match location indexes both. The
     ## informant form labels with its own wording (D-089(b)).
-    form <- pid_items[!is.na(pid_items[[version]]), ]
-    text <- if (version == "IRF") form$TextIRF else form$Text
-    max_n <- max(form[[version]])
-    expected_names <- item_names(prefix, form[[version]], max_n = max_n)
+    ## The FFBF has its own item table and labels with its English
+    ## self-report text (D-092).
+    if (version == "FFBF") {
+      numbers <- pid_ffbf_items$FFBF
+      text <- pid_ffbf_items$Text
+    } else {
+      form <- pid_items[!is.na(pid_items[[version]]), ]
+      numbers <- form[[version]]
+      text <- if (version == "IRF") form$TextIRF else form$Text
+    }
+    max_n <- max(numbers)
+    expected_names <- item_names(prefix, numbers, max_n = max_n)
     locs <- match(data_cols, expected_names)
     matched_idx <- which(!is.na(locs))
 
@@ -121,7 +130,8 @@ label_pid5 <- function(
         "SF" = "PID-5-SF",
         "BF" = "PID-5-BF",
         "BFPM" = "PID5BF+M",
-        "IRF" = "PID-5-IRF"
+        "IRF" = "PID-5-IRF",
+        "FFBF" = "PID-5-FFBF"
       )
     )
   } else if (target == "scales") {
@@ -139,6 +149,8 @@ label_pid5 <- function(
       pid_domains
     } else if (version == "BFPM") {
       pid_bfpm_domains
+    } else if (version == "FFBF") {
+      pid_ffbf_domains
     } else {
       NULL
     }

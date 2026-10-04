@@ -71,7 +71,7 @@
 #' @export
 rename_pid5_items <- function(
   data,
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   method = c("number", "text"),
   item_cols = NULL,
   item_text = NULL,
@@ -87,13 +87,27 @@ rename_pid5_items <- function(
 
   ## Resolve the version, as `score_pid5()` does
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
 
   ## Resolve this form's rows, its text, its output stem and its padding
   ## width. The informant form has its own wording (D-089(b)).
-  form <- pid_items[!is.na(pid_items[[version]]), ]
-  form_text <- if (version == "IRF") form$TextIRF else form$Text
-  form_numbers <- form[[version]]
+  ## The FFBF has its own item table (D-092), and its text method matches any
+  ## of the form's four texts: self or informant report, English or German.
+  if (version == "FFBF") {
+    form_numbers <- pid_ffbf_items$FFBF
+    form_text <- pid_ffbf_items$Text
+    text_pool <- c(
+      pid_ffbf_items$Text, pid_ffbf_items$TextIRF,
+      pid_ffbf_items$TextDE, pid_ffbf_items$TextIRFDE
+    )
+    pool_numbers <- rep(form_numbers, 4)
+  } else {
+    form <- pid_items[!is.na(pid_items[[version]]), ]
+    form_text <- if (version == "IRF") form$TextIRF else form$Text
+    form_numbers <- form[[version]]
+    text_pool <- form_text
+    pool_numbers <- form_numbers
+  }
   n_items <- length(form_numbers)
   max_n <- max(form_numbers)
   if (is.null(prefix)) {
@@ -103,7 +117,8 @@ rename_pid5_items <- function(
       "SF" = "pid5sf_",
       "BF" = "pid5bf_",
       "BFPM" = "pid5bfpm_",
-      "IRF" = "pid5irf_"
+      "IRF" = "pid5irf_",
+      "FFBF" = "pid5ffbf_"
     )
   }
   label <- switch(
@@ -112,7 +127,8 @@ rename_pid5_items <- function(
     "SF" = "PID-5-SF",
     "BF" = "PID-5-BF",
     "BFPM" = "PID5BF+M",
-    "IRF" = "PID-5-IRF"
+    "IRF" = "PID-5-IRF",
+    "FFBF" = "PID-5-FFBF"
   )
 
   ## Track matched standard item numbers for the final summary warning
@@ -174,7 +190,7 @@ rename_pid5_items <- function(
 
     ## Match text against this form's items only (using trimws for robustness
     ## against surrounding whitespace, as `rename_hitopsr_items()` does)
-    locs <- match(trimws(item_text), trimws(form_text))
+    locs <- match(trimws(item_text), trimws(text_pool))
 
     if (any(is.na(locs))) {
       missing_idx <- which(is.na(locs))
@@ -184,7 +200,7 @@ rename_pid5_items <- function(
     }
 
     if (length(locs) > 0) {
-      matched_n <- form_numbers[locs]
+      matched_n <- pool_numbers[locs]
       colnames(data)[data_locs] <- item_names(prefix, matched_n, max_n = max_n)
     }
   }

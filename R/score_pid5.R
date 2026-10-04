@@ -270,7 +270,7 @@
 score_pid5 <- function(
   data,
   items,
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   srange = c(0, 3),
   prefix = "pid_",
   missing = c("apa", "available", "complete"),
@@ -280,7 +280,7 @@ score_pid5 <- function(
   ## Resolve the version and its item count (shared arg validation runs in the
   ## engine; version is PID-specific and resolved here)
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
   missing <- match.arg(missing)
   n_items <- switch(
     version,
@@ -289,6 +289,7 @@ score_pid5 <- function(
     "BF" = 25,
     "BFPM" = 36,
     "IRF" = 218,
+    "FFBF" = 100,
     cli::cli_abort("Invalid `version` argument")
   )
 
@@ -296,15 +297,21 @@ score_pid5 <- function(
   ## item-number lists, and (FULL/SF/IRF/BFPM) the domain -> facet map. The
   ## BFPM domains are the means of their facets, as the FULL/SF domains are, so
   ## the engine scores them the same way from their own map (D-088(c), (d)).
-  ## The IRF has the full form's 25 facets and 5 domains (D-089(d)).
-  reverse_items <- drop_na(
-    pid_items[pid_items$Reverse == TRUE, version, drop = TRUE]
-  )
+  ## The IRF has the full form's 25 facets and 5 domains (D-089(d)). The FFBF
+  ## keeps its items in its own table, and its 7 domains are the 5 APA domains
+  ## and 2 forensic domains of `pid_ffbf_domains` (D-092).
+  reverse_items <- if (version == "FFBF") {
+    pid_ffbf_items$FFBF[pid_ffbf_items$Reverse]
+  } else {
+    drop_na(pid_items[pid_items$Reverse == TRUE, version, drop = TRUE])
+  }
   items_scales <- pid_scales[[version]]$itemNumbers
   domain_map <- if (version %in% c("FULL", "SF", "IRF")) {
     setNames(pid_domains$facetStems, pid_domains$camelCase)
   } else if (version == "BFPM") {
     setNames(pid_bfpm_domains$facetStems, pid_bfpm_domains$camelCase)
+  } else if (version == "FFBF") {
+    setNames(pid_ffbf_domains$facetStems, pid_ffbf_domains$camelCase)
   } else {
     NULL
   }
