@@ -119,8 +119,8 @@ for (i in which(sr_facet != items$Facet)) {
 }
 sr_reverse <- items$IRF[sr$Reverse[match(items$FULL, sr$FULL)]]
 
-# 4. Instructions in R/sysdata.rda: the first-page and later-page texts and the
-# rating prompt. Quotes, apostrophes and spacing are normalized as for the item
+# 4. Instructions in R/sysdata.rda: the first-page and later-page texts, the
+# rating prompt and the APA notice, then the stem and the response labels. Quotes, apostrophes and spacing are normalized as for the item
 # text, but the final period is kept, so the match checks it too.
 sysdata <- new.env()
 load("R/sysdata.rda", envir = sysdata)

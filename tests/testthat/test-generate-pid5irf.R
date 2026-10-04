@@ -38,7 +38,8 @@ irf_docx_runs <- function(file) {
 test_that("the IRF Word form prints exactly the 218 informant items in IRF order", {
   skip_if_no_docx()
   expected <- irf_expected()
-  # Independent fact: the form has 218 items, numbered 1 to 218 without gaps.
+  # Precondition on the source table: `pid_items$IRF` numbers 218 items, 1 to
+  # 218 without gaps.
   expect_identical(sort(pid_items$IRF[!is.na(pid_items$IRF)]), 1:218)
   expect_false(anyNA(expected$text))
 
@@ -130,11 +131,18 @@ test_that("include_scoring = FALSE drops the IRF scoring table", {
 
 test_that("the other PID-5 forms keep the Society footer", {
   skip_if_no_docx()
-  f <- withr::local_tempfile(fileext = ".docx")
-  suppressMessages(generate_docx_pid5(file = f))
-  footer <- read_docx_footer(f)
-  expect_true(grepl("Hierarchical Taxonomy of Psychopathology Society", footer, fixed = TRUE))
-  expect_false(grepl("American Psychiatric Association", footer, fixed = TRUE))
+  for (gen in list(
+    generate_docx_pid5,
+    generate_docx_pid5sf,
+    generate_docx_pid5bf,
+    generate_docx_pid5bfpm
+  )) {
+    f <- withr::local_tempfile(fileext = ".docx")
+    suppressMessages(gen(file = f))
+    footer <- read_docx_footer(f)
+    expect_true(grepl("Hierarchical Taxonomy of Psychopathology Society", footer, fixed = TRUE))
+    expect_false(grepl("American Psychiatric Association", footer, fixed = TRUE))
+  }
 })
 
 # ---- Qualtrics (AC2) ---------------------------------------------------------
@@ -188,6 +196,13 @@ test_that("the IRF REDCap dictionary holds the 218 informant items in IRF order"
 
   # The 218 field names are the ones rename_pid5_items() and label_pid5()
   # use, and they score with score_pid5(version = "IRF").
+  legacy <- as.data.frame(
+    matrix(0L, nrow = 1L, ncol = 218L, dimnames = list(NULL, paste0("pid_", 1:218)))
+  )
+  expect_identical(
+    names(rename_pid5_items(legacy, version = "IRF")),
+    items[["Variable / Field Name"]]
+  )
   df <- as.data.frame(
     matrix(0L, nrow = 1L, ncol = 218L, dimnames = list(NULL, items[["Variable / Field Name"]]))
   )

@@ -1554,8 +1554,9 @@ generate_docx_pid5bfpm <- function(
 # items in IRF order, with the IRF number first and `Text` replaced by the
 # informant wording (`TextIRF`, D-089(b)): the builders read `Text`, which
 # holds the self-report wording. The instruction text is the form's opening
-# paragraph, its rating prompt and the "He or she..." stem each item completes,
-# as `pid_irf_instructions` stores them; the response options are its own.
+# paragraph, its rating prompt and the "He or she…" stem each item completes,
+# as `pid_irf_instructions` stores them; the response options are the
+# self-report form's, which the informant form prints unchanged.
 pid_irf_form <- function() {
   items <- pid_items[!is.na(pid_items$IRF), ]
   items <- items[order(items$IRF), ]
@@ -1580,7 +1581,7 @@ pid_irf_form <- function() {
 #' on which an adult informant rates the person receiving care, as a paper
 #' form. The items are numbered 1 to 218 in the form's order, with the
 #' informant wording (`pid_items$TextIRF`). The instructions end with the
-#' form's rating prompt and the stem "He or she..." that each item completes.
+#' form's rating prompt and the stem "He or she…" that each item completes.
 #' The scoring page lists each of the 25 facets with its informant item
 #' numbers, marking the 14 reverse-scored items with (R), as [score_pid5()]
 #' scores them with `version = "IRF"`. The footer carries the APA copyright

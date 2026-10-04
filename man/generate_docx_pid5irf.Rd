@@ -32,7 +32,7 @@ Write the 218-item PID-5 Informant Form (PID-5-IRF; Markon et al., 2013),
 on which an adult informant rates the person receiving care, as a paper
 form. The items are numbered 1 to 218 in the form's order, with the
 informant wording (\code{pid_items$TextIRF}). The instructions end with the
-form's rating prompt and the stem "He or she..." that each item completes.
+form's rating prompt and the stem "He or she…" that each item completes.
 The scoring page lists each of the 25 facets with its informant item
 numbers, marking the 14 reverse-scored items with (R), as \code{\link[=score_pid5]{score_pid5()}}
 scores them with \code{version = "IRF"}. The footer carries the APA copyright

@@ -67,7 +67,7 @@ download_cards("PID-5-IRF", list(
     <div class="card h-100 shadow-sm">
       <div class="card-body">
         <h5 class="card-title">🛠️ Custom File Generation</h5>
-        <p class="card-text">Need to change the formatting, adapt the instructions, or translate the text? Build customized DOCX, Qualtrics, and REDCap files programmatically.</p>
+        <p class="card-text">Need to change the paper size, font, title or page breaks? Build customized DOCX, Qualtrics, and REDCap files programmatically.</p>
         <div class="d-flex flex-wrap gap-2">
           <a href="../reference/generate_docx_pid5irf.html" class="btn btn-sm btn-outline-secondary">Printable</a>
           <a href="../reference/generate_qualtrics_pid5irf.html" class="btn btn-sm btn-outline-secondary">Qualtrics</a>

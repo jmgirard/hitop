@@ -333,7 +333,7 @@ generate_redcap_pid5bfpm <- function(
 #'
 #' The 218 items of the PID-5 Informant Form (PID-5-IRF), in the form's order
 #' with the informant wording (`pid_items$TextIRF`). The instructions field
-#' ends with the form's rating prompt and the stem "He or she..." that each
+#' ends with the form's rating prompt and the stem "He or she…" that each
 #' item completes, and the response options are the form's 0 to 3 labels. The
 #' item fields are `pid5irf_001` to `pid5irf_218`, the names
 #' [rename_pid5_items()] and [label_pid5()] use with `version = "IRF"`. Score
