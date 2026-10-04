@@ -1,6 +1,6 @@
 # M159: PID-5 informant form (IRF) keying and scoring
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M157
 - **Driving RR:** —
