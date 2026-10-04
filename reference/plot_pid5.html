@@ -111,7 +111,10 @@ a profile plot shows one respondent.</p></dd>
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
 <dd><p>Which PID-5 version the scores came from: <code>"FULL"</code> (220
-items), <code>"SF"</code> (100 items), or <code>"BF"</code> (25 items). Matched case-insensitively.</p></dd>
+items), <code>"SF"</code> (100 items), or <code>"BF"</code> (25 items). Matched case-insensitively.
+The PID-5 Informant Form has no norms in this package, so <code>version</code> does
+not take <code>"IRF"</code>. Do not plot scores from <code>score_pid5(version = "IRF")</code>
+as <code>"FULL"</code>: they would be compared with self-report norms.</p></dd>
 
 
 <dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>

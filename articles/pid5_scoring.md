@@ -602,6 +602,91 @@ and
 also take `version = "BFPM"`. The PID5BF+M has no validity scales, and
 the package has no norms or profile plot for it.
 
+## The PID-5 Informant Form
+
+The PID-5 Informant Form (PID-5-IRF; Markon et al., 2013,
+[doi:10.1177/1073191113486513](https://doi.org/10.1177/1073191113486513))
+is the APA’s 218-item form on which an adult informant rates the person
+receiving care. It has the full form’s 25 facets and 5 domains. It has
+no counterpart to self-report items 96 and 177, so its Anxiousness and
+Suspiciousness facets each have one item fewer. The `pid_items$IRF`
+column gives each informant item’s number, `pid_items$TextIRF` its
+wording (each item completes the stem “He or she…”), and the package
+names its item columns `pid5irf_001` to `pid5irf_218`.
+
+The package has no simulated informant dataset. For illustration, we
+take the 218 self-report items that the informant items map to from
+`sim_pid5` and rename them.
+
+``` r
+
+irf_rows <- pid_items[!is.na(pid_items$IRF), ]
+sim_irf <- sim_pid5[sprintf("pid5_%03d", irf_rows$FULL)]
+names(sim_irf) <- sprintf("pid5irf_%03d", irf_rows$IRF)
+```
+
+[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+with `version = "IRF"` returns the same 25 facets and 5 domains as the
+full form, under the same column names, so informant and self-report
+scores of the same person line up column by column.
+
+``` r
+
+irf_scores <- score_pid5(sim_irf, items = 1:218, version = "IRF", append = FALSE)
+irf_scores
+#> # A tibble: 100 × 30
+#>    pid_anhedonia pid_suspiciousness pid_riskTaking pid_impulsivity
+#>            <dbl>              <dbl>          <dbl>           <dbl>
+#>  1          1.25              2               1.36           2.33 
+#>  2          1.38              1.67            1.43           2    
+#>  3          1.88              0.833           1.29           1.83 
+#>  4          1.25              2.67            1.21           1.5  
+#>  5          1.12              1.83            1.64           2.5  
+#>  6          2.12              1.17            1.79           1.83 
+#>  7          1.38              1.17            1.86           1.17 
+#>  8          1.5               1.5             1.86           0.667
+#>  9          1.12              1.17            1.86           1.67 
+#> 10          1.38              2               2.07           2    
+#> # ℹ 90 more rows
+#> # ℹ 26 more variables: pid_eccentricity <dbl>, pid_distractibility <dbl>,
+#> #   pid_restrictedAffectivity <dbl>, pid_submissiveness <dbl>,
+#> #   pid_withdrawal <dbl>, pid_callousness <dbl>,
+#> #   pid_separationInsecurity <dbl>, pid_attentionSeeking <dbl>,
+#> #   pid_emotionalLability <dbl>, pid_depressivity <dbl>, pid_hostility <dbl>,
+#> #   pid_irresponsibility <dbl>, pid_rigidPerfectionism <dbl>, …
+```
+
+Scoring follows the APA informant key (Markon et al., 2013), with two
+readings that
+[`?score_pid5`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+explains. Fourteen items are reverse-scored, the ones the key’s Facet
+Table marks R; the key’s Step 1 list also names items 98 and 176, which
+are not reversed. And the key says to “round up” a fractional prorated
+raw score; the package applies the nearest-whole-number rule of the
+other APA PID-5 keys, so informant and self-report facets prorate the
+same way.
+
+[`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md),
+[`rename_pid5_items()`](https://jmgirard.github.io/hitop/reference/rename_pid5_items.md)
+and
+[`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
+also take `version = "IRF"`, and
+[`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
+labels items with the informant wording. No validity scales for the
+informant form are on the package’s source shelf, and its norms (Markon
+et al., 2024, Tables A–10 and A–11) are not yet in `pid_norms`, so
+[`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md),
+[`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+and
+[`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+do not take it. Because informant scores carry the full form’s column
+names,
+[`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+and
+[`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+would accept them as `version = "FULL"` without complaint; do not do
+that, as it compares informant ratings with self-report norms.
+
 ## Collecting Responses Online with hitop-form
 
 [hitop-form](https://jmgirard.github.io/hitop-form/) is an online form

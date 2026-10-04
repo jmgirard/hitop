@@ -9,7 +9,7 @@ columns, making them readable by data viewers and reporting packages.
 label_pid5(
   data,
   target = c("items", "scales"),
-  version = c("FULL", "SF", "BF", "BFPM"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
   prefix = NULL
 )
 ```
@@ -29,20 +29,22 @@ label_pid5(
 - version:
 
   A string specifying the PID-5 form the columns belong to: `"FULL"`
-  (220 items), `"SF"` (100 items), `"BF"` (25 items), or `"BFPM"` (the
-  36-item PID5BF+M). Matched case-insensitively. The forms number their
-  items independently and score different sets of scales, so the form
-  named here decides both the text attached to an item column and which
-  scale columns are recognized. (default = `"FULL"`)
+  (220 items), `"SF"` (100 items), `"BF"` (25 items), `"BFPM"` (the
+  36-item PID5BF+M), or `"IRF"` (the 218-item Informant Form, labelled
+  with its informant wording from `pid_items$TextIRF`). Matched
+  case-insensitively. The forms number their items independently and
+  score different sets of scales, so the form named here decides both
+  the text attached to an item column and which scale columns are
+  recognized. (default = `"FULL"`)
 
 - prefix:
 
   A string specifying the prefix used on the column names. `NULL`
   resolves to the default for the given `target` and `version`: under
   `target = "items"`, the form's own stem (`"pid5_"`, `"pid5sf_"`,
-  `"pid5bf_"` or `"pid5bfpm_"`); for the full, short and brief forms
-  this is the pattern the shipped datasets and the package's REDCap
-  export use; under `target = "scales"`, `"pid_"`, which is what
+  `"pid5bf_"`, `"pid5bfpm_"` or `"pid5irf_"`); for the full, short and
+  brief forms this is the pattern the shipped datasets and the package's
+  REDCap export use; under `target = "scales"`, `"pid_"`, which is what
   [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
   writes under its own default `prefix`. (default = `NULL`)
 
@@ -69,6 +71,15 @@ returned unchanged and a warning of class `hitop_no_columns_matched`
 says so; the `hitop_unpadded_items` report still names every prefixed
 item column it found. Both classes may be caught or suppressed by
 callers.
+
+## References
+
+Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013).
+*The Personality Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult*.
+American Psychiatric Association. The source of the informant wording
+that `version = "IRF"` labels items with. See also Markon et al. (2013),
+*Assessment, 20*(3), 370-383.
+[doi:10.1177/1073191113486513](https://doi.org/10.1177/1073191113486513)
 
 ## Examples
 

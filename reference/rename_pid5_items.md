@@ -6,15 +6,16 @@ on the literal item prompt text. The standard names are the ones the
 package's REDCap and Qualtrics exports write and the shipped datasets
 carry: `pid5_001` to `pid5_220` for the full form, `pid5sf_001` to
 `pid5sf_100` for the short form, and `pid5bf_01` to `pid5bf_25` for the
-brief form. The PID5BF+M names, `pid5bfpm_01` to `pid5bfpm_36`, follow
-the same pattern.
+brief form. The PID5BF+M names, `pid5bfpm_01` to `pid5bfpm_36`, and the
+Informant Form names, `pid5irf_001` to `pid5irf_218`, follow the same
+pattern.
 
 ## Usage
 
 ``` r
 rename_pid5_items(
   data,
-  version = c("FULL", "SF", "BF", "BFPM"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
   method = c("number", "text"),
   item_cols = NULL,
   item_text = NULL,
@@ -32,14 +33,18 @@ rename_pid5_items(
 - version:
 
   A string specifying the PID-5 form the items belong to: `"FULL"` (220
-  items), `"SF"` (100 items), `"BF"` (25 items), or `"BFPM"` (the
-  36-item PID5BF+M). Matched case-insensitively. (default = `"FULL"`)
+  items), `"SF"` (100 items), `"BF"` (25 items), `"BFPM"` (the 36-item
+  PID5BF+M), or `"IRF"` (the 218-item Informant Form, whose text matches
+  `pid_items$TextIRF`). Matched case-insensitively. (default = `"FULL"`)
 
 - method:
 
   A string specifying the matching method: `"number"` to rename columns
   spelled `from_prefix` followed by an item number, or `"text"` to match
-  against the literal item prompt text in `pid_items$Text`. (default =
+  against the literal item prompt text in `pid_items$Text`
+  (`pid_items$TextIRF` for `version = "IRF"`, whose text has no "He or
+  she..." stem, leading ellipsis or final period, so text copied from
+  the printed informant form needs those removed first). (default =
   `"number"`)
 
   The forms number their items independently, so `"number"` reads the
@@ -70,8 +75,8 @@ rename_pid5_items(
 
   A string pasted literally before each standardized item number, which
   is zero-padded to the width of the form's largest item number. `NULL`
-  resolves to the form's own stem: `"pid5_"`, `"pid5sf_"`, `"pid5bf_"`
-  or `"pid5bfpm_"`. (default = `NULL`)
+  resolves to the form's own stem: `"pid5_"`, `"pid5sf_"`, `"pid5bf_"`,
+  `"pid5bfpm_"` or `"pid5irf_"`. (default = `NULL`)
 
 ## Value
 
@@ -90,6 +95,15 @@ by a number, nothing is renamed and the report is
 `hitop_no_columns_matched`. Under either method, if some but not all of
 the form's items were renamed, the completeness report is
 `hitop_incomplete_rename`.
+
+## References
+
+Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013).
+*The Personality Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult*.
+American Psychiatric Association. The source of the informant wording
+that `version = "IRF"` matches under `method = "text"`. See also Markon
+et al. (2013), *Assessment, 20*(3), 370-383.
+[doi:10.1177/1073191113486513](https://doi.org/10.1177/1073191113486513)
 
 ## Examples
 

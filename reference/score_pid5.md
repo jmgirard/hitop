@@ -2,8 +2,9 @@
 
 Calculate scale scores on the Personality Inventory for DSM-5: full
 version (PID-5, 220 items), short form version (PID-5-SF, 100 items),
-brief form version (PID-5-BF, 25 items), or modified brief form
-(PID5BF+M, 36 items; Bach et al., 2020) from item-level data.
+brief form version (PID-5-BF, 25 items), modified brief form (PID5BF+M,
+36 items; Bach et al., 2020), or Informant Form (PID-5-IRF, 218 items;
+Markon et al., 2013) from item-level data.
 
 ## Usage
 
@@ -11,7 +12,7 @@ brief form version (PID-5-BF, 25 items), or modified brief form
 score_pid5(
   data,
   items,
-  version = c("FULL", "SF", "BF", "BFPM"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
   srange = c(0, 3),
   prefix = "pid_",
   missing = c("apa", "available", "complete"),
@@ -56,8 +57,8 @@ score_pid5(
 - version:
 
   A string indicating the version of the PID to score: "FULL", "SF",
-  "BF", or "BFPM" (the 36-item PID5BF+M). Will be automatically
-  capitalized. (default = `"FULL"`)
+  "BF", "BFPM" (the 36-item PID5BF+M), or "IRF" (the 218-item Informant
+  Form). Will be automatically capitalized. (default = `"FULL"`)
 
 - srange:
 
@@ -76,10 +77,14 @@ score_pid5(
   APA scoring key: a facet or domain-item scale with more than 25% of
   its items unanswered is set to `NA`, and otherwise the raw score is
   prorated to the full item count and rounded to the nearest whole
-  number before averaging (a FULL, SF or BFPM domain is `NA` if any one
-  of its three contributing facets is `NA`). `"available"` averages
-  whatever items are present (`rowMeans(na.rm = TRUE)`). `"complete"`
-  returns `NA` for any scale with a missing item
+  number before averaging (a FULL, SF, IRF or BFPM domain is `NA` if any
+  one of its three contributing facets is `NA`). The PID-5-IRF key
+  prints this step as "round up to the nearest whole number". The
+  package reads it as the nearest-whole-number rule that every other APA
+  PID-5 key states, with halves rounded up, so an informant facet
+  prorates exactly as the matching self-report facet does. `"available"`
+  averages whatever items are present (`rowMeans(na.rm = TRUE)`).
+  `"complete"` returns `NA` for any scale with a missing item
   (`rowMeans(na.rm = FALSE)`). With no missing items the three agree.
   (default = `"apa"`)
 
@@ -96,8 +101,8 @@ score_pid5(
   calculate a standard error for each scale score. For the facets, and
   for the brief form's domains and total, this is the SD of the items
   the respondent actually answered divided by the square root of how
-  many of those items they answered. The FULL, SF and BFPM domain scores
-  are means of three facet scores rather than of items, so their
+  many of those items they answered. The FULL, SF, IRF and BFPM domain
+  scores are means of three facet scores rather than of items, so their
   standard errors are taken one level up: the SD of the three
   contributing facet scores divided by the square root of 3. Standard
   errors are `NA` wherever their scale score is `NA`. A BFPM facet
@@ -123,9 +128,9 @@ original `data` columns (if requested)
 
 ## Details
 
-For the FULL and SF versions, the output includes the 25 facet scores
-followed by the 5 personality-trait domain scores. Following the APA
-scoring key (Step 3), each domain score is the mean of the average
+For the FULL, SF and IRF versions, the output includes the 25 facet
+scores followed by the 5 personality-trait domain scores. Following the
+APA scoring key (Step 3), each domain score is the mean of the average
 scores of its 3 primary facets (the map is stored in `pid_domains`). The
 BF version scores its 5 domains directly from its items, and adds a
 `total` score. By default (`missing = "apa"`) all versions apply the APA
@@ -165,6 +170,44 @@ missing item makes the facet `NA`, and an `NA` facet makes its domain
 with decimals can differ.) Under `missing = "available"`, a facet can be
 scored from one item and a domain from one or two of its facets.
 
+### The PID-5 Informant Form
+
+`version = "IRF"` scores the PID-5 Informant Form (PID-5-IRF; Markon et
+al., 2013), the APA's 218-item form on which an informant rates the
+person receiving care. Its output is the FULL version's: the same 25
+facets and 5 domains, with the same column names and domain map
+([pid_domains](https://jmgirard.github.io/hitop/reference/pid_domains.md)).
+The form has no counterpart to self-report items 96 and 177, so its
+Anxiousness facet has 8 items and its Suspiciousness facet 6. Informant
+item n is self-report item n through 95, n + 1 through 175, and n + 2
+after that; `pid_items$IRF` holds the mapping and `pid_items$TextIRF`
+the informant wording.
+
+Fourteen items are reverse-scored: 7, 30, 35, 58, 87, 90, 96, 97, 130,
+141, 154, 163, 208 and 213, the items the key's Facet Table marks R. The
+key's Step 1 also lists items 98 and 176, which the Facet Table does not
+mark and whose wording is not reversed; the package does not reverse
+them.
+
+The key prints its proration step as "round up to the nearest whole
+number". The package applies the nearest-whole-number rule of every
+other APA PID-5 key, halves up (see `missing`). The choice matters only
+under `missing = "apa"`, for a facet with at least one but no more than
+25% of its items unanswered whose prorated raw score has a fractional
+part strictly between 0 and one half. There the package's facet score is
+1/n lower than a ceiling would give, for a facet of n items.
+
+Informant scores have the full form's column names, and nothing in the
+output records the version. Do not pass them to
+[`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+or
+[`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+as `version = "FULL"`: those use self-report norms, and the informant
+norms (Markon et al., 2024, Tables A–10 and A–11) are not in
+`pid_norms`.
+[`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
+has no informant validity scales.
+
 ### The PID-5-BF total score
 
 `version = "BF"` returns a `total` column after its 5 domains. Markon et
@@ -185,9 +228,9 @@ the 5; blanking all five requires 10 unanswered items, which blanks the
 total as well). This is the published rule applied as written, not an
 oversight.
 
-The FULL, SF and BFPM versions have no total score: the PID-5 book
-defines one only for the brief form, and the PID5BF+M sources define
-none.
+The FULL, SF, IRF and BFPM versions have no total score: the PID-5 book
+defines one only for the brief form, and the PID5BF+M and PID-5-IRF
+sources define none.
 
 **Errors.** With `append = TRUE`, a column of `data` whose name this
 call would also produce is an error rather than an overwrite or a
@@ -233,6 +276,16 @@ International assessment of DSM-5 and ICD-11 personality disorder
 traits: Toward a common nosology in DSM-5.1. *Psychopathology, 53*(3-4),
 179-188. [doi:10.1159/000507589](https://doi.org/10.1159/000507589) The
 source of the PID5BF+M.
+
+Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013). The
+development and psychometric properties of an informant-report form of
+the Personality Inventory for DSM-5 (PID-5). *Assessment, 20*(3),
+370-383.
+[doi:10.1177/1073191113486513](https://doi.org/10.1177/1073191113486513)
+
+Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013).
+*The Personality Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult*.
+American Psychiatric Association. The scoring key for `version = "IRF"`.
 
 ## Examples
 
@@ -339,4 +392,30 @@ score_pid5(sim_bfpm, items = 1:36, version = "BFPM", append = FALSE)
 #> #   pid_distractibility <dbl>, pid_perfectionism <dbl>, pid_rigidity <dbl>,
 #> #   pid_orderliness <dbl>, pid_unusualBeliefsExperiences <dbl>,
 #> #   pid_eccentricity <dbl>, pid_perceptualDysregulation <dbl>, …
+
+# PID-5 Informant Form (25 facets + 5 domains). No informant dataset ships;
+# for illustration, take the 218 full-form items the informant form maps to.
+irf_rows <- pid_items[!is.na(pid_items$IRF), ]
+sim_irf <- sim_pid5[sprintf("pid5_%03d", irf_rows$FULL)]
+score_pid5(sim_irf, items = 1:218, version = "IRF", append = FALSE)
+#> # A tibble: 100 × 30
+#>    pid_anhedonia pid_suspiciousness pid_riskTaking pid_impulsivity
+#>            <dbl>              <dbl>          <dbl>           <dbl>
+#>  1          1.25              2               1.36           2.33 
+#>  2          1.38              1.67            1.43           2    
+#>  3          1.88              0.833           1.29           1.83 
+#>  4          1.25              2.67            1.21           1.5  
+#>  5          1.12              1.83            1.64           2.5  
+#>  6          2.12              1.17            1.79           1.83 
+#>  7          1.38              1.17            1.86           1.17 
+#>  8          1.5               1.5             1.86           0.667
+#>  9          1.12              1.17            1.86           1.67 
+#> 10          1.38              2               2.07           2    
+#> # ℹ 90 more rows
+#> # ℹ 26 more variables: pid_eccentricity <dbl>, pid_distractibility <dbl>,
+#> #   pid_restrictedAffectivity <dbl>, pid_submissiveness <dbl>,
+#> #   pid_withdrawal <dbl>, pid_callousness <dbl>,
+#> #   pid_separationInsecurity <dbl>, pid_attentionSeeking <dbl>,
+#> #   pid_emotionalLability <dbl>, pid_depressivity <dbl>, pid_hostility <dbl>,
+#> #   pid_irresponsibility <dbl>, pid_rigidPerfectionism <dbl>, …
 ```

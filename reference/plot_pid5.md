@@ -33,7 +33,11 @@ plot_pid5(
 - version:
 
   Which PID-5 version the scores came from: `"FULL"` (220 items), `"SF"`
-  (100 items), or `"BF"` (25 items). Matched case-insensitively.
+  (100 items), or `"BF"` (25 items). Matched case-insensitively. The
+  PID-5 Informant Form has no norms in this package, so `version` does
+  not take `"IRF"`. Do not plot scores from
+  `score_pid5(version = "IRF")` as `"FULL"`: they would be compared with
+  self-report norms.
 
 - level:
 

@@ -54,8 +54,8 @@ validity_pid5(
 - version:
 
   A string indicating the version of the PID to score: "FULL", "SF", or
-  "BF". Will be automatically capitalized. The PID5BF+M has no validity
-  scales. (default = `"FULL"`)
+  "BF". Will be automatically capitalized. The PID5BF+M and the PID-5
+  Informant Form have no validity scales. (default = `"FULL"`)
 
 - srange:
 
