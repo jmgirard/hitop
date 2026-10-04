@@ -60,6 +60,8 @@ Researchers can build and download PID-5 IRF paper forms, a Qualtrics import fil
 
 ## Decisions
 
+- 2026-10-04 (T1, IP1, sign-off asked at the merge gate): the PID-5 Informant Form's forms print its own text from `pid_irf_instructions`, all matched to the APA PDF. Word prints the opening paragraph, then the rating prompt and "He or she…" stem as a repeated header row of the item table. Qualtrics and REDCap print the opening paragraph, prompt and stem as the first block, and restate the prompt and stem at the top of each later page. Items print as `TextIRF` (no stem, ellipsis or final period). The Word footer carries the form's APA copyright and permission notice in place of the Society line. The form's name, informant and relationship fields and its "Clinician Use" column are not printed, as on the other PID-5 forms.
+
 ## Review
 
 - Evidence AC1 (2026-10-04, head `ebe0952a`): `test-generate-pid5irf.R` 0 failures, 498 passes. Its Word tests check, for US and A4, 218 parsed item rows numbered 1 to 218 with `pid_items$TextIRF` text and no self-report wording, each followed by 0 to 3. They check the instruction run equal to the stored start, prompt and stem, the legend equal to `pid_irf_instructions$options`, and 25 facet rows equal to the key's Facet Table typed in `helper-fixtures.R`, with "(R)" on its 14 items. The footer carries `pid_irf_instructions$notice`, which `check_pid_irf_text.R` matches to the form's printed notice, and no Society line. The committed US and A4 files parse to the same 218 rows, 25 facets, 14 R marks and APA footer.

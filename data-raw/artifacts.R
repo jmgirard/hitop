@@ -127,9 +127,9 @@ check_filters_matched <- function() {
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
   "First build of the PID-5 Informant Form: the 218 items in the form's order",
-  "with the informant wording, the form's instructions, rating prompt and",
-  "stem, and its 0 to 3 response options; the Word footer carries the APA",
-  "notice the form prints."
+  "with the informant wording, the form's instructions, its rating prompt and",
+  "stem restated at the head of every page, and its 0 to 3 response options;",
+  "the Word footer carries the APA notice the form prints."
 )
 qsf_build_date <- as.Date("2026-08-19")
 qsf_note <- paste(

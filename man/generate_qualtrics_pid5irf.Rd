@@ -27,7 +27,9 @@ generate_qualtrics_pid5irf(
 The 218 items of the PID-5 Informant Form (PID-5-IRF), in the form's order
 with the informant wording (\code{pid_items$TextIRF}). The instructions block
 ends with the form's rating prompt and the stem "He or she…" that each
-item completes, and the response options are the form's 0 to 3 labels. The
+item completes, and the response options are the form's 0 to 3 labels.
+With \code{breaks}, a descriptive block restating the prompt and stem opens
+every page after the first. The
 question IDs are \code{PID5IRF_001} to \code{PID5IRF_218}. Score the export with
 \code{score_pid5(version = "IRF")}.
 }

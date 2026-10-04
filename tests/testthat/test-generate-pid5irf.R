@@ -26,6 +26,11 @@ irf_instruction_text <- function() {
   )
 }
 
+# The rating prompt and stem the forms restate on every page.
+irf_page_header <- function() {
+  paste(pid_irf_instructions$prompt, pid_irf_instructions$stem)
+}
+
 # All <w:t> runs of a .docx, in document order.
 irf_docx_runs <- function(file) {
   xml <- read_docx_xml(file)
@@ -76,16 +81,49 @@ test_that("the IRF Word form prints the stored informant instructions, legend an
   suppressMessages(generate_docx_pid5irf(file = f))
   runs <- irf_docx_runs(f)
 
-  expect_true(irf_instruction_text() %in% runs)
+  # The opening paragraph, then the prompt and stem as a header row of the
+  # item table, which Word repeats on every page (as the printed form's
+  # column head does).
+  expect_true(pid_irf_instructions$start %in% runs)
   expect_false(pid_instructions$start %in% runs)
+  expect_true(irf_page_header() %in% runs)
+  # The row that holds the prompt is flagged as a repeating header row.
+  xml <- read_docx_xml(f)
+  rows <- regmatches(xml, gregexpr("(?s)<w:tr[ >].*?</w:tr>", xml, perl = TRUE))[[1]]
+  row_text <- vapply(rows, function(r) {
+    t <- regmatches(r, gregexpr("<w:t[^>]*>[^<]*</w:t>", r))[[1]]
+    unescape_xml(paste(gsub("<[^>]+>", "", t), collapse = ""))
+  }, character(1), USE.NAMES = FALSE)
+  prompt_row <- which(trimws(row_text) == irf_page_header())
+  expect_length(prompt_row, 1L)
+  expect_true(grepl("<w:tblHeader", rows[prompt_row], fixed = TRUE))
 
   got <- docx_legend_pairs(docx_legend_lines(f))
   expect_equal(got$value, as.character(pid_irf_instructions$options$value))
   expect_identical(got$label, pid_irf_instructions$options$label)
+})
 
-  footer <- read_docx_footer(f)
-  expect_true(grepl(pid_irf_instructions$notice, footer, fixed = TRUE))
-  expect_false(grepl("Hierarchical Taxonomy of Psychopathology Society", footer, fixed = TRUE))
+test_that("the IRF Word footer is the form's APA notice, on both paper sizes", {
+  skip_if_no_docx()
+  # Typed from the foot of the printed form's pages (apa2013pid5irf.pdf, PDF
+  # pp. 2 to 7), not read from `pid_irf_instructions`.
+  apa_notice <- paste(
+    "Markon KE, Quilty LC, Bagby RM, Krueger RF. Copyright © 2013",
+    "American Psychiatric Association. All Rights Reserved. This material can",
+    "be reproduced without permission by researchers and by clinicians for",
+    "use with their patients."
+  )
+  expect_identical(pid_irf_instructions$notice, apa_notice)
+  for (paper in c("us", "a4")) {
+    f <- withr::local_tempfile(fileext = ".docx")
+    suppressMessages(generate_docx_pid5irf(file = f, papersize = paper))
+    footer <- read_docx_footer(f)
+    expect_true(grepl(apa_notice, footer, fixed = TRUE), info = paper)
+    expect_false(
+      grepl("Hierarchical Taxonomy of Psychopathology Society", footer, fixed = TRUE),
+      info = paper
+    )
+  }
 })
 
 test_that("the IRF scoring page lists each facet's informant items and R marks", {
@@ -129,19 +167,22 @@ test_that("include_scoring = FALSE drops the IRF scoring table", {
   expect_equal(nrow(docx_item_rows(f)), 218L)
 })
 
-test_that("the other PID-5 forms keep the Society footer", {
+test_that("the other item forms keep the Society footer and no prompt row", {
   skip_if_no_docx()
   for (gen in list(
     generate_docx_pid5,
     generate_docx_pid5sf,
     generate_docx_pid5bf,
-    generate_docx_pid5bfpm
+    generate_docx_pid5bfpm,
+    generate_docx_hitopsr,
+    generate_docx_hitopbr
   )) {
     f <- withr::local_tempfile(fileext = ".docx")
     suppressMessages(gen(file = f))
     footer <- read_docx_footer(f)
     expect_true(grepl("Hierarchical Taxonomy of Psychopathology Society", footer, fixed = TRUE))
     expect_false(grepl("American Psychiatric Association", footer, fixed = TRUE))
+    expect_false(irf_page_header() %in% irf_docx_runs(f))
   }
 })
 
@@ -171,6 +212,19 @@ test_that("the IRF Qualtrics file holds the 218 informant items in IRF order", {
   ins <- which(q$lines == "[[ID:start_instructions]]")
   expect_length(ins, 1L)
   expect_identical(q$lines[ins + 1L], irf_instruction_text())
+
+  # Every page after the first opens with a descriptive block restating the
+  # prompt and stem: 218 items at 15 per page make 14 page breaks.
+  pb <- which(q$lines == "[[PageBreak]]")
+  expect_length(pb, 14L)
+  for (p in pb) {
+    expect_identical(q$lines[p + 2L], "[[Question:DB]]")
+    expect_identical(q$lines[p + 4L], irf_page_header())
+  }
+  # Other exports keep their pages unchanged.
+  g <- withr::local_tempfile(fileext = ".txt")
+  suppressMessages(generate_qualtrics_pid5(file = g))
+  expect_false(any(grepl("page_header", readLines(g), fixed = TRUE)))
 })
 
 # ---- REDCap (AC2) ------------------------------------------------------------
@@ -187,6 +241,15 @@ test_that("the IRF REDCap dictionary holds the 218 informant items in IRF order"
 
   items <- r[-1, ]
   expect_identical(items[["Variable / Field Name"]], sprintf("pid5irf_%03d", 1:218))
+  # Each later page's section header restates the prompt and stem: items 16,
+  # 31, ..., 211 start the 14 later pages.
+  starts <- seq(16L, 218L, by = 15L)
+  expect_identical(items[["Section Header"]][starts], rep(irf_page_header(), 14L))
+  expect_true(all(items[["Section Header"]][-starts] == ""))
+  g <- withr::local_tempfile(fileext = ".zip")
+  suppressMessages(generate_redcap_pid5(file = g))
+  full <- read_redcap_csv(g)[-1, ]
+  expect_true(all(full[["Section Header"]][seq(16L, 220L, by = 15L)] == "<br>"))
   expect_identical(items[["Field Label"]], expected$text)
   expect_true(all(items[["Field Type"]] == "radio"))
 

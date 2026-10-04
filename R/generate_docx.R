@@ -437,8 +437,13 @@ make_items_table <- function(
   printable_w,
   font_size,
   font_family,
-  opts_per_line = nrow(opts)
+  opts_per_line = nrow(opts),
+  header_note = NULL
 ) {
+  # `header_note`, when given, is one more header line under the legend,
+  # left-aligned. Header rows repeat on every page, so the PID-5 Informant
+  # Form uses it to restate its rating prompt and stem above each page's
+  # items (M160 review). NULL adds nothing, so every other form is unchanged.
   num_opts <- nrow(opts)
   # The legend prints `opts_per_line` response options per header line. The
   # default puts them all on one line -- Word then breaks that line wherever
@@ -479,6 +484,7 @@ make_items_table <- function(
     flextable::delete_part(part = "header") |>
     flextable::add_header_lines(values = legend_text) |>
     flextable::align(align = "center", part = "header") |>
+    add_header_note(header_note, after = length(legend_text)) |>
     flextable::align(j = "Text", align = "left", part = "body") |>
     flextable::align(j = opt_cols, align = "center", part = "body") |>
     flextable::valign(valign = "center", part = "body") |>
@@ -491,6 +497,17 @@ make_items_table <- function(
     flextable::fontsize(size = font_size, part = "all") |>
     flextable::font(fontname = font_family, part = "all") |>
     flextable::set_table_properties(layout = "fixed", align = "left")
+}
+
+# Internal Helper: add one left-aligned header line below the first `after`
+# header lines of an items table; a NULL note returns the table unchanged.
+add_header_note <- function(ft, note, after) {
+  if (is.null(note)) {
+    return(ft)
+  }
+  ft |>
+    flextable::add_header_lines(values = note, top = FALSE) |>
+    flextable::align(i = after + 1L, align = "left", part = "header")
 }
 
 # Internal Helper: Build the scoring flextable
@@ -1562,16 +1579,18 @@ pid_irf_form <- function() {
   items <- items[order(items$IRF), ]
   items$Text <- items$TextIRF
   items <- items[, c("IRF", setdiff(names(items), "IRF"))]
+  # The rating prompt and stem, restated on every page (the Word table's
+  # repeated header row; a block or section header after each online page
+  # break), because an item read without its stem has no subject (M160
+  # review). The printed form repeats them at the head of each page too.
+  page_header <- paste(pid_irf_instructions$prompt, pid_irf_instructions$stem)
   list(
     items = items,
     instructions = list(
-      start = paste(
-        pid_irf_instructions$start,
-        pid_irf_instructions$prompt,
-        pid_irf_instructions$stem
-      ),
+      start = paste(pid_irf_instructions$start, page_header),
       options = pid_irf_instructions$options
-    )
+    ),
+    page_header = page_header
   )
 }
 
@@ -1580,8 +1599,9 @@ pid_irf_form <- function() {
 #' Write the 218-item PID-5 Informant Form (PID-5-IRF; Markon et al., 2013),
 #' on which an adult informant rates the person receiving care, as a paper
 #' form. The items are numbered 1 to 218 in the form's order, with the
-#' informant wording (`pid_items$TextIRF`). The instructions end with the
-#' form's rating prompt and the stem "He or she…" that each item completes.
+#' informant wording (`pid_items$TextIRF`). The form's opening instructions
+#' come first; its rating prompt and the stem "He or she…" that each item
+#' completes head the item table on every page, as on the printed form.
 #' The scoring page lists each of the 25 facets with its informant item
 #' numbers, marking the 14 reverse-scored items with (R), as [score_pid5()]
 #' scores them with `version = "IRF"`. The footer carries the APA copyright
@@ -1620,7 +1640,8 @@ generate_docx_pid5irf <- function(
     dims$pw,
     font_size,
     font_family,
-    opts_per_line = 2
+    opts_per_line = 2,
+    header_note = form$page_header
   )
 
   t2 <- NULL
@@ -1642,7 +1663,9 @@ generate_docx_pid5irf <- function(
   build_hitop_doc(
     file,
     title,
-    form$instructions$start,
+    # The opening paragraph alone: the table's repeated header row carries the
+    # rating prompt and stem, as the printed form's column head does.
+    pid_irf_instructions$start,
     scoring_msg,
     t1,
     t2,

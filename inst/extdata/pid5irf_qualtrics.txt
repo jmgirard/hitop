@@ -203,6 +203,10 @@ Very True or Often True
 
 [[PageBreak]]
 
+[[Question:DB]]
+[[ID:page_header_2]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
+
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_016]]
 usually does things on impulse without thinking about what might happen as a result
@@ -399,6 +403,10 @@ Sometimes or Somewhat True
 Very True or Often True
 
 [[PageBreak]]
+
+[[Question:DB]]
+[[ID:page_header_3]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
 
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_031]]
@@ -597,6 +605,10 @@ Very True or Often True
 
 [[PageBreak]]
 
+[[Question:DB]]
+[[ID:page_header_4]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
+
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_046]]
 finds it hard to stop an activity, even when it's time to do so
@@ -793,6 +805,10 @@ Sometimes or Somewhat True
 Very True or Often True
 
 [[PageBreak]]
+
+[[Question:DB]]
+[[ID:page_header_5]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
 
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_061]]
@@ -991,6 +1007,10 @@ Very True or Often True
 
 [[PageBreak]]
 
+[[Question:DB]]
+[[ID:page_header_6]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
+
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_076]]
 can be sneaky if it means getting what they want
@@ -1187,6 +1207,10 @@ Sometimes or Somewhat True
 Very True or Often True
 
 [[PageBreak]]
+
+[[Question:DB]]
+[[ID:page_header_7]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
 
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_091]]
@@ -1385,6 +1409,10 @@ Very True or Often True
 
 [[PageBreak]]
 
+[[Question:DB]]
+[[ID:page_header_8]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
+
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_106]]
 is good at making people do what they want them to do
@@ -1581,6 +1609,10 @@ Sometimes or Somewhat True
 Very True or Often True
 
 [[PageBreak]]
+
+[[Question:DB]]
+[[ID:page_header_9]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
 
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_121]]
@@ -1779,6 +1811,10 @@ Very True or Often True
 
 [[PageBreak]]
 
+[[Question:DB]]
+[[ID:page_header_10]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
+
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_136]]
 feels compelled to go on with things even when it makes little sense to do so
@@ -1975,6 +2011,10 @@ Sometimes or Somewhat True
 Very True or Often True
 
 [[PageBreak]]
+
+[[Question:DB]]
+[[ID:page_header_11]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
 
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_151]]
@@ -2173,6 +2213,10 @@ Very True or Often True
 
 [[PageBreak]]
 
+[[Question:DB]]
+[[ID:page_header_12]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
+
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_166]]
 never shows emotions to others
@@ -2369,6 +2413,10 @@ Sometimes or Somewhat True
 Very True or Often True
 
 [[PageBreak]]
+
+[[Question:DB]]
+[[ID:page_header_13]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
 
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_181]]
@@ -2567,6 +2615,10 @@ Very True or Often True
 
 [[PageBreak]]
 
+[[Question:DB]]
+[[ID:page_header_14]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
+
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_196]]
 sometimes hits people
@@ -2763,6 +2815,10 @@ Sometimes or Somewhat True
 Very True or Often True
 
 [[PageBreak]]
+
+[[Question:DB]]
+[[ID:page_header_15]]
+Please rate how true or false each of the following statements are of the person you are rating. He or she…
 
 [[Question:MC:SingleAnswer]]
 [[ID:PID5IRF_211]]

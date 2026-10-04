@@ -24,7 +24,9 @@ generate_redcap_pid5irf(
 The 218 items of the PID-5 Informant Form (PID-5-IRF), in the form's order
 with the informant wording (\code{pid_items$TextIRF}). The instructions field
 ends with the form's rating prompt and the stem "He or she…" that each
-item completes, and the response options are the form's 0 to 3 labels. The
+item completes, and the response options are the form's 0 to 3 labels.
+With \code{breaks}, the section header that starts each later page restates the
+prompt and stem. The
 item fields are \code{pid5irf_001} to \code{pid5irf_218}, the names
 \code{\link[=rename_pid5_items]{rename_pid5_items()}} and \code{\link[=label_pid5]{label_pid5()}} use with \code{version = "IRF"}. Score
 them with \code{score_pid5(version = "IRF")}.

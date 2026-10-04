@@ -31,8 +31,9 @@ one of \code{"us"} (8.5x11 inches) or \code{"a4"} (210x297 mm). Defaults to \cod
 Write the 218-item PID-5 Informant Form (PID-5-IRF; Markon et al., 2013),
 on which an adult informant rates the person receiving care, as a paper
 form. The items are numbered 1 to 218 in the form's order, with the
-informant wording (\code{pid_items$TextIRF}). The instructions end with the
-form's rating prompt and the stem "He or she…" that each item completes.
+informant wording (\code{pid_items$TextIRF}). The form's opening instructions
+come first; its rating prompt and the stem "He or she…" that each item
+completes head the item table on every page, as on the printed form.
 The scoring page lists each of the 25 facets with its informant item
 numbers, marking the 14 reverse-scored items with (R), as \code{\link[=score_pid5]{score_pid5()}}
 scores them with \code{version = "IRF"}. The footer carries the APA copyright
