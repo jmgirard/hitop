@@ -126,6 +126,8 @@ reference:
   - generate_docx_pid5bf
   - generate_docx_pid5bfpm
   - generate_docx_pid5irf
+  - generate_docx_pid5child
+  - generate_docx_pid5bfchild
   - generate_qualtrics_hitopbr
   - generate_qualtrics_hitopsr
   - generate_qualtrics_pid5
@@ -133,6 +135,8 @@ reference:
   - generate_qualtrics_pid5bf
   - generate_qualtrics_pid5bfpm
   - generate_qualtrics_pid5irf
+  - generate_qualtrics_pid5child
+  - generate_qualtrics_pid5bfchild
   - generate_redcap_hitopbr
   - generate_redcap_hitopsr
   - generate_redcap_hitophsum
@@ -141,6 +145,8 @@ reference:
   - generate_redcap_pid5bf
   - generate_redcap_pid5bfpm
   - generate_redcap_pid5irf
+  - generate_redcap_pid5child
+  - generate_redcap_pid5bfchild
 - title: Example Data
   contents:
   - ku_hitopsr
