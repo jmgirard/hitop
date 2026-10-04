@@ -91,6 +91,8 @@ ends with this notice: "Copyright © 2013 American Psychiatric Association, Germ
 Version © 2015. All Rights Reserved. The PID-5-FFBF was developed and used in this
 study with permission from Hogrefe and the APA."
 
+Letters by item, read from the `pdftotext -raw` output on 2026-10-04 and matching RR08: a on items 11, 14, 15, 27, 28, 32, 34, 57, 60, 62, 65, 68, 70, 78, 82, 83 and 90; b on 8, 41 and 99; c on 33; d (SD-TD) on 11, 46, 56 and 84; e (PRD) on 11, 65, 82 and 91; f (INC-S) on 28, 32, 34, 57 and 78. The source notes stay in the shelf PDF and are not re-transcribed.
+
 ## How the transcription was made and checked
 
 `data-raw/pid_ffbf_items.csv` was built from the word positions of `pdftotext -bbox`.
@@ -102,7 +104,7 @@ typographic quotes, apostrophes and the acute accent of "doesn´t" (item 50) int
 In a German text it removes a hyphen inside a word, for example "Ge-fühle" (item 93)
 and "Be-ziehungen ein- gehen" (item 38). In an English text it joins "day-to- day"
 (item 51) at the line break and keeps the hyphen. Printed wording is kept, typos
-included ("does't", item 30).
+included ("does't", item 30). Hyphenation and the accent are typesetting, so the rule corrects them. Misspellings are wording, so IP1 keeps them, and SOURCES.md OQ-7 lists them (RR08). Table S3 prints item 10 as "To be honest: I am just more important than other inmates". The article (p. 32) quotes it in other words, and Table S3 governs (OQ-6).
 
 `data-raw/check_pid_ffbf_text.R` reads Table S3 a second way, with `pdftotext -raw`.
 For each item, it finds a split of the item's words into four runs that equal the CSV's four

@@ -1,6 +1,6 @@
 # M162: PID-5 forensic form (FFBF) keying and scoring
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -55,7 +55,7 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 
 ## Coverage
 
-- AC1 → T1, T2
+- AC1 → T1, T2, T6
 - AC2 → T1, T2
 - AC3 → T3, T4
 - AC4 → T4
@@ -68,7 +68,8 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - [x] T2: Build `pid_ffbf_items`, `pid_ffbf_domains` and `pid_scales$FFBF` in `data-raw/pid_info.R`, and document them in `R/data.R`. Write the keying tests (AC1, AC2). Keying content needs Jeff's sign-off before merge.
 - [ ] T3: Thread `"FFBF"` through `score_pid5()` (reverse flags from `pid_ffbf_items`, domains from `pid_ffbf_domains`), `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()`.
 - [ ] T4: Write the fixture and recomputation tests (AC3, AC5) and the `"F"` test. Add the IRF pairing to the characterization script and run it at the merge base and at the head (AC4).
-- [ ] T5: Update the help pages, vignette, NEWS and `_pkgdown.yml`. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
+- [ ] T5: Update the help pages, vignette, NEWS and `_pkgdown.yml`. From RR08, the FFBF help also states: the five missing-data facts of RR08 section 4; the informant facts of section 5 (item-by-item averaging, the other informant's value when one is missing, half-integer values and the `"apa"` rounding); that FFBF item numbers are not `pid_items$SF` numbers; and the forensic domains' caveats (exploratory single sample, Insecurity's open status, shared facets). Open SOURCES.md OQ-6 (item 10's wording in the article against Table S3) and OQ-7 (the English typos the CSV keeps). Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
+- [ ] T6: From RR08: extend `data-raw/check_pid_ffbf_text.R` to the code's informant lists (lines 135 to 159), its original-form lists (3311 to 3361), its informant recodes, and the count of unadapted items against Table S3's a, b and c marks. Rerun it and record the run on the references page.
 
 ## Work log
 
@@ -92,7 +93,16 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - 2026-10-04: substantive amendment: AC1's text rule now names the three stray markers, the German in-word hyphen, the acute accent and the line-join rule, and AC1 promises each item's four texts in reading order, as the check proves. Jeff chose this wording at the stop. The data did not change.
 - 2026-10-04: stop (RB tripwire: ip-touching, T1): Jeff chose to escalate the FFBF keying and domain sources via /milestone-brief rather than accept it at this point.
 - 2026-10-04: blocked on RB08 (FFBF keying, forensic domains and missing-data rule). The brief is committed on the milestone branch, as RB07 was for M159.
+- 2026-10-04: ingested RR08 (Fable, advisory). Keying, reverse items, domains and the SF missing rule stand as built; D-092 records them. T5 gains the RR08 help-page facts and OQ-6 and OQ-7; T6 is new (check-script extension, minor amendment adding a discovered sub-task). Status back to in-progress.
 
 ## Decisions
+
+- 2026-10-04 (RR08 Q1): Table S3, the code's self, informant and original-form lists all give facet k = items k, k + 25, k + 50, k + 75. Table S3 governs item content and facets if sources ever differ. Applied: no change.
+- 2026-10-04 (RR08 Q2): items 12 and 26 are the only reverse items of both forms (Table S3, code lines 382 to 388, article p. 32). No unmarked reverse wording among the 200 English texts. Applied: no change.
+- 2026-10-04 (RR08 Q3): the three-facet forensic domains are the paper's published definition (pp. 35, 36, 38, 39), not only a script choice. Promoted to D-092(c). Help caveats scheduled in T5.
+- 2026-10-04 (RR08 Q4): keep the SF missing-data rule; the code's domain rule contradicts the paper's three-scale definition under missing data, and D-090 rejected version-specific rules. Promoted to D-092(d). Five help-page facts scheduled in T5. An FFBF-specific `missing` mode: rejected (RR08's reason).
+- 2026-10-04 (RR08 Q5): no informant keying difference. Three averaging facts scheduled in T5.
+- 2026-10-04 (RR08 Q6): no transcription change alters item wording under IP1. Applied: the references page now says why hyphens and the accent are corrected while misspellings are kept.
+- 2026-10-04 (RR08 beyond): item 10's article wording and five English typos become SOURCES.md OQ-6 and OQ-7 (T5, written at this ingestion); the check-script extension is T6; Table S3's d, e and f letters are recorded on the references page now. Re-transcribing the source notes: rejected, because they stay in the shelf PDF and the check script already parses them. Separate four-factor Antagonism and Detachment columns: rejected (RR08's reason). The informant stem and labels for M163 go to M163's work log.
 
 ## Review

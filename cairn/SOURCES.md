@@ -731,6 +731,14 @@ reverse list (OQ-4) and, in its 2013 edition, "Name/ID (child receiving care)"
 headers on pp. 3 and 5, which the DSM-5-TR edition fixed. Reopens on any evidence
 D-090 lists.
 
+### OQ-6: The article and Table S3 word FFBF item 10 differently (2026-10-04, M162, RR08)
+
+Niemeyer et al. (2022, p. 32) quote item 10 as an example of a moderate change, in words that differ from Table S3. Table S3 prints "To be honest: I am just more important than other inmates". The package takes Table S3, the item table of the supplement, and ships its wording. Open until the authors confirm which wording the study used.
+
+### OQ-7: Table S3's English FFBF text keeps five typos (2026-10-04, M162, RR08)
+
+`pid_ffbf_items` keeps Table S3's English wording as printed (IP1): "treatly" (item 73, self), "presense" (item 24, self and informant), "does't" (item 30, informant), "insist" for "insists" (item 44, informant) and "believes, that" (item 23, informant). M163 decides, with Jeff's sign-off, whether its English forms print them as is or corrected. A correction is a departure from the source and needs a row here.
+
 ### OQ-3: The HiTOP-SR introduction paper prints the NSSI scale's name three ways
 
 The paper this package reads HiTOP-SR scale names from disagrees with itself about
