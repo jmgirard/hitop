@@ -43,7 +43,7 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
   The expected values are typed into the test. A second test recomputes all 32 scores on random answers with `NA`s under each of the three `missing` modes. It uses key tables typed into the test.
 - [x] AC4: The output of the existing versions does not change. `data-raw/characterize_bfpm.R` gains an IRF pairing built as its BFPM pairing is built. It runs at the merge base and at the branch head, and every call it makes gives `identical()` output at both. A test shows that `version = "F"` errors in the four functions that gain FFBF and still gives FULL in `validity_pid5()`, `norm_pid5()` and `plot_pid5()`.
 - [x] AC5: `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` each have a test on the FFBF version. `reliability_pid5()` returns the 25 facet rows, as it does for the SF. `label_pid5()` labels each of the 100 items with its English self-report text and each of the 32 score columns with its scale name.
-- [ ] AC6: `man/score_pid5.Rd` and `vignettes/pid5_scoring.Rmd` name the FFBF and cite Niemeyer et al. (2022). Each of these six facts is stated, in any wording, in `vignettes/pid5_scoring.Rmd` and in at least one of `man/score_pid5.Rd`, `man/pid_ffbf_items.Rd` and `man/label_pid5.Rd`:
+- [x] AC6: `man/score_pid5.Rd` and `vignettes/pid5_scoring.Rmd` name the FFBF and cite Niemeyer et al. (2022). Each of these six facts is stated, in any wording, in `vignettes/pid5_scoring.Rmd` and in at least one of `man/score_pid5.Rd`, `man/pid_ffbf_items.Rd` and `man/label_pid5.Rd`:
   - The form was validated in German.
   - The English text is the authors' English version from Table S3, and the study validated only the German version.
   - Informant data use the same version, and the user averages two informants item by item before scoring.
@@ -203,3 +203,4 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - prior-review #4: same as diff-bug #3, fix now.
 - prior-review #5: the check script does not test `system2()` status (LESSONS M047) — fix now, fixed b958cdc1.
 - prior-review #6: the refusal loop lacks `info` — fix now, fixed b958cdc1.
+- AC6 (final tree d9aa7b95): `devtools::check()` 0 errors, 0 warnings, 0 notes; `pkgdown::check_pkgdown()` no problems; `devtools::document()` leaves no diff. All six AC6 conditions hold, so the box is ticked.
