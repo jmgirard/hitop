@@ -93,3 +93,38 @@ Researchers can score the 218-item PID-5 Informant Form (Markon et al., 2013) wi
 - Evidence AC4 (2026-10-03): `test-reliability.R`, `test-rename_pid5_items.R` and `test-label_pid5.R` each 0 failures. Their IRF tests: `reliability_pid5()` returns FULL's 25 scale rows with facet sizes typed from the key and alphas over typed items for 3 facets (6 expectations); `rename_pid5_items()` renames 218 numbered columns to `pid5irf_001` to `pid5irf_218` and matches informant text, while self-report text stays unmatched (6); `label_pid5()` labels items with typed informant wording and scales with FULL's names (8). Rerun: `pid5irf_098` is labelled "sometimes hears things that aren't really there" and `pid5irf_001` "doesn't get as much pleasure out of things as others seem to", the informant text.
 - Evidence AC5 (2026-10-03, head `d0a140ed`): `?score_pid5`, `?reliability_pid5`, `?rename_pid5_items` and `?label_pid5` name the IRF, and each cites both Markon et al. (2013, *Assessment* 20(3), 370-383) and the APA's *PID-5-IRF—Adult* key (read in the `.Rd` files). `vignettes/pid5_scoring.Rmd` has the section "The PID-5 Informant Form", citing Markon et al. (2013) and the APA informant key. NEWS.md has the "`score_pid5()` scores the PID-5 Informant Form" entry. `pkgdown::check_pkgdown()` finds no problems. `devtools::check()` gives 0 errors, 0 warnings and 0 notes.
 - Consistency gate (2026-10-03): `cairn_validate.py` passes (advisories only: 33 dangling ids, all legacy D-001 to D-012 citations; 1 references staleness). `devtools::document()` makes no diff. `check_pkgdown()` no problems. NEWS.md has the entry. No new top-level files. No DESIGN principle changed, so `cairn_impact` is skipped. README.Rmd did not list the PID-5-IRF, so the gate added it (features line; data, scoring, reliability and tutorial rows ticked; export row unticked until M160) and rebuilt README.md. DESIGN.md's goal and scoring lines and CLAUDE.md's instrument line now name the IRF.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: informant scores have FULL's column names and no version record, so `norm_pid5()`/`plot_pid5()` accept them as "FULL" against self-report norms — fix now (docs: `?score_pid5`, `?norm_pid5`, `?plot_pid5`, vignette and NEWS warn), fixed ba61b770; the runtime guard is follow-up, row "PID-5 norms not yet shipped".
+- diff-bug #2: `write_instrument_json()` and the generators read `pid_items$Text`, a trap for M160 — `R/json_export.R` comment fixed now, fixed ba61b770; the routing is follow-up, same row.
+- diff-bug #3: `?pid_domains` and DESIGN.md called the domain map FULL/SF only — fix now, fixed ba61b770.
+- diff-bug #4: `?pid_items` had one `@source`, the IRF key, crediting it for the whole table — fix now (citation moved into the `TextIRF` item), fixed ba61b770.
+- diff-bug #5: `validity_pid5()`/`norm_pid5()`/`plot_pid5()` version docs did not mention the IRF, and a refusal is a bare `match.arg()` error — docs fixed now, fixed ba61b770; the cli message is follow-up (pre-existing for BFPM), same row.
+- diff-bug #6: `R/score_engine.R` comments listed FULL/SF/BFPM as the domain-map versions — fix now, fixed ba61b770.
+- diff-bug #7: `fx_pid5irf()` answers are all `i %% 4`, so swapping a facet item for a congruent one leaves the 150 values unchanged — fix now (independent recomputation from the typed key on random data with NAs, all three missing modes; a planted item swap fails it), fixed ba61b770.
+- diff-bug #8: label/rename full sweeps skip the IRF and its tests checked 4 and 2 texts — fix now (all 218 labels and a 218-text reverse-order rename), fixed ba61b770.
+- diff-bug #9: `method = "text"` for the IRF needs text without stem, ellipsis and final period, and the help did not say so — fix now (help states it), fixed ba61b770.
+- diff-bug #10: the check script compared response labels with a typed vector and skipped the stem — fix now (labels and stem matched against the PDF; planted reversed labels and a changed stem fail), fixed ba61b770.
+- diff-bug #11: `pid_items`' readr `spec` lists 15 columns — reject, planned: the `data-raw/pid_info.R` comment records the spec as what was read from `pid_items.csv`.
+- diff-bug #12: inserting `IRF` shifts later column positions and NEWS did not say so — fix now (NEWS sentence), fixed ba61b770.
+- diff-bug #13: "halves up" vs `round_half_up()`'s half-away-from-zero for negative `srange` — follow-up (pre-existing wording), row "PID-5 norms not yet shipped".
+- diff-bug #14: `TextIRF` help writes "He or she..." where `pid_irf_instructions$stem` stores "…" — reject, style.
+- diff-bug #15: `test-json-export.R:9` comment counts three forms — follow-up (pre-existing), same row.
+- blame-history #1: the IRF departs from the printed "round up" with no runtime signal and no separate sign-off line — fix now: the merge question asks for that sign-off in so many words, and the approval line records it.
+- blame-history #2: no test that validity/norm/plot refuse "IRF" — fix now, fixed ba61b770.
+- blame-history #3: IRF reverse keying rides on the shared `Reverse` column, guarded only by the keying test — reject, planned: D-089(b) and its Consequences accept the coupling, and `test-keying.R` fails on any change.
+- blame-history #4: DESIGN.md data-model lines (items columns, `pid_domains`, internal data, form-variant recipe, wrapper sentence) — fix now, fixed ba61b770.
+- blame-history #5: stale comments in `R/json_export.R`, `data-raw/json_export.R`, `test-plot_pid5.R` — fix now, fixed ba61b770.
+- blame-history #6: the BF+M NEWS entry lost its column counts — reject, false harm: both entries are unreleased and the BF+M entry still names its added column; the IRF entry gives the final counts.
+- blame-history #7: SOURCES.md marks the IRF reverse row verified though it overrides Step 1 — reject, planned: maintainer sign-off (D-089) with OQ-4 kept, marked resolved, with its evidence.
+- blame-history #8: `characterize_bfpm.R` keeps its name, does not run the IRF, and a header line is long — reject, planned (AC3 names M157's script and is a no-move check) and style.
+- blame-history #9: legacy `pid_` columns can be renamed as IRF items — reject, false: the reviewer found it consistent with the explicit-version rule and nothing new.
+- prior-review #1: no IRF refusal test (M157 blame-history #3) — fix now, same as blame-history #2, fixed ba61b770.
+- prior-review #2: `R/json_export.R` "four columns" comment (M157 diff-bug #11) — fix now, fixed ba61b770.
+- prior-review #3: `R/score_engine.R` domain-map comments (M157 diff-bug #11) — fix now, same as diff-bug #6, fixed ba61b770.
+- prior-review #4: `?pid_domains` and test comments said FULL/SF — fix now, fixed ba61b770.
+- prior-review #5: DESIGN.md data descriptions — fix now, same as blame-history #4, fixed ba61b770.
+- prior-review #6: no IRF standard-error test though the help names IRF (M157 diff-bug #4) — fix now (facet and domain SE test), fixed ba61b770.
+- prior-review #7: IRF tested under `"apa"` only (M157 criteria audit) — fix now (the recomputation test runs all three modes), fixed ba61b770.
+- prior-review #8: few IRF items and facets checked (M157 diff-bug #5, #7) — fix now (all 218 texts, all 25 alphas), fixed ba61b770.
+- prior-review #9: no IRF unpadded/out-of-range label test (M157 prior-review #2) — fix now, fixed ba61b770.
+- Fix verification (2026-10-03, head `ba61b770`): `devtools::test()` 27042 passes, 0 failures; `check_pid_irf_text.R` PASS; `devtools::check()` 0 errors, 0 warnings, 0 notes; `check_pkgdown()` no problems; `cairn_validate.py` passes after the deferred findings were folded into the "PID-5 norms not yet shipped" row (ROADMAP at its 60-line cap).
