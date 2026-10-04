@@ -1,10 +1,12 @@
 # Maintainer-run characterization harness for the PID5BF+M version (M157),
-# extended by M159 for the PID-5 Informant Form.
+# extended by M159 for the PID-5 Informant Form and by M162 (an IRF pairing)
+# for the PID-5-FFBF.
 #
 # Adding `version = "BFPM"` must not move any output of the three existing PID-5
 # forms, and adding `version = "IRF"` must not move any output of those three
-# or of the BFPM. No BFPM dataset ships, so its input is built from `sim_pid5`
-# columns at the BF+M item numbers. This script captures every call of the milestone's AC3 matrix from
+# or of the BFPM. Adding `version = "FFBF"` must not move any output of the
+# five. No BFPM or IRF dataset ships, so its input is built from `sim_pid5`
+# columns at the BF+M or IRF item numbers. This script captures every call of the milestone's AC3 matrix from
 # whichever checkout is passed as the first argument, and writes them to the RDS
 # named by the second. Run it once against the commit the milestone branch was
 # cut from and once against the branch, then compare the two files with
@@ -58,7 +60,7 @@ capture_call <- function(fun, call_args) {
   list(value = value, conditions = conds)
 }
 
-# The five dataset pairings, each with the version it is scored as and its item
+# The six dataset pairings, each with the version it is scored as and its item
 # column names.
 forms <- list(
   list(data = "sim_pid5", version = "FULL", items = sprintf("pid5_%03d", 1:220)),
@@ -72,6 +74,16 @@ forms <- list(
       rows <- rows[order(rows$BFPM), ]
       d <- get("sim_pid5", envir = ns)[sprintf("pid5_%03d", rows$FULL)]
       names(d) <- sprintf("pid5bfpm_%02d", 1:36)
+      d
+    }
+  ),
+  list(
+    data = "sim_pid5[IRF]", version = "IRF", items = sprintf("pid5irf_%03d", 1:218),
+    build = function() {
+      rows <- pid_items[!is.na(pid_items$IRF), ]
+      rows <- rows[order(rows$IRF), ]
+      d <- get("sim_pid5", envir = ns)[sprintf("pid5_%03d", rows$FULL)]
+      names(d) <- sprintf("pid5irf_%03d", 1:218)
       d
     }
   )
@@ -126,7 +138,9 @@ for (f in forms) {
     capture_call(rename_pid5_items, list(
       data = by_text, version = f$version, method = "text",
       item_cols = names(by_text),
-      item_text = form$Text[match(numbers, form[[f$version]])]
+      item_text = (if (f$version == "IRF") form$TextIRF else form$Text)[
+        match(numbers, form[[f$version]])
+      ]
     ))
 
   # label_pid5(): both targets. Scale columns come from a default-prefix score.

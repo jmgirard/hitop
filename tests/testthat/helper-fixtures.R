@@ -525,3 +525,35 @@ ffbf_domains <- list(
   "Disinhibited Aggression" = c("Emotional Lability", "Hostility", "Impulsivity"),
   "Insecurity" = c("Separation Insecurity", "Anxiousness", "Perceptual Dysregulation")
 )
+#
+# Hand-computed fixture for score_pid5(version = "FFBF") (M162, AC3). Facet
+# membership, the reverse items 12 and 26 and the domain triplets are the
+# typed tables above; the expected values and their arithmetic are in
+# test-score_pid5ffbf.R. Item i is FFBF item i, and facet k holds items k,
+# k + 25, k + 50 and k + 75 (Table S3). Rows:
+#   R1  item i answered (i - 1) %/% 25, so each facet's four items are 0, 1,
+#       2, 3 in item order
+#   R2  item i answered 3 - (i - 1) %/% 25
+#   R3  R1 with item 12 NA (the reverse item of Impulsivity is the missing one)
+#       and item 36 NA (Hostility keeps 0, 2, 3: partial sum 5, not a multiple
+#       of 3, so rounded proration and the unrounded code rule differ)
+#   R4  R2 with items 9 and 34 NA (Emotional Lability has 2 of 4 missing, so
+#       Negative affectivity and Disinhibited Aggression are NA)
+#   R5  every item 0
+#   R6  every item 3
+# Item 12 is 0 in R1 and R5 and 3 in R2 and R6; item 26 is 0 in R5 and 3 in
+# R6.
+fx_pid5ffbf <- function() {
+  i <- seq_len(100)
+  df <- as.data.frame(matrix(NA_integer_, nrow = 6, ncol = 100))
+  names(df) <- sprintf("pid5ffbf_%03d", i)
+  df[1, ] <- (i - 1L) %/% 25L
+  df[2, ] <- 3L - (i - 1L) %/% 25L
+  df[3, ] <- (i - 1L) %/% 25L
+  df[3, c(12, 36)] <- NA_integer_
+  df[4, ] <- 3L - (i - 1L) %/% 25L
+  df[4, c(9, 34)] <- NA_integer_
+  df[5, ] <- 0L
+  df[6, ] <- 3L
+  df
+}

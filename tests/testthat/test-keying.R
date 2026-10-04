@@ -470,8 +470,8 @@ test_that("FFBF facet -> item membership matches Table S3's facet headings", {
     expect_setequal(tbl$itemNumbers[[i]], ffbf_facets[[tbl$Facet[i]]])
   }
   expect_identical(tbl$nItems, rep(4L, 25))
-  # Same facets, stems and order as the full form.
-  expect_identical(tbl$camelCase, pid_scales[["FULL"]]$camelCase)
+  # Same facets, stems and order as the SF, the form it adapts.
+  expect_identical(tbl$camelCase, pid_scales[["SF"]]$camelCase)
   expect_identical(names(tbl$itemNumbers), tbl$camelCase)
 })
 

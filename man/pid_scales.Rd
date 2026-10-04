@@ -18,7 +18,7 @@ items each, grouped by domain in the order of its key; its domains are in
 \link{pid_bfpm_domains}. The IRF element holds the 25 facets of the Informant
 Form in the FULL element's order, numbered by informant item, with the
 informant text in \code{itemdata}. The FFBF element holds the 25 facets of the
-PID-5 Forensic Faceted Brief Form in the FULL element's order, numbered by
+PID-5 Forensic Faceted Brief Form in the SF element's order, numbered by
 FFBF item, with the English self-report text in \code{itemdata}; its items are
 in \link{pid_ffbf_items} and its domains in \link{pid_ffbf_domains}}
 \item{itemdata}{A list column containing one item-data tibble per scale; its item-number column is an integer}

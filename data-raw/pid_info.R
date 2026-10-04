@@ -236,8 +236,8 @@ pid5irf_scales <-
 names(pid5irf_scales$itemNumbers) <- pid5irf_scales$camelCase
 stopifnot(identical(pid5irf_scales$Facet, pid5_scales$Facet))
 
-## The PID-5-FFBF facets (M162): the 25 facets in the FULL order, so output
-## columns line up with the other 25-facet versions, numbered by FFBF item and
+## The PID-5-FFBF facets (M162): the 25 facets in the SF order, the order of
+## the 100-item form it adapts, so FFBF and SF output columns line up. Numbered by FFBF item and
 ## carrying the English self-report text. Domains come from `pid_ffbf_domains`.
 pid5ffbf_scales <-
   pid_ffbf_items |>
@@ -246,7 +246,7 @@ pid5ffbf_scales <-
     itemdata = c(FFBF, Reverse, Text),
     .by = Facet
   )
-pid5ffbf_scales <- pid5ffbf_scales[match(pid5_scales$Facet, pid5ffbf_scales$Facet), ]
+pid5ffbf_scales <- pid5ffbf_scales[match(pid5sf_scales$Facet, pid5ffbf_scales$Facet), ]
 pid5ffbf_scales <- dplyr::mutate(
   pid5ffbf_scales,
   nItems = purrr::map_int(itemdata, nrow),
@@ -254,7 +254,7 @@ pid5ffbf_scales <- dplyr::mutate(
   camelCase = snakecase::to_any_case(Facet, case = "lower_camel")
 )
 names(pid5ffbf_scales$itemNumbers) <- pid5ffbf_scales$camelCase
-stopifnot(identical(pid5ffbf_scales$Facet, pid5_scales$Facet))
+stopifnot(identical(pid5ffbf_scales$Facet, pid5sf_scales$Facet))
 
 pid_scales <- list(
   FULL = pid5_scales,
