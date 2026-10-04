@@ -232,10 +232,11 @@ item missing and answers 0.5, 1 and 1 scores 0.75, where
 directly.
 
 \code{\link[=norm_pid5]{norm_pid5()}}, \code{\link[=plot_pid5]{plot_pid5()}} and \code{\link[=validity_pid5]{validity_pid5()}} do not take the FFBF,
-because no FFBF norms or validity keys are published. FFBF scores carry
-the SF's column names, so \code{\link[=norm_pid5]{norm_pid5()}} and \code{\link[=plot_pid5]{plot_pid5()}} accept them as
-\code{version = "SF"} without a warning; do not do that, as it compares them
-with SF self-report norms from another population.
+because no FFBF norms or validity keys are published. The FFBF facet and
+APA domain columns carry the SF's names, so \code{\link[=norm_pid5]{norm_pid5()}} converts them
+as \code{version = "SF"} with no version warning and \code{\link[=plot_pid5]{plot_pid5()}} plots
+them; do not do that, as it compares them with SF self-report norms
+from another population.
 }
 
 \subsection{The PID-5 child forms}{

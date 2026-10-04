@@ -62,8 +62,8 @@
   abbreviates `"FULL"` in `score_pid5()`, `reliability_pid5()`,
   `rename_pid5_items()` and `label_pid5()`, because it also starts `"FFBF"`;
   spell out `"FULL"`. `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do
-  not take the new version. FFBF scores carry the short form's column names,
-  so do not norm or plot them as `version = "SF"`.
+  not take the new version. FFBF facet and APA domain columns carry the short
+  form's names, so do not norm or plot them as `version = "SF"`.
 
 * **New PID5BF+M forms.** `generate_docx_pid5bfpm()`,
   `generate_qualtrics_pid5bfpm()` and `generate_redcap_pid5bfpm()` write the

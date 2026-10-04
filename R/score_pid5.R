@@ -201,10 +201,11 @@
 #'   directly.
 #'
 #'   [norm_pid5()], [plot_pid5()] and [validity_pid5()] do not take the FFBF,
-#'   because no FFBF norms or validity keys are published. FFBF scores carry
-#'   the SF's column names, so [norm_pid5()] and [plot_pid5()] accept them as
-#'   `version = "SF"` without a warning; do not do that, as it compares them
-#'   with SF self-report norms from another population.
+#'   because no FFBF norms or validity keys are published. The FFBF facet and
+#'   APA domain columns carry the SF's names, so [norm_pid5()] converts them
+#'   as `version = "SF"` with no version warning and [plot_pid5()] plots
+#'   them; do not do that, as it compares them with SF self-report norms
+#'   from another population.
 #'
 #' @details ## The PID-5 child forms
 #'
