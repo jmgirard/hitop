@@ -66,6 +66,8 @@ Researchers can build and download PID5BF+M paper forms, a Qualtrics import file
 
 ## Decisions
 
+- 2026-10-03 (T1, maintainer sign-off under IP1, recorded at review): the PID5BF+M Word, Qualtrics and REDCap forms print the APA PID-5 instructions and 0 to 3 response labels from `pid_instructions`. The BF+M has no copy of its own. Jeff chose this at the T1 gate because no English BF+M instructions are published, and the German FU Berlin sheet translates the same APA text. A change to `pid_instructions` therefore changes the BF+M forms too and needs the same sign-off. Source row: `cairn/SOURCES.md`.
+
 ## Review
 
 - Evidence AC1 (2026-10-03): `test-generate-pid5bfpm.R` 0 failures, 123 passes. For US and A4, there are exactly 36 parsed item rows. They are numbers 1 to 36 with `pid_items$Text` by BFPM number, and each is followed by the values 0 to 3. The instructions run equals `pid_instructions$start` and the legend pairs equal `pid_instructions$options` (the object T1 settled). The facet table holds the 18 `pid_scales$BFPM` facets with their item pairs, and the domain table holds the 6 `pid_bfpm_domains` rows with their facets. The scoring line states item means for facets and the mean of three facet scores for domains. The committed US and A4 files parse to the same 36 rows and 6 domain rows.

@@ -81,7 +81,7 @@ download_cards("PID5BF+M", list(
     <div class="card h-100 shadow-sm">
       <div class="card-body">
         <h5 class="card-title">🧮 Scoring & Reliability</h5>
-        <p class="card-text">Score the facets and domains with <code>version = "BFPM"</code>, or compute reliability for each facet and domain.</p>
+        <p class="card-text">Score the facets and domains with <code>version = "BFPM"</code>, or compute alpha and omega for each facet and domain. Omega is <code>NA</code> for the 2-item facets.</p>
         <div class="d-flex flex-wrap gap-2">
           <a href="../reference/score_pid5.html" class="btn btn-sm btn-outline-secondary">Score PID5BF+M</a>
           <a href="../reference/reliability_pid5.html" class="btn btn-sm btn-outline-secondary">Reliability</a>

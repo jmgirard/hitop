@@ -91,7 +91,7 @@ test_that("generate_redcap_pid5 pads to 3 digits and paginates correctly", {
   expect_equal(which(items[["Section Header"]] == "<br>"), seq(16L, 211L, by = 15L))
 })
 
-# ---- Smoke coverage: the 5 shared-path generators ---------------------------
+# ---- Smoke coverage: the 6 shared-path generators ---------------------------
 
 test_that("all shared-path REDCap generators produce a valid dictionary", {
   cases <- list(
@@ -99,7 +99,8 @@ test_that("all shared-path REDCap generators produce a valid dictionary", {
     list(fn = generate_redcap_hitopsr, n = nrow(hitopsr_items)),
     list(fn = generate_redcap_pid5,    n = 220L),
     list(fn = generate_redcap_pid5sf,  n = 100L),
-    list(fn = generate_redcap_pid5bf,  n = 25L)
+    list(fn = generate_redcap_pid5bf,  n = 25L),
+    list(fn = generate_redcap_pid5bfpm, n = 36L)
   )
   for (case in cases) {
     f <- withr::local_tempfile(fileext = ".zip")

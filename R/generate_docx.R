@@ -671,8 +671,8 @@ build_hitop_doc <- function(
       )
   }
 
-  # Ahead of the scoring table, never after it: the table is the last thing on
-  # the page, and a reader looking up a printed number wants the map before
+  # Ahead of the scoring table, never after it: the scoring tables close the
+  # page, and a reader looking up a printed number wants the map before
   # the key rather than past it.
   if (!is.null(crosswalk_msg)) {
     my_doc <- my_doc |>
@@ -1527,7 +1527,7 @@ generate_docx_pid5bfpm <- function(
   scoring_msg <- paste(
     "Average the responses for the following item numbers to score each facet.",
     "Then average the three facet scores listed for each domain in the second table to score that domain.",
-    "Reverse-scored items are indicated with (R)."
+    "No items are reverse-scored."
   )
 
   build_hitop_doc(

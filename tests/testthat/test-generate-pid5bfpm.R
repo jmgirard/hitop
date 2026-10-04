@@ -35,6 +35,12 @@ test_that("the BF+M Word form prints exactly the 36 BF+M items in BF+M order", {
   for (paper in c("us", "a4")) {
     f <- withr::local_tempfile(fileext = ".docx")
     suppressMessages(generate_docx_pid5bfpm(file = f, papersize = paper))
+    # The papersize argument reaches the page: US Letter is 12240 x 15840
+    # twips, and A4 lands within a few twips of 11906 x 16838.
+    size <- docx_page_size(read_docx_xml(f))
+    want <- if (paper == "us") c(12240L, 15840L) else c(11906L, 16838L)
+    expect_true(all(abs(unname(size) - want) < 12), info = paper)
+
     rows <- docx_item_rows(f)
     expect_equal(as.integer(rows$number), expected$number, info = paper)
     expect_identical(rows$text, expected$text, info = paper)
@@ -109,6 +115,10 @@ test_that("the BF+M scoring page prints the facets, item pairs and domain map", 
   expect_length(msg, 1L)
   expect_match(msg, "Average the responses for the following item numbers", fixed = TRUE)
   expect_match(msg, "average the three facet scores", fixed = TRUE)
+  # No BF+M item is reverse-keyed, so the line says so rather than pointing
+  # to "(R)" marks the form never prints.
+  expect_match(msg, "No items are reverse-scored.", fixed = TRUE)
+  expect_no_match(msg, "(R)", fixed = TRUE)
 })
 
 test_that("include_scoring = FALSE drops both BF+M scoring tables", {
