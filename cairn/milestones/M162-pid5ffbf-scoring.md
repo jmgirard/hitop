@@ -1,6 +1,6 @@
 # M162: PID-5 forensic form (FFBF) keying and scoring
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -91,6 +91,7 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - 2026-10-04: implement named the two forensic domains as the paper prints them ("Disinhibited Aggression", "Insecurity") under D-018, while the APA rows keep `pid_domains` spelling.
 - 2026-10-04: substantive amendment: AC1's text rule now names the three stray markers, the German in-word hyphen, the acute accent and the line-join rule, and AC1 promises each item's four texts in reading order, as the check proves. Jeff chose this wording at the stop. The data did not change.
 - 2026-10-04: stop (RB tripwire: ip-touching, T1): Jeff chose to escalate the FFBF keying and domain sources via /milestone-brief rather than accept it at this point.
+- 2026-10-04: blocked on RB08 (FFBF keying, forensic domains and missing-data rule). The brief is committed on the milestone branch, as RB07 was for M159.
 
 ## Decisions
 
