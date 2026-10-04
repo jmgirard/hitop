@@ -118,17 +118,20 @@ reference:
   - generate_docx_pid5
   - generate_docx_pid5sf
   - generate_docx_pid5bf
+  - generate_docx_pid5bfpm
   - generate_qualtrics_hitopbr
   - generate_qualtrics_hitopsr
   - generate_qualtrics_pid5
   - generate_qualtrics_pid5sf
   - generate_qualtrics_pid5bf
+  - generate_qualtrics_pid5bfpm
   - generate_redcap_hitopbr
   - generate_redcap_hitopsr
   - generate_redcap_hitophsum
   - generate_redcap_pid5
   - generate_redcap_pid5sf
   - generate_redcap_pid5bf
+  - generate_redcap_pid5bfpm
 - title: Example Data
   contents:
   - ku_hitopsr
