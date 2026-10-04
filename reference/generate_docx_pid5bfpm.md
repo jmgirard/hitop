@@ -65,6 +65,6 @@ traits: Toward a common nosology in DSM-5.1. *Psychopathology, 53*(3-4),
 # \donttest{
 # Write a PID5BF+M paper form to a temporary Word document
 generate_docx_pid5bfpm(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpzFsy16/file1b4a59537636.docx
+#> ✔ Document successfully created at /tmp/RtmpiBOLDD/file1b4e61fb2758.docx
 # }
 ```

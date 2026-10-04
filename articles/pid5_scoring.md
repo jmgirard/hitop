@@ -687,6 +687,125 @@ and
 would accept them as `version = "FULL"` without complaint; do not do
 that, as it compares informant ratings with self-report norms.
 
+## The PID-5 Forensic Faceted Brief Form
+
+The PID-5 Forensic Faceted Brief Form (PID-5-FFBF; Niemeyer, Grosz,
+Zimmermann & Back, 2022,
+[doi:10.1080/00223891.2021.1923522](https://doi.org/10.1080/00223891.2021.1923522))
+adapts the 100-item faceted short form for people in prison. It has a
+self-report and an informant version. The study gave the items in
+German, and the form was validated in German only. The English text in
+`pid_ffbf_items` is the authors’ English version from the supplement’s
+Table S3. Items they did not adapt keep the APA PID-5 wording. Most
+items are rewritten, and the authors numbered the form afresh, so FFBF
+item numbers are not SF item numbers. Facet k, in alphabetical order,
+holds items k, k + 25, k + 50 and k + 75, and items 12 and 26 are
+reverse-scored.
+
+The package has no FFBF dataset. For illustration, we simulate answers
+to its 100 items.
+
+``` r
+
+set.seed(2022)
+sim_ffbf <- as.data.frame(matrix(sample(0:3, 10 * 100, replace = TRUE), 10, 100))
+names(sim_ffbf) <- sprintf("pid5ffbf_%03d", 1:100)
+```
+
+[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+with `version = "FFBF"` returns 25 facets, named and ordered as the
+SF’s, then 7 domains: the 5 APA domains and the two domains of the
+paper’s four-factor solution that are not APA domains, Disinhibited
+Aggression and Insecurity. The paper’s four-factor Antagonism and
+Detachment have the facets of the APA domains of the same names, so they
+are not repeated. `pid_ffbf_domains` lists the facets of each domain.
+
+``` r
+
+ffbf_scores <- score_pid5(sim_ffbf, items = 1:100, version = "FFBF", append = FALSE)
+ffbf_scores
+#> # A tibble: 10 × 32
+#>    pid_suspiciousness pid_impulsivity pid_submissiveness pid_callousness
+#>                 <dbl>           <dbl>              <dbl>           <dbl>
+#>  1               2.25            1                  2               2.25
+#>  2               1.25            2.25               0.75            2.25
+#>  3               1.25            1                  1.5             1.25
+#>  4               1.25            0.5                1.5             1.5 
+#>  5               1               1.25               1               1.75
+#>  6               1.5             1.25               1.25            0.75
+#>  7               1.75            2.5                2.25            0.5 
+#>  8               2.25            2                  1.5             1.25
+#>  9               1.75            2.25               2.5             1.75
+#> 10               1.75            1.25               1.25            1.5 
+#> # ℹ 28 more variables: pid_anhedonia <dbl>, pid_eccentricity <dbl>,
+#> #   pid_hostility <dbl>, pid_riskTaking <dbl>, pid_grandiosity <dbl>,
+#> #   pid_perceptualDysregulation <dbl>, pid_separationInsecurity <dbl>,
+#> #   pid_deceitfulness <dbl>, pid_perseveration <dbl>,
+#> #   pid_attentionSeeking <dbl>, pid_anxiousness <dbl>, pid_depressivity <dbl>,
+#> #   pid_withdrawal <dbl>, pid_restrictedAffectivity <dbl>,
+#> #   pid_intimacyAvoidance <dbl>, pid_rigidPerfectionism <dbl>, …
+sapply(pid_ffbf_domains$primaryFacets, paste, collapse = ", ") |>
+  setNames(pid_ffbf_domains$Domain)
+#>                                                    Negative affectivity 
+#>                "Emotional Lability, Anxiousness, Separation Insecurity" 
+#>                                                              Detachment 
+#>                             "Withdrawal, Anhedonia, Intimacy Avoidance" 
+#>                                                              Antagonism 
+#>                          "Manipulativeness, Deceitfulness, Grandiosity" 
+#>                                                           Disinhibition 
+#>                        "Irresponsibility, Impulsivity, Distractibility" 
+#>                                                            Psychoticism 
+#> "Unusual Beliefs & Experiences, Eccentricity, Perceptual Dysregulation" 
+#>                                                 Disinhibited Aggression 
+#>                            "Emotional Lability, Hostility, Impulsivity" 
+#>                                                              Insecurity 
+#>          "Separation Insecurity, Anxiousness, Perceptual Dysregulation"
+```
+
+The seven domains share facets, so they are not independent. The
+four-factor structure comes from one exploratory study of 199 male
+prisoners, and the authors leave open whether Insecurity is needed.
+
+The paper prints no missing-data rule. Under the default
+`missing = "apa"`, the package applies the same rule as for the SF: a
+facet with 1 of its 4 items missing is prorated and rounded, a facet
+with 2 or more missing is `NA`, and a domain with an `NA` facet is `NA`.
+The authors’ analysis code scores missing items differently: it does not
+round, so a facet with 1 item missing is the plain mean of the other 3,
+and it averages a domain over its 12 items when up to 3 of them are
+missing, wherever they fall. So with missing data a facet can differ by
+up to 1/12 from the authors’ scoring, a domain value can differ when one
+of its facets is prorated, and a domain can be `NA` where theirs has a
+value;
+[`?score_pid5`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+gives the details.
+
+Informant data use the same version. The paper averaged the responses of
+two informants item by item before scoring, and the authors’ code uses
+one informant’s response where the other is missing. Do that step first,
+for example with `rowMeans(cbind(x1, x2), na.rm = TRUE)` for each item,
+then set an item that both informants skipped (`NaN` from that call) to
+`NA`.
+[`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md),
+[`rename_pid5_items()`](https://jmgirard.github.io/hitop/reference/rename_pid5_items.md)
+and
+[`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
+also take `version = "FFBF"`, and
+[`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
+labels items with the English self-report text, for informant data too.
+No FFBF norms or validity keys are published, so
+[`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md),
+[`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+and
+[`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+do not take it. The FFBF facet and APA domain columns carry the SF’s
+names, so
+[`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+would convert them as `version = "SF"` with no version warning and
+[`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+would plot the result; do not do that, as it compares them with SF
+self-report norms from another population.
+
 ## The PID-5 Child Forms
 
 The APA also publishes child forms of the PID-5 and the PID-5-BF for

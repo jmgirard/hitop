@@ -3,14 +3,18 @@
 Compute per-scale internal-consistency reliability — Cronbach's alpha
 and McDonald's omega — for the Personality Inventory for DSM-5: full
 version (PID-5, 220 items), short form (PID-5-SF, 100 items), brief form
-(PID-5-BF, 25 items), modified brief form (PID5BF+M, 36 items), or
-Informant Form (PID-5-IRF, 218 items; Markon et al., 2013). Reliability
-is estimated on the reverse-keyed item responses, at the facet level for
-FULL/SF/IRF and the domain level for BF (the same scales
+(PID-5-BF, 25 items), modified brief form (PID5BF+M, 36 items),
+Informant Form (PID-5-IRF, 218 items; Markon et al., 2013), or Forensic
+Faceted Brief Form (PID-5-FFBF, 100 items; Niemeyer et al., 2022).
+Reliability is estimated on the reverse-keyed item responses, at the
+facet level for FULL/SF/IRF/FFBF and the domain level for BF (the same
+scales
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
-outputs, before FULL/SF/IRF domain aggregation). The IRF facets are the
-full form's 25, numbered by informant item and reverse-keyed as the APA
-IRF key's Facet Table marks (see
+outputs, before FULL/SF/IRF/FFBF domain aggregation). The FFBF facets
+are its 25 four-item facets in the SF's order (see
+[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)).
+The IRF facets are the full form's 25, numbered by informant item and
+reverse-keyed as the APA IRF key's Facet Table marks (see
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)).
 The BF version also returns a `Total` row covering all 25 items; note
 that this scale spans five heterogeneous domains, so its internal
@@ -23,7 +27,7 @@ further interpretation.
 reliability_pid5(
   data,
   items,
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   srange = c(0, 3),
   alpha = TRUE,
   omega = TRUE
@@ -63,8 +67,10 @@ reliability_pid5(
 - version:
 
   A string indicating the version of the PID to score: "FULL", "SF",
-  "BF", "BFPM" (the 36-item PID5BF+M), or "IRF" (the 218-item Informant
-  Form). Will be automatically capitalized. (default = `"FULL"`)
+  "BF", "BFPM" (the 36-item PID5BF+M), "IRF" (the 218-item Informant
+  Form), or "FFBF" (the 100-item Forensic Faceted Brief Form). Will be
+  automatically capitalized; `"F"` is refused, because it starts both
+  "FULL" and "FFBF". (default = `"FULL"`)
 
 - srange:
 
@@ -118,6 +124,14 @@ the Personality Inventory for DSM-5 (PID-5). *Assessment, 20*(3),
 [doi:10.1177/1073191113486513](https://doi.org/10.1177/1073191113486513)
 The scoring key for `version = "IRF"` is the APA's *The Personality
 Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult* (2013).
+
+Niemeyer, L. M., Grosz, M. P., Zimmermann, J., & Back, M. D. (2022).
+Assessing maladaptive personality in the forensic context: Development
+and validation of the Personality Inventory for DSM-5 Forensic Faceted
+Brief Form (PID-5-FFBF). *Journal of Personality Assessment, 104*(1),
+30-43.
+[doi:10.1080/00223891.2021.1923522](https://doi.org/10.1080/00223891.2021.1923522)
+The source of `version = "FFBF"`.
 
 ## Examples
 

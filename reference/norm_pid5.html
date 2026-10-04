@@ -120,7 +120,11 @@ differ by version. These are self-report norms: do not norm scores from
 <code>score_pid5(version = "IRF")</code> with them. Informant scores have the full
 form's column names, so <code>version = "FULL"</code> accepts them without a
 warning, but the informant norms (Markon et al., 2024, Tables A–10 and
-A–11) are not in <code>pid_norms</code>.</p></dd>
+A–11) are not in <code>pid_norms</code>. Nor norm scores from
+<code>score_pid5(version = "FFBF")</code>: their facet and APA domain columns have
+the short form's names, so <code>version = "SF"</code> converts them with no
+version warning (only the two forensic domains are reported as not
+covered), but no FFBF norms are published.</p></dd>
 
 
 <dt id="arg-srange">srange<a class="anchor" aria-label="anchor" href="#arg-srange"></a></dt>

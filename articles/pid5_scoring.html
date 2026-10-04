@@ -689,6 +689,105 @@ as <code>version = "FULL"</code> without complaint; do not do that, as
 it compares informant ratings with self-report norms.</p>
 </div>
 <div class="section level2">
+<h2 id="the-pid-5-forensic-faceted-brief-form">The PID-5 Forensic Faceted Brief Form<a class="anchor" aria-label="anchor" href="#the-pid-5-forensic-faceted-brief-form"></a>
+</h2>
+<p>The PID-5 Forensic Faceted Brief Form (PID-5-FFBF; Niemeyer, Grosz,
+Zimmermann &amp; Back, 2022, <a href="https://doi.org/10.1080/00223891.2021.1923522" class="external-link">doi:10.1080/00223891.2021.1923522</a>)
+adapts the 100-item faceted short form for people in prison. It has a
+self-report and an informant version. The study gave the items in
+German, and the form was validated in German only. The English text in
+<code>pid_ffbf_items</code> is the authors’ English version from the
+supplement’s Table S3. Items they did not adapt keep the APA PID-5
+wording. Most items are rewritten, and the authors numbered the form
+afresh, so FFBF item numbers are not SF item numbers. Facet k, in
+alphabetical order, holds items k, k + 25, k + 50 and k + 75, and items
+12 and 26 are reverse-scored.</p>
+<p>The package has no FFBF dataset. For illustration, we simulate
+answers to its 100 items.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2022</span><span class="op">)</span></span>
+<span><span class="va">sim_ffbf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">10</span> <span class="op">*</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">10</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sim_ffbf</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid5ffbf_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="../reference/score_pid5.html">score_pid5()</a></code> with <code>version = "FFBF"</code> returns
+25 facets, named and ordered as the SF’s, then 7 domains: the 5 APA
+domains and the two domains of the paper’s four-factor solution that are
+not APA domains, Disinhibited Aggression and Insecurity. The paper’s
+four-factor Antagonism and Detachment have the facets of the APA domains
+of the same names, so they are not repeated.
+<code>pid_ffbf_domains</code> lists the facets of each domain.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ffbf_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">sim_ffbf</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, version <span class="op">=</span> <span class="st">"FFBF"</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">ffbf_scores</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 32</span></span></span>
+<span><span class="co">#&gt;    pid_suspiciousness pid_impulsivity pid_submissiveness pid_callousness</span></span>
+<span><span class="co">#&gt;                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>               2.25            1                  2               2.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>               1.25            2.25               0.75            2.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>               1.25            1                  1.5             1.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>               1.25            0.5                1.5             1.5 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>               1               1.25               1               1.75</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>               1.5             1.25               1.25            0.75</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>               1.75            2.5                2.25            0.5 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>               2.25            2                  1.5             1.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>               1.75            2.25               2.5             1.75</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>               1.75            1.25               1.25            1.5 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 28 more variables: pid_anhedonia &lt;dbl&gt;, pid_eccentricity &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid_hostility &lt;dbl&gt;, pid_riskTaking &lt;dbl&gt;, pid_grandiosity &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid_perceptualDysregulation &lt;dbl&gt;, pid_separationInsecurity &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid_deceitfulness &lt;dbl&gt;, pid_perseveration &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid_attentionSeeking &lt;dbl&gt;, pid_anxiousness &lt;dbl&gt;, pid_depressivity &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid_withdrawal &lt;dbl&gt;, pid_restrictedAffectivity &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid_intimacyAvoidance &lt;dbl&gt;, pid_rigidPerfectionism &lt;dbl&gt;, …</span></span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">pid_ffbf_domains</span><span class="op">$</span><span class="va">primaryFacets</span>, <span class="va">paste</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">pid_ffbf_domains</span><span class="op">$</span><span class="va">Domain</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                                    Negative affectivity </span></span>
+<span><span class="co">#&gt;                "Emotional Lability, Anxiousness, Separation Insecurity" </span></span>
+<span><span class="co">#&gt;                                                              Detachment </span></span>
+<span><span class="co">#&gt;                             "Withdrawal, Anhedonia, Intimacy Avoidance" </span></span>
+<span><span class="co">#&gt;                                                              Antagonism </span></span>
+<span><span class="co">#&gt;                          "Manipulativeness, Deceitfulness, Grandiosity" </span></span>
+<span><span class="co">#&gt;                                                           Disinhibition </span></span>
+<span><span class="co">#&gt;                        "Irresponsibility, Impulsivity, Distractibility" </span></span>
+<span><span class="co">#&gt;                                                            Psychoticism </span></span>
+<span><span class="co">#&gt; "Unusual Beliefs &amp; Experiences, Eccentricity, Perceptual Dysregulation" </span></span>
+<span><span class="co">#&gt;                                                 Disinhibited Aggression </span></span>
+<span><span class="co">#&gt;                            "Emotional Lability, Hostility, Impulsivity" </span></span>
+<span><span class="co">#&gt;                                                              Insecurity </span></span>
+<span><span class="co">#&gt;          "Separation Insecurity, Anxiousness, Perceptual Dysregulation"</span></span></code></pre></div>
+<p>The seven domains share facets, so they are not independent. The
+four-factor structure comes from one exploratory study of 199 male
+prisoners, and the authors leave open whether Insecurity is needed.</p>
+<p>The paper prints no missing-data rule. Under the default
+<code>missing = "apa"</code>, the package applies the same rule as for
+the SF: a facet with 1 of its 4 items missing is prorated and rounded, a
+facet with 2 or more missing is <code>NA</code>, and a domain with an
+<code>NA</code> facet is <code>NA</code>. The authors’ analysis code
+scores missing items differently: it does not round, so a facet with 1
+item missing is the plain mean of the other 3, and it averages a domain
+over its 12 items when up to 3 of them are missing, wherever they fall.
+So with missing data a facet can differ by up to 1/12 from the authors’
+scoring, a domain value can differ when one of its facets is prorated,
+and a domain can be <code>NA</code> where theirs has a value;
+<code><a href="../reference/score_pid5.html">?score_pid5</a></code> gives the details.</p>
+<p>Informant data use the same version. The paper averaged the responses
+of two informants item by item before scoring, and the authors’ code
+uses one informant’s response where the other is missing. Do that step
+first, for example with
+<code>rowMeans(cbind(x1, x2), na.rm = TRUE)</code> for each item, then
+set an item that both informants skipped (<code>NaN</code> from that
+call) to <code>NA</code>. <code><a href="../reference/reliability_pid5.html">reliability_pid5()</a></code>,
+<code><a href="../reference/rename_pid5_items.html">rename_pid5_items()</a></code> and <code><a href="../reference/label_pid5.html">label_pid5()</a></code> also take
+<code>version = "FFBF"</code>, and <code><a href="../reference/label_pid5.html">label_pid5()</a></code> labels
+items with the English self-report text, for informant data too. No FFBF
+norms or validity keys are published, so <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code>,
+<code><a href="../reference/norm_pid5.html">norm_pid5()</a></code> and <code><a href="../reference/plot_pid5.html">plot_pid5()</a></code> do not take it.
+The FFBF facet and APA domain columns carry the SF’s names, so
+<code><a href="../reference/norm_pid5.html">norm_pid5()</a></code> would convert them as
+<code>version = "SF"</code> with no version warning and
+<code><a href="../reference/plot_pid5.html">plot_pid5()</a></code> would plot the result; do not do that, as it
+compares them with SF self-report norms from another population.</p>
+</div>
+<div class="section level2">
 <h2 id="the-pid-5-child-forms">The PID-5 Child Forms<a class="anchor" aria-label="anchor" href="#the-pid-5-child-forms"></a>
 </h2>
 <p>The APA also publishes child forms of the PID-5 and the PID-5-BF for
@@ -755,7 +854,7 @@ row of each file. Read the files of each form in a call of their own.
 The file below is one the online form saved from the full form. The
 package installs it as an example, and <code><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file()</a></code> gives
 its path.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"responses-pid5.csv"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
 <span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span><span class="va">responses</span></span>
@@ -774,7 +873,7 @@ its path.</p>
 pass them to <code><a href="../reference/score_pid5.html">score_pid5()</a></code> by name with the matching
 <code>version</code> (<code>"FULL"</code>, <code>"SF"</code> or
 <code>"BF"</code>):</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">items</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"^pid5_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">responses</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">responses</span>, items <span class="op">=</span> <span class="va">items</span>, version <span class="op">=</span> <span class="st">"FULL"</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 30</span></span></span>

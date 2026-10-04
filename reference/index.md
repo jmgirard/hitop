@@ -185,6 +185,10 @@ community norm.
   : Personality Inventory for DSM-5 Domain Data
 - [`pid_bfpm_domains`](https://jmgirard.github.io/hitop/reference/pid_bfpm_domains.md)
   : PID5BF+M Domain Data
+- [`pid_ffbf_items`](https://jmgirard.github.io/hitop/reference/pid_ffbf_items.md)
+  : PID-5 Forensic Faceted Brief Form Item Data
+- [`pid_ffbf_domains`](https://jmgirard.github.io/hitop/reference/pid_ffbf_domains.md)
+  : PID-5 Forensic Faceted Brief Form Domain Data
 - [`pid_norms`](https://jmgirard.github.io/hitop/reference/pid_norms.md)
   : Personality Inventory for DSM-5 Normative Tables
 - [`hitop_artifacts`](https://jmgirard.github.io/hitop/reference/hitop_artifacts.md)

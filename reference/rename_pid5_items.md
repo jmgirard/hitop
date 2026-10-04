@@ -6,16 +6,17 @@ on the literal item prompt text. The standard names are the ones the
 package's REDCap and Qualtrics exports write and the shipped datasets
 carry: `pid5_001` to `pid5_220` for the full form, `pid5sf_001` to
 `pid5sf_100` for the short form, and `pid5bf_01` to `pid5bf_25` for the
-brief form. The PID5BF+M names, `pid5bfpm_01` to `pid5bfpm_36`, and the
-Informant Form names, `pid5irf_001` to `pid5irf_218`, follow the same
-pattern.
+brief form. The PID5BF+M names, `pid5bfpm_01` to `pid5bfpm_36`, the
+Informant Form names, `pid5irf_001` to `pid5irf_218`, and the Forensic
+Faceted Brief Form names, `pid5ffbf_001` to `pid5ffbf_100`, follow the
+same pattern.
 
 ## Usage
 
 ``` r
 rename_pid5_items(
   data,
-  version = c("FULL", "SF", "BF", "BFPM", "IRF"),
+  version = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"),
   method = c("number", "text"),
   item_cols = NULL,
   item_text = NULL,
@@ -34,8 +35,13 @@ rename_pid5_items(
 
   A string specifying the PID-5 form the items belong to: `"FULL"` (220
   items), `"SF"` (100 items), `"BF"` (25 items), `"BFPM"` (the 36-item
-  PID5BF+M), or `"IRF"` (the 218-item Informant Form, whose text matches
-  `pid_items$TextIRF`). Matched case-insensitively. (default = `"FULL"`)
+  PID5BF+M), `"IRF"` (the 218-item Informant Form, whose text matches
+  `pid_items$TextIRF`), or `"FFBF"` (the 100-item Forensic Faceted Brief
+  Form, whose text matches any of the four texts in
+  [pid_ffbf_items](https://jmgirard.github.io/hitop/reference/pid_ffbf_items.md):
+  self or informant report, English or German). Matched
+  case-insensitively; `"F"` is refused, because it starts both "FULL"
+  and "FFBF". (default = `"FULL"`)
 
 - method:
 
@@ -44,8 +50,10 @@ rename_pid5_items(
   against the literal item prompt text in `pid_items$Text`
   (`pid_items$TextIRF` for `version = "IRF"`, whose text has no "He or
   she..." stem, leading ellipsis or final period, so text copied from
-  the printed informant form needs those removed first). (default =
-  `"number"`)
+  the printed informant form needs those removed first; for
+  `version = "FFBF"`, any of the four texts in
+  [pid_ffbf_items](https://jmgirard.github.io/hitop/reference/pid_ffbf_items.md)).
+  (default = `"number"`)
 
   The forms number their items independently, so `"number"` reads the
   digits as an item number of the form named by `version`: under
@@ -76,7 +84,7 @@ rename_pid5_items(
   A string pasted literally before each standardized item number, which
   is zero-padded to the width of the form's largest item number. `NULL`
   resolves to the form's own stem: `"pid5_"`, `"pid5sf_"`, `"pid5bf_"`,
-  `"pid5bfpm_"` or `"pid5irf_"`. (default = `NULL`)
+  `"pid5bfpm_"`, `"pid5irf_"` or `"pid5ffbf_"`. (default = `NULL`)
 
 ## Value
 
@@ -95,6 +103,12 @@ by a number, nothing is renamed and the report is
 `hitop_no_columns_matched`. Under either method, if some but not all of
 the form's items were renamed, the completeness report is
 `hitop_incomplete_rename`.
+
+Under `version = "FFBF"` and `method = "text"`, a call in which two
+columns match the same item (for example its self-report and informant
+texts, or its English and German texts) is an error, since both would
+take the same name. Rename each form's columns in its own data frame, or
+give each call its own `prefix`.
 
 ## References
 

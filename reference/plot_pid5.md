@@ -37,7 +37,8 @@ plot_pid5(
   PID-5 Informant Form has no norms in this package, so `version` does
   not take `"IRF"`. Do not plot scores from
   `score_pid5(version = "IRF")` as `"FULL"`: they would be compared with
-  self-report norms.
+  self-report norms. Nor plot scores from `score_pid5(version = "FFBF")`
+  as `"SF"`: no FFBF norms are published.
 
 - level:
 

@@ -8,11 +8,13 @@
 </script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Estimate PID-5 scale reliability — reliability_pid5"><meta name="description" content="Compute per-scale internal-consistency reliability — Cronbach's alpha and
 McDonald's omega — for the Personality Inventory for DSM-5: full version
 (PID-5, 220 items), short form (PID-5-SF, 100 items), brief form (PID-5-BF,
-25 items), modified brief form (PID5BF+M, 36 items), or Informant Form
-(PID-5-IRF, 218 items; Markon et al., 2013). Reliability is
+25 items), modified brief form (PID5BF+M, 36 items), Informant Form
+(PID-5-IRF, 218 items; Markon et al., 2013), or Forensic Faceted Brief Form
+(PID-5-FFBF, 100 items; Niemeyer et al., 2022). Reliability is
 estimated on the reverse-keyed item responses, at the facet level for
-FULL/SF/IRF and the domain level for BF (the same scales score_pid5()
-outputs, before FULL/SF/IRF domain aggregation). The IRF facets are the full
+FULL/SF/IRF/FFBF and the domain level for BF (the same scales score_pid5()
+outputs, before FULL/SF/IRF/FFBF domain aggregation). The FFBF facets are its
+25 four-item facets in the SF's order (see score_pid5()). The IRF facets are the full
 form's 25, numbered by informant item and reverse-keyed as the APA IRF key's
 Facet Table marks (see score_pid5()). The BF version also returns a Total row
 covering all 25 items; note that this scale spans five heterogeneous domains,
@@ -20,11 +22,13 @@ so its internal consistency is not comparable to a domain's and is reported
 without further interpretation."><meta property="og:description" content="Compute per-scale internal-consistency reliability — Cronbach's alpha and
 McDonald's omega — for the Personality Inventory for DSM-5: full version
 (PID-5, 220 items), short form (PID-5-SF, 100 items), brief form (PID-5-BF,
-25 items), modified brief form (PID5BF+M, 36 items), or Informant Form
-(PID-5-IRF, 218 items; Markon et al., 2013). Reliability is
+25 items), modified brief form (PID5BF+M, 36 items), Informant Form
+(PID-5-IRF, 218 items; Markon et al., 2013), or Forensic Faceted Brief Form
+(PID-5-FFBF, 100 items; Niemeyer et al., 2022). Reliability is
 estimated on the reverse-keyed item responses, at the facet level for
-FULL/SF/IRF and the domain level for BF (the same scales score_pid5()
-outputs, before FULL/SF/IRF domain aggregation). The IRF facets are the full
+FULL/SF/IRF/FFBF and the domain level for BF (the same scales score_pid5()
+outputs, before FULL/SF/IRF/FFBF domain aggregation). The FFBF facets are its
+25 four-item facets in the SF's order (see score_pid5()). The IRF facets are the full
 form's 25, numbered by informant item and reverse-keyed as the APA IRF key's
 Facet Table marks (see score_pid5()). The BF version also returns a Total row
 covering all 25 items; note that this scale spans five heterogeneous domains,
@@ -102,11 +106,13 @@ without further interpretation."><meta property="og:image" content="https://jmgi
     <p>Compute per-scale internal-consistency reliability — Cronbach's alpha and
 McDonald's omega — for the Personality Inventory for DSM-5: full version
 (PID-5, 220 items), short form (PID-5-SF, 100 items), brief form (PID-5-BF,
-25 items), modified brief form (PID5BF+M, 36 items), or Informant Form
-(PID-5-IRF, 218 items; Markon et al., 2013). Reliability is
+25 items), modified brief form (PID5BF+M, 36 items), Informant Form
+(PID-5-IRF, 218 items; Markon et al., 2013), or Forensic Faceted Brief Form
+(PID-5-FFBF, 100 items; Niemeyer et al., 2022). Reliability is
 estimated on the reverse-keyed item responses, at the facet level for
-FULL/SF/IRF and the domain level for BF (the same scales <code><a href="score_pid5.html">score_pid5()</a></code>
-outputs, before FULL/SF/IRF domain aggregation). The IRF facets are the full
+FULL/SF/IRF/FFBF and the domain level for BF (the same scales <code><a href="score_pid5.html">score_pid5()</a></code>
+outputs, before FULL/SF/IRF/FFBF domain aggregation). The FFBF facets are its
+25 four-item facets in the SF's order (see <code><a href="score_pid5.html">score_pid5()</a></code>). The IRF facets are the full
 form's 25, numbered by informant item and reverse-keyed as the APA IRF key's
 Facet Table marks (see <code><a href="score_pid5.html">score_pid5()</a></code>). The BF version also returns a <code>Total</code> row
 covering all 25 items; note that this scale spans five heterogeneous domains,
@@ -119,7 +125,7 @@ without further interpretation.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reliability_pid5</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">items</span>,</span>
-<span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span>, <span class="st">"BFPM"</span>, <span class="st">"IRF"</span><span class="op">)</span>,</span>
+<span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span>, <span class="st">"BFPM"</span>, <span class="st">"IRF"</span>, <span class="st">"FFBF"</span><span class="op">)</span>,</span>
 <span>  srange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  omega <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -158,8 +164,10 @@ before 2.0 (<code>labelled_spss</code>) is refused the same way, but
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
 <dd><p>A string indicating the version of the PID to score: "FULL",
-"SF", "BF", "BFPM" (the 36-item PID5BF+M), or "IRF" (the 218-item
-Informant Form). Will be automatically capitalized. (default = <code>"FULL"</code>)</p></dd>
+"SF", "BF", "BFPM" (the 36-item PID5BF+M), "IRF" (the 218-item
+Informant Form), or "FFBF" (the 100-item Forensic Faceted Brief Form).
+Will be automatically capitalized; <code>"F"</code> is refused, because it starts both
+"FULL" and "FFBF". (default = <code>"FULL"</code>)</p></dd>
 
 
 <dt id="arg-srange">srange<a class="anchor" aria-label="anchor" href="#arg-srange"></a></dt>
@@ -208,6 +216,13 @@ form of the Personality Inventory for DSM-5 (PID-5). <em>Assessment, 20</em>(3),
  The scoring key for
 <code>version = "IRF"</code> is the APA's <em>The Personality Inventory for
 DSM-5—Informant Form (PID-5-IRF)—Adult</em> (2013).</p>
+<p>Niemeyer, L. M., Grosz, M. P., Zimmermann, J., &amp; Back, M. D.
+(2022). Assessing maladaptive personality in the forensic context:
+Development and validation of the Personality Inventory for DSM-5
+Forensic Faceted Brief Form (PID-5-FFBF). <em>Journal of Personality
+Assessment, 104</em>(1), 30-43. <a href="https://doi.org/10.1080/00223891.2021.1923522" class="external-link">doi:10.1080/00223891.2021.1923522</a>
+ The
+source of <code>version = "FFBF"</code>.</p>
     </div>
 
     <div class="section level2">
