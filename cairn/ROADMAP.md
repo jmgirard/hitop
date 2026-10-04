@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-10-03 (M158 done): archived, generator-list lesson added, M038 facet lesson pruned for the byte cap. validate green._
+_Last hygiene check: 2026-10-04 (M159 done): archived, periodic-fixture lesson added, last M038 lesson pruned for the byte cap. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
@@ -11,7 +11,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
 | M157 | PID5BF+M keying and scoring | done | — | normal | milestones/archive/M157-pid5bfpm-scoring.md |
 | M158 | PID5BF+M forms | done | M157 | normal | milestones/archive/M158-pid5bfpm-forms.md |
-| M159 | PID-5 informant form keying and scoring | review | M157 | normal | milestones/M159-pid5irf-scoring.md |
+| M159 | PID-5 informant form keying and scoring | done | M157 | normal | milestones/archive/M159-pid5irf-scoring.md |
 | M160 | PID-5 informant forms | planned | M159 | normal | milestones/M160-pid5irf-forms.md |
 | M161 | PID-5 child forms | planned | M158 | normal | milestones/M161-pid5-child-forms.md |
 
