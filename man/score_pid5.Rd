@@ -186,7 +186,9 @@ collected with
 \code{\link[=generate_redcap_pid5child]{generate_redcap_pid5child()}} (or their \code{pid5bfchild} counterparts) score
 as adult data do. \code{pid_norms} holds no child norms, so \code{\link[=norm_pid5]{norm_pid5()}} and
 \code{\link[=plot_pid5]{plot_pid5()}} would compare child scores with norms from another
-population.
+population. The child forms print no validity scales, and no source on
+this package's shelf gives validity cut scores for them, so the cut
+scores \code{\link[=validity_pid5]{validity_pid5()}} applies are not established for child data.
 }
 
 \subsection{The PID-5-BF total score}{

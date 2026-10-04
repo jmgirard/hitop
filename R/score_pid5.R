@@ -155,7 +155,9 @@
 #'   [generate_redcap_pid5child()] (or their `pid5bfchild` counterparts) score
 #'   as adult data do. `pid_norms` holds no child norms, so [norm_pid5()] and
 #'   [plot_pid5()] would compare child scores with norms from another
-#'   population.
+#'   population. The child forms print no validity scales, and no source on
+#'   this package's shelf gives validity cut scores for them, so the cut
+#'   scores [validity_pid5()] applies are not established for child data.
 #'
 #' @details ## The PID-5-BF total score
 #'

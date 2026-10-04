@@ -76,7 +76,6 @@ child_gens <- list(
     docx = generate_docx_pid5child,
     qualtrics = generate_qualtrics_pid5child,
     redcap = generate_redcap_pid5child,
-    adult_docx = generate_docx_pid5,
     title = "PID-5 (Full), Child Age 11\u201317",
     block = "PID-5 Child",
     qid = sprintf("PID5_%03d", 1:220),
@@ -87,7 +86,6 @@ child_gens <- list(
     docx = generate_docx_pid5bfchild,
     qualtrics = generate_qualtrics_pid5bfchild,
     redcap = generate_redcap_pid5bfchild,
-    adult_docx = generate_docx_pid5bf,
     title = "PID-5-BF, Child Age 11\u201317",
     block = "PID-5-BF Child",
     qid = sprintf("PID5BF_%02d", 1:25),
@@ -132,6 +130,9 @@ test_that("the child Word forms print exactly the adult items in order, on both 
 
       runs <- child_docx_runs(f)
       expect_true(child_start_typed[[v]] %in% runs, info = info)
+      # Two response options per legend line, as the other PID-5 forms print
+      # them (D-028), so the 4 options take 2 lines.
+      expect_length(docx_legend_lines(f), 2L)
       got <- docx_legend_pairs(docx_legend_lines(f))
       expect_equal(got$value, as.character(0:3), info = info)
       expect_identical(got$label, child_labels_typed, info = info)
@@ -147,17 +148,29 @@ test_that("the child Word forms print exactly the adult items in order, on both 
   }
 })
 
-test_that("the child scoring pages are the adult forms' scoring pages", {
+test_that("the child scoring pages list each scale's items and R marks from the keying tables", {
   skip_if_no_docx()
   for (v in c("FULL", "BF")) {
     g <- child_gens[[v]]
     f <- withr::local_tempfile(fileext = ".docx")
-    a <- withr::local_tempfile(fileext = ".docx")
     suppressMessages(g$docx(file = f))
-    suppressMessages(g$adult_docx(file = a))
     printed <- docx_scoring_rows(f)
+
+    # Expected rows built from `pid_scales` and `pid_items$Reverse`, not from
+    # any generator's output: each scale's items in ascending order, with
+    # "(R)" on the reverse-keyed ones.
+    scales <- pid_scales[[v]]
+    scale_col <- if (v == "BF") "Domain" else "Facet"
+    reversed <- pid_items[[v]][!is.na(pid_items[[v]]) & pid_items$Reverse]
+    expected <- vapply(scales$itemNumbers, function(i) {
+      i <- sort(i)
+      paste(ifelse(i %in% reversed, paste0(i, "(R)"), i), collapse = ", ")
+    }, character(1))
+    names(expected) <- scales[[scale_col]]
+
     expect_equal(nrow(printed), if (v == "FULL") 25L else 6L, info = v)
-    expect_identical(printed, docx_scoring_rows(a), info = v)
+    expect_setequal(printed$scale, names(expected))
+    expect_identical(printed$items, unname(expected[printed$scale]), info = v)
   }
   # Anchors typed from the child keys: the full form's Facet Table (p. 8)
   # and the brief form's Domain Scoring table (p. 3).
@@ -207,7 +220,7 @@ test_that("the child Qualtrics files hold the adult items under the adult IDs", 
     for (k in 1:4) {
       at <- which(q$lines == sprintf("[[Choice:%d]]", k - 1L))
       expect_length(at, nrow(expected))
-      expect_true(all(q$lines[at + 1L] == child_labels_typed[k]), info = v)
+      expect_true(all(q$lines[at + 1L] == child_labels_typed[k]), info = paste(v, k))
     }
     ins <- which(q$lines == "[[ID:start_instructions]]")
     expect_length(ins, 1L)
@@ -226,7 +239,7 @@ test_that("the child REDCap dictionaries hold the adult items under the adult fi
     expected <- child_expected(v)
 
     expect_equal(nrow(r), nrow(expected) + 1L, info = v)
-    expect_identical(r[["Field Type"]][1], "descriptive")
+    expect_identical(r[["Field Type"]][1], "descriptive", info = v)
     expect_identical(r[["Field Label"]][1], child_start_typed[[v]], info = v)
     expect_true(all(r[["Form Name"]] == g$form_name), info = v)
 
@@ -248,16 +261,71 @@ test_that("the child REDCap dictionaries hold the adult items under the adult fi
       items[["Variable / Field Name"]],
       info = v
     )
-    df <- as.data.frame(
-      matrix(1L, nrow = 1L, ncol = n, dimnames = list(NULL, g$field))
-    )
-    scored <- score_pid5(df, items = g$field, version = v, append = FALSE)
-    expect_identical(
-      scored,
-      score_pid5(df, items = seq_len(n), version = v, append = FALSE),
-      info = v
-    )
+    # Scores checked against values worked by hand from the child keys. Full
+    # form, every item answered 1: Anhedonia's 8 items include 2 reversed
+    # (30R, 155R, Facet Table p. 8), which score 2, so (6 * 1 + 2 * 2) / 8 =
+    # 1.25. Brief form, item 8 answered 3 and the rest 0: item 8 is one of
+    # Negative Affect's 5 items (8, 9, 10, 11, 15, p. 3), so 3 / 5 = 0.6, and
+    # Detachment (4, 13, 14, 16, 18) is 0.
+    if (v == "FULL") {
+      df <- as.data.frame(
+        matrix(1L, nrow = 1L, ncol = n, dimnames = list(NULL, g$field))
+      )
+      scored <- score_pid5(df, items = g$field, version = v, append = FALSE)
+      expect_equal(scored$pid_anhedonia, 1.25)
+    } else {
+      df <- as.data.frame(
+        matrix(0L, nrow = 1L, ncol = n, dimnames = list(NULL, g$field))
+      )
+      df$pid5bf_08 <- 3L
+      scored <- score_pid5(df, items = g$field, version = v, append = FALSE)
+      expect_equal(scored$pid_negativeAffectivity, 0.6)
+      expect_equal(scored$pid_detachment, 0)
+    }
     labeled <- label_pid5(df, target = "items", version = v)
     expect_identical(attr(labeled[[g$field[1]]], "label"), expected$text[1], info = v)
+  }
+})
+
+# ---- Non-default arguments ---------------------------------------------------
+
+test_that("the child generators pass their non-default arguments through", {
+  skip_if_no_docx()
+  for (v in c("FULL", "BF")) {
+    g <- child_gens[[v]]
+    n <- nrow(child_expected(v))
+
+    f <- withr::local_tempfile(fileext = ".docx")
+    suppressMessages(g$docx(
+      file = f, papersize = "a4", title = "My child form",
+      include_scoring = FALSE, font_size = 12, font_family = "Arial"
+    ))
+    expect_identical(docx_header_title(f), "My child form", info = v)
+    expect_equal(nrow(docx_scoring_rows(f)), 0L, info = v)
+    xml <- read_docx_xml(f)
+    expect_match(xml, 'w:ascii="Arial"', fixed = TRUE, info = v)
+    expect_false(grepl("Times New Roman", xml, fixed = TRUE), info = v)
+    expect_match(xml, '<w:sz w:val="24"', fixed = TRUE, info = v)
+
+    q <- withr::local_tempfile(fileext = ".txt")
+    suppressMessages(g$qualtrics(
+      file = q, block_name = "Kids", id_prefix = "KID",
+      include_instructions = FALSE, breaks = NULL
+    ))
+    parsed <- read_qualtrics(q)
+    expect_identical(parsed$block, "Kids", info = v)
+    expect_true(all(startsWith(parsed$questions$id, "KID_")), info = v)
+    expect_false(any(parsed$lines == "[[ID:start_instructions]]"), info = v)
+    expect_false(any(parsed$lines == "[[PageBreak]]"), info = v)
+
+    r <- withr::local_tempfile(fileext = ".zip")
+    suppressMessages(g$redcap(
+      file = r, form_name = "kids_form", required = FALSE, breaks = NULL
+    ))
+    dd <- read_redcap_csv(r)
+    expect_true(all(dd[["Form Name"]] == "kids_form"), info = v)
+    expect_true(all(dd[["Required Field?"]][-1] == "n"), info = v)
+    expect_true(all(dd[["Section Header"]] == ""), info = v)
+    expect_equal(nrow(dd), n + 1L, info = v)
   }
 })
