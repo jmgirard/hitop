@@ -28,7 +28,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 
 ## Acceptance criteria
 
-- [ ] AC1: A references page records whether the child forms share the adult forms' items and keying. It reports a comparison run by a `data-raw/` script on the shelf copies. The script checks the 220 item texts and the 25 BF item texts in order against `pid_items$Text`. Texts match exactly after whitespace and typographic quotes are normalized. It also checks the child reverse list, facet table and domain tables against `pid_items$Reverse`, `pid_scales$FULL`, `pid_scales$BF` and `pid_domains`. The page names the script and its run date, and it lists every difference found, or none.
+- [ ] AC1: A references page records whether the child forms share the adult forms' items and keying. It reports a comparison run by a `data-raw/` script on the shelf copies. The script checks the 220 item texts and the 25 BF item texts in order against `pid_items$Text`. Texts match exactly after whitespace and typographic quotes are normalized and a final period is dropped from each text, because `pid_items$Text` stores none. It also checks the child reverse list, facet table and domain tables against `pid_items$Reverse`, `pid_scales$FULL`, `pid_scales$BF` and `pid_domains`. The page names the script and its run date, and it lists every difference found, or none.
 - [x] AC2: The child Word forms (full and BF, US and A4) parse back to exactly the `pid_items` FULL and BF items in order. Each form carries the child instructions and response labels transcribed from the APA child forms. The child Qualtrics files and REDCap zips parse back to the same items, instructions and labels. The tests are in the D-010 style.
 - [ ] AC3: The shipped adult artifacts do not change. No existing `hitop_artifacts` checksum changes on this branch. The existing generator tests pass with no edit to their expectations. If T2 adds an argument to the existing generators, a parse-back test also shows that each adult generator's output with non-default arguments is unchanged.
 - [x] AC4: The child files ship in `inst/extdata/` and `pkgdown/assets/downloads/`. Each is byte-identical to the file that its `hitop_artifacts` row records. Download pages link each one and carry no online-form strip. The page counts in `test-artifacts.R` and `test-download-pages.R` and the strip test's exemption admit the new pages. Those are the only edits to the expectations of those two files.
@@ -36,9 +36,9 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 
 ## Coverage
 
-- AC1 → T1
+- AC1 → T1, T7
 - AC2 → T2, T3, T4
-- AC3 → T4
+- AC3 → T4, T7
 - AC4 → T5
 - AC5 → T6
 
@@ -50,6 +50,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - [x] T4: Write the parse-back tests (AC2) and run the existing generator and artifact tests unchanged (AC3).
 - [x] T5: Add the artifact rows, build the artifacts, stage the pkgdown copies and write the download pages. Update the page counts in `test-artifacts.R` and `test-download-pages.R`, and exempt the pages from the online-strip test.
 - [x] T6: Update the help pages, vignette, NEWS and reference index. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
+- [ ] T7: Apply the AC1 and AC3 amendment returns from review pass 1: re-audit the amended wording, and tighten `data-raw/check_pid_child_text.R` as the AC1 audit found.
 
 ## Work log
 
@@ -66,6 +67,11 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - 2026-10-04: status set to review. `devtools::check()` on the final state (98c13b6f) reports 0 errors, 0 warnings and 0 notes.
 - 2026-10-04: amendment return: AC1 — "Texts match exactly after whitespace and typographic quotes are normalized and a final period is dropped, because `pid_items$Text` stores none."
 - 2026-10-04: amendment return: AC3 — "The existing generator tests pass with no edit to their expectations, except that the two tests that enumerate every shipped online export (`test-export-padding-width.R` and `test-response-value-no-move.R`) gain the four child online exports and nothing else."
+- 2026-10-04: return from review: amendment returns on AC1 and AC3 become T7. Status was already set to in-progress by review.
+- re-audit: AC1 (full) — first reader: 4 findings. The script read `data-raw/pid_items.csv`, not the dataset. The domain check was not bound to each domain's row. BF reverse flags were unchecked. "A final period is dropped" did not say from which texts. Fixed: the script loads `data/pid_items.rda`, binds each domain to its row and checks that no BF item is reversed, with 4 new plants red. The swapped-domain plant passed the old script. The wording now says "from each text".
+- re-audit: AC1 (full) — second reader: nothing on the criterion. Two page sentences were aligned with it ("from each text", and the provenance line naming both keys). AC1's amended wording is written.
+- re-audit: AC3 (full) — first reader: 4 findings. Two counts rising is not "gaining" an export. "Existing generator tests" named no procedure, so the domain was undefined. The T2 conditional is dead under M161-D1. "The two tests" should read "test files". Wording tightened.
+- re-audit: AC3 (full) — second reader: D-016 keeps every build's row, so "no existing checksum changes" cannot fail when an adult file is rebuilt. Also, `test-artifacts.R` names `generate_redcap_` inside a regex, so grep counts it as a generator test. This is the second re-audit on AC3, which is a stop. AC3 is left at its planned wording until Jeff chooses.
 
 ## Decisions
 

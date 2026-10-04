@@ -6,14 +6,17 @@
 # This script reads the two shelf PDFs with `pdftotext -raw` and checks:
 #
 #   1. the 220 full-form and 25 brief-form item texts, in order, against
-#      `pid_items$Text` by FULL and BF number. Texts must match exactly after
-#      whitespace and typographic quotes are normalized and a final period is
-#      dropped (`pid_items$Text` stores none);
+#      `pid_items$Text` (data/pid_items.rda) by FULL and BF number. Texts must
+#      match exactly after whitespace and typographic quotes are normalized
+#      and a final period is dropped from each text (`pid_items$Text` stores
+#      none);
 #   2. the child full form's Step 1 reverse list and Facet Table R marks
 #      against `pid_items$Reverse`;
 #   3. its Facet Table item lists against `pid_scales$FULL`;
-#   4. its Domain Table primary facets against `pid_domains`;
-#   5. the child brief form's Domain Scoring table against `pid_scales$BF`;
+#   4. each domain's row of its Domain Table, in order, against that
+#      domain's primary facets in `pid_domains`;
+#   5. the child brief form's Domain Scoring table against `pid_scales$BF`,
+#      and its unmarked key against `pid_items$Reverse` (no BF item reversed);
 #   6. the stored child instructions (`pid_child_instructions` in
 #      R/sysdata.rda): each form's instruction paragraph (first item page,
 #      PDF p. 2), footer notice and response labels against its PDF text.
@@ -71,7 +74,11 @@ read_items <- function(txt, n_items) {
   normalize(text)
 }
 
-pid_items <- utils::read.csv("data-raw/pid_items.csv", encoding = "UTF-8")
+pid_items <- local({
+  e <- new.env()
+  load("data/pid_items.rda", envir = e)
+  as.data.frame(e$pid_items)
+})
 pid_items$Text <- normalize(pid_items$Text)
 
 # ---- Full form ---------------------------------------------------------------
@@ -124,17 +131,45 @@ for (f in names(facet_items)) {
   }
 }
 
-domain_lines <- key[grep("^(Negative Affect|Detachment|Antagonism|Disinhibition|Psychoticism)", key)]
+# Each domain's row of the Domain Table: from the line that starts with the
+# domain's printed name up to the next domain's line or the page footer (the
+# Psychoticism row wraps onto two more lines). The key prints "Negative
+# Affect"; the package's domain is "Negative affectivity".
 domains <- local({
   e <- new.env()
   load("data/pid_domains.rda", envir = e)
   e$pid_domains
 })
-flat_key <- paste(key, collapse = " ")
-for (d in seq_len(nrow(domains))) {
-  wanted <- paste(domains$primaryFacets[[d]], collapse = ", ")
-  if (!grepl(wanted, gsub("\\s+", " ", flat_key), fixed = TRUE)) {
-    note("domain ", domains$Domain[d], ": primary facets '", wanted, "' not found in the Domain Table")
+domain_names <- c(
+  "Negative Affect" = "Negative affectivity", "Detachment" = "Detachment",
+  "Antagonism" = "Antagonism", "Disinhibition" = "Disinhibition",
+  "Psychoticism" = "Psychoticism"
+)
+starts <- vapply(names(domain_names), function(n) {
+  at <- grep(paste0("^", n, "( |$)"), key)
+  if (length(at) != 1) NA_integer_ else at
+}, integer(1))
+for (k in seq_along(domain_names)) {
+  if (is.na(starts[k])) {
+    note("domain ", names(domain_names)[k], ": no single Domain Table row")
+    next
+  }
+  # Raw mode fuses the row's last word with the footer ("Dysregulation" +
+  # "Copyright ..."), so the row runs through the first line holding the
+  # footer and is cut where the footer starts.
+  end <- starts[k]
+  while (end < length(key) && !(end + 1) %in% starts &&
+         !grepl("Copyright", key[end]) &&
+         !grepl("^(This material|Instructions)", key[end + 1])) {
+    end <- end + 1
+  }
+  row <- paste(key[starts[k]:end], collapse = " ")
+  row <- sub("Copyright.*$", "", row)
+  row <- sub(paste0("^", names(domain_names)[k], " ?"), "", row)
+  printed <- trimws(strsplit(gsub("\\s+", " ", row), ",")[[1]])
+  wanted <- domains$primaryFacets[[match(domain_names[[k]], domains$Domain)]]
+  if (!identical(printed, wanted)) {
+    note("domain ", names(domain_names)[k], ": child '", toString(printed), "' vs package '", toString(wanted), "'")
   }
 }
 
@@ -162,6 +197,10 @@ for (k in seq_along(bf_names)) {
   }
 }
 if (any(grepl("[0-9]R\\b", bf[bf_key_at:length(bf)]))) note("BF child key marks a reverse item")
+# The child brief key reverses nothing, so no BF item may be reversed in the
+# package either.
+bf_reversed <- pid_items$BF[!is.na(pid_items$BF) & pid_items$Reverse]
+if (length(bf_reversed)) note("package reverses BF items ", toString(sort(bf_reversed)))
 
 # ---- Instructions in R/sysdata.rda -------------------------------------------
 # Each form's stored instruction paragraph (first item page, PDF p. 2) and

@@ -14,7 +14,7 @@ form's pages 2 to 7 are the items, which the form numbers "Page 1" to "Page 6".
 Page 8 is the scoring key and page 9 the instructions to clinicians. The brief
 form's page 2 is the items, and page 3 is the domain key and the instructions to
 clinicians.
-Extraction: verified 2026-10-04 by `data-raw/check_pid_child_text.R` against both files, all 220 + 25 item texts and the full form's key — observed 2026-10-04.
+Extraction: verified 2026-10-04 by `data-raw/check_pid_child_text.R` against both files, all 220 + 25 item texts, both forms' keys and both forms' instructions — observed 2026-10-04.
 
 **Citation.** Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
 Skodol, A. E. (2013). *The Personality Inventory for DSM-5 (PID-5)—Child Age
@@ -35,21 +35,29 @@ reads both files with `pdftotext -raw` and checks:
 2. The full form's Step 1 reverse list and its Facet Table R marks against
    `pid_items$Reverse`.
 3. Its Facet Table item lists against `pid_scales$FULL`.
-4. Its Domain Table primary facets against `pid_domains`.
-5. The brief form's Domain Scoring table against `pid_scales$BF`.
+4. Each domain's row of its Domain Table, in order, against that domain's
+   primary facets in `pid_domains` (row-bound since 2026-10-04 review).
+5. The brief form's Domain Scoring table against `pid_scales$BF`, and its
+   unmarked key against `pid_items$Reverse`: no BF item is reversed.
 6. Each form's stored first-page paragraph, footer notice and response labels
    (`pid_child_instructions` in `R/sysdata.rda`) against its PDF text. This
    check was added on 2026-10-04, with three planted defects that went red.
 
 Texts must match exactly after whitespace and typographic quotes are
-normalized. The script also drops a final period from the PDF text, because
+normalized. The script also drops a final period from each text, because
 `pid_items$Text` stores none for any form. The script exits non-zero on any
 difference. On 2026-10-04, a planted defect of each of seven kinds went red.
 The kinds were a changed text, two swapped full-form items, two swapped
 brief-form items and a flipped reverse flag. The others were a changed facet
-item, a changed BF domain item and a reordered domain facet list.
+item, a changed BF domain item and a reordered domain facet list. The
+review on 2026-10-04 made the domain check row-bound and added the BF
+reverse check. Four more planted defects then went red: two domains with
+swapped facet lists, a shortened Psychoticism facet list, a reversed BF
+item and a changed full-form text. The earlier script passed the swapped
+domains. The script now reads `pid_items` from `data/pid_items.rda`, not
+from `data-raw/pid_items.csv`.
 
-Differences found: none.
+Differences found: none, on the run of 2026-10-04 after these changes.
 
 ## Extracted values
 
