@@ -98,28 +98,28 @@ Pass 2 (2026-10-04), branch head f1b53880, main not moved (0b9bc3db). Since pass
 Independent review (pass 2, head 514fed05). spawned: diff-bug, blame-history, prior-review. 24 findings: 13 fix now, 7 follow-up, 3 rejected, 1 noted. None shows a criterion failing or a defect in what the forms do for users, so none returns the milestone.
 
 - diff-bug #1: the online child forms carry no APA notice, though the APA prints it on every page — follow-up, row "PID-5 child form gaps".
-- diff-bug #2: `download-pid5child.Rmd` said the instructions "add a label", which the forms do not print — fix now.
-- diff-bug #3: the scoring-page test compared the child output with the adult generator's output — fix now: expected rows built from `pid_scales` and `pid_items$Reverse`.
-- diff-bug #4: the REDCap scoring check compared `score_pid5()` by name with itself by position — fix now: hand-worked values (Anhedonia 1.25, BF Negative affectivity 0.6, Detachment 0).
-- diff-bug #5: only default arguments were tested — fix now: one non-default call per generator.
-- diff-bug #6: the docs warned about norms but not `validity_pid5()` cut scores on child data — fix now.
+- diff-bug #2: `download-pid5child.Rmd` said the instructions "add a label", which the forms do not print — fix now, fixed e4f999aa.
+- diff-bug #3: the scoring-page test compared the child output with the adult generator's output — fix now, fixed e4f999aa: expected rows built from `pid_scales` and `pid_items$Reverse`.
+- diff-bug #4: the REDCap scoring check compared `score_pid5()` by name with itself by position — fix now, fixed e4f999aa: hand-worked values (Anhedonia 1.25, BF Negative affectivity 0.6, Detachment 0).
+- diff-bug #5: only default arguments were tested — fix now, fixed e4f999aa: one non-default call per generator.
+- diff-bug #6: the docs warned about norms but not `validity_pid5()` cut scores on child data — fix now, fixed e4f999aa.
 - diff-bug #7: the Word forms omit the "Please continue" page text and the Name/Age/Date fields — follow-up, row "PID-5 child form gaps".
-- diff-bug #8: `cairn/DESIGN.md` said eight download articles and lacked the child forms and `pid_child_instructions` — fix now.
+- diff-bug #8: `cairn/DESIGN.md` said eight download articles and lacked the child forms and `pid_child_instructions` — fix now, fixed e4f999aa.
 - diff-bug #9: `data-raw/artifacts.R` stays set for the child build — rejected, false as a defect: its header says both settings record the last build, as the IRF build left them.
 - diff-bug #10: a literal "©" in the test and roxygen — rejected, style: `check()` is clean, and the IRF test has the same.
 - diff-bug #11: the six new Rd pages lack `\value` — follow-up, absorbed into the "Clinical reporting & release" row's M158 note on `generate_*()` pages.
 - diff-bug #12: the navbar, page title and Word title name the brief child form differently — rejected, style.
-- diff-bug #13: two expectations lacked `info` labels — fix now.
-- blame-history #1: the shared stems sit beside D-055's one-stem rule with no D-entry — fix now: D-091 promotes M161-D1 and annotates D-055.
-- blame-history #2: README, the import-instructions page and DESIGN were not updated as M160 updated them — fix now.
-- blame-history #3: the shared generator test loops omit the child generators — fix now in part: the child test now checks the 2-line legend, and the IDs were already checked exactly. The loops stay unedited under AC3; follow-up, row "PID-5 child form gaps".
+- diff-bug #13: two expectations lacked `info` labels — fix now, fixed e4f999aa.
+- blame-history #1: the shared stems sit beside D-055's one-stem rule with no D-entry — fix now, fixed e4f999aa: D-091 promotes M161-D1 and annotates D-055.
+- blame-history #2: README, the import-instructions page and DESIGN were not updated as M160 updated them — fix now, fixed e4f999aa.
+- blame-history #3: the shared generator test loops omit the child generators — fix now, fixed e4f999aa in part: the child test now checks the 2-line legend, and the IDs were already checked exactly. The loops stay unedited under AC3; follow-up, row "PID-5 child form gaps".
 - blame-history #4: the later pages' "Please continue" text is not printed — follow-up, row "PID-5 child form gaps".
 - blame-history #5: the scoring and instruction wording was checked and found correct — noted.
-- prior-review #1: the doc sweep missed import-instructions and README — fix now (as blame-history #2).
-- prior-review #2: no `cairn/SOURCES.md` row for the child form text — fix now.
+- prior-review #1: the doc sweep missed import-instructions and README — fix now, fixed e4f999aa (as blame-history #2).
+- prior-review #2: no `cairn/SOURCES.md` row for the child form text — fix now, fixed e4f999aa.
 - prior-review #3: the hand-kept generator lists (LESSONS M158) omit the child generators — follow-up, row "PID-5 child form gaps".
-- prior-review #4: ROADMAP form-text row (c) went stale, and the follow-ups name only the IRF — fix now: row (c) corrected in place, and a new row cross-references the norms row (that row already carries two milestones' findings).
+- prior-review #4: ROADMAP form-text row (c) went stale, and the follow-ups name only the IRF — fix now, fixed e4f999aa: row (c) corrected in place, and a new row cross-references the norms row (that row already carries two milestones' findings).
 - prior-review #5: stale counts at `test-export-arg-guards.R:114` and `test-json-export.R:9` — follow-up, row "PID-5 child form gaps".
 - prior-review #6: the child Word forms print no identity fields — follow-up, row "PID-5 child form gaps".
 - Noted for hygiene: `cairn/ROADMAP.md` was 24,908 bytes on main, over its 24,000 budget. Compressing it is left to the post-merge hygiene pass.
-
+- Fix-now verification (head e4f999aa): `devtools::check()` reports 0 errors, 0 warnings and 0 notes, with the full test suite inside it. `pkgdown::check_pkgdown()` reports no problems, and `cairn_validate.py` passes. The revised child tests went red on two planted defects: an ignored `title`, and a shared scoring-table bug that drops R marks.
