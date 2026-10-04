@@ -1676,3 +1676,159 @@ generate_docx_pid5irf <- function(
     footer_notice = pid_irf_instructions$notice
   )
 }
+
+# Internal Helper: a PID-5 child form's rows and instructions (ages 11 to 17),
+# shared by its Word, Qualtrics and REDCap generators (M161). `version` is
+# "FULL" or "BF": the child forms print the adult items of that version in the
+# same order with the same keying (cairn/references/apa2013pid5child.md), so
+# the rows are the adult rows, the version's number first. The instructions
+# are the child form's own, as `pid_child_instructions` stores them.
+pid_child_form <- function(version) {
+  items <- pid_items[!is.na(pid_items[[version]]), ]
+  items <- items[order(items[[version]]), ]
+  items <- items[, c(version, setdiff(names(items), version))]
+  list(items = items, instructions = pid_child_instructions[[version]])
+}
+
+# Internal Helper: the Word form of a PID-5 child form. The item table and the
+# scoring page are the adult version's; the instructions and the footer notice
+# are the child form's.
+build_docx_pid5_child <- function(
+  version,
+  file,
+  papersize,
+  title,
+  include_scoring,
+  font_size,
+  font_family
+) {
+  dims <- get_page_dims(papersize)
+  form <- pid_child_form(version)
+
+  t1 <- make_items_table(
+    form$items,
+    version,
+    form$instructions$options,
+    dims$pw,
+    font_size,
+    font_family,
+    opts_per_line = 2
+  )
+
+  t2 <- NULL
+  if (include_scoring) {
+    scales_to_score <- pid_scales[[version]]
+    scale_col <- if (version == "BF") "Domain" else "Facet"
+    names(scales_to_score)[names(scales_to_score) == scale_col] <- "Scale"
+
+    t2 <- make_scoring_table(
+      scales_to_score,
+      version,
+      dims$pw,
+      font_size,
+      font_family
+    )
+  }
+
+  scoring_msg <- "Average the responses for the following item numbers. Reverse-scored items are indicated with (R)."
+
+  build_hitop_doc(
+    file,
+    title,
+    form$instructions$start,
+    scoring_msg,
+    t1,
+    t2,
+    include_scoring,
+    dims,
+    font_size,
+    font_family,
+    footer_notice = form$instructions$notice
+  )
+}
+
+#' Generate a Word Document for the PID-5 Child Form (Ages 11 to 17)
+#'
+#' Write the 220-item PID-5 child form for ages 11 to 17 (Krueger et al.,
+#' 2013) as a paper form. Its items, their order and their keying are those
+#' of the adult full form, so the items are `pid_items$Text` numbered 1 to
+#' 220 and the scoring page is the one [generate_docx_pid5()] prints. The
+#' instructions are the child form's, and the footer carries the APA
+#' copyright and permission notice the child form prints. Score the
+#' responses with `score_pid5(version = "FULL")`.
+#'
+#' @inheritParams generate_docx_pid5
+#'
+#' @references Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
+#'   Skodol, A. E. (2013). *The Personality Inventory for DSM-5
+#'   (PID-5)—Child Age 11–17*. American Psychiatric Association.
+#'
+#' @examples
+#' \donttest{
+#' # Write a PID-5 child form to a temporary Word document
+#' generate_docx_pid5child(file = tempfile(fileext = ".docx"))
+#' }
+#'
+#' @export
+generate_docx_pid5child <- function(
+  file = "pid5child.docx",
+  papersize = c("us", "a4"),
+  title = "PID-5 (Full), Child Age 11\u201317",
+  include_scoring = TRUE,
+  font_size = 10,
+  font_family = "Times New Roman"
+) {
+  papersize <- match.arg(papersize)
+  build_docx_pid5_child(
+    "FULL",
+    file,
+    papersize,
+    title,
+    include_scoring,
+    font_size,
+    font_family
+  )
+}
+
+#' Generate a Word Document for the PID-5-BF Child Form (Ages 11 to 17)
+#'
+#' Write the 25-item PID-5-BF child form for ages 11 to 17 (Krueger et al.,
+#' 2013) as a paper form. Its items, their order and their keying are those
+#' of the adult brief form, so the items are `pid_items$Text` numbered 1 to
+#' 25 and the scoring page is the one [generate_docx_pid5bf()] prints. The
+#' instructions are the child form's, and the footer carries the APA
+#' copyright and permission notice the child form prints. Score the
+#' responses with `score_pid5(version = "BF")`.
+#'
+#' @inheritParams generate_docx_pid5
+#'
+#' @references Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
+#'   Skodol, A. E. (2013). *The Personality Inventory for DSM-5—Brief Form
+#'   (PID-5-BF)—Child Age 11–17*. American Psychiatric Association.
+#'
+#' @examples
+#' \donttest{
+#' # Write a PID-5-BF child form to a temporary Word document
+#' generate_docx_pid5bfchild(file = tempfile(fileext = ".docx"))
+#' }
+#'
+#' @export
+generate_docx_pid5bfchild <- function(
+  file = "pid5bfchild.docx",
+  papersize = c("us", "a4"),
+  title = "PID-5-BF, Child Age 11\u201317",
+  include_scoring = TRUE,
+  font_size = 10,
+  font_family = "Times New Roman"
+) {
+  papersize <- match.arg(papersize)
+  build_docx_pid5_child(
+    "BF",
+    file,
+    papersize,
+    title,
+    include_scoring,
+    font_size,
+    font_family
+  )
+}

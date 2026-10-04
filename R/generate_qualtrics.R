@@ -362,6 +362,86 @@ generate_qualtrics_pid5irf <- function(
   )
 }
 
+#' Generate a Qualtrics Import File for the PID-5 Child Form (Ages 11 to 17)
+#'
+#' The 220 items of the PID-5 child form for ages 11 to 17, which are the
+#' adult full form's items in the same order with the same keying, and the
+#' child form's instructions and response options. The question IDs are the
+#' adult form's, `PID5_001` to `PID5_220`, so the export scores with
+#' `score_pid5(version = "FULL")` as an adult export does.
+#'
+#' @inheritParams generate_qualtrics_pid5
+#'
+#' @references Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
+#'   Skodol, A. E. (2013). *The Personality Inventory for DSM-5
+#'   (PID-5)—Child Age 11–17*. American Psychiatric Association.
+#'
+#' @examples
+#' # Write a PID-5 child form Qualtrics import file to a temporary location
+#' generate_qualtrics_pid5child(file = tempfile(fileext = ".txt"))
+#'
+#' @export
+generate_qualtrics_pid5child <- function(
+  file = "pid5child_qualtrics.txt",
+  block_name = "PID-5 Child",
+  id_prefix = "PID5",
+  include_instructions = TRUE,
+  breaks = 15
+) {
+  form <- pid_child_form("FULL")
+
+  build_qualtrics_txt(
+    items = form$items,
+    max_n = max(pid_items$FULL, na.rm = TRUE),
+    instructions = form$instructions,
+    file = file,
+    block_name = block_name,
+    id_prefix = id_prefix,
+    include_instructions = include_instructions,
+    breaks = breaks
+  )
+}
+
+#' Generate a Qualtrics Import File for the PID-5-BF Child Form (Ages 11 to 17)
+#'
+#' The 25 items of the PID-5-BF child form for ages 11 to 17, which are the
+#' adult brief form's items in the same order with the same keying, and the
+#' child form's instructions and response options. The question IDs are the
+#' adult form's, `PID5BF_01` to `PID5BF_25`, so the export scores with
+#' `score_pid5(version = "BF")` as an adult export does.
+#'
+#' @inheritParams generate_qualtrics_pid5
+#'
+#' @references Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
+#'   Skodol, A. E. (2013). *The Personality Inventory for DSM-5—Brief Form
+#'   (PID-5-BF)—Child Age 11–17*. American Psychiatric Association.
+#'
+#' @examples
+#' # Write a PID-5-BF child form Qualtrics import file to a temporary location
+#' generate_qualtrics_pid5bfchild(file = tempfile(fileext = ".txt"))
+#'
+#' @export
+generate_qualtrics_pid5bfchild <- function(
+  file = "pid5bfchild_qualtrics.txt",
+  block_name = "PID-5-BF Child",
+  id_prefix = "PID5BF",
+  include_instructions = TRUE,
+  breaks = 15
+) {
+  form <- pid_child_form("BF")
+
+  build_qualtrics_txt(
+    items = form$items,
+    max_n = max(pid_items$BF, na.rm = TRUE),
+    instructions = form$instructions,
+    file = file,
+    block_name = block_name,
+    id_prefix = id_prefix,
+    include_instructions = include_instructions,
+    breaks = breaks
+  )
+}
+
 # Internal Helper: the item questions' `[[ID:]]` values
 #
 # One place for the IDs build_qualtrics_txt() writes, so the HiTOP-SR
