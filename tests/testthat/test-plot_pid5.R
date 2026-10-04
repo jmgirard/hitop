@@ -578,6 +578,15 @@ test_that("axis bounds come from pid_norms rather than a chosen constant", {
 })
 
 
+test_that("version = \"F\" still plots as FULL, since plot_pid5() has no FFBF (M162)", {
+  normed <- normed_one("FULL")
+  expect_identical(
+    ggplot2::ggplot_build(plot_pid5(normed, version = "F"))$data,
+    ggplot2::ggplot_build(plot_pid5(normed, version = "FULL"))$data
+  )
+})
+
+
 # ---- AC6: input branches --------------------------------------------------
 
 test_that("more than one respondent is refused", {

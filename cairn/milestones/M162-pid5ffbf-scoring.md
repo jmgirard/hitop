@@ -1,6 +1,6 @@
 # M162: PID-5 forensic form (FFBF) keying and scoring
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -100,6 +100,8 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - 2026-10-04: implement revised the facet-order choice: `pid_scales$FFBF` follows the SF's facet order, not the FULL order, because the SF and FULL orders differ (found by the T4 test) and the FFBF adapts the SF, so FFBF and SF columns now line up. Falsified by a user need to read output in Table S3 order.
 - 2026-10-04: T5 done. FFBF help section in `?score_pid5` (keying, output, domain caveats, the missing-data comparison, informant averaging and half-integer rounding, both checked by a run), version docs in the three other functions, the vignette section (purled and run), NEWS entry, `_pkgdown.yml` rows. OQ-6 and OQ-7 were opened at the RR08 ingest. `pkgdown::check_pkgdown()`: no problems; `devtools::check()`: 0 errors, 0 warnings, 0 notes.
 - 2026-10-04: T6 done. `check_pid_ffbf_text.R` now also checks the code's informant and original-form facet lists (100 lists), the self and both informant recodes, the two forensic domains for both forms against `pid_ffbf_domains`, and the unadapted items against Table S3's a, b and c marks (18 self, 20 informant). PASS; a planted wrong Insecurity facet in `pid_ffbf_domains` failed it. Run recorded on the references page.
+- 2026-10-04: claim audit: 133 claims read, 14 corrected — R/data.R, R/score_pid5.R, vignettes/pid5_scoring.Rmd, data-raw/characterize_bfpm.R, data-raw/check_pid_ffbf_text.R, data-raw/pid_info.R, tests/testthat/helper-fixtures.R. The same reader re-read the 16 corrected sites: all hold.
+- 2026-10-04: the claim audit also found that the `"F"` test did not call `plot_pid5()`, which AC4 names; `test-plot_pid5.R` gained that test. The vignette's domain chunk now prints facet names. Suite green. Status set to review.
 
 ## Decisions
 

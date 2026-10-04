@@ -101,7 +101,8 @@ usethis::use_data(pid_items, overwrite = TRUE)
 ## self report English and German, informant report English and German. Most
 ## items are rewritten for prisoners and match no 220-item row, so the form has
 ## its own table rather than `pid_items` columns. data-raw/check_pid_ffbf_text.R
-## checks the CSV against the shelf PDF and the authors' code
+## checks the shipped table built from this CSV against the shelf PDF and the
+## authors' code
 ## (cairn/references/niemeyer2022.md).
 pid_ffbf_items <- readr::read_csv(
   "data-raw/pid_ffbf_items.csv",

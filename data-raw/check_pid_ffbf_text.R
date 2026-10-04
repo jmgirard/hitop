@@ -13,7 +13,8 @@
 #
 #   1. the item numbers, 1 to 100, each once;
 #   2. each item's facet, read from the facet heading above it;
-#   3. the reverse items, read from the "(-)" mark in both German cells;
+#   3. the reverse items, read from a "(-)" mark anywhere in the item's text
+#      (Table S3 prints it in the two German cells);
 #   4. against the authors' code: each facet's four items in its self-report
 #      and informant lists, for the FFBF and for the original form; the two
 #      recoded items, for self report and both informants; the facets of the

@@ -15,7 +15,7 @@ k + 50, and k + 75}
 26)}
 \item{Text}{Self-report item text, English}
 \item{TextIRF}{Informant-report item text, English, without a subject
-(each item reads after the name of the person rated)}
+(Table S3 prints each with a leading ellipsis)}
 \item{TextDE}{Self-report item text, German}
 \item{TextIRFDE}{Informant-report item text, German, without a subject}
 }
@@ -38,15 +38,18 @@ The 100 items of the PID-5 Forensic Faceted Brief Form (PID-5-FFBF), an
 adaptation of the PID-5 faceted short form for people in prison, with self-
 and informant-report versions in English and German. Most items are
 rewritten for the prison setting, so they have their own table rather than
-columns of \link{pid_items}. The form was validated in German; the English text
-is the authors' translation. Scored by \code{score_pid5(version = "FFBF")}.
+columns of \link{pid_items}. The form was validated in German. Its English text
+is the authors' English version from Table S3; items they did not adapt
+keep the APA PID-5 wording. Scored by \code{score_pid5(version = "FFBF")}.
 }
 \details{
 The texts are those of Table S3 of the form's supplement, without its
-source notes, its reverse marks, a leading ellipsis, or the final period,
-and with straight quotes and apostrophes. Hyphens that split a German word
-across a syllable are removed. The printed wording is otherwise kept,
-typos included.
+source notes, its reverse marks, the stray markers E14, E18 and E77, a
+leading ellipsis, or the final period, and with straight quotes and
+apostrophes (including an acute accent used as an apostrophe in item 50).
+Hyphens inside German words are removed, and English words split at a
+hyphen across a line are joined with the hyphen kept. The printed wording is otherwise
+kept, typos included.
 }
 \examples{
 pid_ffbf_items

@@ -152,10 +152,12 @@
 #'   `version = "FFBF"` scores the PID-5 Forensic Faceted Brief Form
 #'   (PID-5-FFBF; Niemeyer et al., 2022), an adaptation of the 100-item faceted
 #'   short form for people in prison, with a self-report and an informant
-#'   version. The form was validated in German; the English text in
-#'   [pid_ffbf_items] is the authors' translation. Its items are rewritten and
-#'   numbered by the authors, so they are not the SF's: matched by number, 98
-#'   of the 100 SF items fall in a different facet. Facet k, in alphabetical
+#'   version. The form was validated in German. The English text in
+#'   [pid_ffbf_items] is the authors' English version; items they did not
+#'   adapt keep the APA PID-5 wording. Most items are rewritten (18
+#'   self-report and 20 informant items are not), and the authors numbered the
+#'   form afresh, so its items are not the SF's: matched by number, 98 of the
+#'   100 SF items fall in a different facet. Facet k, in alphabetical
 #'   order, holds items k, k + 25, k + 50 and k + 75. Items 12 and 26 are
 #'   reverse-scored.
 #'
@@ -187,8 +189,8 @@
 #'
 #'   **Informant reports.** Informant data are scored with the same version.
 #'   The paper averaged the responses of two informants item by item before
-#'   scoring, and used the one informant's response where the other was
-#'   missing; do that step first, for example with
+#'   scoring (p. 33), and the authors' code uses one informant's response
+#'   where the other is missing; do that step first, for example with
 #'   `rowMeans(cbind(x1, x2), na.rm = TRUE)` for each item. Averaged responses
 #'   can be halves, and they score like any other values. Under
 #'   `missing = "apa"` the proration step rounds them too: a facet with one

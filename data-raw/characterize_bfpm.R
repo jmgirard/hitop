@@ -6,7 +6,8 @@
 # forms, and adding `version = "IRF"` must not move any output of those three
 # or of the BFPM. Adding `version = "FFBF"` must not move any output of the
 # five. No BFPM or IRF dataset ships, so its input is built from `sim_pid5`
-# columns at the BF+M or IRF item numbers. This script captures every call of the milestone's AC3 matrix from
+# columns at the BF+M or IRF item numbers. This script captures every call of the characterization matrix (M157 AC3,
+# extended by M159 and by M162 AC4) from
 # whichever checkout is passed as the first argument, and writes them to the RDS
 # named by the second. Run it once against the commit the milestone branch was
 # cut from and once against the branch, then compare the two files with

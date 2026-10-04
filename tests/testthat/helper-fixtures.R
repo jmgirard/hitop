@@ -514,8 +514,9 @@ ffbf_facets <- list(
   "Unusual Beliefs & Experiences" = c(24, 49, 74, 99),
   "Withdrawal" = c(25, 50, 75, 100)
 )
-# The five APA domains (p. 33, the APA Domain Table's primary facets), then the
-# code's Disinhibited Aggression and Insecurity.
+# The five APA domains (the mean of the three primary facets, p. 33; the facets
+# are those of `pid_domains`), then the code's Disinhibited Aggression and
+# Insecurity.
 ffbf_domains <- list(
   "Negative affectivity" = c("Emotional Lability", "Anxiousness", "Separation Insecurity"),
   "Detachment" = c("Withdrawal", "Anhedonia", "Intimacy Avoidance"),
