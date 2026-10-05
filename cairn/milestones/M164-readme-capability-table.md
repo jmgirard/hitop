@@ -54,7 +54,7 @@ Replace the README's "Development Progress" checklist with a table of what the p
 
 - [x] T1: Write `tests/testthat/test-readme-capabilities.R` first. It finds README.Rmd from the test directory. If the file is absent, the test skips. It parses the table under `## What the package covers` and checks every cell against the column rules in Scope. The row-to-version map is written in the test. Make sure that it fails on the current README because no table exists, not because of an error.
 - [x] T2: Edit README.Rmd. Delete the "Development Progress" section. Add the new section, the table and the help-page sentence, and derive each cell from the package under `devtools::load_all()`. Tidy Key Features. Run `Rscript -e 'devtools::build_readme()'`, then make sure that the T1 test passes.
-- [ ] T3: Prove that the test can fail. In a scratch copy, plant one wrong cell in each column in each direction. Make sure that the test goes red and names that cell, then restore. Add the table to the keep-in-step line of CLAUDE.md. Run the AC1, AC4 and AC5 checks, the AC6 rebuild with its diff and `build_home()`, and the full `devtools::test()`.
+- [x] T3: Prove that the test can fail. In a scratch copy, plant one wrong cell in each column in each direction. Make sure that the test goes red and names that cell, then restore. Add the table to the keep-in-step line of CLAUDE.md. Run the AC1, AC4 and AC5 checks, the AC6 rebuild with its diff and `build_home()`, and the full `devtools::test()`.
 
 ## Work log
 
@@ -71,6 +71,11 @@ Replace the README's "Development Progress" checklist with a table of what the p
 - 2026-10-04: implement started on branch m164-readme-capability-table. The five untracked `devel/hitopdat_*` files are unrelated and stay unstaged.
 - 2026-10-04: T1 done. The new test fails all 5 cases on the old README with "no table under `## What the package covers`", not an error. A mark reads "Yes", and a Tutorial cell links the site's article URL. A one-row call works for every scoring and reliability function (checked under load_all).
 - 2026-10-04: T2 done. Cells were derived with the test's own helpers under load_all, and the test passes 58 checks. Key Features bullets are plain, with no bold lead-ins. The instrument full names and the child age range moved from Key Features to a sentence at the top of the new section. Forms lists formats in the order Word, Qualtrics, REDCap, JSON, and the test compares them as a set.
+- 2026-10-04: T3 planted defects: 14 plants (Items up and down, a denied and a missed mark in Scoring and Reliability, a denied, missed and wrong Tutorial link, a denied and missed Forms format, a format on a blank cell, a dropped and a renamed row). Each turned the test red and named the planted cell. The README was restored, and the test passed 58 checks again. Script kept in the session scratchpad only.
+- 2026-10-04: T3 checks: the AC1 grep for checklist text prints nothing. AC4 tab count 0 and "Comprehensive" count 0. AC5 found 0 hits over 7 + 21 lines, and every pattern hit its positive control. AC6: build_readme then `git diff --exit-code HEAD` exit 0, and build_home exit 0. Full devtools::test(): FAIL 0, SKIP 15, PASS 28259. CLAUDE.md keep-in-step line now names the table.
+- 2026-10-04: AC1 as planned fails: `grep -nE '^#{1,6} ' README.Rmd` also prints line 37, `# install.packages("pak")`, an R comment inside the Installation code block that predates M164. The deliverable is unchanged, so the repair is to the wording.
+- 2026-10-04: re-audit: AC1 (full) — met as written. "Four headings" also covers underlined and HTML headings that the awk cannot see. Wording narrowed to "four `#` headings".
+- 2026-10-04: re-audit: AC1 (full) — met as written. "Outside fenced code blocks" also covers `~~~`, nested and indented fences that the awk does not see. The reader suggested making the awk command the definition. This is the second re-audit line on AC1, so the wording choice goes to the user.
 
 ## Decisions
 
