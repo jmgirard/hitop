@@ -1,13 +1,13 @@
 # M164: README capability table
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — README.Rmd renders the GitHub front page and the pkgdown home page
-- **Branch/PR:** —
+- **Branch/PR:** m164-readme-capability-table
 
 ## Goal
 
@@ -32,13 +32,13 @@ Replace the README's "Development Progress" checklist with a table of what the p
 
 ## Acceptance criteria
 
-- [ ] AC1: The checklist is gone. `grep -nE '^#{1,6} ' README.Rmd` prints four headings in this order: one whose text begins `hitop`, then `Key Features`, `Installation` and `What the package covers`. `grep -nE '[-*+] \[[ xX]\]|Phase [0-9]|waiting for|\bM[0-9]{2,}\b' README.Rmd README.md` prints nothing.
-- [ ] AC2: The `## What the package covers` section holds one Markdown table with the columns Instrument, Items, Scoring, Reliability, Tutorial and Forms. The table has one row for each of these instruments: HiTOP-SR, HiTOP-BR, HiTOP-HSUM, PID-5, PID-5-SF, PID-5-BF, PID5BF+M, PID-5-IRF, PID-5 Child, PID-5-BF Child and PID-5-FFBF. A sentence below the table points to `?validity_pid5` and `?norm_pid5`. README.md carries the same table and sentence.
-- [ ] AC3: Each cell of that table follows its column rule in Scope, in both directions. A mark or entry that the rule denies fails, and a blank that the rule fills fails. `tests/testthat/test-readme-capabilities.R` shows this under `devtools::test()`. If README.Rmd is absent, as under R CMD check, the test skips.
-- [ ] AC4: Key Features is tidied. `grep -c "$(printf '\t')" README.Rmd` prints 0. The list keeps three bullets: scoring and data tools, downloads, and metadata. No bullet names an instrument, and the scoring bullet points to the table. "Comprehensive" does not occur in README.Rmd.
-- [ ] AC5: Two line ranges of README.Rmd match none of the D-083 (b) patterns. The ranges are `### Key Features` to `## Installation`, and `## What the package covers` to the end of the file. The check uses R `grepl(pattern, line, ignore.case = TRUE, perl = TRUE)` for each regular expression, and `fixed = TRUE` for `?c=` and `?z=`.
-- [ ] AC6: README.md is the output of `devtools::build_readme()` on README.Rmd. After a fresh run on a machine with every Imports package installed, `git diff --exit-code HEAD -- README.Rmd README.md` exits 0. `Rscript -e 'pkgdown::build_home(preview = FALSE)'` exits 0.
-- [ ] AC7: The keep-in-step line of CLAUDE.md names the README capability table beside `tests/`, NEWS.md and the reference index.
+- [x] AC1: The checklist is gone. `awk '/^```/{f=!f; next} !f && /^#{1,6} /' README.Rmd`, which skips ```-delimited code chunks, prints exactly four lines, in this order: one whose text begins `# hitop`, then `### Key Features`, `## Installation` and `## What the package covers`. `grep -nE '[-*+] \[[ xX]\]|Phase [0-9]|waiting for|\bM[0-9]{2,}\b' README.Rmd README.md` prints nothing.
+- [x] AC2: The `## What the package covers` section holds one Markdown table with the columns Instrument, Items, Scoring, Reliability, Tutorial and Forms. The table has one row for each of these instruments: HiTOP-SR, HiTOP-BR, HiTOP-HSUM, PID-5, PID-5-SF, PID-5-BF, PID5BF+M, PID-5-IRF, PID-5 Child, PID-5-BF Child and PID-5-FFBF. A sentence below the table points to `?validity_pid5` and `?norm_pid5`. README.md carries the same table and sentence.
+- [x] AC3: Each cell of that table follows its column rule in Scope, in both directions. A mark or entry that the rule denies fails, and a blank that the rule fills fails. `tests/testthat/test-readme-capabilities.R` shows this under `devtools::test()`. If README.Rmd is absent, as under R CMD check, the test skips.
+- [x] AC4: Key Features is tidied. `grep -c "$(printf '\t')" README.Rmd` prints 0. The list keeps three bullets: scoring and data tools, downloads, and metadata. No bullet names an instrument, and the scoring bullet points to the table. "Comprehensive" does not occur in README.Rmd.
+- [x] AC5: Two line ranges of README.Rmd match none of the D-083 (b) patterns. The ranges are `### Key Features` to `## Installation`, and `## What the package covers` to the end of the file. The check uses R `grepl(pattern, line, ignore.case = TRUE, perl = TRUE)` for each regular expression, and `fixed = TRUE` for `?c=` and `?z=`.
+- [x] AC6: README.md is the output of `devtools::build_readme()` on README.Rmd. After a fresh run on a machine with every Imports package installed, `git diff --exit-code HEAD -- README.Rmd README.md` exits 0. `Rscript -e 'pkgdown::build_home(preview = FALSE)'` exits 0.
+- [x] AC7: The keep-in-step line of CLAUDE.md names the README capability table beside `tests/`, NEWS.md and the reference index.
 
 ## Coverage
 
@@ -52,9 +52,9 @@ Replace the README's "Development Progress" checklist with a table of what the p
 
 ## Tasks
 
-- [ ] T1: Write `tests/testthat/test-readme-capabilities.R` first. It finds README.Rmd from the test directory. If the file is absent, the test skips. It parses the table under `## What the package covers` and checks every cell against the column rules in Scope. The row-to-version map is written in the test. Make sure that it fails on the current README because no table exists, not because of an error.
-- [ ] T2: Edit README.Rmd. Delete the "Development Progress" section. Add the new section, the table and the help-page sentence, and derive each cell from the package under `devtools::load_all()`. Tidy Key Features. Run `Rscript -e 'devtools::build_readme()'`, then make sure that the T1 test passes.
-- [ ] T3: Prove that the test can fail. In a scratch copy, plant one wrong cell in each column in each direction. Make sure that the test goes red and names that cell, then restore. Add the table to the keep-in-step line of CLAUDE.md. Run the AC1, AC4 and AC5 checks, the AC6 rebuild with its diff and `build_home()`, and the full `devtools::test()`.
+- [x] T1: Write `tests/testthat/test-readme-capabilities.R` first. It finds README.Rmd from the test directory. If the file is absent, the test skips. It parses the table under `## What the package covers` and checks every cell against the column rules in Scope. The row-to-version map is written in the test. Make sure that it fails on the current README because no table exists, not because of an error.
+- [x] T2: Edit README.Rmd. Delete the "Development Progress" section. Add the new section, the table and the help-page sentence, and derive each cell from the package under `devtools::load_all()`. Tidy Key Features. Run `Rscript -e 'devtools::build_readme()'`, then make sure that the T1 test passes.
+- [x] T3: Prove that the test can fail. In a scratch copy, plant one wrong cell in each column in each direction. Make sure that the test goes red and names that cell, then restore. Add the table to the keep-in-step line of CLAUDE.md. Run the AC1, AC4 and AC5 checks, the AC6 rebuild with its diff and `build_home()`, and the full `devtools::test()`.
 
 ## Work log
 
@@ -68,7 +68,54 @@ Replace the README's "Development Progress" checklist with a table of what the p
 - 2026-10-04: plan chose to drop Validity and Norms columns over footnoted cells, because the child and forensic rows need judgments the rules cannot state. Falsified by a reader who asks which forms have validity scales or norms.
 - 2026-10-04: collision sweep found no README work in the ROADMAP, archive or DECISIONS beyond D-083, which governs the new prose (AC5). M163 does not touch the README. Open issue #87 (hosting data or links) does not overlap, and no PRs are open.
 - 2026-10-04: no NEWS entry, because the README is not package behavior.
-
+- 2026-10-04: implement started on branch m164-readme-capability-table. The five untracked `devel/hitopdat_*` files are unrelated and stay unstaged.
+- 2026-10-04: T1 done. The new test fails all 5 cases on the old README with "no table under `## What the package covers`", not an error. A mark reads "Yes", and a Tutorial cell links the site's article URL. A one-row call works for every scoring and reliability function (checked under load_all).
+- 2026-10-04: T2 done. Cells were derived with the test's own helpers under load_all, and the test passes 58 checks. Key Features bullets are plain, with no bold lead-ins. The instrument full names and the child age range moved from Key Features to a sentence at the top of the new section. Forms lists formats in the order Word, Qualtrics, REDCap, JSON, and the test compares them as a set.
+- 2026-10-04: T3 planted defects: 14 plants (Items up and down, a denied and a missed mark in Scoring and Reliability, a denied, missed and wrong Tutorial link, a denied and missed Forms format, a format on a blank cell, a dropped and a renamed row). Each turned the test red and named the planted cell. The README was restored, and the test passed 58 checks again. Script kept in the session scratchpad only.
+- 2026-10-04: T3 checks: the AC1 grep for checklist text prints nothing. AC4 tab count 0 and "Comprehensive" count 0. AC5 found 0 hits over 7 + 21 lines, and every pattern hit its positive control. AC6: build_readme then `git diff --exit-code HEAD` exit 0, and build_home exit 0. Full devtools::test(): FAIL 0, SKIP 15, PASS 28259. CLAUDE.md keep-in-step line now names the table.
+- 2026-10-04: AC1 as planned fails: `grep -nE '^#{1,6} ' README.Rmd` also prints line 37, `# install.packages("pak")`, an R comment inside the Installation code block that predates M164. The deliverable is unchanged, so the repair is to the wording.
+- 2026-10-04: re-audit: AC1 (full) — met as written. "Four headings" also covers underlined and HTML headings that the awk cannot see. Wording narrowed to "four `#` headings".
+- 2026-10-04: re-audit: AC1 (full) — met as written. "Outside fenced code blocks" also covers `~~~`, nested and indented fences that the awk does not see. The reader suggested making the awk command the definition. This is the second re-audit line on AC1, so the wording choice goes to the user.
+- 2026-10-04: substantive amendment: AC1's heading check now uses the awk command that skips code chunks, and the command defines the four headings (the user chose this wording at a stop over the plain-words version). The README is unchanged.
+- 2026-10-04: claim audit: 24 claims read, 2 corrected — README.Rmd, README.md, CLAUDE.md, tests/testthat/test-readme-capabilities.R
+- 2026-10-04: the 2 corrections: Key Features bullet 1 no longer claims data-cleaning tools for every marked instrument, and the Tutorial sentence says "shows the scoring call" in place of "covers". The same reader re-read both, and both hold. The audit also found that DESCRIPTION and `?hitophsum_items` call HSUM a "Measure", outside this diff. That finding went to the "User-facing names" candidate row. Two other ROADMAP rows were trimmed to keep the file under 24,000 bytes.
+- 2026-10-04: after the corrections, README.md was rebuilt, the capability test passes 58 checks, and the tab and retired-term checks stay clean. Status set to review.
+- 2026-10-04: step-7 approval: m164-readme-capability-table approved for merge
 ## Decisions
 
 ## Review
+
+Evidence gathered 2026-10-04 on branch head a8cd60e0, which contains origin/main 48889a03.
+
+- AC1: the awk command printed exactly 4 lines, in order: `# hitop <a href=…`, `### Key Features`, `## Installation`, `## What the package covers`. The checklist grep over README.Rmd and README.md printed nothing (exit 1).
+- AC2: the section holds one table of 13 lines (a header, a separator and 11 rows). The header in both files reads `| Instrument | Items | Scoring | Reliability | Tutorial | Forms |`. README.Rmd:61 and README.md:71-72 hold the `?validity_pid5` and `?norm_pid5` sentence. The README.md table equals the README.Rmd table line for line, apart from pandoc's separator dashes (diff exit 0). The capability test's first case confirms the 11 row names as a set, with no duplicates.
+- AC3: `devtools::test(filter = "readme-capabilities")` gave FAIL 0, SKIP 0, PASS 58. A fresh run of the 14-plant script turned the test red for every plant. That covers both directions in Items, Scoring, Reliability, Tutorial and Forms, plus a dropped and a renamed row, and each failure named the planted cell. The README was restored, and the test passed 58 checks again. The skip under R CMD check is shown by the check run in the gate below.
+- AC4: tab count 0 and "Comprehensive" count 0 in README.Rmd. Key Features has 3 bullets: scoring and reliability for the marked instruments plus rename and label helpers, then downloads, then data tables. No bullet names an instrument, and bullet 1 points to "the table below".
+- AC5: R `grepl(perl = TRUE, ignore.case = TRUE)` over 7 Key Features lines and 21 new-section lines found 0 hits for all 10 regular expressions, and `fixed = TRUE` found 0 hits for `?c=` and `?z=`. Every pattern hit its positive control, and the lookbehind stayed silent on "study link builder".
+- AC6: `devtools::build_readme()` exit 0, then `git diff --exit-code HEAD -- README.Rmd README.md` exit 0. `pkgdown::build_home(preview = FALSE)` exit 0. Machine: local macOS with every Imports package installed.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the test header says a new instrument, function or version fails the file, but the row lists are hardcoded — fix now, fixed bc7f2bbd (a coverage case checks every `hitop_artifacts` instrument, every exported `score_*()`/`reliability_*()` stem and every `score_pid5()` version against the rows)
+- diff-bug #2: a format with no README spelling maps to NA and drops out — fix now, fixed bc7f2bbd (it keeps its own name, so the Forms check fails)
+- diff-bug #3: the PID-5 Tutorial match takes any `version = "X"` text, prose included — reject, planned change (the Scope column rule names this match)
+- diff-bug #4: the HiTOP Tutorial match `score_hitopsr(` also matches prose — reject, planned change (Scope column rule)
+- diff-bug #5: HSUM's Tutorial cell cannot require a link — reject, planned change (Scope column rule gives HSUM no scoring call)
+- diff-bug #6: `readme_function` finds internal objects, not exports — fix now, fixed bc7f2bbd (it reads `getNamespaceExports()`)
+- diff-bug #7: `suppressWarnings` can hide a fault — fix now, fixed bc7f2bbd (removed, and each call now sits in `expect_no_warning()`, and no call warns today)
+- diff-bug #8: a missing or repeated row errors with "subscript out of bounds" — fix now, fixed bc7f2bbd (NA cells, so each check fails with the instrument in its label)
+- diff-bug #9: parser edge cases (`\|` in a cell, a trailing `||`, no separator, an empty body, a heading with a trailing space) give unclear messages — reject, style (each one fails closed, and only the message wording differs)
+- diff-bug #10: Tutorial links are compared by file name only — fix now, fixed bc7f2bbd (the full URL must equal the site's article URL)
+- diff-bug #11: the skip depends on the R CMD check layout — reject, false (README.Rmd is build-ignored, so the check copy lacks it, as D-074's precedent describes)
+- diff-bug #12: CLAUDE.md:30 ties the table to exported functions only — fix now, fixed bc7f2bbd (the line now names the functions, the scoring tutorials and `hitop_artifacts`)
+- blame-history #1: unrelated ROADMAP row rewording — reject, false (the rows were trimmed for the byte budget, and the work log records it)
+- blame-history #2: the HSUM row no longer says why its cells are blank — reject, planned change (the plan removed status notes, and the ROADMAP row tracks HSUM scoring)
+- blame-history #3: the forward-looking Phase 3 items left the README — reject, planned change (Scope Out names each item's ROADMAP home)
+- blame-history #4: "Word forms" and "JSON files" against D-083(a)'s "zip file" and "module file" — reject, false (D-083(a) names the download container and the `write_module()` file, and the README names the forms and the instrument JSON exports)
+- blame-history #5: HSUM "Module" against DESCRIPTION's "Measure" — follow-up, already absorbed into the "User-facing names" candidate row at the claim audit
+- prior-review #1: the test never runs in CI — reject, planned change (AC3 states the skip, as `test-download-pages.R` and `test-artifacts.R` do)
+- prior-review #2: the Tutorial match is looser than "scoring call" — reject, planned change (same as diff-bug #3)
+- prior-review #3: Tutorial links compared by stem only — fix now, fixed bc7f2bbd (same fix as diff-bug #10)
+- prior-review #4: the plant script is not committed — reject, planned change (T3 names a scratch copy)
+- Fix-now proof: the capability test passes 81 checks. All 14 earlier plants still fail. A link on `/reference/` in place of `/articles/` fails 1 check, and an unknown `pdf` format appears in `readme_forms()` output. A new instrument name is reported as uncovered.
+- AC3 (after the fix-now commit): the capability test passes 81 checks under `devtools::test()`. A copy of the test run from a directory with no README.Rmd skipped all 6 cases with 0 failures. `R CMD build` gives a tarball with 0 README.Rmd entries, so the test skips under R CMD check.
+- Gate: `cairn_validate.py` exit 0. `devtools::document()` left NAMESPACE and man/ unchanged. `pkgdown::check_pkgdown()` found no problems. README.md is in step with README.Rmd (AC6). `devtools::check()` gave 0 errors, 0 warnings and 0 notes, with tests OK, on the pre-fix head e3ca3b5c. The fix-now commit touches only the test file and CLAUDE.md, and the full `devtools::test()` after it gave FAIL 0, SKIP 15, PASS 28282. No NEWS entry, because the README is not package behavior (plan decision). No new top-level files.
+- AC7: CLAUDE.md:30 names "the README capability table ("What the package covers", checked by `test-readme-capabilities.R`)" beside `tests/`, NEWS.md and the reference index.

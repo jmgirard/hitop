@@ -27,7 +27,7 @@ Scores, validity-screens, and distributes HiTOP Society instruments: PID-5 (FULL
 - Never hand-edit `NAMESPACE`, `man/`, `data/*.rda`, or `R/sysdata.rda` — they are generated (roxygen2, data-raw scripts).
 - Never change keying content (`pid_items` and the other `*_items`/`*_scales` tables) without maintainer sign-off; provenance in `cairn/SOURCES.md`.
 - New instruments follow the pattern: items (+ scales) table via `data-raw/` → `score_*` (+ `validity_*`) + `generate_{docx,qualtrics,redcap}_*` family (see cairn/DESIGN.md).
-- Keep `tests/`, NEWS.md, and the `_pkgdown.yml` reference index in step with exported functions.
+- Keep `tests/`, NEWS.md, and the `_pkgdown.yml` reference index in step with exported functions, and the README capability table ("What the package covers", checked by `test-readme-capabilities.R`) in step with the functions, the scoring tutorials and `hitop_artifacts`.
 
 ## Branching & PRs
 
