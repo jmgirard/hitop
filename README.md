@@ -22,8 +22,8 @@ clinical workflows and individual practitioner needs.
 
 ### Key Features
 
-- Scoring functions, reliability estimates and data-cleaning tools for
-  the instruments marked in the table below.
+- Scoring functions and reliability estimates for the instruments marked
+  in the table below, and helpers that rename and label item columns.
 - Word forms, and import files for Qualtrics, REDCap and the online
   form, ready to download from the [package
   website](https://jmgirard.github.io/hitop/).
@@ -49,7 +49,8 @@ to 17.
 
 Items is the number of items. Scoring and Reliability mark the
 instruments that the `score_*()` and `reliability_*()` functions take.
-Tutorial links each scoring tutorial that covers the instrument. Forms
+Tutorial links each scoring tutorial that shows the scoring call for the
+instrument. The child forms use the call of their adult form. Forms
 lists the download formats: Word forms, Qualtrics and REDCap import
 files, and JSON files for the online form.
 

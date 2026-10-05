@@ -1,6 +1,6 @@
 # M164: README capability table
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -32,7 +32,7 @@ Replace the README's "Development Progress" checklist with a table of what the p
 
 ## Acceptance criteria
 
-- [ ] AC1: The checklist is gone. `grep -nE '^#{1,6} ' README.Rmd` prints four headings in this order: one whose text begins `hitop`, then `Key Features`, `Installation` and `What the package covers`. `grep -nE '[-*+] \[[ xX]\]|Phase [0-9]|waiting for|\bM[0-9]{2,}\b' README.Rmd README.md` prints nothing.
+- [ ] AC1: The checklist is gone. `awk '/^```/{f=!f; next} !f && /^#{1,6} /' README.Rmd`, which skips ```-delimited code chunks, prints exactly four lines, in this order: one whose text begins `# hitop`, then `### Key Features`, `## Installation` and `## What the package covers`. `grep -nE '[-*+] \[[ xX]\]|Phase [0-9]|waiting for|\bM[0-9]{2,}\b' README.Rmd README.md` prints nothing.
 - [ ] AC2: The `## What the package covers` section holds one Markdown table with the columns Instrument, Items, Scoring, Reliability, Tutorial and Forms. The table has one row for each of these instruments: HiTOP-SR, HiTOP-BR, HiTOP-HSUM, PID-5, PID-5-SF, PID-5-BF, PID5BF+M, PID-5-IRF, PID-5 Child, PID-5-BF Child and PID-5-FFBF. A sentence below the table points to `?validity_pid5` and `?norm_pid5`. README.md carries the same table and sentence.
 - [ ] AC3: Each cell of that table follows its column rule in Scope, in both directions. A mark or entry that the rule denies fails, and a blank that the rule fills fails. `tests/testthat/test-readme-capabilities.R` shows this under `devtools::test()`. If README.Rmd is absent, as under R CMD check, the test skips.
 - [ ] AC4: Key Features is tidied. `grep -c "$(printf '\t')" README.Rmd` prints 0. The list keeps three bullets: scoring and data tools, downloads, and metadata. No bullet names an instrument, and the scoring bullet points to the table. "Comprehensive" does not occur in README.Rmd.
@@ -76,7 +76,10 @@ Replace the README's "Development Progress" checklist with a table of what the p
 - 2026-10-04: AC1 as planned fails: `grep -nE '^#{1,6} ' README.Rmd` also prints line 37, `# install.packages("pak")`, an R comment inside the Installation code block that predates M164. The deliverable is unchanged, so the repair is to the wording.
 - 2026-10-04: re-audit: AC1 (full) — met as written. "Four headings" also covers underlined and HTML headings that the awk cannot see. Wording narrowed to "four `#` headings".
 - 2026-10-04: re-audit: AC1 (full) — met as written. "Outside fenced code blocks" also covers `~~~`, nested and indented fences that the awk does not see. The reader suggested making the awk command the definition. This is the second re-audit line on AC1, so the wording choice goes to the user.
-
+- 2026-10-04: substantive amendment: AC1's heading check now uses the awk command that skips code chunks, and the command defines the four headings (the user chose this wording at a stop over the plain-words version). The README is unchanged.
+- 2026-10-04: claim audit: 24 claims read, 2 corrected — README.Rmd, README.md, CLAUDE.md, tests/testthat/test-readme-capabilities.R
+- 2026-10-04: the 2 corrections: Key Features bullet 1 no longer claims data-cleaning tools for every marked instrument, and the Tutorial sentence says "shows the scoring call" in place of "covers". The same reader re-read both, and both hold. The audit also found that DESCRIPTION and `?hitophsum_items` call HSUM a "Measure", outside this diff. That finding went to the "User-facing names" candidate row. Two other ROADMAP rows were trimmed to keep the file under 24,000 bytes.
+- 2026-10-04: after the corrections, README.md was rebuilt, the capability test passes 58 checks, and the tab and retired-term checks stay clean. Status set to review.
 ## Decisions
 
 ## Review
