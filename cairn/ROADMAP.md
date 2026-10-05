@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-10-04 (M162 done): archived, M159 row retired, LESSONS M162 added. validate green._
+_Last hygiene check: 2026-10-04 (M164 done): archived, M160 row retired, no lesson added. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
@@ -9,11 +9,10 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 |---|---|---|---|---|---|
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
-| M160 | PID-5 informant forms | done | M159 | normal | milestones/archive/M160-pid5irf-forms.md |
 | M161 | PID-5 child forms | done | M158 | normal | milestones/archive/M161-pid5-child-forms.md |
 | M162 | PID-5 forensic form (FFBF) keying and scoring | done | — | normal | milestones/archive/M162-pid5ffbf-scoring.md |
 | M163 | PID-5 forensic form (FFBF) English forms | planned | M162 | normal | milestones/M163-pid5ffbf-forms.md |
-| M164 | README capability table | review | — | normal | milestones/M164-readme-capability-table.md |
+| M164 | README capability table | done | — | normal | milestones/archive/M164-readme-capability-table.md |
 
 ## Candidates
 
