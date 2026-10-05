@@ -80,6 +80,7 @@ Replace the README's "Development Progress" checklist with a table of what the p
 - 2026-10-04: claim audit: 24 claims read, 2 corrected — README.Rmd, README.md, CLAUDE.md, tests/testthat/test-readme-capabilities.R
 - 2026-10-04: the 2 corrections: Key Features bullet 1 no longer claims data-cleaning tools for every marked instrument, and the Tutorial sentence says "shows the scoring call" in place of "covers". The same reader re-read both, and both hold. The audit also found that DESCRIPTION and `?hitophsum_items` call HSUM a "Measure", outside this diff. That finding went to the "User-facing names" candidate row. Two other ROADMAP rows were trimmed to keep the file under 24,000 bytes.
 - 2026-10-04: after the corrections, README.md was rebuilt, the capability test passes 58 checks, and the tab and retired-term checks stay clean. Status set to review.
+- 2026-10-04: step-7 approval: m164-readme-capability-table approved for merge
 ## Decisions
 
 ## Review
