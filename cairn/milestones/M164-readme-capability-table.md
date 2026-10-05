@@ -93,18 +93,18 @@ Evidence gathered 2026-10-04 on branch head a8cd60e0, which contains origin/main
 - AC5: R `grepl(perl = TRUE, ignore.case = TRUE)` over 7 Key Features lines and 21 new-section lines found 0 hits for all 10 regular expressions, and `fixed = TRUE` found 0 hits for `?c=` and `?z=`. Every pattern hit its positive control, and the lookbehind stayed silent on "study link builder".
 - AC6: `devtools::build_readme()` exit 0, then `git diff --exit-code HEAD -- README.Rmd README.md` exit 0. `pkgdown::build_home(preview = FALSE)` exit 0. Machine: local macOS with every Imports package installed.
 - spawned: diff-bug, blame-history, prior-review
-- diff-bug #1: the test header says a new instrument, function or version fails the file, but the row lists are hardcoded — fix now (a coverage case checks every `hitop_artifacts` instrument, every exported `score_*()`/`reliability_*()` stem and every `score_pid5()` version against the rows)
-- diff-bug #2: a format with no README spelling maps to NA and drops out — fix now (it keeps its own name, so the Forms check fails)
+- diff-bug #1: the test header says a new instrument, function or version fails the file, but the row lists are hardcoded — fix now, fixed bc7f2bbd (a coverage case checks every `hitop_artifacts` instrument, every exported `score_*()`/`reliability_*()` stem and every `score_pid5()` version against the rows)
+- diff-bug #2: a format with no README spelling maps to NA and drops out — fix now, fixed bc7f2bbd (it keeps its own name, so the Forms check fails)
 - diff-bug #3: the PID-5 Tutorial match takes any `version = "X"` text, prose included — reject, planned change (the Scope column rule names this match)
 - diff-bug #4: the HiTOP Tutorial match `score_hitopsr(` also matches prose — reject, planned change (Scope column rule)
 - diff-bug #5: HSUM's Tutorial cell cannot require a link — reject, planned change (Scope column rule gives HSUM no scoring call)
-- diff-bug #6: `readme_function` finds internal objects, not exports — fix now (it reads `getNamespaceExports()`)
-- diff-bug #7: `suppressWarnings` can hide a fault — fix now (removed, and each call now sits in `expect_no_warning()`, and no call warns today)
-- diff-bug #8: a missing or repeated row errors with "subscript out of bounds" — fix now (NA cells, so each check fails with the instrument in its label)
+- diff-bug #6: `readme_function` finds internal objects, not exports — fix now, fixed bc7f2bbd (it reads `getNamespaceExports()`)
+- diff-bug #7: `suppressWarnings` can hide a fault — fix now, fixed bc7f2bbd (removed, and each call now sits in `expect_no_warning()`, and no call warns today)
+- diff-bug #8: a missing or repeated row errors with "subscript out of bounds" — fix now, fixed bc7f2bbd (NA cells, so each check fails with the instrument in its label)
 - diff-bug #9: parser edge cases (`\|` in a cell, a trailing `||`, no separator, an empty body, a heading with a trailing space) give unclear messages — reject, style (each one fails closed, and only the message wording differs)
-- diff-bug #10: Tutorial links are compared by file name only — fix now (the full URL must equal the site's article URL)
+- diff-bug #10: Tutorial links are compared by file name only — fix now, fixed bc7f2bbd (the full URL must equal the site's article URL)
 - diff-bug #11: the skip depends on the R CMD check layout — reject, false (README.Rmd is build-ignored, so the check copy lacks it, as D-074's precedent describes)
-- diff-bug #12: CLAUDE.md:30 ties the table to exported functions only — fix now (the line now names the functions, the scoring tutorials and `hitop_artifacts`)
+- diff-bug #12: CLAUDE.md:30 ties the table to exported functions only — fix now, fixed bc7f2bbd (the line now names the functions, the scoring tutorials and `hitop_artifacts`)
 - blame-history #1: unrelated ROADMAP row rewording — reject, false (the rows were trimmed for the byte budget, and the work log records it)
 - blame-history #2: the HSUM row no longer says why its cells are blank — reject, planned change (the plan removed status notes, and the ROADMAP row tracks HSUM scoring)
 - blame-history #3: the forward-looking Phase 3 items left the README — reject, planned change (Scope Out names each item's ROADMAP home)
@@ -112,7 +112,7 @@ Evidence gathered 2026-10-04 on branch head a8cd60e0, which contains origin/main
 - blame-history #5: HSUM "Module" against DESCRIPTION's "Measure" — follow-up, already absorbed into the "User-facing names" candidate row at the claim audit
 - prior-review #1: the test never runs in CI — reject, planned change (AC3 states the skip, as `test-download-pages.R` and `test-artifacts.R` do)
 - prior-review #2: the Tutorial match is looser than "scoring call" — reject, planned change (same as diff-bug #3)
-- prior-review #3: Tutorial links compared by stem only — fix now (same fix as diff-bug #10)
+- prior-review #3: Tutorial links compared by stem only — fix now, fixed bc7f2bbd (same fix as diff-bug #10)
 - prior-review #4: the plant script is not committed — reject, planned change (T3 names a scratch copy)
 - Fix-now proof: the capability test passes 81 checks. All 14 earlier plants still fail. A link on `/reference/` in place of `/articles/` fails 1 check, and an unknown `pdf` format appears in `readme_forms()` output. A new instrument name is reported as uncovered.
 - AC3 (after the fix-now commit): the capability test passes 81 checks under `devtools::test()`. A copy of the test run from a directory with no README.Rmd skipped all 6 cases with 0 failures. `R CMD build` gives a tarball with 0 README.Rmd entries, so the test skips under R CMD check.
