@@ -47,8 +47,14 @@ readme_table <- function() {
   out
 }
 
+# The instrument's row. A missing or repeated row gives NA cells, so each check
+# fails with the instrument's name in its label rather than erroring.
 readme_row <- function(tab, instrument) {
-  tab[tab[, "Instrument"] == instrument, , drop = TRUE]
+  hit <- which(tab[, "Instrument"] == instrument)
+  if (length(hit) != 1L) {
+    return(stats::setNames(rep(NA_character_, ncol(tab)), colnames(tab)))
+  }
+  tab[hit, , drop = TRUE]
 }
 
 # Expected item count, from the instrument's keying table.
@@ -64,28 +70,31 @@ readme_items <- function(instrument) {
   if (version == "FFBF") nrow(pid_ffbf_items) else sum(!is.na(pid_items[[version]]))
 }
 
-# The scoring or reliability function for a row, or NULL when none exists.
-readme_function <- function(instrument, family) {
-  stem <- if (instrument %in% names(readme_hitop)) {
+readme_stem <- function(instrument) {
+  if (instrument %in% names(readme_hitop)) {
     paste0("hitop", readme_hitop[[instrument]])
   } else {
     "pid5"
   }
-  name <- paste0(family, "_", stem)
-  ns <- asNamespace("hitop")
-  if (exists(name, envir = ns, inherits = FALSE)) get(name, envir = ns) else NULL
+}
+
+# The exported scoring or reliability function for a row, or NULL when the
+# package exports none.
+readme_function <- function(instrument, family) {
+  name <- paste0(family, "_", readme_stem(instrument))
+  if (name %in% getNamespaceExports("hitop")) getExportedValue("hitop", name) else NULL
 }
 
 # Calls `fn` on one row of in-range responses with the row's version. An error
-# propagates and fails the test, as the column rule requires.
+# or a warning propagates and fails the test.
 readme_call <- function(fn, instrument) {
   n <- readme_items(instrument)
   if (instrument %in% names(readme_hitop)) {
     d <- as.data.frame(matrix(rep_len(1:4, n), nrow = 1))
-    suppressWarnings(fn(d, items = seq_len(n)))
+    expect_no_warning(fn(d, items = seq_len(n)))
   } else {
     d <- as.data.frame(matrix(rep_len(0:3, n), nrow = 1))
-    suppressWarnings(fn(d, items = seq_len(n), version = readme_versions[[instrument]]))
+    expect_no_warning(fn(d, items = seq_len(n), version = readme_versions[[instrument]]))
   }
 }
 
@@ -103,22 +112,32 @@ readme_tutorials <- function(instrument) {
   hits <- vapply(files, function(f) {
     any(grepl(needle, readLines(f, encoding = "UTF-8"), fixed = TRUE))
   }, logical(1))
-  sort(tools::file_path_sans_ext(basename(files[hits])))
+  stems <- sort(tools::file_path_sans_ext(basename(files[hits])))
+  if (length(stems) == 0L) {
+    return(character())
+  }
+  sprintf("https://jmgirard.github.io/hitop/articles/%s.html", stems)
 }
 
+# The link targets in a cell, as written.
 readme_links <- function(cell) {
   urls <- regmatches(cell, gregexpr("\\]\\(([^)]*)\\)", cell))[[1]]
-  sort(tools::file_path_sans_ext(basename(gsub("^\\]\\(|\\)$", "", urls))))
+  sort(gsub("^\\]\\(|\\)$", "", urls))
 }
 
-# Formats `hitop_artifacts` holds for the instrument, in README spelling.
+# Formats `hitop_artifacts` holds for the instrument, in README spelling. A
+# format with no README spelling keeps its own name, so the check fails until
+# the README names it.
 readme_forms <- function(instrument) {
   formats <- unique(hitop_artifacts$format[hitop_artifacts$instrument == instrument])
   labels <- c(
     docx_us = "Word", docx_a4 = "Word", qualtrics = "Qualtrics",
     redcap = "REDCap", json = "JSON"
   )
-  sort(unique(unname(labels[formats])))
+  spelled <- as.character(formats)
+  known <- spelled %in% names(labels)
+  spelled[known] <- labels[spelled[known]]
+  sort(unique(unname(spelled)))
 }
 
 readme_list <- function(cell) {
@@ -138,6 +157,28 @@ test_that("the README table has the planned columns and one row per instrument",
   expect_identical(colnames(tab), readme_columns)
   expect_setequal(tab[, "Instrument"], readme_rows)
   expect_identical(anyDuplicated(tab[, "Instrument"]), 0L)
+})
+
+test_that("the README rows cover every instrument, scoring function and version", {
+  skip_without_readme()
+  # Every instrument with downloads has a row.
+  expect_true(
+    all(unique(hitop_artifacts$instrument) %in% readme_rows),
+    label = "every hitop_artifacts instrument has a README row"
+  )
+  # Every exported scoring or reliability function belongs to a row.
+  exported <- grep("^(score|reliability)_", getNamespaceExports("hitop"), value = TRUE)
+  stems <- unique(sub("^(score|reliability)_", "", exported))
+  row_stems <- unique(vapply(readme_rows, readme_stem, character(1)))
+  expect_true(
+    all(stems %in% row_stems),
+    label = "every exported score_*() and reliability_*() has a README row"
+  )
+  # Every PID-5 version the scoring function takes has a row.
+  expect_true(
+    all(eval(formals(score_pid5)$version) %in% readme_versions),
+    label = "every score_pid5() version has a README row"
+  )
 })
 
 test_that("each Items cell is the instrument's item count", {
