@@ -1,13 +1,13 @@
 # M164: README capability table
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — README.Rmd renders the GitHub front page and the pkgdown home page
-- **Branch/PR:** —
+- **Branch/PR:** m164-readme-capability-table
 
 ## Goal
 
@@ -52,7 +52,7 @@ Replace the README's "Development Progress" checklist with a table of what the p
 
 ## Tasks
 
-- [ ] T1: Write `tests/testthat/test-readme-capabilities.R` first. It finds README.Rmd from the test directory. If the file is absent, the test skips. It parses the table under `## What the package covers` and checks every cell against the column rules in Scope. The row-to-version map is written in the test. Make sure that it fails on the current README because no table exists, not because of an error.
+- [x] T1: Write `tests/testthat/test-readme-capabilities.R` first. It finds README.Rmd from the test directory. If the file is absent, the test skips. It parses the table under `## What the package covers` and checks every cell against the column rules in Scope. The row-to-version map is written in the test. Make sure that it fails on the current README because no table exists, not because of an error.
 - [ ] T2: Edit README.Rmd. Delete the "Development Progress" section. Add the new section, the table and the help-page sentence, and derive each cell from the package under `devtools::load_all()`. Tidy Key Features. Run `Rscript -e 'devtools::build_readme()'`, then make sure that the T1 test passes.
 - [ ] T3: Prove that the test can fail. In a scratch copy, plant one wrong cell in each column in each direction. Make sure that the test goes red and names that cell, then restore. Add the table to the keep-in-step line of CLAUDE.md. Run the AC1, AC4 and AC5 checks, the AC6 rebuild with its diff and `build_home()`, and the full `devtools::test()`.
 
@@ -68,6 +68,8 @@ Replace the README's "Development Progress" checklist with a table of what the p
 - 2026-10-04: plan chose to drop Validity and Norms columns over footnoted cells, because the child and forensic rows need judgments the rules cannot state. Falsified by a reader who asks which forms have validity scales or norms.
 - 2026-10-04: collision sweep found no README work in the ROADMAP, archive or DECISIONS beyond D-083, which governs the new prose (AC5). M163 does not touch the README. Open issue #87 (hosting data or links) does not overlap, and no PRs are open.
 - 2026-10-04: no NEWS entry, because the README is not package behavior.
+- 2026-10-04: implement started on branch m164-readme-capability-table. The five untracked `devel/hitopdat_*` files are unrelated and stay unstaged.
+- 2026-10-04: T1 done. The new test fails all 5 cases on the old README with "no table under `## What the package covers`", not an error. A mark reads "Yes", and a Tutorial cell links the site's article URL. A one-row call works for every scoring and reliability function (checked under load_all).
 
 ## Decisions
 

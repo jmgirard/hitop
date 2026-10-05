@@ -13,7 +13,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M161 | PID-5 child forms | done | M158 | normal | milestones/archive/M161-pid5-child-forms.md |
 | M162 | PID-5 forensic form (FFBF) keying and scoring | done | — | normal | milestones/archive/M162-pid5ffbf-scoring.md |
 | M163 | PID-5 forensic form (FFBF) English forms | planned | M162 | normal | milestones/M163-pid5ffbf-forms.md |
-| M164 | README capability table | planned | — | normal | milestones/M164-readme-capability-table.md |
+| M164 | README capability table | in-progress | — | normal | milestones/M164-readme-capability-table.md |
 
 ## Candidates
 
