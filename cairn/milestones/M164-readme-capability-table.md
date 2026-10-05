@@ -32,13 +32,13 @@ Replace the README's "Development Progress" checklist with a table of what the p
 
 ## Acceptance criteria
 
-- [ ] AC1: The checklist is gone. `awk '/^```/{f=!f; next} !f && /^#{1,6} /' README.Rmd`, which skips ```-delimited code chunks, prints exactly four lines, in this order: one whose text begins `# hitop`, then `### Key Features`, `## Installation` and `## What the package covers`. `grep -nE '[-*+] \[[ xX]\]|Phase [0-9]|waiting for|\bM[0-9]{2,}\b' README.Rmd README.md` prints nothing.
-- [ ] AC2: The `## What the package covers` section holds one Markdown table with the columns Instrument, Items, Scoring, Reliability, Tutorial and Forms. The table has one row for each of these instruments: HiTOP-SR, HiTOP-BR, HiTOP-HSUM, PID-5, PID-5-SF, PID-5-BF, PID5BF+M, PID-5-IRF, PID-5 Child, PID-5-BF Child and PID-5-FFBF. A sentence below the table points to `?validity_pid5` and `?norm_pid5`. README.md carries the same table and sentence.
+- [x] AC1: The checklist is gone. `awk '/^```/{f=!f; next} !f && /^#{1,6} /' README.Rmd`, which skips ```-delimited code chunks, prints exactly four lines, in this order: one whose text begins `# hitop`, then `### Key Features`, `## Installation` and `## What the package covers`. `grep -nE '[-*+] \[[ xX]\]|Phase [0-9]|waiting for|\bM[0-9]{2,}\b' README.Rmd README.md` prints nothing.
+- [x] AC2: The `## What the package covers` section holds one Markdown table with the columns Instrument, Items, Scoring, Reliability, Tutorial and Forms. The table has one row for each of these instruments: HiTOP-SR, HiTOP-BR, HiTOP-HSUM, PID-5, PID-5-SF, PID-5-BF, PID5BF+M, PID-5-IRF, PID-5 Child, PID-5-BF Child and PID-5-FFBF. A sentence below the table points to `?validity_pid5` and `?norm_pid5`. README.md carries the same table and sentence.
 - [ ] AC3: Each cell of that table follows its column rule in Scope, in both directions. A mark or entry that the rule denies fails, and a blank that the rule fills fails. `tests/testthat/test-readme-capabilities.R` shows this under `devtools::test()`. If README.Rmd is absent, as under R CMD check, the test skips.
-- [ ] AC4: Key Features is tidied. `grep -c "$(printf '\t')" README.Rmd` prints 0. The list keeps three bullets: scoring and data tools, downloads, and metadata. No bullet names an instrument, and the scoring bullet points to the table. "Comprehensive" does not occur in README.Rmd.
-- [ ] AC5: Two line ranges of README.Rmd match none of the D-083 (b) patterns. The ranges are `### Key Features` to `## Installation`, and `## What the package covers` to the end of the file. The check uses R `grepl(pattern, line, ignore.case = TRUE, perl = TRUE)` for each regular expression, and `fixed = TRUE` for `?c=` and `?z=`.
-- [ ] AC6: README.md is the output of `devtools::build_readme()` on README.Rmd. After a fresh run on a machine with every Imports package installed, `git diff --exit-code HEAD -- README.Rmd README.md` exits 0. `Rscript -e 'pkgdown::build_home(preview = FALSE)'` exits 0.
-- [ ] AC7: The keep-in-step line of CLAUDE.md names the README capability table beside `tests/`, NEWS.md and the reference index.
+- [x] AC4: Key Features is tidied. `grep -c "$(printf '\t')" README.Rmd` prints 0. The list keeps three bullets: scoring and data tools, downloads, and metadata. No bullet names an instrument, and the scoring bullet points to the table. "Comprehensive" does not occur in README.Rmd.
+- [x] AC5: Two line ranges of README.Rmd match none of the D-083 (b) patterns. The ranges are `### Key Features` to `## Installation`, and `## What the package covers` to the end of the file. The check uses R `grepl(pattern, line, ignore.case = TRUE, perl = TRUE)` for each regular expression, and `fixed = TRUE` for `?c=` and `?z=`.
+- [x] AC6: README.md is the output of `devtools::build_readme()` on README.Rmd. After a fresh run on a machine with every Imports package installed, `git diff --exit-code HEAD -- README.Rmd README.md` exits 0. `Rscript -e 'pkgdown::build_home(preview = FALSE)'` exits 0.
+- [x] AC7: The keep-in-step line of CLAUDE.md names the README capability table beside `tests/`, NEWS.md and the reference index.
 
 ## Coverage
 
@@ -83,3 +83,13 @@ Replace the README's "Development Progress" checklist with a table of what the p
 ## Decisions
 
 ## Review
+
+Evidence gathered 2026-10-04 on branch head a8cd60e0, which contains origin/main 48889a03.
+
+- AC1: the awk command printed exactly 4 lines, in order: `# hitop <a href=…`, `### Key Features`, `## Installation`, `## What the package covers`. The checklist grep over README.Rmd and README.md printed nothing (exit 1).
+- AC2: the section holds one table of 13 lines (a header, a separator and 11 rows). The header in both files reads `| Instrument | Items | Scoring | Reliability | Tutorial | Forms |`. README.Rmd:61 and README.md:71-72 hold the `?validity_pid5` and `?norm_pid5` sentence. The README.md table equals the README.Rmd table line for line, apart from pandoc's separator dashes (diff exit 0). The capability test's first case confirms the 11 row names as a set, with no duplicates.
+- AC3: `devtools::test(filter = "readme-capabilities")` gave FAIL 0, SKIP 0, PASS 58. A fresh run of the 14-plant script turned the test red for every plant. That covers both directions in Items, Scoring, Reliability, Tutorial and Forms, plus a dropped and a renamed row, and each failure named the planted cell. The README was restored, and the test passed 58 checks again. The skip under R CMD check is shown by the check run in the gate below.
+- AC4: tab count 0 and "Comprehensive" count 0 in README.Rmd. Key Features has 3 bullets: scoring and reliability for the marked instruments plus rename and label helpers, then downloads, then data tables. No bullet names an instrument, and bullet 1 points to "the table below".
+- AC5: R `grepl(perl = TRUE, ignore.case = TRUE)` over 7 Key Features lines and 21 new-section lines found 0 hits for all 10 regular expressions, and `fixed = TRUE` found 0 hits for `?c=` and `?z=`. Every pattern hit its positive control, and the lookbehind stayed silent on "study link builder".
+- AC6: `devtools::build_readme()` exit 0, then `git diff --exit-code HEAD -- README.Rmd README.md` exit 0. `pkgdown::build_home(preview = FALSE)` exit 0. Machine: local macOS with every Imports package installed.
+- AC7: CLAUDE.md:30 names "the README capability table ("What the package covers", checked by `test-readme-capabilities.R`)" beside `tests/`, NEWS.md and the reference index.
