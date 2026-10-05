@@ -114,12 +114,9 @@
 <h3 id="key-features">Key Features<a class="anchor" aria-label="anchor" href="#key-features"></a>
 </h3>
 <ul>
-<li>
-<strong>Scoring &amp; Utilities:</strong> Automated scoring algorithms and data-cleaning functions for multiple instrument variants, including the Personality Inventory for DSM-5 (PID-5, PID-5-SF, PID-5-BF, PID5BF+M, PID-5-IRF, PID-5-FFBF, and the PID-5 and PID-5-BF child forms for ages 11 to 17), the HiTOP Self-Report (HiTOP-SR), the HiTOP Brief Report (HiTOP-BR), and the HiTOP Harmful Substance Use Module (HiTOP-HSUM).</li>
-<li>
-<strong>Instrument Downloads:</strong> Direct access to downloadable assessment resources, including standard paper forms, as well as ready-to-import configuration files for popular data collection platforms like Qualtrics and REDCap.</li>
-<li>
-<strong>Comprehensive Metadata:</strong> Embedded psychometric metadata, including explicit scale definitions, scoring keys, and item-level text to streamline documentation and reproducible workflows.</li>
+<li>Scoring functions and reliability estimates for the instruments marked in the table below, and helpers that rename and label item columns.</li>
+<li>Word forms, and import files for Qualtrics, REDCap and the online form, ready to download from the <a href="https://jmgirard.github.io/hitop/">package website</a>.</li>
+<li>Item text, scoring keys and scale definitions as data tables, for documentation and reproducible work.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -131,119 +128,125 @@
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"jmgirard/hitop"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="development-progress">Development Progress<a class="anchor" aria-label="anchor" href="#development-progress"></a>
+<h2 id="what-the-package-covers">What the package covers<a class="anchor" aria-label="anchor" href="#what-the-package-covers"></a>
 </h2>
-<div class="section level3">
-<h3 id="phase-1">Phase 1<a class="anchor" aria-label="anchor" href="#phase-1"></a>
-</h3>
-<ul class="task-list">
-<li>
-<label><input type="checkbox">Add Instrument Data</label>
-<ul class="task-list">
-<li><label><input type="checkbox" checked>HiTOP-SR (405)</label></li>
-<li><label><input type="checkbox" checked>HiTOP-BR (45)</label></li>
-<li><label><input type="checkbox" checked>HiTOP-HSUM (650)</label></li>
-<li><label><input type="checkbox" checked>PID-5 (220)</label></li>
-<li><label><input type="checkbox" checked>PID-5-SF (100)</label></li>
-<li><label><input type="checkbox" checked>PID-5-BF (25)</label></li>
-<li><label><input type="checkbox" checked>PID5BF+M (36)</label></li>
-<li><label><input type="checkbox" checked>PID-5-IRF (218)</label></li>
-<li><label><input type="checkbox" checked>PID-5 Child (220) and PID-5-BF Child (25)</label></li>
-<li><label><input type="checkbox" checked>PID-5-FFBF (100)</label></li>
-</ul>
-</li>
-<li>
-<label><input type="checkbox">Add Scoring Functions</label>
-<ul class="task-list">
-<li><label><input type="checkbox" checked>HiTOP-SR (405)</label></li>
-<li><label><input type="checkbox" checked>HiTOP-BR (45)</label></li>
-<li><label><input type="checkbox" checked>PID-5 (220)</label></li>
-<li><label><input type="checkbox" checked>PID-5-SF (100)</label></li>
-<li><label><input type="checkbox" checked>PID-5-BF (25)</label></li>
-<li><label><input type="checkbox" checked>PID5BF+M (36)</label></li>
-<li><label><input type="checkbox" checked>PID-5-IRF (218)</label></li>
-<li><label><input type="checkbox" checked>PID-5 Child (220) and PID-5-BF Child (25)</label></li>
-<li><label><input type="checkbox" checked>PID-5-FFBF (100)</label></li>
-<li><label><input type="checkbox">HiTOP-HSUM (650) - <em>waiting for feedback</em></label></li>
-</ul>
-</li>
-<li>
-<label><input type="checkbox" checked>Add Validity Functions</label>
-<ul class="task-list">
-<li><label><input type="checkbox" checked>PID-5 (220)</label></li>
-<li><label><input type="checkbox" checked>PID-5-SF (100)</label></li>
-</ul>
-</li>
-<li>
-<label><input type="checkbox">Add Reliability Functions</label>
-<ul class="task-list">
-<li><label><input type="checkbox" checked>HiTOP-SR (405)</label></li>
-<li><label><input type="checkbox" checked>HiTOP-BR (45)</label></li>
-<li><label><input type="checkbox" checked>PID-5 (220)</label></li>
-<li><label><input type="checkbox" checked>PID-5-SF (100)</label></li>
-<li><label><input type="checkbox" checked>PID-5-BF (25)</label></li>
-<li><label><input type="checkbox" checked>PID5BF+M (36)</label></li>
-<li><label><input type="checkbox" checked>PID-5-IRF (218)</label></li>
-<li><label><input type="checkbox" checked>PID-5 Child (220) and PID-5-BF Child (25)</label></li>
-<li><label><input type="checkbox" checked>PID-5-FFBF (100)</label></li>
-<li><label><input type="checkbox">HiTOP-HSUM (650) - <em>waiting for feedback</em></label></li>
-</ul>
-</li>
-<li>
-<label><input type="checkbox">Add Scoring Tutorials</label>
-<ul class="task-list">
-<li><label><input type="checkbox" checked>HiTOP-SR (405)</label></li>
-<li><label><input type="checkbox" checked>HiTOP-BR (45)</label></li>
-<li><label><input type="checkbox" checked>PID-5 (220)</label></li>
-<li><label><input type="checkbox" checked>PID-5-SF (100)</label></li>
-<li><label><input type="checkbox" checked>PID-5-BF (25)</label></li>
-<li><label><input type="checkbox" checked>PID5BF+M (36)</label></li>
-<li><label><input type="checkbox" checked>PID-5-IRF (218)</label></li>
-<li><label><input type="checkbox" checked>PID-5 Child (220) and PID-5-BF Child (25)</label></li>
-<li><label><input type="checkbox" checked>PID-5-FFBF (100)</label></li>
-<li><label><input type="checkbox">HiTOP-HSUM (650) - <em>waiting for feedback</em></label></li>
-</ul>
-</li>
-<li>
-<label><input type="checkbox">Add Instrument Export Functions</label>
-<ul class="task-list">
-<li><label><input type="checkbox" checked>HiTOP-SR (405)</label></li>
-<li><label><input type="checkbox" checked>HiTOP-BR (45)</label></li>
-<li><label><input type="checkbox" checked>HiTOP-HSUM (650)</label></li>
-<li><label><input type="checkbox" checked>PID-5 (220)</label></li>
-<li><label><input type="checkbox" checked>PID-5-SF (100)</label></li>
-<li><label><input type="checkbox" checked>PID-5-BF (25)</label></li>
-<li><label><input type="checkbox" checked>PID5BF+M (36)</label></li>
-<li><label><input type="checkbox" checked>PID-5-IRF (218)</label></li>
-<li><label><input type="checkbox" checked>PID-5 Child (220) and PID-5-BF Child (25)</label></li>
-<li><label><input type="checkbox">PID-5-FFBF (100)</label></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="phase-2">Phase 2<a class="anchor" aria-label="anchor" href="#phase-2"></a>
-</h3>
-<ul class="task-list">
-<li><label><input type="checkbox" checked>Add Normative Data (for PID-5)</label></li>
-<li><label><input type="checkbox" checked>Add Norming Functions (for PID-5)</label></li>
-<li><label><input type="checkbox" checked>Add Visualization Functions (for PID-5)</label></li>
-<li><label><input type="checkbox" checked>Add Package Unit Testing</label></li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="phase-3">Phase 3<a class="anchor" aria-label="anchor" href="#phase-3"></a>
-</h3>
-<ul class="task-list">
-<li><label><input type="checkbox">Add Normative Data (for HiTOP) - <em>waiting for data</em></label></li>
-<li><label><input type="checkbox">Add Norming Functions (for HiTOP) - <em>waiting for data</em></label></li>
-<li><label><input type="checkbox">Add Visualization Functions (for HiTOP) - <em>waiting for norms</em></label></li>
-<li><label><input type="checkbox">Add Individual Report Generation</label></li>
-<li><label><input type="checkbox">Update Package Unit Testing</label></li>
-<li><label><input type="checkbox">Submit to CRAN</label></li>
-<li><label><input type="checkbox">Write Package Paper</label></li>
-</ul>
-</div>
+<p>The PID-5 is the Personality Inventory for DSM-5. HiTOP-SR, HiTOP-BR and HiTOP-HSUM are the HiTOP Self-Report, the HiTOP Brief Report and the HiTOP Harmful Substance Use Module. The two child forms are for ages 11 to 17.</p>
+<p>Items is the number of items. Scoring and Reliability mark the instruments that the <code>score_*()</code> and <code>reliability_*()</code> functions take. Tutorial links each scoring tutorial that shows the scoring call for the instrument. The child forms use the call of their adult form. Forms lists the download formats: Word forms, Qualtrics and REDCap import files, and JSON files for the online form.</p>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+</colgroup>
+<thead><tr>
+<th>Instrument</th>
+<th>Items</th>
+<th>Scoring</th>
+<th>Reliability</th>
+<th>Tutorial</th>
+<th>Forms</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>HiTOP-SR</td>
+<td>405</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://jmgirard.github.io/hitop/articles/hitopsr_scoring.html">Scoring HiTOP-SR</a></td>
+<td>Word, Qualtrics, REDCap, JSON</td>
+</tr>
+<tr>
+<td>HiTOP-BR</td>
+<td>45</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://jmgirard.github.io/hitop/articles/hitopbr_scoring.html">Scoring HiTOP-BR</a></td>
+<td>Word, Qualtrics, REDCap, JSON</td>
+</tr>
+<tr>
+<td>HiTOP-HSUM</td>
+<td>650</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Word, Qualtrics, REDCap</td>
+</tr>
+<tr>
+<td>PID-5</td>
+<td>220</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://jmgirard.github.io/hitop/articles/pid5_scoring.html">Scoring PID-5</a></td>
+<td>Word, Qualtrics, REDCap, JSON</td>
+</tr>
+<tr>
+<td>PID-5-SF</td>
+<td>100</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>
+<a href="https://jmgirard.github.io/hitop/articles/pid5_scoring.html">Scoring PID-5</a>, <a href="https://jmgirard.github.io/hitop/articles/pid5sf_scoring.html">Scoring PID-5-SF</a>
+</td>
+<td>Word, Qualtrics, REDCap, JSON</td>
+</tr>
+<tr>
+<td>PID-5-BF</td>
+<td>25</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>
+<a href="https://jmgirard.github.io/hitop/articles/pid5_scoring.html">Scoring PID-5</a>, <a href="https://jmgirard.github.io/hitop/articles/pid5bf_scoring.html">Scoring PID-5-BF</a>
+</td>
+<td>Word, Qualtrics, REDCap, JSON</td>
+</tr>
+<tr>
+<td>PID5BF+M</td>
+<td>36</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://jmgirard.github.io/hitop/articles/pid5_scoring.html">Scoring PID-5</a></td>
+<td>Word, Qualtrics, REDCap</td>
+</tr>
+<tr>
+<td>PID-5-IRF</td>
+<td>218</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://jmgirard.github.io/hitop/articles/pid5_scoring.html">Scoring PID-5</a></td>
+<td>Word, Qualtrics, REDCap</td>
+</tr>
+<tr>
+<td>PID-5 Child</td>
+<td>220</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://jmgirard.github.io/hitop/articles/pid5_scoring.html">Scoring PID-5</a></td>
+<td>Word, Qualtrics, REDCap</td>
+</tr>
+<tr>
+<td>PID-5-BF Child</td>
+<td>25</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>
+<a href="https://jmgirard.github.io/hitop/articles/pid5_scoring.html">Scoring PID-5</a>, <a href="https://jmgirard.github.io/hitop/articles/pid5bf_scoring.html">Scoring PID-5-BF</a>
+</td>
+<td>Word, Qualtrics, REDCap</td>
+</tr>
+<tr>
+<td>PID-5-FFBF</td>
+<td>100</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://jmgirard.github.io/hitop/articles/pid5_scoring.html">Scoring PID-5</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>For PID-5 validity scales and norms, see <code><a href="reference/validity_pid5.html">?validity_pid5</a></code> and <code><a href="reference/norm_pid5.html">?norm_pid5</a></code>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

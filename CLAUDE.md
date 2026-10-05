@@ -66,7 +66,9 @@ feedback). Version 0.2.0, GPL-3. Maintained by Jeffrey Girard.
   `data-raw/` → `score_*` (+ `validity_*`) +
   `generate_{docx,qualtrics,redcap}_*` family (see cairn/DESIGN.md).
 - Keep `tests/`, NEWS.md, and the `_pkgdown.yml` reference index in step
-  with exported functions.
+  with exported functions, and the README capability table (“What the
+  package covers”, checked by `test-readme-capabilities.R`) in step with
+  the functions, the scoring tutorials and `hitop_artifacts`.
 
 ## Branching & PRs
 

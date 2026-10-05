@@ -106,7 +106,7 @@
 <ul><li>Never hand-edit <code>NAMESPACE</code>, <code>man/</code>, <code>data/*.rda</code>, or <code>R/sysdata.rda</code> — they are generated (roxygen2, data-raw scripts).</li>
 <li>Never change keying content (<code>pid_items</code> and the other <code>*_items</code>/<code>*_scales</code> tables) without maintainer sign-off; provenance in <code>cairn/SOURCES.md</code>.</li>
 <li>New instruments follow the pattern: items (+ scales) table via <code>data-raw/</code> → <code>score_*</code> (+ <code>validity_*</code>) + <code>generate_{docx,qualtrics,redcap}_*</code> family (see cairn/DESIGN.md).</li>
-<li>Keep <code>tests/</code>, NEWS.md, and the <code>_pkgdown.yml</code> reference index in step with exported functions.</li>
+<li>Keep <code>tests/</code>, NEWS.md, and the <code>_pkgdown.yml</code> reference index in step with exported functions, and the README capability table (“What the package covers”, checked by <code>test-readme-capabilities.R</code>) in step with the functions, the scoring tutorials and <code>hitop_artifacts</code>.</li>
 </ul></div>
 <div class="section level2">
 <h2 id="branching--prs">Branching &amp; PRs<a class="anchor" aria-label="anchor" href="#branching--prs"></a></h2>
