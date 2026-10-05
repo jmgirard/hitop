@@ -23,9 +23,10 @@ knitr::opts_chunk$set(
 The goal of the **hitop** package is to provide an open-source toolkit of functions and resources tailored for the [Hierarchical Taxonomy of Psychopathology (HiTOP)](https://www.hitop-system.org/){target="_blank"} community. While the package is currently optimized to support researchers in managing large-scale assessment data, future development will expand its features to support clinical workflows and individual practitioner needs.
 
 ### Key Features
-- **Scoring & Utilities:** Automated scoring algorithms and data-cleaning functions for multiple instrument variants, including the Personality Inventory for DSM-5 (PID-5, PID-5-SF, PID-5-BF, PID5BF+M, PID-5-IRF, PID-5-FFBF, and the PID-5 and PID-5-BF child forms for ages 11 to 17), the HiTOP Self-Report (HiTOP-SR), the HiTOP Brief Report (HiTOP-BR), and the HiTOP Harmful Substance Use Module (HiTOP-HSUM).
--	**Instrument Downloads:** Direct access to downloadable assessment resources, including standard paper forms, as well as ready-to-import configuration files for popular data collection platforms like Qualtrics and REDCap.
-- **Comprehensive Metadata:** Embedded psychometric metadata, including explicit scale definitions, scoring keys, and item-level text to streamline documentation and reproducible workflows.
+
+- Scoring functions, reliability estimates and data-cleaning tools for the instruments marked in the table below.
+- Word forms, and import files for Qualtrics, REDCap and the online form, ready to download from the [package website](https://jmgirard.github.io/hitop/).
+- Item text, scoring keys and scale definitions as data tables, for documentation and reproducible work.
 
 ## Installation
 
@@ -37,82 +38,24 @@ You can install the development version of hitop from
 pak::pak("jmgirard/hitop")
 ```
 
-## Development Progress
+## What the package covers
 
-### Phase 1
+The PID-5 is the Personality Inventory for DSM-5. HiTOP-SR, HiTOP-BR and HiTOP-HSUM are the HiTOP Self-Report, the HiTOP Brief Report and the HiTOP Harmful Substance Use Module. The two child forms are for ages 11 to 17.
 
-- [ ] Add Instrument Data
-  - [x] HiTOP-SR (405)
-  - [x] HiTOP-BR (45)
-  - [x] HiTOP-HSUM (650)
-  - [x] PID-5 (220)
-  - [x] PID-5-SF (100)
-  - [x] PID-5-BF (25)
-  - [x] PID5BF+M (36)
-  - [x] PID-5-IRF (218)
-  - [x] PID-5 Child (220) and PID-5-BF Child (25)
-  - [x] PID-5-FFBF (100)
-- [ ] Add Scoring Functions
-  - [x] HiTOP-SR (405)
-  - [x] HiTOP-BR (45)
-  - [x] PID-5 (220)
-  - [x] PID-5-SF (100)
-  - [x] PID-5-BF (25)
-  - [x] PID5BF+M (36)
-  - [x] PID-5-IRF (218)
-  - [x] PID-5 Child (220) and PID-5-BF Child (25)
-  - [x] PID-5-FFBF (100)
-  - [ ] HiTOP-HSUM (650) - *waiting for feedback*
-- [x] Add Validity Functions
-  - [x] PID-5 (220)
-  - [x] PID-5-SF (100)
-- [ ] Add Reliability Functions
-  - [x] HiTOP-SR (405)
-  - [x] HiTOP-BR (45)
-  - [x] PID-5 (220)
-  - [x] PID-5-SF (100)
-  - [x] PID-5-BF (25)
-  - [x] PID5BF+M (36)
-  - [x] PID-5-IRF (218)
-  - [x] PID-5 Child (220) and PID-5-BF Child (25)
-  - [x] PID-5-FFBF (100)
-  - [ ] HiTOP-HSUM (650) - *waiting for feedback*
-- [ ] Add Scoring Tutorials
-  - [x] HiTOP-SR (405)
-  - [x] HiTOP-BR (45)
-  - [x] PID-5 (220)
-  - [x] PID-5-SF (100)
-  - [x] PID-5-BF (25)
-  - [x] PID5BF+M (36)
-  - [x] PID-5-IRF (218)
-  - [x] PID-5 Child (220) and PID-5-BF Child (25)
-  - [x] PID-5-FFBF (100)
-  - [ ] HiTOP-HSUM (650) - *waiting for feedback*
-- [ ] Add Instrument Export Functions
-  - [x] HiTOP-SR (405)
-  - [x] HiTOP-BR (45)
-  - [x] HiTOP-HSUM (650)
-  - [x] PID-5 (220)
-  - [x] PID-5-SF (100)
-  - [x] PID-5-BF (25)
-  - [x] PID5BF+M (36)
-  - [x] PID-5-IRF (218)
-  - [x] PID-5 Child (220) and PID-5-BF Child (25)
-  - [ ] PID-5-FFBF (100)
+Items is the number of items. Scoring and Reliability mark the instruments that the `score_*()` and `reliability_*()` functions take. Tutorial links each scoring tutorial that covers the instrument. Forms lists the download formats: Word forms, Qualtrics and REDCap import files, and JSON files for the online form.
 
-### Phase 2
+| Instrument | Items | Scoring | Reliability | Tutorial | Forms |
+|---|---|---|---|---|---|
+| HiTOP-SR | 405 | Yes | Yes | [Scoring HiTOP-SR](https://jmgirard.github.io/hitop/articles/hitopsr_scoring.html) | Word, Qualtrics, REDCap, JSON |
+| HiTOP-BR | 45 | Yes | Yes | [Scoring HiTOP-BR](https://jmgirard.github.io/hitop/articles/hitopbr_scoring.html) | Word, Qualtrics, REDCap, JSON |
+| HiTOP-HSUM | 650 |  |  |  | Word, Qualtrics, REDCap |
+| PID-5 | 220 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html) | Word, Qualtrics, REDCap, JSON |
+| PID-5-SF | 100 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html), [Scoring PID-5-SF](https://jmgirard.github.io/hitop/articles/pid5sf_scoring.html) | Word, Qualtrics, REDCap, JSON |
+| PID-5-BF | 25 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html), [Scoring PID-5-BF](https://jmgirard.github.io/hitop/articles/pid5bf_scoring.html) | Word, Qualtrics, REDCap, JSON |
+| PID5BF+M | 36 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html) | Word, Qualtrics, REDCap |
+| PID-5-IRF | 218 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html) | Word, Qualtrics, REDCap |
+| PID-5 Child | 220 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html) | Word, Qualtrics, REDCap |
+| PID-5-BF Child | 25 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html), [Scoring PID-5-BF](https://jmgirard.github.io/hitop/articles/pid5bf_scoring.html) | Word, Qualtrics, REDCap |
+| PID-5-FFBF | 100 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html) |  |
 
-- [x] Add Normative Data (for PID-5)
-- [x] Add Norming Functions (for PID-5)
-- [x] Add Visualization Functions (for PID-5)
-- [x] Add Package Unit Testing
-
-### Phase 3
-
-- [ ] Add Normative Data (for HiTOP) - *waiting for data*
-- [ ] Add Norming Functions (for HiTOP) - *waiting for data*
-- [ ] Add Visualization Functions (for HiTOP) - *waiting for norms*
-- [ ] Add Individual Report Generation
-- [ ] Update Package Unit Testing
-- [ ] Submit to CRAN
-- [ ] Write Package Paper
+For PID-5 validity scales and norms, see `?validity_pid5` and `?norm_pid5`.

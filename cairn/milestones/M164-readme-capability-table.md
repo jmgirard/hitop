@@ -53,7 +53,7 @@ Replace the README's "Development Progress" checklist with a table of what the p
 ## Tasks
 
 - [x] T1: Write `tests/testthat/test-readme-capabilities.R` first. It finds README.Rmd from the test directory. If the file is absent, the test skips. It parses the table under `## What the package covers` and checks every cell against the column rules in Scope. The row-to-version map is written in the test. Make sure that it fails on the current README because no table exists, not because of an error.
-- [ ] T2: Edit README.Rmd. Delete the "Development Progress" section. Add the new section, the table and the help-page sentence, and derive each cell from the package under `devtools::load_all()`. Tidy Key Features. Run `Rscript -e 'devtools::build_readme()'`, then make sure that the T1 test passes.
+- [x] T2: Edit README.Rmd. Delete the "Development Progress" section. Add the new section, the table and the help-page sentence, and derive each cell from the package under `devtools::load_all()`. Tidy Key Features. Run `Rscript -e 'devtools::build_readme()'`, then make sure that the T1 test passes.
 - [ ] T3: Prove that the test can fail. In a scratch copy, plant one wrong cell in each column in each direction. Make sure that the test goes red and names that cell, then restore. Add the table to the keep-in-step line of CLAUDE.md. Run the AC1, AC4 and AC5 checks, the AC6 rebuild with its diff and `build_home()`, and the full `devtools::test()`.
 
 ## Work log
@@ -70,6 +70,7 @@ Replace the README's "Development Progress" checklist with a table of what the p
 - 2026-10-04: no NEWS entry, because the README is not package behavior.
 - 2026-10-04: implement started on branch m164-readme-capability-table. The five untracked `devel/hitopdat_*` files are unrelated and stay unstaged.
 - 2026-10-04: T1 done. The new test fails all 5 cases on the old README with "no table under `## What the package covers`", not an error. A mark reads "Yes", and a Tutorial cell links the site's article URL. A one-row call works for every scoring and reliability function (checked under load_all).
+- 2026-10-04: T2 done. Cells were derived with the test's own helpers under load_all, and the test passes 58 checks. Key Features bullets are plain, with no bold lead-ins. The instrument full names and the child age range moved from Key Features to a sentence at the top of the new section. Forms lists formats in the order Word, Qualtrics, REDCap, JSON, and the test compares them as a set.
 
 ## Decisions
 
