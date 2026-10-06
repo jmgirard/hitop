@@ -13,6 +13,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M162 | PID-5 forensic form (FFBF) keying and scoring | done | — | normal | milestones/archive/M162-pid5ffbf-scoring.md |
 | M163 | PID-5 forensic form (FFBF) English forms | planned | M162 | normal | milestones/M163-pid5ffbf-forms.md |
 | M164 | README capability table | done | — | normal | milestones/archive/M164-readme-capability-table.md |
+| M165 | Google Sheet choice in the Study Link Builder | planned | — | normal | milestones/M165-google-sheet-choice.md |
 
 ## Candidates
 
