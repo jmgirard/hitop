@@ -78,6 +78,7 @@ This repo gets tracking only.
 - 2026-10-06: the first plant run on 8a74e7b failed: plants aj and at no longer turned the test red. T3's `watchStatus()` seeded the record with the status on show before the press, "Ready. <format> chosen.", which names the format, so A28 passed a build status without the name. The record now starts empty (hitop-builder 42fa366). By hand on planted copies, aj and at each failed A28 alone. A stray command imported `plants.mjs` and started a second matrix; it was stopped within two minutes, and no process was left. The full matrix reruns on 42fa366.
 - 2026-10-06: T7 done. On hitop-builder 42fa366, local smoke passed (4 passed, 31.4s), and `npm run plants` ran alone: 36 enumerated assertions, the unplanted copy passed, all 53 plants red, every assertion covered. Plant ax failed A34 alone, ay A35 alone, az A36 alone, and aj and at A28. `npm run prose` exits 0. Status set to review.
 - 2026-10-06: claim audit: not owed — internal tier
+- 2026-10-06: step-7 approval: m167-builder-test-reach approved for merge, with the companion /Users/jmgirard/github/hitop-builder m167-builder-test-reach first.
 
 ## Decisions
 
