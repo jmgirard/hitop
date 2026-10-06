@@ -101,3 +101,21 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - prior-review #3: the "or only its top" taller-window case rests on a spec reading with no probe — fix now (README and comment drop the clause).
 - Pass 2 (after review return 1). Fresh local smoke on hitop-builder 9d0a9f6: 3 passed (31.5s). AC1: A31 passed in a 400px window, where the open section (429px) is taller than the window, so `nearest` brought its top in, and `scroll-margin` kept the summary 16px inside. AC2: A32 passed, and A22 passed on "R did not load.". The new A33 passed: a refused `webr.mjs` in a 300px window left `scrollY` 0 with the section reaching below the window. The plant run on 24274d9 had 50 of 50 plants red, aw failing A33 alone and au A31 alone. AC3: `npm run prose` exited 0, and the README passage and file row state the build-failure scroll, the load failure that does not scroll, and the "R started, but…" status. AC1 to AC3 stay ticked on this evidence.
 - Gate (pass 2): `cairn_validate` exit 0, after `main` commit 134f1f1f set M163's header to `blocked` and the branch merged it. No file outside `cairn/` changed in hitop since pass 1, so pass 1's `devtools::document()` (no diff) and `devtools::check()` (0 errors, 0 warnings, 0 notes) stand. NEWS: no entry, because the change is in the hitop-builder page and this repo carries tracking only, as in M105 and M106.
+- spawned: diff-bug, blame-history, prior-review (pass 2)
+- diff-bug #1 (pass 2): README still says the scroll brings "only its top" for a taller section, and no assertion pins which case A31 hits — fix now (clause dropped from README).
+- diff-bug #2 (pass 2): the catch comment and README still say every throw that reaches the catch comes after R started, and three writes before the race can reach it — fix now ("in practice" wording).
+- diff-bug #3 (pass 2): with the section's top above the window and its bottom below, `nearest` does not scroll, so the summary stays out of view — follow-up to the "Module Builder page requests" row. The visitor is then looking at the section itself, and AC1 binds the below-the-window start.
+- diff-bug #4 (pass 2): `download()`'s catch ignores `bootAbandoned`, so a lost connection during a build has its message replaced, and now the page also scrolls — follow-up to the same row. The overwrite is older than this milestone.
+- diff-bug #5 (pass 2): A31 does not pin the taller-than-window case — fix now through #1, so no README claim rests on it.
+- diff-bug #6 (pass 2): comment lines over 80 columns and short lines in index.html and README — fix now.
+- blame-history #1 (pass 2): same as diff-bug #2 — fix now.
+- blame-history #2 (pass 2): the `bootAbandoned` guard in the top-level catch has no test or plant — follow-up to the "Module Builder page requests" row. A test needs a lost connection followed by a later throw.
+- blame-history #3 (pass 2): the catch writes the log before it shows the failure, the reverse of `main`'s order — fix now (failure first).
+- blame-history #4 (pass 2): the focused button can sit off-screen after the scroll — noted, already a follow-up (pass-1 diff-bug #5).
+- blame-history #5 (pass 2): `scroll-margin` applies to any scroll to the section — noted. No anchor or other scroll targets it today.
+- blame-history #6 (pass 2): A22 now runs in a 300px window — noted, planned for A33. A22's assertions do not depend on layout.
+- blame-history #7 (pass 2): timings and "downloads no package" — noted. The config comment says each run downloads R.
+- blame-history #8 (pass 2): comment wrap — fix now, as diff-bug #6.
+- prior-review #1 (pass 2): README "only its top" clause — fix now, as diff-bug #1.
+- prior-review #2 (pass 2): the visitor passage's "fails in a way that has no message of its own" still describes the code, not what the visitor sees — fix now.
+- prior-review #3 (pass 2): wrap — fix now, as diff-bug #6.
