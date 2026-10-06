@@ -13,7 +13,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M164 | README capability table | done | — | normal | milestones/archive/M164-readme-capability-table.md |
 | M165 | Google Sheet choice in the Study Link Builder | done | — | normal | milestones/archive/M165-google-sheet-choice.md |
 | M166 | Module Builder failure reports | done | — | high | milestones/archive/M166-builder-failure-reports.md |
-| M167 | Module Builder test reach | planned | M166 | high | milestones/M167-builder-test-reach.md |
+| M167 | Module Builder test reach | in-progress | M166 | high | milestones/M167-builder-test-reach.md |
 
 ## Candidates
 

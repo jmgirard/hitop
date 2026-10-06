@@ -1,13 +1,13 @@
 # M167: Module Builder test reach
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** M166
 - **Driving RR:** —
 - **Principles touched:** IP2
 - **Resolves:** —
 - **Surface tier:** internal — the builder repo's smoke test, zip reader and prose ledger, which no researcher runs
-- **Branch/PR:** —
+- **Branch/PR:** m167-builder-test-reach, companion: /Users/jmgirard/github/hitop-builder m167-builder-test-reach
 
 ## Goal
 
@@ -53,9 +53,9 @@ This repo gets tracking only.
 
 ## Tasks
 
-- [ ] T1: Make `zipEntries()` (`tests/smoke.spec.js:71`) refuse the four AC2 defects. Add the browser-free test, which builds each defective copy from a zip made in the test or committed in `tests/`.
-- [ ] T2: Add the Qualtrics and REDCap entry checks to the A28 builds (`smoke.spec.js:1032`). Change A4 to sorted membership. State the expected names beside `FORMAT_NAMES`.
-- [ ] T3: Set the Word and Online status observers before their presses. Disconnect every A28 observer at "Ready.". Change the A20 wait to the prefix (LESSONS M127).
+- [x] T1: Make `zipEntries()` (`tests/smoke.spec.js:71`) refuse the four AC2 defects. Add the browser-free test, which builds each defective copy from a zip made in the test or committed in `tests/`.
+- [x] T2: Add the Qualtrics and REDCap entry checks to the A28 builds (`smoke.spec.js:1032`). Change A4 to sorted membership. State the expected names beside `FORMAT_NAMES`.
+- [x] T3: Set the Word and Online status observers before their presses. Disconnect every A28 observer at "Ready.". Change the A20 wait to the prefix (LESSONS M127).
 - [ ] T4: Add the focus-stays step to a build other than the Word build, because A11 needs focus on the body at the end of that build. Use a control that stays enabled during a build, for example the "Technical details" summary.
 - [ ] T5: Widen the writer grep of `prose.mjs` (`prose.mjs:241`) to the AC5 list. Classify any new sites in `WRITERS`. Under `--ref`, turn the floor failure and the writer-count throw into warnings. Update the comment in `smoke.yml`.
 - [ ] T6: Add the dark-scheme read to one A28 build with `page.emulateMedia({ colorScheme: 'dark' })`. Restore light after it.
@@ -68,6 +68,9 @@ This repo gets tracking only.
 - 2026-10-06: plan chose a dark read of A10 inside the run over a second full run in the dark scheme. A second run boots webR again and breaks the 25-minute CI budget in `playwright.config.js`. Falsified by a dark-only defect outside the card look.
 - 2026-10-06: question set: part-level plants for A23's counts and A28's card and button — none, declined by Jeff. Outage runs — keep red, declined by Jeff. Dark scheme — one dark read during a build.
 - 2026-10-06: criteria audit (reduced mode, fresh Opus reader) returned 4 findings, all fixed. AC2 promised every defective buffer: it now names the four copies the test makes, from a zip built in the test or committed, not one a browser test saved. AC5 promised a per-site check that the count-based `checkWriters()` does not make: it now promises the count, as today, and names the forms. The `--ref` clause clashed with the writer-count throw and the other exits: only the floor and the count now warn. T4 put the step in A11's Word build: it now uses another build.
+- 2026-10-06: implement started. Branches cut in hitop and hitop-builder from main after M166 (hitop-builder 0b7626a). The untracked `devel/hitopdat_*` files in hitop stay unstaged. The R verify slot does not apply, because no R code changes; the companion's smoke run is the verify step.
+- 2026-10-06: T1 done (hitop-builder b846ba4). `makeZip()` in the spec writes a three-entry zip byte by byte. The new test made four damaged copies; the old `zipEntries()` returned entries for all four, and the new one returns an empty map for each and all three entries with their bytes for the whole zip. The reader also refuses a local header with a wrong signature and a failed inflate.
+- 2026-10-06: T2 and T3 done (hitop-builder 9147e1b). `BUNDLE_ENTRIES` beside `FORMAT_NAMES` states each bundle's three names. A4 compares sorted names, and new step A34 checks the Qualtrics and REDCap bundles' sorted names and a non-empty questionnaire entry. `watchStatus()` and `takeStatuses()` record every status a build writes from before its press and disconnect the observer at "Ready."; the Word, Online, Qualtrics and REDCap reads use them. A20 waits on `/^Starting R/`. Local smoke: 4 passed (31.7s).
 
 ## Decisions
 
