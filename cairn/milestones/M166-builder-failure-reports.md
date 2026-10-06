@@ -1,0 +1,55 @@
+# M166: Module Builder failure reports
+
+- **Status:** planned
+- **Priority:** high
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** GP3
+- **Resolves:** —
+- **Surface tier:** user-facing — the failure status and scroll position of the Module Builder page
+- **Branch/PR:** —
+
+## Goal
+
+A Module Builder failure shows the researcher a true status, with the opened log in view.
+
+## Scope
+
+**In:** Two changes in hitop-builder `index.html`. `showFailure()` brings the opened "Technical details" section into view. The top-level `main().catch` (`index.html:1940`) stops reporting "R did not start." for a throw after R starts. The milestone adds smoke steps for both, keeps the plant matrix whole, and updates the README sentences that state the failure behavior. This repo gets tracking only.
+
+**Out:**
+- The rest of the "Module Builder test reach" candidate goes to M167. This commit plans M167, which depends on M166.
+- The other failure statuses (the `abandonBoot()` calls at `index.html:1705` to `1824`) keep their wording.
+- Firefox and Safari scroll behavior stays unchecked, as in DESIGN Known issue 14.
+
+## Acceptance criteria
+
+- [ ] AC1: After a build fails, the "Technical details" section is open and its `<summary>` element's bounding box lies wholly inside the viewport. This holds for a build that started while the summary's box lay outside the viewport. The check is a smoke step on the forced `URL.createObjectURL` throw that A30 uses. The step sets a viewport size or scroll position that puts the summary outside the viewport, and asserts that it is outside before the failure.
+- [ ] AC2: The page's start-up throws after `webR.init()` resolves. The status line then reads "R started, but the page did not finish setting up.", followed by the existing pointer to "Technical details". The section is open, and `#controls` is hidden. The check is a smoke step that forces such a throw. A refused `webr.mjs` still gets a status that begins "R did not load."
+- [ ] AC3: In hitop-builder `README.md`, the "Technical details" passage and the `tests/smoke.spec.js` file-table row state the behavior that the AC1 and AC2 smoke steps assert. `npm run prose` exits 0.
+- [ ] AC4: The smoke test passes locally and on the CI of the hitop-builder pull request.
+
+## Coverage
+
+- AC1 → T1, T2
+- AC2 → T1, T2
+- AC3 → T3
+- AC4 → T2, T3
+
+## Tasks
+
+- [ ] T1: In `index.html`, make `showFailure()` (`index.html:817`) scroll the "Technical details" summary into view with no smooth scroll. Send the top-level catch through `abandonBoot()` with the AC2 status. Update the comments that name "R did not start." as the catch-all.
+- [ ] T2: In `tests/smoke.spec.js`, add the AC1 step to the A30 build-failure path. Add a new test that forces a throw after R starts. Throw from one site outside every `try`, never from `el()` as a whole, because `abandonBoot()` and `showFailure()` read `status`, `controls` and `techDetails`. Prefer a site before the package install, so the test skips the install. Update the time budget comment in `playwright.config.js` for the extra boot. Give each step a header line. Add one plant per new step to `tests/plants.mjs`: one removes the scroll call, one restores the old catch message. Run `npm run smoke` and `npm run plants` with nothing else running on the machine.
+- [ ] T3: Update the "Technical details" passage (`README.md:125` to `131`) and the smoke-test file row. Run `npm run prose`. The companion PR opens at review.
+
+## Work log
+
+- 2026-10-06: created by /milestone-plan, together with M167, from the "[high] Module Builder test reach" candidate row. The row's two page-behavior items come here. Its test items go to M167.
+- 2026-10-06: question set: what to plan — the Module Builder test reach row. Run on into implement after the plan — yes.
+- 2026-10-06: plan split the row into M166 (page, user-facing) and M167 (tests, internal), because its ten items need more than seven criteria. M167 depends on M166, because both edit `smoke.spec.js` and `plants.mjs`.
+- 2026-10-06: plan chose to scroll the summary into view over a focus move to it. The status line is the announcing region, and a focus move interrupts a keyboard user. Falsified by a screen-reader report that the failure goes unheard.
+- 2026-10-06: criteria audit (full mode, fresh Opus reader) returned 7 findings, all fixed. AC1 had no off-screen start, so an unchanged page passed it. A precondition now puts the summary outside the viewport. AC2's sample throw broke the failure path itself: T2 now names a safe site and the budget comment. The hidden-controls check cannot tell the old catch from the new one: it stays as a fact, not as evidence of the change. "A smoke step asserts", "A22 is unchanged" and "written against an observed run" bound test or record properties: AC1 to AC3 now state page and README facts. `npm run prose` checks no README claim, so AC3's truth rests on the review read.
+
+## Decisions
+
+## Review
