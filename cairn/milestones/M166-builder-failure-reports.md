@@ -65,8 +65,8 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - 2026-10-06: correction to the line above: the claim audit did run on the return commit, after all.
 - 2026-10-06: claim audit: 28 claims read, 6 corrected — index.html, tests/smoke.spec.js, playwright.config.js, README.md
 - 2026-10-06: T4 done. `npm run plants` ran alone on hitop-builder 24274d9. The unplanted copy passed, all 50 plants went red, and every assertion was covered. Plant aw failed A33 alone, au A31 alone, av A32 alone, and ad A22, A30 and A32. The claim-audit fixes (9d0a9f6) change only comments and README text. Smoke passed after them (3 passed, 31.5s), and `npm run prose` exits 0. Status set to review.
-
 - 2026-10-06: step-7 approval: m166-builder-failure-reports approved for merge, with the companion /Users/jmgirard/github/hitop-builder m166-builder-failure-reports first.
+
 ## Decisions
 
 ## Review
