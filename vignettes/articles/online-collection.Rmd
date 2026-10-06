@@ -547,9 +547,9 @@ questions or a module make it long, and some sites and mail programs cut
 long links. If a link is longer than 8,000 characters, the builder says so
 under the link. RFC 9110 recommends that senders and recipients of web
 addresses support at least that length. GitHub Pages hosts the online form.
-When the page is not in GitHub's cache, GitHub refuses a link with more
-than 8,177 characters after the host name, so the builder makes no such
-link.
+When the page is not in the cache that serves GitHub Pages, GitHub
+refuses a link with more than 8,177 characters after the host name, so
+the builder makes no such link.
 
 The builder's count includes what a recruiting site adds. It counts each
 Prolific ID as 24 characters. Prolific's API reference shows participant,
@@ -559,7 +559,9 @@ page. None of the Prolific pages that the package's source notes list
 states a maximum length. A Prolific link also counts the three IDs once
 more, 108 characters in all, because Prolific's "I'll use URL parameters"
 option can append them to the study URL. SONA's `%SURVEY_CODE%` counts as
-7 characters, the longest code SONA's help gives. For a short link, open the Study Link Builder's "Where the setup
+7 characters, the longest code SONA's help gives.
+
+For a short link, open the Study Link Builder's "Where the setup
 is kept" choice and pick "In a file I host". Press "Download the setup file"
 to save `setup.json`, and put it in a public GitHub repository. Under
 "Address of the setup file", give the file's raw-file address, such as

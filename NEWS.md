@@ -142,18 +142,18 @@
   a table of more than 1,600 columns, PostgreSQL's limit, and names the
   count. If a link is longer than 8,000 characters, the builder shows a
   warning under it, written two animation frames after the link appears
-  so that a screen reader announces it. The warning says that some sites and mail programs
-  cut long links. For a link that carries its setup, it says that you can
-  keep the setup in a file you host. For a link that names a setup file,
-  it says that the file's address makes the link long. The builder makes
-  no link that counts more than 8,177 characters after the host name. When
-  the page is not in its cache, GitHub Pages, the online form's host,
-  refuses a longer one. The count takes each Prolific ID as 24 characters,
-  and a Prolific link counts the three IDs once more, as Prolific's "I'll
-  use URL parameters" option can append them. SONA's `%SURVEY_CODE%`
-  counts as 7 characters, its longest code. The refusal names the count,
-  and for a link that carries its setup, it says to choose "In a file I
-  host".
+  so that a screen reader announces it. The warning says that some sites
+  and mail programs cut long links. For a link that carries its setup, it
+  says that you can keep the setup in a file you host. For a link that
+  names a setup file, it says that the file's address makes the link long.
+  The builder makes no link that counts more than 8,177 characters after
+  the host name. When the page is not in the cache that serves GitHub
+  Pages, the online form's host, GitHub refuses a longer one. The count
+  takes each Prolific ID as 24 characters, and a Prolific link counts the
+  three IDs once more, as Prolific's "I'll use URL parameters" option can
+  append them. SONA's `%SURVEY_CODE%` counts as 7 characters, its longest
+  code. The refusal names the count, and for a link that carries its
+  setup, it says to choose "In a file I host".
 
 * **A hitop-form study link can name a setup file you host.** Under "Where
   the setup is kept", the Study Link Builder offers "In the study link", the
