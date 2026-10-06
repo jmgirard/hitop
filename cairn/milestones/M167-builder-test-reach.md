@@ -39,7 +39,7 @@ This repo gets tracking only.
 - [x] AC4: During a build, a smoke step moves focus to an enabled control other than the download button. After the build ends, the step asserts that focus is still on that control.
 - [x] AC5: `tests/prose.mjs` counts the sites in `index.html` of the write forms in one list in the file. The list holds `textContent`, `innerHTML`, `setAttribute`, `innerText`, `outerHTML`, `insertAdjacentText`, `insertAdjacentHTML`, `append(`, `prepend(`, `replaceChildren(` and `createTextNode(`. The script refuses to run when that count differs from the number of `WRITERS` rows, as it does today for the three forms. The comment in `smoke.yml` names the same list. Under `--ref`, a body-text floor failure or a writer-count difference alone warns on stderr and sets no nonzero exit. The retired-name and `--compare` exits stay as they are.
 - [x] AC6: During one build, the smoke run emulates `prefers-color-scheme: dark`. It asserts the A10 card-look comparison against the disabled download button in that scheme.
-- [ ] AC7: The smoke test passes locally and on the CI of the hitop-builder pull request. `npm run prose` exits 0.
+- [x] AC7: The smoke test passes locally and on the CI of the hitop-builder pull request. `npm run prose` exits 0.
 
 ## Coverage
 
@@ -123,3 +123,4 @@ This repo gets tracking only.
 - prior-review #6: a timeout inside A36's poll leaves the page dark — noted. The test has already failed then, and the page ends with it.
 - Fix-now committed as hitop-builder d402d02: diff-bug #1 to #8 and #12, blame-history #1, #3, #5 and #8, prior-review #1, #2, #4 and #5, fixed d402d02. The zip-reader test now makes six damaged copies. A copy of the spec without the two new guards failed on the low-count and repeated-name copies. A35 focuses the button, presses it, moves focus and reads, all in one `evaluate`. A36 runs after A11's blur. Under `--ref`, only the writer count, an anchor count, an empty body and a body text node in no passage warn. Smoke after it: 4 passed (32.4s). `npm run prose` exits 0. The two `--ref` probes exit 0 with their warnings. The plant matrix is running on d402d02.
 - Plant run on hitop-builder d402d02, alone on the machine: the unplanted copy passed, all 53 plants red, all 36 enumerated assertions covered. Plant ay failed A35 alone with the one-task press, az A36 alone, and ax A34 alone.
+- AC7: met. Local smoke on d402d02 passed (4 tests, 32.4s), and `npm run prose` exited 0. jmgirard/hitop-builder PR #27's smoke check passed on CI in 1m18s, and the PR merged as 51732f3.
