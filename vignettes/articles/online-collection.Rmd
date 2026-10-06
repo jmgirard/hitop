@@ -93,8 +93,9 @@ identifier if the link is for one person. Leave it empty for a link shared
 with many, and the online form asks each participant for one before the form
 starts.
 Under "Where responses go", choose "A Google Sheet" and paste the `/exec` URL
-from step 1 into the "Web app URL" field. The builder refuses an address that
-does not end in `/exec`, such as the sheet's own address.
+from step 1 into the "Web app URL" field. That field takes only an Apps Script
+web app's address, on `script.google.com` with a path that ends in `/exec`. The
+builder refuses any other, such as the sheet's own address.
 Press "Make the link". The link shows under "Your study link", beside a "Copy
 the link" button. Send it to the participants.
 

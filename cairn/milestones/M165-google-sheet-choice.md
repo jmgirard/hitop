@@ -1,6 +1,6 @@
 # M165: Google Sheet choice in the Study Link Builder
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -65,3 +65,5 @@ The Study Link Builder offers "A Google Sheet" as a destination, with its setup 
 - 2026-10-05: T2 done. The steps are an `ol#sheetSteps`, the script a `<script type="text/plain" id="sheetScript">` in `#sheetFields`, and a failed copy points to the README. Test G4 stubs `navigator.clipboard.writeText` and compares the text with the README block. A plant that changed `MAX_KEYS` in the page's copy turned G4 red. `link-sections.spec.js` and `link.spec.js` pass (263).
 - 2026-10-05: T3 done. `readForm()` runs `isSheetUrl()` on the URL that `checkStore()` returns, so the host is read in lower case. Test G5 covers the 7 refused and 4 taken addresses of AC3, the setup-file download, and the `http:` order. Plants that loosened the host test or the `/exec` test each turned one G5 probe red. `link-sheet.spec.js` passes (23).
 - 2026-10-05: T4 done. New hint, README "Where responses go" and step 4, `online-collection.Rmd` intro and steps 1 and 2, `pid5_scoring.Rmd`, `modules-hitopsr.Rmd`, NEWS entry. The full suite showed that S12 (`link-sections.spec.js`) lists every `refuseAt()` call, so the new refusal got a row there. The AC5 grep returns no line. Full Playwright suite: 1058 passed, 5 skipped. `devtools::check()`: 0 errors, 0 warnings, 0 notes.
+- 2026-10-05: the full Playwright run after the T4 commit gave 1059 passed and none skipped. The line above, which says 1058 passed and 5 skipped, gave the earlier run's skip count.
+- 2026-10-05: claim audit: 52 claims read, 2 corrected — hitop-form README.md (the localhost exception also covers "A Supabase table"), online-collection.Rmd (the field takes only a `script.google.com` address whose path ends in `/exec`). The audit also noted that the README test table had no row for `link-sheet.spec.js`. The row is added.
