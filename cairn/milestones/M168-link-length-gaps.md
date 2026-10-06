@@ -74,6 +74,7 @@ The Study Link Builder tells each researcher the true length of a study link, fr
 - 2026-10-06: claim audit: 87 claims read, 3 corrected — hitop-form README.md (Prolific's option wording), tests/helpers.mjs (gotoLong host comment), hitop vignettes/articles/online-collection.Rmd (the "For a short link" paragraph). The reader's notes were also taken: "the cache that serves GitHub Pages" in the article and NEWS, a precondition in the second L43 test, and rewraps. The same reader re-read the corrections once, and all hold (hitop-form 2e7275a).
 - 2026-10-06: T7 partial: hitop-form full Playwright suite 1,069 passed, 6 skipped (the deployed-page tests, H1 among them). hitop `pkgdown::check_pkgdown()`: no problems.
 - 2026-10-06: T7 done. hitop `devtools::check()`: 0 errors, 0 warnings, 0 notes. The claim-audit fixes after the full suite changed only comments and docs, plus one L43 precondition, which passed on its own run. Status set to review.
+- 2026-10-06: step-7 approval: m168-link-length-gaps approved for merge, with the companion /Users/jmgirard/github/hitop-form m168-link-length-gaps merged first.
 
 ## Decisions
 
