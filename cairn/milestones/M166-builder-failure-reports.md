@@ -120,3 +120,4 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - prior-review #2 (pass 2): the visitor passage's "fails in a way that has no message of its own" still describes the code, not what the visitor sees — fix now.
 - prior-review #3 (pass 2): wrap — fix now, as diff-bug #6.
 - Pass-2 fix-now committed as hitop-builder c777d6f: diff-bug #1, #2, #5, #6, blame-history #1, #3, #8 and prior-review #1 to #3 fixed c777d6f. Smoke after it: 3 passed (32.6s). `npm run prose` exited 0. Plant av by hand on a planted copy of c777d6f: A32 failed alone, the other two tests passed.
+- 2026-10-06: step-7 approval: m166-builder-failure-reports approved for merge, with the companion /Users/jmgirard/github/hitop-builder m166-builder-failure-reports first.
