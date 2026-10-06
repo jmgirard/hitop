@@ -1,6 +1,6 @@
 # M166: Module Builder failure reports
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -41,7 +41,7 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - [x] T1: In `index.html`, make `showFailure()` (`index.html:817`) scroll the "Technical details" summary into view with no smooth scroll. Send the top-level catch through `abandonBoot()` with the AC2 status. Update the comments that name "R did not start." as the catch-all.
 - [x] T2: In `tests/smoke.spec.js`, add the AC1 step to the A30 build-failure path. Add a new test that forces a throw after R starts. Throw from one site outside every `try`, never from `el()` as a whole, because `abandonBoot()` and `showFailure()` read `status`, `controls` and `techDetails`. Prefer a site before the package install, so the test skips the install. Update the time budget comment in `playwright.config.js` for the extra boot. Give each step a header line. Add one plant per new step to `tests/plants.mjs`: one removes the scroll call, one restores the old catch message. Run `npm run smoke` and `npm run plants` with nothing else running on the machine.
 - [x] T3: Update the "Technical details" passage (`README.md:125` to `131`) and the smoke-test file row. Run `npm run prose`. The companion PR opens at review.
-- [ ] T4: Review return 1. Scroll on build failures only, keep the first message when the page already gave up, and make the fix-now changes the Review section lists for pass 1. Rerun smoke, plants and prose.
+- [x] T4: Review return 1. Scroll on build failures only, keep the first message when the page already gave up, and make the fix-now changes the Review section lists for pass 1. Rerun smoke, plants and prose.
 
 ## Work log
 
@@ -62,6 +62,9 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - 2026-10-06: T4 code (hitop-builder 24274d9). The scroll moved from `showFailure()` to the catch in `download()`, so only a failed build scrolls, and `abandonBoot()` shows the message before it hides the controls again. The top-level catch calls `abandonBoot()` only when `bootAbandoned` is unset. A 400px window in A31 showed the summary's top at -0.03px after the scroll, a fractional scroll position, so `#techDetails` gained `scroll-margin: var(--s4)`. A33, a regression test for the return, opens a 300px window, refuses `webr.mjs` and reads `scrollY` 0 with the section reaching below the window. Plant aw puts the scroll back into every failure. Plants ad, au and av follow the new lines. README, comments and the budget comment carry the pass-1 wording fixes. Local smoke: 3 passed (31.6s), `npm run prose` exits 0.
 - 2026-10-06: the user paused the run while plant aw was being added, then re-ran `/milestone-implement M166`. The run resumed with the on-disk state, aw included.
 - 2026-10-06: claim audit: not re-run for the return. The return's added lines are few, and review pass 2 reads them.
+- 2026-10-06: correction to the line above: the claim audit did run on the return commit, after all.
+- 2026-10-06: claim audit: 28 claims read, 6 corrected — index.html, tests/smoke.spec.js, playwright.config.js, README.md
+- 2026-10-06: T4 done. `npm run plants` ran alone on hitop-builder 24274d9. The unplanted copy passed, all 50 plants went red, and every assertion was covered. Plant aw failed A33 alone, au A31 alone, av A32 alone, and ad A22, A30 and A32. The claim-audit fixes (9d0a9f6) change only comments and README text. Smoke passed after them (3 passed, 31.5s), and `npm run prose` exits 0. Status set to review.
 
 ## Decisions
 
