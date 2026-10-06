@@ -87,3 +87,31 @@ Pass 1, 2026-10-06. hitop at 19eec622, hitop-form at 2e7275a. Both are current w
 - AC4: a script over the `fastly2026limits.md` table read 41 rows dated 2026-10-06, each with path, length, status and `x-cache`, 26 of them misses. The longest length answered 200 on a miss is 8,177. Every miss at or under it got 200, and every miss over it got 400. Both 8,177 and 8,178 were measured on R (`/hitop-form/`) and on V10, V21 and V22. `HOST_PATH_MAX` in `link.html` line 403 is 8,177. The Role line states the 8,177 miss limit.
 - AC5: LF12 passed. It reads the exact line under a setup-file link of 8,120 characters, which names the address and has no "file you host". L37 passed and reads the unchanged text for a link that carries its setup ("You can keep the setup in a file you host instead."). Before the change, LF12 failed on the old text (T3).
 - AC6: both L43 tests passed. The first logs `#long` unhidden and empty in the frame where `#result` opens, and its text two or more frames later. The second changes the study box one frame after `#result` opens, with the made link over 8,000 characters and `#long` unhidden, and `#long` stays empty after five frames. Before the change, the first failed on text present at the opening, and the second kept the old text (T4).
+
+Independent review, pass 1. spawned: diff-bug, blame-history, prior-review. The PR-comment probes on both repos returned no threads.
+- diff-bug #1: Connect and "Another site" links count no appended ID — follow-up, new candidate row "Study link length count for Connect and "Another site"" (Scope Out names Connect as unsourced).
+- diff-bug #2: the refusal says the IDs are counted "at their longest", but no Prolific maximum is stated — fix now: the refusal now says "counting the IDs the recruiting site adds", with the comment and README to match, fixed 4f6ad9c (hitop-form).
+- diff-bug #3: H1's `not.toBe('HIT')` passes on an absent header — fix now: no answer may hold HIT, and the 200 must hold MISS, fixed 4f6ad9c.
+- diff-bug #4: H1's 40 to 1,039 slashes were unmeasured — fix now by measurement: V41, V517 and V1039 each got 400 at 8,178 and 200 at 8,177 on misses, rows added to `fastly2026limits.md`, fixed 64963cfb.
+- diff-bug #5: "two animation frames later" overstates the frames drawn — fix now: README and NEWS now say the line is drawn empty and its text written in the next frame, fixed 4f6ad9c and 64963cfb.
+- diff-bug #6: "GET " and " HTTP/1.1" make 13 characters, not 15 — fix now: the note adds the CR LF, fixed 64963cfb.
+- diff-bug #7: `sona2026help.md` lacks an M168 trace — fix now, fixed 64963cfb.
+- diff-bug #8: the article and README limit sentences leave out the site IDs — fix now, fixed 4f6ad9c and 64963cfb.
+- diff-bug #9: LF12's address left about 60 characters of margin — fix now: the address is sized to a count of 8,100, fixed 4f6ad9c.
+- diff-bug #10: `#long` stays unhidden and empty inside a hidden `#result` after a cancel — reject, false as a defect: `build()` empties and hides `#long` before `#result` can reopen.
+- blame-history #1: D-087(d) carries no pointer to D-093 — reject, planned change: DECISIONS is append-only, and D-093's heading names what it annotates.
+- blame-history #2: the refusal's count differs from the length beside "Open the link" — reject, planned change (D-093(e)).
+- blame-history #3: `#long` unhidden and empty after a cancel — reject, false as a defect (as diff-bug #10).
+- blame-history #4: the `changes` stale logic is untouched — reject, not a defect (noted).
+- blame-history #5: the test helpers share the builder's assumptions — reject, false: the shared values are sourced constants, and the helpers count apart from the builder. H1 checks the host independently.
+- blame-history #6: H1 passes on an absent `x-cache` — fix now (as diff-bug #3), fixed 4f6ad9c.
+- blame-history #7: the Node 16 KB lesson holds — reject, not a defect (noted).
+- blame-history #8: the README keeps 8,192 as the cache-hit figure — reject, not a defect (noted).
+- prior-review #1: "so that a screen reader announces it" was never tested — fix now: the text now says "can announce", and the README says no screen reader was tested, fixed 4f6ad9c and 64963cfb.
+- prior-review #2: the setup-file download gap (M153 P2) now meets more refused links — follow-up, already held by the "Hosted setup file gaps" row.
+- prior-review #3: "8,192-byte page" (PostgreSQL) beside the URL figures — reject, pre-existing (M153 P18 rejected), with a distinct meaning stated.
+- prior-review #4: the README points to `cairn/` notes a reader cannot reach — fix now: the README links the note on GitHub, fixed 4f6ad9c.
+- prior-review #5: new "the page" wording for the online form — fix now: "the online form" in the README, NEWS and article, fixed 4f6ad9c and 64963cfb.
+- prior-review #6: H1 rests on one day and one random probe a run — reject, planned change: H1 is the planned weekly re-check.
+- prior-review #7: L43's second test asserts an absence after a wait — reject, false: the wait counts frames, and positive guards precede the read.
+- Noted, not changed: D-093's heading says "at their longest". Its body (b) gives the Prolific length as the examples' length, and DECISIONS is append-only.
