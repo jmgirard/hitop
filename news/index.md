@@ -204,12 +204,20 @@
   one and names its size. With a Supabase table, the Study Link Builder
   makes no link for a table of more than 1,600 columns, PostgreSQL’s
   limit, and names the count. If a link is longer than 8,000 characters,
-  the builder shows a warning under it. The warning says that some sites
-  and mail programs cut long links, and that you can keep the setup in a
-  file you host. The builder makes no link with more than 8,192
-  characters after the host name, which GitHub Pages, the online form’s
-  host, refuses. For a link that carries its setup, it says to choose
-  “In a file I host”.
+  the builder shows a warning under it. The warning is drawn empty first
+  and its text written in the next animation frame, so that a screen
+  reader can announce it. The warning says that some sites and mail
+  programs cut long links. For a link that carries its setup, it says
+  that you can keep the setup in a file you host. For a link that names
+  a setup file, it says that the file’s address makes the link long. The
+  builder makes no link that counts more than 8,177 characters after the
+  host name. When the online form is not in the cache that serves GitHub
+  Pages, its host, GitHub refuses a longer one. The count takes each
+  Prolific ID as 24 characters, and a Prolific link counts the three IDs
+  once more, as Prolific’s “I’ll use URL parameters” option can append
+  them. SONA’s `%SURVEY_CODE%` counts as 7 characters, its longest code.
+  The refusal names the count, and for a link that carries its setup, it
+  says to choose “In a file I host”.
 
 - **A hitop-form study link can name a setup file you host.** Under
   “Where the setup is kept”, the Study Link Builder offers “In the study
