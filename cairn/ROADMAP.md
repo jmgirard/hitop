@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-10-06 (M165 done): archived, M161 row retired, one row compressed for bytes, no lesson added. validate green._
+_Last hygiene check: 2026-10-06 (M166 done): archived, M162 row retired, follow-ups on the Module Builder page requests row, no lesson added (LESSONS at its byte budget). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
@@ -9,11 +9,10 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 |---|---|---|---|---|---|
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
-| M162 | PID-5 forensic form (FFBF) keying and scoring | done | — | normal | milestones/archive/M162-pid5ffbf-scoring.md |
 | M163 | PID-5 forensic form (FFBF) English forms | blocked | M162 | normal | milestones/M163-pid5ffbf-forms.md |
 | M164 | README capability table | done | — | normal | milestones/archive/M164-readme-capability-table.md |
 | M165 | Google Sheet choice in the Study Link Builder | done | — | normal | milestones/archive/M165-google-sheet-choice.md |
-| M166 | Module Builder failure reports | review | — | high | milestones/M166-builder-failure-reports.md |
+| M166 | Module Builder failure reports | done | — | high | milestones/archive/M166-builder-failure-reports.md |
 | M167 | Module Builder test reach | planned | M166 | high | milestones/M167-builder-test-reach.md |
 
 ## Candidates

@@ -1,0 +1,11 @@
+# M166: Module Builder failure reports
+
+**Status:** done (2026-10-06, PR #174 https://github.com/jmgirard/hitop/pull/174; companion hitop-builder PR #26 https://github.com/jmgirard/hitop-builder/pull/26)
+
+**Goal:** A Module Builder failure shows the researcher a true status, with the opened log in view.
+
+**Outcome:** In hitop-builder `index.html`, the catch in `download()` scrolls "Technical details" into view with `scrollIntoView({ block: 'nearest' })` after a failed build. `showFailure()` itself does not scroll, so a failed load leaves the page where it was. `#techDetails` has `scroll-margin: var(--s4)`, because a 400px window left the summary 0.03px above the window. The top-level `main().catch` calls `abandonBoot('R started, but the page did not finish setting up.')` in place of `showFailure('R did not start.')`. It does so only when `bootAbandoned` is unset, so an earlier message such as the lost connection stays. The latch comment counts nine sites. `tests/smoke.spec.js` adds A31 (a failed build in a 400px window brings the summary wholly into view), a new second test for A32 (an init script makes the "Downloading the hitop package" status write throw), and A33 (a refused `webr.mjs` in a 300px window leaves `scrollY` 0). `tests/plants.mjs` adds plants au, av and aw, and plant ad follows the new `showFailure()`: 50 plants, all red. README and the `playwright.config.js` time-budget comment describe the change. This repo: tracking only.
+
+**Decisions:** none promoted. The plan chose to scroll the section over moving focus to it, so the status line stays the announcing region.
+
+**Review:** Full criteria audit (7 findings, fixed). Claim audits read 32 and then 28 claims and corrected 7 and 6. Review return 1: in pass 1, every load failure scrolled, which can push the status line off a short window. Two three-lens passes gave 41 findings: 27 fixed, 5 to the "Module Builder page requests" row (the focused button off-screen after the scroll, no scroll when the section already spans the window, a build failure replacing a lost-connection message, the catch's guard untested), 3 rejected, 6 noted. Plant matrix 50 of 50 red. Companion smoke CI and all 8 checks here passed, and R CMD check gave 0/0/0. Hygiene: no lesson added (LESSONS at its byte budget), M162 row retired.
