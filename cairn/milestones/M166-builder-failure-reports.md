@@ -66,6 +66,7 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - 2026-10-06: claim audit: 28 claims read, 6 corrected — index.html, tests/smoke.spec.js, playwright.config.js, README.md
 - 2026-10-06: T4 done. `npm run plants` ran alone on hitop-builder 24274d9. The unplanted copy passed, all 50 plants went red, and every assertion was covered. Plant aw failed A33 alone, au A31 alone, av A32 alone, and ad A22, A30 and A32. The claim-audit fixes (9d0a9f6) change only comments and README text. Smoke passed after them (3 passed, 31.5s), and `npm run prose` exits 0. Status set to review.
 
+- 2026-10-06: step-7 approval: m166-builder-failure-reports approved for merge, with the companion /Users/jmgirard/github/hitop-builder m166-builder-failure-reports first.
 ## Decisions
 
 ## Review
@@ -120,4 +121,3 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - prior-review #2 (pass 2): the visitor passage's "fails in a way that has no message of its own" still describes the code, not what the visitor sees — fix now.
 - prior-review #3 (pass 2): wrap — fix now, as diff-bug #6.
 - Pass-2 fix-now committed as hitop-builder c777d6f: diff-bug #1, #2, #5, #6, blame-history #1, #3, #8 and prior-review #1 to #3 fixed c777d6f. Smoke after it: 3 passed (32.6s). `npm run prose` exited 0. Plant av by hand on a planted copy of c777d6f: A32 failed alone, the other two tests passed.
-- 2026-10-06: step-7 approval: m166-builder-failure-reports approved for merge, with the companion /Users/jmgirard/github/hitop-builder m166-builder-failure-reports first.
