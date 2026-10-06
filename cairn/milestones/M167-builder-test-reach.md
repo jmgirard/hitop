@@ -7,7 +7,7 @@
 - **Principles touched:** IP2
 - **Resolves:** —
 - **Surface tier:** internal — the builder repo's smoke test, zip reader and prose ledger, which no researcher runs
-- **Branch/PR:** m167-builder-test-reach, companion: /Users/jmgirard/github/hitop-builder m167-builder-test-reach
+- **Branch/PR:** m167-builder-test-reach, companion: /Users/jmgirard/github/hitop-builder m167-builder-test-reach https://github.com/jmgirard/hitop-builder/pull/27
 
 ## Goal
 
