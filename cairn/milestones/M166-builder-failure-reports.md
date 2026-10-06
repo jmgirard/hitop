@@ -1,13 +1,13 @@
 # M166: Module Builder failure reports
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the failure status and scroll position of the Module Builder page
-- **Branch/PR:** —
+- **Branch/PR:** m166-builder-failure-reports, companion: /Users/jmgirard/github/hitop-builder m166-builder-failure-reports
 
 ## Goal
 
@@ -38,7 +38,7 @@ A Module Builder failure shows the researcher a true status, with the opened log
 
 ## Tasks
 
-- [ ] T1: In `index.html`, make `showFailure()` (`index.html:817`) scroll the "Technical details" summary into view with no smooth scroll. Send the top-level catch through `abandonBoot()` with the AC2 status. Update the comments that name "R did not start." as the catch-all.
+- [x] T1: In `index.html`, make `showFailure()` (`index.html:817`) scroll the "Technical details" summary into view with no smooth scroll. Send the top-level catch through `abandonBoot()` with the AC2 status. Update the comments that name "R did not start." as the catch-all.
 - [ ] T2: In `tests/smoke.spec.js`, add the AC1 step to the A30 build-failure path. Add a new test that forces a throw after R starts. Throw from one site outside every `try`, never from `el()` as a whole, because `abandonBoot()` and `showFailure()` read `status`, `controls` and `techDetails`. Prefer a site before the package install, so the test skips the install. Update the time budget comment in `playwright.config.js` for the extra boot. Give each step a header line. Add one plant per new step to `tests/plants.mjs`: one removes the scroll call, one restores the old catch message. Run `npm run smoke` and `npm run plants` with nothing else running on the machine.
 - [ ] T3: Update the "Technical details" passage (`README.md:125` to `131`) and the smoke-test file row. Run `npm run prose`. The companion PR opens at review.
 
@@ -49,6 +49,8 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - 2026-10-06: plan split the row into M166 (page, user-facing) and M167 (tests, internal), because its ten items need more than seven criteria. M167 depends on M166, because both edit `smoke.spec.js` and `plants.mjs`.
 - 2026-10-06: plan chose to scroll the summary into view over a focus move to it. The status line is the announcing region, and a focus move interrupts a keyboard user. Falsified by a screen-reader report that the failure goes unheard.
 - 2026-10-06: criteria audit (full mode, fresh Opus reader) returned 7 findings, all fixed. AC1 had no off-screen start, so an unchanged page passed it. A precondition now puts the summary outside the viewport. AC2's sample throw broke the failure path itself: T2 now names a safe site and the budget comment. The hidden-controls check cannot tell the old catch from the new one: it stays as a fact, not as evidence of the change. "A smoke step asserts", "A22 is unchanged" and "written against an observed run" bound test or record properties: AC1 to AC3 now state page and README facts. `npm run prose` checks no README claim, so AC3's truth rests on the review read.
+- 2026-10-06: implement started. Branches cut in hitop and hitop-builder. The untracked `devel/hitopdat_*` files in hitop are not this milestone's and stay unstaged. The R verify slot (`devtools::test()`) does not apply, because no R code changes. The companion's smoke run is the verify step.
+- 2026-10-06: T1 done (hitop-builder f40e761). `showFailure()` calls `scrollIntoView({ block: 'nearest' })` on the whole section, so a section that fits shows its log too, and one taller than the window shows its summary. `abandonBoot()` now hides the controls before it shows the failure, so the scroll measures the page without them. The top-level catch goes through `abandonBoot()`, and the latch comment counts nine sites. `npm run prose` exits 0 with 9 `abandonBoot` passages.
 
 ## Decisions
 
