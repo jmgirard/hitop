@@ -71,7 +71,7 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - diff-bug #2: the top-level catch overwrites a specific message after a latched failure such as the lost connection — fix now (the catch keeps the first message when `bootAbandoned` is set).
 - diff-bug #3: plant av's "and no latch" claims more than A32 checks — fix now (description narrowed).
 - diff-bug #4: A31's off-screen start depends on page height at 1280×720 — fix now (A31 sets a shorter viewport first).
-- diff-bug #5: after a failed build the focused download button can sit off-screen — follow-up, to the new "Module Builder failure scroll gaps" candidate row.
+- diff-bug #5: after a failed build the focused download button can sit off-screen — follow-up, to the "Module Builder page requests" candidate row.
 - diff-bug #6: the catch comment says every throw that reaches it comes after R started, but three lines before the race and a throw inside `abandonBoot()` reach it too — fix now (wording narrowed).
 - diff-bug #7: README "an error that has no message of its own" reads as an empty message — fix now.
 - diff-bug #8: README visitor passage omits the load-failure scroll — fix now by #1, after which no load failure scrolls.
