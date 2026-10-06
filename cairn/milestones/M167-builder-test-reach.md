@@ -1,6 +1,6 @@
 # M167: Module Builder test reach
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** M166
 - **Driving RR:** —
@@ -59,7 +59,7 @@ This repo gets tracking only.
 - [x] T4: Add the focus-stays step to a build other than the Word build, because A11 needs focus on the body at the end of that build. Use a control that stays enabled during a build, for example the "Technical details" summary.
 - [x] T5: Widen the writer grep of `prose.mjs` (`prose.mjs:241`) to the AC5 list. Classify any new sites in `WRITERS`. Under `--ref`, turn the floor failure and the writer-count throw into warnings. Update the comment in `smoke.yml`.
 - [x] T6: Add the dark-scheme read to one A28 build with `page.emulateMedia({ colorScheme: 'dark' })`. Restore light after it.
-- [ ] T7: Add plants to `tests/plants.mjs`, so that one plant fails each new or changed assertion. Update the header list and the README file table. Run `npm run smoke`, `npm run plants` and `npm run prose` with nothing else running on the machine. The companion PR opens at review.
+- [x] T7: Add plants to `tests/plants.mjs`, so that one plant fails each new or changed assertion. Update the header list and the README file table. Run `npm run smoke`, `npm run plants` and `npm run prose` with nothing else running on the machine. The companion PR opens at review.
 
 ## Work log
 
@@ -76,6 +76,8 @@ This repo gets tracking only.
 - 2026-10-06: T6 done (hitop-builder 9ff70d7). The dark read went into the Word build, not an A28 build as T6 said, because M105 records a Qualtrics build ending before an unheld read and A10 already reads reliably in the Word build (minor deviation). `readCardLook()` serves A10 and new step A36. A36 emulates the dark scheme, reads the cards against the disabled button, and requires `matchMedia` dark and a button background different from the light read, then restores light. Local smoke: 4 passed (32.5s).
 - 2026-10-06: T7 code (hitop-builder 97c3981, 8a74e7b). Plants ax (Qualtrics questionnaire named `.qsf`, for A34), ay (focus taken back wherever it is, for A35) and az (a solid card border in the dark block only, for A36). Changed assertions A4, A20 and A28 keep the plants that failed them before. README's file table and the spec header name the four tests and the new steps. Smoke and the plant matrix are running.
 - 2026-10-06: the first plant run on 8a74e7b failed: plants aj and at no longer turned the test red. T3's `watchStatus()` seeded the record with the status on show before the press, "Ready. <format> chosen.", which names the format, so A28 passed a build status without the name. The record now starts empty (hitop-builder 42fa366). By hand on planted copies, aj and at each failed A28 alone. A stray command imported `plants.mjs` and started a second matrix; it was stopped within two minutes, and no process was left. The full matrix reruns on 42fa366.
+- 2026-10-06: T7 done. On hitop-builder 42fa366, local smoke passed (4 passed, 31.4s), and `npm run plants` ran alone: 36 enumerated assertions, the unplanted copy passed, all 53 plants red, every assertion covered. Plant ax failed A34 alone, ay A35 alone, az A36 alone, and aj and at A28. `npm run prose` exits 0. Status set to review.
+- 2026-10-06: claim audit: not owed — internal tier
 
 ## Decisions
 
