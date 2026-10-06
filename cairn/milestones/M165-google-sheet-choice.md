@@ -47,7 +47,7 @@ The Study Link Builder offers "A Google Sheet" as a destination, with its setup 
 
 - [x] T1: In hitop-form `link.html`, split the menu. The new option value maps to kind `webhook` in `readForm()` (near line 1715). Add the two field groups, update `showKind()` (near line 353), and choose the option from the address at prefill (near line 1230). Change the old `Web address: https://script.google.com/...` assertions (`link.spec.js`, `link-consent.spec.js`) to "Web app URL". Write the AC1 and AC4 tests.
 - [x] T2: Add the setup steps and the "Copy the script" button under "A Google Sheet", following the "Copy the SQL" button (near line 1782). Keep the script text in `link.html`. Write the test that compares it with the README block (AC2).
-- [ ] T3: Add the Google address check in `readForm()` after `checkStore()`, with the refusal at the "Web app URL" field. Write the AC3 tests.
+- [x] T3: Add the Google address check in `readForm()` after `checkStore()`, with the refusal at the "Web app URL" field. Write the AC3 tests.
 - [ ] T4: Rewrite the `#destHint` text (40 words or fewer, no retired term) and update the pinned hint test (`link-sections.spec.js` near line 1000). Update the README sections, the three hitop tutorials and NEWS.md. Run the Playwright suite and `devtools::check()` (AC5, AC6).
 
 ## Work log
@@ -63,3 +63,4 @@ The Study Link Builder offers "A Google Sheet" as a destination, with its setup 
 - 2026-10-05: branches cut in hitop and hitop-form. The untracked `devel/hitopdat_*` files in hitop are not this milestone's and stay unstaged.
 - 2026-10-05: T1 done. The new option value is `sheet`, the field `sheetUrl`, and `isSheetUrl()` picks the choice at prefill. The "Another web address" placeholder is `https://example.org/responses`. New `tests/link-sheet.spec.js` (G1 to G3). Five old tests now expect the sheet choice. A plant that made `isSheetUrl()` return false turned 3 of the 8 new tests red. The builder test files pass (331).
 - 2026-10-05: T2 done. The steps are an `ol#sheetSteps`, the script a `<script type="text/plain" id="sheetScript">` in `#sheetFields`, and a failed copy points to the README. Test G4 stubs `navigator.clipboard.writeText` and compares the text with the README block. A plant that changed `MAX_KEYS` in the page's copy turned G4 red. `link-sections.spec.js` and `link.spec.js` pass (263).
+- 2026-10-05: T3 done. `readForm()` runs `isSheetUrl()` on the URL that `checkStore()` returns, so the host is read in lower case. Test G5 covers the 7 refused and 4 taken addresses of AC3, the setup-file download, and the `http:` order. Plants that loosened the host test or the `/exec` test each turned one G5 probe red. `link-sheet.spec.js` passes (23).
