@@ -1,6 +1,6 @@
 # M166: Module Builder failure reports
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,6 +56,7 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - 2026-10-06: T3 done (hitop-builder ec57570). README's "Technical details" passage, its developer note on `showFailure()` and the smoke-test file row state the A31 and A32 behavior. `npm run prose` exits 0. README lint rose from 1 to 5 long or trailing sentences, so the review read checks those sentences.
 - 2026-10-06: claim audit: 32 claims read, 7 corrected — index.html, tests/smoke.spec.js, playwright.config.js, README.md
 - 2026-10-06: T2 done. `npm run plants` ran alone on hitop-builder ec57570. The unplanted copy passed, all 49 plants went red, and all 32 enumerated assertions were covered. Plant au failed A31 alone, plant av failed A32 alone, and plant ad failed A22, A30 and A32. Status set to review.
+- 2026-10-06: review return 1: diff-bug #1, a load failure now scrolls, which can push the status line above a short window. Fix-now work rides the return: diff-bug #2, #3, #4, #6, #7, #9, #10, #11 and prior-review #1 to #3 (Review section).
 
 ## Decisions
 
@@ -64,3 +65,29 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - AC1: met. Fresh local smoke on hitop-builder ec57570: 3 passed (32.6s). A31 passed inside the first test. It scrolled `#downloadBtn` to the window's foot, read the summary's top at or below the window height, and after the forced `URL.createObjectURL` failure read the summary's box wholly inside the window. A30 passed on the same failure, with the section open. The plant run on ec57570 showed plant au (scroll removed) failing A31 alone.
 - AC2: met. The same run passed A32 in the second test: the status began "R started, but the page did not finish setting up." and named "Technical details", the section was open and rendered, and `#controls` was hidden. A22 passed in the third test on a status that begins "R did not load.". Plant av (old catch) failed A32 alone.
 - AC3: met. Read of `git diff main -- README.md` on hitop-builder: the "Technical details" passage says a build that fails with the section below the window scrolls it into view, and gives the "R started, but…" status. The developer note on `showFailure()` and the smoke-test row state the same two behaviors and the new second test. `npm run prose` exited 0 (21 writer sites, 184 passages, 95 body text nodes, no retired names).
+- Gate (pass 1): `cairn_validate` exit 1 on `mirror agreement` (M163: ROADMAP=blocked, file=planned). The cause is the `main` commit ffe29b46, not this branch. The fix goes to `main` as a docs-only commit. `devtools::document()` changed no file. `devtools::check()` is still running.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: every load failure now scrolls through `abandonBoot()`, and on a short window `nearest` can push the status line above the window — fix now (floor return: a user-visible regression outside AC1's build-failure case). The scroll moves to the build-failure path alone.
+- diff-bug #2: the top-level catch overwrites a specific message after a latched failure such as the lost connection — fix now (the catch keeps the first message when `bootAbandoned` is set).
+- diff-bug #3: plant av's "and no latch" claims more than A32 checks — fix now (description narrowed).
+- diff-bug #4: A31's off-screen start depends on page height at 1280×720 — fix now (A31 sets a shorter viewport first).
+- diff-bug #5: after a failed build the focused download button can sit off-screen — follow-up, to the new "Module Builder failure scroll gaps" candidate row.
+- diff-bug #6: the catch comment says every throw that reaches it comes after R started, but three lines before the race and a throw inside `abandonBoot()` reach it too — fix now (wording narrowed).
+- diff-bug #7: README "an error that has no message of its own" reads as an empty message — fix now.
+- diff-bug #8: README visitor passage omits the load-failure scroll — fix now by #1, after which no load failure scrolls.
+- diff-bug #9: README line 442 not wrapped — fix now.
+- diff-bug #10: `playwright.config.js` timing reads as if the A32 test downloads nothing — fix now (it downloads R).
+- diff-bug #11: plant ad's comment names A22 alone, and it fails A22, A30 and A32 — fix now.
+- diff-bug #12: textContent override reach — noted, no defect.
+- diff-bug #13: `abandonBoot()` reorder — noted, no defect.
+- blame-history #1: the top-level catch now latches, and the M076 comment chose not to — reject, planned change (T1 routes the catch through `abandonBoot()`). After the controls show, only `showStep(0)` and `status('Ready.')` run, and neither throws in practice.
+- blame-history #2: catch overwrites a latched message — fix now, as diff-bug #2.
+- blame-history #3: "comes after R started" not strictly true — fix now, as diff-bug #6.
+- blame-history #4: message shown after the controls hide, so a throw while hiding loses it — reject, planned change (the scroll measures the page without the controls). Fixing #1 removes the scroll from this path, so the order goes back to message first.
+- blame-history #5: budget comment loose on the A32 boot — fix now, as diff-bug #10.
+- blame-history #6: plant ad now matches across two lines — reject, false as a defect: `replaceOnce` stops the matrix loudly if the text moves.
+- blame-history #7: README wrap — fix now, as diff-bug #9.
+- blame-history #8: focused button off-screen — follow-up, as diff-bug #5.
+- prior-review #1: `index.html:1650` and `README.md:115` still say the page does not scroll at a build's end, false for a failed build — fix now.
+- prior-review #2: README line 442 not wrapped, and short lines in the catch comment — fix now.
+- prior-review #3: the "or only its top" taller-window case rests on a spec reading with no probe — fix now (README and comment drop the clause).
