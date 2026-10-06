@@ -67,6 +67,7 @@ The Study Link Builder offers "A Google Sheet" as a destination, with its setup 
 - 2026-10-05: T4 done. New hint, README "Where responses go" and step 4, `online-collection.Rmd` intro and steps 1 and 2, `pid5_scoring.Rmd`, `modules-hitopsr.Rmd`, NEWS entry. The full suite showed that S12 (`link-sections.spec.js`) lists every `refuseAt()` call, so the new refusal got a row there. The AC5 grep returns no line. Full Playwright suite: 1058 passed, 5 skipped. `devtools::check()`: 0 errors, 0 warnings, 0 notes.
 - 2026-10-05: the full Playwright run after the T4 commit gave 1059 passed and none skipped. The line above, which says 1058 passed and 5 skipped, gave the earlier run's skip count.
 - 2026-10-05: claim audit: 52 claims read, 2 corrected — hitop-form README.md (the localhost exception also covers "A Supabase table"), online-collection.Rmd (the field takes only a `script.google.com` address whose path ends in `/exec`). The audit also noted that the README test table had no row for `link-sheet.spec.js`. The row is added.
+- 2026-10-06: step-7 approval: m165-google-sheet-choice approved for merge, with the companion /Users/jmgirard/github/hitop-form m165-google-sheet-choice merged first.
 
 ## Decisions
 
