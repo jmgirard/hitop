@@ -24,9 +24,9 @@ A Module Builder failure shows the researcher a true status, with the opened log
 
 ## Acceptance criteria
 
-- [ ] AC1: After a build fails, the "Technical details" section is open and its `<summary>` element's bounding box lies wholly inside the viewport. This holds for a build that started while the summary's box lay outside the viewport. The check is a smoke step on the forced `URL.createObjectURL` throw that A30 uses. The step sets a viewport size or scroll position that puts the summary outside the viewport, and asserts that it is outside before the failure.
-- [ ] AC2: The page's start-up throws after `webR.init()` resolves. The status line then reads "R started, but the page did not finish setting up.", followed by the existing pointer to "Technical details". The section is open, and `#controls` is hidden. The check is a smoke step that forces such a throw. A refused `webr.mjs` still gets a status that begins "R did not load."
-- [ ] AC3: In hitop-builder `README.md`, the "Technical details" passage and the `tests/smoke.spec.js` file-table row state the behavior that the AC1 and AC2 smoke steps assert. `npm run prose` exits 0.
+- [x] AC1: After a build fails, the "Technical details" section is open and its `<summary>` element's bounding box lies wholly inside the viewport. This holds for a build that started while the summary's box lay outside the viewport. The check is a smoke step on the forced `URL.createObjectURL` throw that A30 uses. The step sets a viewport size or scroll position that puts the summary outside the viewport, and asserts that it is outside before the failure.
+- [x] AC2: The page's start-up throws after `webR.init()` resolves. The status line then reads "R started, but the page did not finish setting up.", followed by the existing pointer to "Technical details". The section is open, and `#controls` is hidden. The check is a smoke step that forces such a throw. A refused `webr.mjs` still gets a status that begins "R did not load."
+- [x] AC3: In hitop-builder `README.md`, the "Technical details" passage and the `tests/smoke.spec.js` file-table row state the behavior that the AC1 and AC2 smoke steps assert. `npm run prose` exits 0.
 - [ ] AC4: The smoke test passes locally and on the CI of the hitop-builder pull request.
 
 ## Coverage
@@ -60,3 +60,7 @@ A Module Builder failure shows the researcher a true status, with the opened log
 ## Decisions
 
 ## Review
+
+- AC1: met. Fresh local smoke on hitop-builder ec57570: 3 passed (32.6s). A31 passed inside the first test. It scrolled `#downloadBtn` to the window's foot, read the summary's top at or below the window height, and after the forced `URL.createObjectURL` failure read the summary's box wholly inside the window. A30 passed on the same failure, with the section open. The plant run on ec57570 showed plant au (scroll removed) failing A31 alone.
+- AC2: met. The same run passed A32 in the second test: the status began "R started, but the page did not finish setting up." and named "Technical details", the section was open and rendered, and `#controls` was hidden. A22 passed in the third test on a status that begins "R did not load.". Plant av (old catch) failed A32 alone.
+- AC3: met. Read of `git diff main -- README.md` on hitop-builder: the "Technical details" passage says a build that fails with the section below the window scrolls it into view, and gives the "R started, but…" status. The developer note on `showFailure()` and the smoke-test row state the same two behaviors and the new second test. `npm run prose` exited 0 (21 writer sites, 184 passages, 95 body text nodes, no retired names).
