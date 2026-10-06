@@ -10,13 +10,14 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
 | M163 | PID-5 forensic form (FFBF) English forms | blocked | M162 | normal | milestones/M163-pid5ffbf-forms.md |
-| M168 | Study link length-check gaps | planned | — | high | milestones/M168-link-length-gaps.md |
+| M168 | Study link length-check gaps | review | — | high | milestones/M168-link-length-gaps.md |
 | M165 | Google Sheet choice in the Study Link Builder | done | — | normal | milestones/archive/M165-google-sheet-choice.md |
 | M166 | Module Builder failure reports | done | — | high | milestones/archive/M166-builder-failure-reports.md |
 | M167 | Module Builder test reach | done | M166 | high | milestones/archive/M167-builder-test-reach.md |
 
 ## Candidates
 
+- Study link length count for Connect and "Another site" (M168 review). The count adds nothing for them, but each site appends its parameter and an ID of no sourced length. A link counted at 8,177 can then fail on a cache miss. Promote on a Connect ID source, or a 400 or 414 from such a link — added 2026-10-06 — lineage: M168
 - hitop-form test fixture reach (M156 review). Before `begin()` the copies route fakes CORS preflights for a store test. L39 (`link.spec.js:1512`) makes its own context. With `FORM_TARGET` set, a second page or reload after `begin()` is unrouted. Promote when a store test, `newContext` call or second page is added — added 2026-10-02 — lineage: M156
 - Hosted setup file gaps (finding numbers in the lineage archives). A hand-edited file does not refill the form. A blocking host gets a check-your-connection message, and the `NEXT_STEP` comment is stale. S1 does not pin the new fieldset. A `?token=` address and some untested paths remain (corrected M155). M153: the download measures indented JSON, so it can refuse a setup the link refused. M154: no module-row download round-trip test. Promote on an unrefilled edited file, a participant refused by a blocking host, a setup no route can carry, or a red CI run from these — added 2026-10-01, extended 2026-10-01 — lineage: M152, M153, M154
 - Study Link Builder failure-path gaps (M155 review R7, R8, R9, R11, N4, N5, and the M165 review). If a `c` link's fill and the form's emptying both throw, its addresses stay filled with no notice and "Make the link" enabled, against M128's rule. No test probes a throw after an address is filled. L34's `z` case cannot fail on the disabled button (the form is inert). Screen readers: a module row's message `aria-label` replaces its text, the sheet steps are not in the menu's `aria-describedby`, and "Copied" is not announced. A copy failure stays in `#err` after a later copy works. The sheet steps omit Google's unverified-app warning (watch a deploy first). Promote on a report, a screen-reader test, or an edit to these paths — added 2026-10-01, extended 2026-10-05 — lineage: M155, M165
