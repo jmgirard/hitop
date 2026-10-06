@@ -47,5 +47,5 @@ generate_qualtrics_pid5irf(
 ``` r
 # Write a PID-5 Informant Form Qualtrics import file to a temporary location
 generate_qualtrics_pid5irf(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/Rtmp7vmOY9/file1b101e458047.txt
+#> ✔ Qualtrics import file successfully created at /tmp/RtmpmSHcWB/file1a7546f49a6d.txt
 ```
