@@ -1,13 +1,13 @@
 # M168: Study link length-check gaps
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the Study Link Builder's refusals, warning and documentation that researchers read
-- **Branch/PR:** —
+- **Branch/PR:** m168-link-length-gaps; companion: /Users/jmgirard/github/hitop-form m168-link-length-gaps
 
 ## Goal
 
@@ -45,7 +45,7 @@ The Study Link Builder tells each researcher the true length of a study link, fr
 
 ## Tasks
 
-- [ ] T1: Read Prolific's API reference page "get submission" (https://docs.prolific.com/api-reference/submissions/get-submission) and update `cairn/references/prolific2026help.md`: the three example IDs, the `%SESSION_ID%` sentence, the date read, and the open question narrowed to "no listed page states a maximum length".
+- [x] T1: Read Prolific's API reference page "get submission" (https://docs.prolific.com/api-reference/submissions/get-submission) and update `cairn/references/prolific2026help.md`: the three example IDs, the `%SESSION_ID%` sentence, the date read, and the open question narrowed to "no listed page states a maximum length".
 - [ ] T2: Tests first in `tests/link-setupfile.spec.js`: Prolific and SONA setup-file links at `HOST_PATH_MAX` and `HOST_PATH_MAX` + 1, each count made apart from the builder as LF9 does. Then change the count at `link.html:1563-1565` to take each site's added characters. Prolific's placeholders count at `PROLIFIC_ID_LENGTH` plus the appended 108, and SONA's placeholder at a new constant of 7. Each constant's comment cites its source. The refusal names the counted length. Update L38, LF9 and the other tests whose lengths move.
 - [ ] T3: Test first: the long-link line's text for a setup-file link and for a link carrying its setup. Then branch the text at `link.html:1579-1582`.
 - [ ] T4: Test first, with a frame counter and a `MutationObserver` log (LESSONS M148), and plant a same-frame write to see it fail. Then unhide `#long` empty in the frame that opens `#result`, and write its text two frames later. A later build or `hideResult()` cancels a pending write. Test the cancel with a field change one frame after `#result` opens.
@@ -60,6 +60,8 @@ The Study Link Builder tells each researcher the true length of a study link, fr
 - 2026-10-06: criteria audit (full mode, fresh Opus reader) returned 12 points, all disposed. AC1 now calls 108 an upper bound, because article 445178 names neither the parameters nor the separator. AC1 and AC2 test setup-file links at `HOST_PATH_MAX` and one more, because a `c` link cannot reach every length and T5 can move the limit. AC1 makes the refusal name the counted length. AC4 states the measured lengths in order. AC6 adds the cancel of a pending write. AC7 names hitop's NEWS.md. The weekly deployed-host test stays task T5 with its plant. It is not a criterion, because it checks the deliverable (the narrower promise). AC2, AC3 and AC5 had no finding. SOURCES.md is unchanged, because the three reference notes are the repo's records for web sources.
 - 2026-10-06: plan gate chose to count Prolific's appended IDs on every Prolific link over a checkbox that asks whether the option is on, because a researcher does not always know the setting and the refusal errs on the safe side by 108 characters; falsified by a researcher refused a link that Prolific's real URL carries.
 - 2026-10-06: plan gate chose a deployed-only test in the existing weekly run over a new scheduled workflow, because the weekly run already targets the deployed page; falsified by the weekly run being dropped or no longer targeting the deployed page.
+- 2026-10-06: implement started. Branch `m168-link-length-gaps` cut in hitop and in the hitop-form companion. Untracked `devel/hitopdat_*` files stay unstaged (not this milestone's).
+- 2026-10-06: T1 done. `prolific2026help.md` adds the *Get submission* example IDs (24 characters each, no stated maximum) and article 445133, with the open questions corrected in place.
 
 ## Decisions
 
