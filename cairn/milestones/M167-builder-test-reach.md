@@ -90,3 +90,33 @@ This repo gets tracking only.
 - AC5: met. `WRITE_FORMS` lists the eleven forms, and `npm run prose` exited 0 with 27 sites and 27 rows. The `smoke.yml` comment names the same forms. Working tree: an added `innerText` write gave exit 1 (28 sites, 27 rows). Under `--ref` on two throwaway commits, the same write and a stray body text node each gave exit 0 with a warning. `--ref 059a06f` still exits 1, on 47 retired names, a check AC5 keeps.
 - AC6: met. A36 passed during the Word build: with `prefers-color-scheme: dark` emulated, the four cards matched the disabled button on all six properties, `matchMedia` read dark, and the button's background differed from the light read. Plant az (a dark-only solid border) failed A36 alone.
 
+- Gate: `cairn_validate` exit 0. No file outside `cairn/` changed in hitop, so `devtools::document()` and `check()` have no new input. M166's pass gave 0/0/0 on the same package files. NEWS: none, because this repo carries tracking only.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: A35 reads the button's state after the Qualtrics press with nothing holding the build, so a fast build gives a false red — fix now (the press, the focus move and the read happen in one call).
+- diff-bug #2: A36's reads run before A11's blur, which widens A11's false-red window — fix now (A36 moves after the blur).
+- diff-bug #3: `zipEntries()` trusts the end record's count and returns a subset when it is too low — fix now (the reader must end where the central directory ends).
+- diff-bug #4: duplicate entry names collapse in the map, so four entries with two README.txt read as three — fix now (a repeated name is refused).
+- diff-bug #5: `--ref` also relaxes anchor, missing-function and README failures, beyond AC5 — fix now. The missing-function and README relaxations are reverted. Pre-M147 refs exit 1 on retired names anyway, so they bought nothing. The anchor check stays a warning as part of the writer ledger.
+- diff-bug #6: "body-text floor" can mean the empty-body check, which still exits 1 under `--ref` — fix now (both body checks warn under `--ref`).
+- diff-bug #7: prose.mjs header names only two `--ref` warnings, with one unwrapped line — fix now.
+- diff-bug #8: README prose.mjs row's `--ref` list is incomplete — fix now (matches the code after #5).
+- diff-bug #9: `WRITE_FORM_RE` skips `??=`, bracket and spaced forms, and counts a non-DOM `.append(` — noted. AC5 binds the named list, and every `.append(` site today is classified.
+- diff-bug #10: the zip-reader test has no A-number, so no plant proves it can fail — noted. Its damaged copies are its plants, and T1 showed the old reader failing it.
+- diff-bug #11: the light read's scheme is not asserted — noted. `schemeChanged` covers it.
+- diff-bug #12: A35 does not read focus on the summary during the build — fix now, with #1.
+- diff-bug #13: light restored explicitly, not to the default — noted. Equivalent under the config.
+- blame-history #1: `--ref` warnings can let a half-read baseline exit 0 — fix now, as diff-bug #5.
+- blame-history #2: A4 no longer pins entry order — reject, planned change (plan work log: no researcher sees entry order).
+- blame-history #3: `playwright.config.js` comment calls the boot test the first and counts "the other two tests" — fix now.
+- blame-history #4: the ledger skips other DOM write forms — noted, as diff-bug #9.
+- blame-history #5: A36 lengthens the Word build's reads — fix now, as diff-bug #2. The `stillBuilding` false red stays possible and is a false red only.
+- blame-history #6: the Word build's status record spans A8 to A11 — noted. No status naming "Word form" is written there.
+- blame-history #7: the Online record also holds the "Ready." from `removeNextStep()` — noted, `statusNaming()` picks the right text.
+- blame-history #8: prose.mjs header splice — fix now, as diff-bug #7.
+- blame-history #9: zip-reader test outside the plant list — noted, as diff-bug #10.
+- prior-review #1: A35 race — fix now, as diff-bug #1.
+- prior-review #2: `--ref` drops passages and so narrows the retired-name scan — fix now, as diff-bug #5.
+- prior-review #3: no plant for the zip-reader test — noted, as diff-bug #10.
+- prior-review #4: duplicate names and a low count — fix now, as diff-bug #3 and #4.
+- prior-review #5: `--ref` header and README case lists — fix now, as diff-bug #7 and #8.
+- prior-review #6: a timeout inside A36's poll leaves the page dark — noted. The test has already failed then, and the page ends with it.
