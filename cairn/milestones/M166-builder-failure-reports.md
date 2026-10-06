@@ -7,7 +7,7 @@
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the failure status and scroll position of the Module Builder page
-- **Branch/PR:** m166-builder-failure-reports, companion: /Users/jmgirard/github/hitop-builder m166-builder-failure-reports
+- **Branch/PR:** m166-builder-failure-reports, companion: /Users/jmgirard/github/hitop-builder m166-builder-failure-reports https://github.com/jmgirard/hitop-builder/pull/26
 
 ## Goal
 
