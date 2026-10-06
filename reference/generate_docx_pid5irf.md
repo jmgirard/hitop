@@ -66,6 +66,6 @@ American Psychiatric Association. See also Markon et al. (2013),
 # \donttest{
 # Write a PID-5 Informant Form paper form to a temporary Word document
 generate_docx_pid5irf(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpXSdFyT/file1a3b67c6f553.docx
+#> ✔ Document successfully created at /tmp/Rtmpwpeci3/file1afd5f241ab3.docx
 # }
 ```
