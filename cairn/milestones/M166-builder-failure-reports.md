@@ -1,6 +1,6 @@
 # M166: Module Builder failure reports
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -39,7 +39,7 @@ A Module Builder failure shows the researcher a true status, with the opened log
 ## Tasks
 
 - [x] T1: In `index.html`, make `showFailure()` (`index.html:817`) scroll the "Technical details" summary into view with no smooth scroll. Send the top-level catch through `abandonBoot()` with the AC2 status. Update the comments that name "R did not start." as the catch-all.
-- [ ] T2: In `tests/smoke.spec.js`, add the AC1 step to the A30 build-failure path. Add a new test that forces a throw after R starts. Throw from one site outside every `try`, never from `el()` as a whole, because `abandonBoot()` and `showFailure()` read `status`, `controls` and `techDetails`. Prefer a site before the package install, so the test skips the install. Update the time budget comment in `playwright.config.js` for the extra boot. Give each step a header line. Add one plant per new step to `tests/plants.mjs`: one removes the scroll call, one restores the old catch message. Run `npm run smoke` and `npm run plants` with nothing else running on the machine.
+- [x] T2: In `tests/smoke.spec.js`, add the AC1 step to the A30 build-failure path. Add a new test that forces a throw after R starts. Throw from one site outside every `try`, never from `el()` as a whole, because `abandonBoot()` and `showFailure()` read `status`, `controls` and `techDetails`. Prefer a site before the package install, so the test skips the install. Update the time budget comment in `playwright.config.js` for the extra boot. Give each step a header line. Add one plant per new step to `tests/plants.mjs`: one removes the scroll call, one restores the old catch message. Run `npm run smoke` and `npm run plants` with nothing else running on the machine.
 - [x] T3: Update the "Technical details" passage (`README.md:125` to `131`) and the smoke-test file row. Run `npm run prose`. The companion PR opens at review.
 
 ## Work log
@@ -55,6 +55,7 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - 2026-10-06: the first plant run stopped at plant ad, whose target text the new scroll line changed. Plant ad now removes the `open = true` line before the scroll. Before it stopped, the unplanted copy passed and plants a to ac each went red. During that run a `git stash` of the companion's uncommitted test files lasted about one second, so one run in that window can have read the old spec. The matrix reruns whole on ec57570.
 - 2026-10-06: T3 done (hitop-builder ec57570). README's "Technical details" passage, its developer note on `showFailure()` and the smoke-test file row state the A31 and A32 behavior. `npm run prose` exits 0. README lint rose from 1 to 5 long or trailing sentences, so the review read checks those sentences.
 - 2026-10-06: claim audit: 32 claims read, 7 corrected — index.html, tests/smoke.spec.js, playwright.config.js, README.md
+- 2026-10-06: T2 done. `npm run plants` ran alone on hitop-builder ec57570. The unplanted copy passed, all 49 plants went red, and all 32 enumerated assertions were covered. Plant au failed A31 alone, plant av failed A32 alone, and plant ad failed A22, A30 and A32. Status set to review.
 
 ## Decisions
 
