@@ -1,13 +1,13 @@
 # M165: Google Sheet choice in the Study Link Builder
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the Study Link Builder page and the tutorials that researchers read
-- **Branch/PR:** —
+- **Branch/PR:** m165-google-sheet-choice, companion: /Users/jmgirard/github/hitop-form m165-google-sheet-choice
 
 ## Goal
 
@@ -45,7 +45,7 @@ The Study Link Builder offers "A Google Sheet" as a destination, with its setup 
 
 ## Tasks
 
-- [ ] T1: In hitop-form `link.html`, split the menu. The new option value maps to kind `webhook` in `readForm()` (near line 1715). Add the two field groups, update `showKind()` (near line 353), and choose the option from the address at prefill (near line 1230). Change the old `Web address: https://script.google.com/...` assertions (`link.spec.js`, `link-consent.spec.js`) to "Web app URL". Write the AC1 and AC4 tests.
+- [x] T1: In hitop-form `link.html`, split the menu. The new option value maps to kind `webhook` in `readForm()` (near line 1715). Add the two field groups, update `showKind()` (near line 353), and choose the option from the address at prefill (near line 1230). Change the old `Web address: https://script.google.com/...` assertions (`link.spec.js`, `link-consent.spec.js`) to "Web app URL". Write the AC1 and AC4 tests.
 - [ ] T2: Add the setup steps and the "Copy the script" button under "A Google Sheet", following the "Copy the SQL" button (near line 1782). Keep the script text in `link.html`. Write the test that compares it with the README block (AC2).
 - [ ] T3: Add the Google address check in `readForm()` after `checkStore()`, with the refusal at the "Web app URL" field. Write the AC3 tests.
 - [ ] T4: Rewrite the `#destHint` text (40 words or fewer, no retired term) and update the pinned hint test (`link-sections.spec.js` near line 1000). Update the README sections, the three hitop tutorials and NEWS.md. Run the Playwright suite and `devtools::check()` (AC5, AC6).
@@ -60,3 +60,5 @@ The Study Link Builder offers "A Google Sheet" as a destination, with its setup 
 - 2026-10-05: plan gate chose to refuse a non-`/exec` address over a warning. Falsified by a working Apps Script web app URL that the check refuses.
 - 2026-10-05: plan chose to keep the link format (both web choices write kind `webhook`) over a new kind. The online form and old links then do not change. Falsified by a need to tell the two choices apart in the response data.
 - 2026-10-05: criteria audit (full mode, fresh Opus reader) returned findings on AC1 to AC5, all applied. AC1 names the placeholder test and decodes setup files too. AC2 names the README block, the indent rule and the clipboard capture, and keeps the steps out of `.hint`. AC3 parses with `URL` and adds probes for case, look-alike hosts, `/dev`, a trailing slash, a query, `http:` and googleusercontent. AC4 covers `c` links and setup files and states the round trip. AC5 uses `grep -rF` and adds the hint and the two other tutorials. AC6 stays as a gate.
+- 2026-10-05: branches cut in hitop and hitop-form. The untracked `devel/hitopdat_*` files in hitop are not this milestone's and stay unstaged.
+- 2026-10-05: T1 done. The new option value is `sheet`, the field `sheetUrl`, and `isSheetUrl()` picks the choice at prefill. The "Another web address" placeholder is `https://example.org/responses`. New `tests/link-sheet.spec.js` (G1 to G3). Five old tests now expect the sheet choice. A plant that made `isSheetUrl()` return false turned 3 of the 8 new tests red. The builder test files pass (331).
