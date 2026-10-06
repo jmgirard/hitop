@@ -477,8 +477,9 @@ share a screen with the items.
 The number of questions has no limit of its own. The page reads at most
 100,000 bytes of setup, so the builder refuses a setup that is larger and
 names its size. A link that carries its setup must also fit in the 8,177
-characters that the online form's host accepts. A setup too large for that
-goes in a file you host, as the section below describes. With a Supabase
+characters that the online form's host accepts. That count includes the
+IDs a recruiting site adds, as the section below describes. A setup too
+large for that goes in a file you host, as the section below describes. With a Supabase
 table, the builder also refuses to make a link for a setup whose table
 would have more than 1,600 columns, the most a PostgreSQL table can have.
 PostgreSQL also limits the size of one row, which must fit in one page of
@@ -547,7 +548,7 @@ questions or a module make it long, and some sites and mail programs cut
 long links. If a link is longer than 8,000 characters, the builder says so
 under the link. RFC 9110 recommends that senders and recipients of web
 addresses support at least that length. GitHub Pages hosts the online form.
-When the page is not in the cache that serves GitHub Pages, GitHub
+When the online form is not in the cache that serves GitHub Pages, GitHub
 refuses a link with more than 8,177 characters after the host name, so
 the builder makes no such link.
 

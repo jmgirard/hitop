@@ -25,6 +25,7 @@ Extraction: read directly from the five pages on 2026-09-27, quoted below as rea
 - `cairn/DECISIONS.md` D-077 — the parameter, the per-participant completion code and the reason for the token.
 - `cairn/milestones/M133-form-recruiter-param.md` AC2, AC4, AC5 and AC6 — the placeholder a page may receive, the SONA-shaped completion URL in the tests, the builder's `id` and suffix, and the cited statements.
 - Once M133 ships: `vignettes/articles/online-collection.Rmd`, the SONA and Connect section, and the hitop-form README's SONA section.
+- `cairn/DECISIONS.md` D-093(d) and `cairn/milestones/M168-link-length-gaps.md` AC2 — the 2-to-7-character code behind hitop-form's `SONA_CODE_LENGTH` of 7 in the Study Link Builder's length count.
 
 ## Open questions
 

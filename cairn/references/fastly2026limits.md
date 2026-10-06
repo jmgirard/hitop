@@ -64,8 +64,14 @@ Paths: R is `/hitop-form/`, the path of every study link. V*k* is `/hitop-form/`
 | R | 8,178 | 200 | HIT |
 | R | 8,192 | 200 | HIT |
 | R | 8,193 | 414 | absent (`server: Varnish`) |
+| V1039 | 8,178 | 400 | MISS |
+| V1039 | 8,177 | 200 | MISS |
+| V517 | 8,178 | 400 | MISS |
+| V517 | 8,177 | 200 | MISS |
+| V41 | 8,178 | 400 | MISS |
+| V41 | 8,177 | 200 | MISS |
 
-On a miss, every length up to 8,177 got 200 and every longer length got 400, on R and on the V paths. On a hit, 8,192 got 200 and 8,193 got Fastly's 414. So a link of 8,178 to 8,192 characters opens only while the page is cached, which lasts 600 seconds after a request (`cache-control: max-age=600`). The 15 characters between the two limits equal the length of `GET ` and ` HTTP/1.1` around a path. So GitHub's server possibly counts its request line to 8,192. That is an observation, not a measured fact.
+On a miss, every length up to 8,177 got 200 and every longer length got 400, on R and on the V paths. On a hit, 8,192 got 200 and 8,193 got Fastly's 414. So a link of 8,178 to 8,192 characters opens only while the page is cached, which lasts 600 seconds after a request (`cache-control: max-age=600`). The 15 characters between the two limits equal the length of `GET ` and ` HTTP/1.1` around a path (13 characters) and the line's closing CR LF (2). The V41, V517 and V1039 rows, made at M168's review, cover the range of slashes the weekly H1 test draws from. So GitHub's server possibly counts its request line to 8,192. That is an observation, not a measured fact.
 
 Other requests that day recorded no `x-cache`, so they are not part of this re-measurement. Among them were two loops on R that sent every length from 8,185 to 8,215. The first got 400 at 8,185 to 8,192 and 414 above. The second, a few minutes later, got 200 at 8,185 to 8,192 and 414 above. Both fit the table: the first met a cold cache, the second a cached page.
 
