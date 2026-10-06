@@ -113,6 +113,16 @@
   items before the PID5BF+M, so no earlier result changes. `calc_omega()`
   itself is unchanged.
 
+* **"A Google Sheet" is a choice under "Where responses go" in the Study
+  Link Builder.** The menu now lists "A file on the participant's device",
+  "A Google Sheet", "Another web address" and "A Supabase table". "A Google
+  Sheet" shows the setup steps, a "Copy the script" button that copies the
+  Apps Script code, and a "Web app URL" field. That field refuses an address
+  whose host is not `script.google.com` or whose path does not end in
+  `/exec`, such as the sheet's own address. Both web choices make the same
+  link as "A web address" did, so old links still work. A link with a web
+  app's address opens with "A Google Sheet" chosen.
+
 * **"HiTOP-SR module" is an instrument choice in the Study Link Builder.**
   Each instrument row offers "HiTOP-SR module (scales you choose)" after
   the HiTOP-SR. A row set to it shows the "Module file" box and "Choose the
