@@ -1,6 +1,6 @@
 # M168: Study link length-check gaps
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -51,7 +51,7 @@ The Study Link Builder tells each researcher the true length of a study link, fr
 - [x] T4: Test first, with a frame counter and a `MutationObserver` log (LESSONS M148), and plant a same-frame write to see it fail. Then unhide `#long` empty in the frame that opens `#result`, and write its text two frames later. A later build or `hideResult()` cancels a pending write. Test the cancel with a field change one frame after `#result` opens.
 - [x] T5: Re-measure the deployed host with `curl`, on cache hits and on cache misses, and record it in `fastly2026limits.md`. Move `HOST_PATH_MAX` and the tests' `HOST_AT` to the limit on a miss. Add a test that repeats the `HOST_PATH_MAX` and `HOST_PATH_MAX` + 1 requests in the weekly run, on a fresh path so each is a miss. It runs only on a run whose `FORM_TARGET` names the deployed page. Plant `HOST_PATH_MAX` − 1 as the expected limit to see it fail.
 - [x] T6: Update the hitop-form README's length paragraphs (`README.md:211-225`, `:252-256`), hitop's `online-collection.Rmd` and NEWS.md, and the `link.html` comments. Write a D-entry annotating D-087(d) with the new Prolific and SONA counts.
-- [ ] T7: Run hitop-form's full Playwright suite, and hitop's `pkgdown::check_pkgdown()` and `devtools::check()`.
+- [x] T7: Run hitop-form's full Playwright suite, and hitop's `pkgdown::check_pkgdown()` and `devtools::check()`.
 
 ## Work log
 
@@ -73,6 +73,7 @@ The Study Link Builder tells each researcher the true length of a study link, fr
 - 2026-10-06: T6 done (hitop-form 42724bf). The README states 8,177, the cached and uncached host answers, the Prolific and SONA counts with the Get submission citation, and the long-link line. Its test table now has L43, LF9, LF12 and a new H1 row. In hitop, `online-collection.Rmd` gets 8,177 and the counts, and the unreleased NEWS bullet from M153 is corrected in place. D-093 annotates D-087(d). The weekly test (H1) stays out of the criteria, as the second re-audit decided.
 - 2026-10-06: claim audit: 87 claims read, 3 corrected — hitop-form README.md (Prolific's option wording), tests/helpers.mjs (gotoLong host comment), hitop vignettes/articles/online-collection.Rmd (the "For a short link" paragraph). The reader's notes were also taken: "the cache that serves GitHub Pages" in the article and NEWS, a precondition in the second L43 test, and rewraps. The same reader re-read the corrections once, and all hold (hitop-form 2e7275a).
 - 2026-10-06: T7 partial: hitop-form full Playwright suite 1,069 passed, 6 skipped (the deployed-page tests, H1 among them). hitop `pkgdown::check_pkgdown()`: no problems.
+- 2026-10-06: T7 done. hitop `devtools::check()`: 0 errors, 0 warnings, 0 notes. The claim-audit fixes after the full suite changed only comments and docs, plus one L43 precondition, which passed on its own run. Status set to review.
 
 ## Decisions
 
