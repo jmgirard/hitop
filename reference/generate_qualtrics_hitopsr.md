@@ -118,12 +118,12 @@ for the descriptor file.
 ``` r
 # Write a HiTOP-SR Qualtrics import file to a temporary location
 generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/RtmplbxwB5/file1b3a6a74a490.txt
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmpbc6Hoh/file1a634550439c.txt
 
 # A two-scale module, original numbering preserved (unlike the Word form)
 generate_qualtrics_hitopsr(
   file = tempfile(fileext = ".txt"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Qualtrics import file successfully created at /tmp/RtmplbxwB5/file1b3a35f06fe1.txt
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmpbc6Hoh/file1a63161d1a68.txt
 ```
