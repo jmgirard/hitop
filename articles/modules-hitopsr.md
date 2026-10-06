@@ -530,8 +530,9 @@ route that needs none: an online form that shows a HiTOP-SR module in
 the browser, or any of five forms in full: the PID-5, PID-5-SF,
 PID-5-BF, HiTOP-SR and HiTOP-BR. A study link tells it where each
 participant’s answers go: a file saved on the participant’s own device,
-which they send to you, or a web address or Supabase table the link
-names. A Google Sheet’s script is one such web address, and you download
+which they send to you, or a Google Sheet, another web address or a
+Supabase table the link names. In the Study Link Builder, “A Google
+Sheet” is its own choice, with the sheet’s setup steps, and you download
 the sheet as one CSV file. The [Collecting Responses
 Online](https://jmgirard.github.io/hitop/articles/online-collection.md)
 article walks the Google Sheet route end to end, from deploying the

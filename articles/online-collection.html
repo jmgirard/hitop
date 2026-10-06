@@ -120,22 +120,23 @@ response options and instructions are this package’s own, read from its
 JSON export. The page needs no survey platform and no account, and it
 scores nothing. Scoring is this package’s job.</p>
 <p>A study link tells the page what to show and where each participant’s
-answers go. Three destinations are offered: a file saved on the
-participant’s own device, a web address that accepts one row per
-participant, or a table in a Supabase project. This article walks the
-web-address route end to end with a Google Sheet as the destination: a
-small script bound to the sheet receives one row per participant, you
-download the sheet as a CSV file, and <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code>
-reads that file for the scoring functions. The steps are in the order
-you take them.</p>
+answers go. Four destinations are offered: a file saved on the
+participant’s own device, a Google Sheet, another web address that
+accepts one row per participant, or a table in a Supabase project. This
+article walks the Google Sheet route end to end: a small script bound to
+the sheet receives one row per participant, you download the sheet as a
+CSV file, and <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads that file for the
+scoring functions. The steps are in the order you take them.</p>
 <div class="section level2">
 <h2 id="deploy-the-sheets-script">1. Deploy the sheet’s script<a class="anchor" aria-label="anchor" href="#deploy-the-sheets-script"></a>
 </h2>
 <p>A Google Sheet accepts rows from the page through a Google Apps
 Script web app bound to it. The script’s code, and the steps to deploy
 it, are in the hitop-form README under <a href="https://github.com/jmgirard/hitop-form#send-responses-to-a-google-sheet" class="external-link">Send
-responses to a Google Sheet</a>. In outline: create a new sheet, open
-Extensions and then Apps Script, replace the contents of
+responses to a Google Sheet</a>. The Study Link Builder shows the same
+steps when you choose “A Google Sheet” under “Where responses go”, and
+its “Copy the script” button copies the code. In outline: create a new
+sheet, open Extensions and then Apps Script, replace the contents of
 <code>Code.gs</code> with the README’s code, save, and deploy it as a
 web app that runs as you and that anyone can access. Copy the web app
 URL, which ends in <code>/exec</code>.</p>
@@ -188,9 +189,12 @@ with a “HiTOP-SR module” row that holds the module file. In the
 “Participants and recruiting site” section, give a participant
 identifier if the link is for one person. Leave it empty for a link
 shared with many, and the online form asks each participant for one
-before the form starts. Under “Where responses go”, choose “A web
-address” and paste the <code>/exec</code> URL from step 1 into the “Web
-address” field. Press “Make the link”. The link shows under “Your study
+before the form starts. Under “Where responses go”, choose “A Google
+Sheet” and paste the <code>/exec</code> URL from step 1 into the “Web
+app URL” field. That field takes only an Apps Script web app’s address,
+on <code>script.google.com</code> with a path that ends in
+<code>/exec</code>. The builder refuses any other, such as the sheet’s
+own address. Press “Make the link”. The link shows under “Your study
 link”, beside a “Copy the link” button. Send it to the participants.</p>
 <p>When a participant presses Finish, the page posts their answers to
 the address as one row and waits for the script to confirm. On a
