@@ -27,7 +27,7 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - [x] AC1: After a build fails, the "Technical details" section is open and its `<summary>` element's bounding box lies wholly inside the viewport. This holds for a build that started while the summary's box lay outside the viewport. The check is a smoke step on the forced `URL.createObjectURL` throw that A30 uses. The step sets a viewport size or scroll position that puts the summary outside the viewport, and asserts that it is outside before the failure.
 - [x] AC2: The page's start-up throws after `webR.init()` resolves. The status line then reads "R started, but the page did not finish setting up.", followed by the existing pointer to "Technical details". The section is open, and `#controls` is hidden. The check is a smoke step that forces such a throw. A refused `webr.mjs` still gets a status that begins "R did not load."
 - [x] AC3: In hitop-builder `README.md`, the "Technical details" passage and the `tests/smoke.spec.js` file-table row state the behavior that the AC1 and AC2 smoke steps assert. `npm run prose` exits 0.
-- [ ] AC4: The smoke test passes locally and on the CI of the hitop-builder pull request.
+- [x] AC4: The smoke test passes locally and on the CI of the hitop-builder pull request.
 
 ## Coverage
 
@@ -121,3 +121,4 @@ A Module Builder failure shows the researcher a true status, with the opened log
 - prior-review #2 (pass 2): the visitor passage's "fails in a way that has no message of its own" still describes the code, not what the visitor sees — fix now.
 - prior-review #3 (pass 2): wrap — fix now, as diff-bug #6.
 - Pass-2 fix-now committed as hitop-builder c777d6f: diff-bug #1, #2, #5, #6, blame-history #1, #3, #8 and prior-review #1 to #3 fixed c777d6f. Smoke after it: 3 passed (32.6s). `npm run prose` exited 0. Plant av by hand on a planted copy of c777d6f: A32 failed alone, the other two tests passed.
+- AC4: met. Local smoke on c777d6f passed (3 tests, 32.6s). jmgirard/hitop-builder PR #26 smoke check passed on CI in 1m30s, and the PR merged as 0b7626a.
