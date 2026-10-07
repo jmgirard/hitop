@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M169: Spreadsheet formula caveat for response files
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -64,9 +64,14 @@ A researcher who uses hitop-form learns two facts: a spreadsheet program can run
 - 2026-10-06: T5 done. Sweep ledger (awk over lines outside fenced code that match `formula` or `=1+1`). README 864-867 caveat, 915-917 limited to the sheet itself, 1012-1015 limited to the sheet, 1087-1092 limited to the table itself. Article 49-51 limited to the sheet itself, 133-136 limited to the sheet, 152 names the sheet itself, 300-302 limited to the table itself. Article 51-54 ("put a formula in it") is about header keys, not values, so it is outside AC3. `check_pkgdown()`: no problems. The article rendered after `load_all()`, with one sheet caveat and one table caveat in the HTML.
 - 2026-10-06: claim audit: 25 claims read, 1 corrected — tests/testthat/test-read_form_responses.R, vignettes/articles/online-collection.Rmd, hitop-form README.md
 - 2026-10-06: the corrected claim, "You can also open the file in the spreadsheet as text" (README, Supabase section), was spreadsheet behavior no record covers. It was deleted (hitop-form 8d2af62), so no re-read was owed. Status set to review. The suite last ran clean after T2, and no R or test file changed after that.
+- 2026-10-06: review return 1: consistency gate failed on NEWS. The profile requires a NEWS entry for user-visible changes, and NEWS.md has a "Documentation and website" section in the development version. The plan's "no NEWS entry" missed the article change. Add an entry there for the article's formula caveat.
 
 ## Decisions
 
 - M169-D1 (2026-10-06): The M095 review's rejection of formula escaping (finding O15) stands. Its reason was that R reads the file and that a spreadsheet's cell execution is the spreadsheet's setting. This milestone adds a second reason. Anyone with a study link can post a row directly to the sheet script or the Supabase table. An escape written by the page therefore does not stop a planted formula. The page keeps writing answers unchanged, and the docs carry the caveat.
 
 ## Review
+
+Pass 1 (2026-10-06), stopped at the step-4 gate before the reviewers ran. Criterion evidence passed but is not ticked, because the return re-runs it.
+- AC1 to AC4: section greps found both facts in each of the 3 README and 2 article sections. The sweep found every value claim limited to the sheet or table itself. The AC4 test had 4 expectations and 0 failures (261 tests in the file, 0 failed).
+- Gate: `cairn_validate` exit 0. `document()` no diff. README.md current. `check_pkgdown()` no problems. `check()` 0 errors, 0 warnings, 0 notes. NEWS: no entry for the article change, so this fails (review return 1).
