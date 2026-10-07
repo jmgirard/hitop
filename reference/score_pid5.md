@@ -59,10 +59,10 @@ score_pid5(
 
   A string indicating the version of the PID to score: "FULL", "SF",
   "BF", "BFPM" (the 36-item PID5BF+M), "IRF" (the 218-item Informant
-  Form), or "FFBF" (the 100-item Forensic Faceted Brief Form). Will be
-  automatically capitalized. A unique start of a name is accepted, but
-  `"F"` is refused, because it starts both "FULL" and "FFBF". (default =
-  `"FULL"`)
+  Form), or "FFBF" (the 100-item Forensic Faceted Brief Form). Only a
+  full name is accepted, in any letter case. Any other value, a start of
+  a name such as `"F"` included, is an error of class
+  `hitop_unknown_version`. (default = `"FULL"`)
 
 - srange:
 
@@ -85,10 +85,12 @@ score_pid5(
   if any one of its three contributing facets is `NA`). The PID-5-IRF
   key prints this step as "round up to the nearest whole number". The
   package reads it as the nearest-whole-number rule that every other APA
-  PID-5 key states, with halves rounded up, so an informant facet
-  prorates exactly as the matching self-report facet does. `"available"`
-  averages whatever items are present (`rowMeans(na.rm = TRUE)`).
-  `"complete"` returns `NA` for any scale with a missing item
+  PID-5 key states, so an informant facet prorates exactly as the
+  matching self-report facet does. A prorated half rounds away from
+  zero, which is up for the default 0 to 3 coding and down for a
+  negative score under a negative `srange`. `"available"` averages
+  whatever items are present (`rowMeans(na.rm = TRUE)`). `"complete"`
+  returns `NA` for any scale with a missing item
   (`rowMeans(na.rm = FALSE)`). With no missing items the three agree.
   (default = `"apa"`)
 
@@ -196,11 +198,14 @@ them.
 
 The key prints its proration step as "round up to the nearest whole
 number". The package applies the nearest-whole-number rule of every
-other APA PID-5 key, halves up (see `missing`). The choice matters only
-under `missing = "apa"`, for a facet with at least one but no more than
-25% of its items unanswered whose prorated raw score has a fractional
-part strictly between 0 and one half. There the package's facet score is
-1/n lower than a ceiling would give, for a facet of n items.
+other APA PID-5 key, with a prorated half rounded away from zero (see
+`missing`). For a non-negative prorated raw score, the choice matters
+only under `missing = "apa"`, for a facet with at least one but no more
+than 25% of its items unanswered whose prorated raw score has a
+fractional part strictly between 0 and one half. There the package's
+facet score is 1/n lower than a ceiling would give, for a facet of n
+items. Under a negative `srange` a negative prorated raw score can also
+differ from a ceiling at other fractions.
 
 Informant scores have the full form's column names, and nothing in the
 output records the version. Do not pass them to

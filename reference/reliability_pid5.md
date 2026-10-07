@@ -68,9 +68,10 @@ reliability_pid5(
 
   A string indicating the version of the PID to score: "FULL", "SF",
   "BF", "BFPM" (the 36-item PID5BF+M), "IRF" (the 218-item Informant
-  Form), or "FFBF" (the 100-item Forensic Faceted Brief Form). Will be
-  automatically capitalized; `"F"` is refused, because it starts both
-  "FULL" and "FFBF". (default = `"FULL"`)
+  Form), or "FFBF" (the 100-item Forensic Faceted Brief Form). Only a
+  full name is accepted, in any letter case. Any other value, a start of
+  a name such as `"F"` included, is an error of class
+  `hitop_unknown_version`. (default = `"FULL"`)
 
 - srange:
 

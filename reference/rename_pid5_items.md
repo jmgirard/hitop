@@ -39,21 +39,25 @@ rename_pid5_items(
   `pid_items$TextIRF`), or `"FFBF"` (the 100-item Forensic Faceted Brief
   Form, whose text matches any of the four texts in
   [pid_ffbf_items](https://jmgirard.github.io/hitop/reference/pid_ffbf_items.md):
-  self or informant report, English or German). Matched
-  case-insensitively; `"F"` is refused, because it starts both "FULL"
-  and "FFBF". (default = `"FULL"`)
+  self or informant report, English or German). Only a full name is
+  accepted, in any letter case. Any other value, a start of a name such
+  as `"F"` included, is an error of class `hitop_unknown_version`.
+  (default = `"FULL"`)
 
 - method:
 
   A string specifying the matching method: `"number"` to rename columns
   spelled `from_prefix` followed by an item number, or `"text"` to match
   against the literal item prompt text in `pid_items$Text`
-  (`pid_items$TextIRF` for `version = "IRF"`, whose text has no "He or
-  she..." stem, leading ellipsis or final period, so text copied from
-  the printed informant form needs those removed first; for
-  `version = "FFBF"`, any of the four texts in
+  (`pid_items$TextIRF` for `version = "IRF"`; for `version = "FFBF"`,
+  any of the four texts in
   [pid_ffbf_items](https://jmgirard.github.io/hitop/reference/pid_ffbf_items.md)).
-  (default = `"number"`)
+  Typographic quotes (‘ ’ “ ”) count as straight ones, and any periods,
+  ellipses (`...` or `…`), spaces (the no-break space too), tabs or line
+  breaks at the start or the end of the text are ignored. So a leading
+  ellipsis and a final period do not count. The informant text has no
+  "He or she..." stem, so remove that stem from text copied from the
+  printed informant form first. (default = `"number"`)
 
   The forms number their items independently, so `"number"` reads the
   digits as an item number of the form named by `version`: under
@@ -104,11 +108,13 @@ by a number, nothing is renamed and the report is
 the form's items were renamed, the completeness report is
 `hitop_incomplete_rename`.
 
-Under `version = "FFBF"` and `method = "text"`, a call in which two
-columns match the same item (for example its self-report and informant
-texts, or its English and German texts) is an error, since both would
-take the same name. Rename each form's columns in its own data frame, or
-give each call its own `prefix`.
+Under `method = "text"`, a call in which two columns match the same item
+is an error of class `hitop_duplicate_item_match`, since both would take
+the same name. The message names the item and the columns. For the FFBF
+this happens when a data frame holds two texts of one item, for example
+its self-report and informant texts, or its English and German texts.
+Rename each form's columns in its own data frame, or give each call its
+own `prefix`.
 
 ## References
 

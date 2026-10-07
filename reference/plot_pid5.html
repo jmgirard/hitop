@@ -114,7 +114,9 @@ a profile plot shows one respondent.</p></dd>
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
 <dd><p>Which PID-5 version the scores came from: <code>"FULL"</code> (220
-items), <code>"SF"</code> (100 items), or <code>"BF"</code> (25 items). Matched case-insensitively.
+items), <code>"SF"</code> (100 items), or <code>"BF"</code> (25 items). Only a full name is
+accepted, in any letter case. Any other value, a start of a name such as
+<code>"F"</code> included, is an error of class <code>hitop_unknown_version</code>.
 The PID-5 Informant Form has no norms in this package, so <code>version</code> does
 not take <code>"IRF"</code>. Do not plot scores from <code>score_pid5(version = "IRF")</code>
 as <code>"FULL"</code>: they would be compared with self-report norms. Nor plot

@@ -54,8 +54,10 @@ validity_pid5(
 - version:
 
   A string indicating the version of the PID to score: "FULL", "SF", or
-  "BF". Will be automatically capitalized. The PID5BF+M and the PID-5
-  Informant Form have no validity scales. (default = `"FULL"`)
+  "BF". Only a full name is accepted, in any letter case. Any other
+  value, a start of a name such as `"F"` included, is an error of class
+  `hitop_unknown_version`. The PID5BF+M and the PID-5 Informant Form
+  have no validity scales. (default = `"FULL"`)
 
 - srange:
 

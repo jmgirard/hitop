@@ -129,19 +129,24 @@ PID5BF+M names, <code>pid5bfpm_01</code> to <code>pid5bfpm_36</code>, the Inform
 (the 36-item PID5BF+M), <code>"IRF"</code> (the 218-item Informant Form, whose
 text matches <code>pid_items$TextIRF</code>), or <code>"FFBF"</code> (the 100-item Forensic
 Faceted Brief Form, whose text matches any of the four texts in
-<a href="pid_ffbf_items.html">pid_ffbf_items</a>: self or informant report, English or German). Matched
-case-insensitively; <code>"F"</code> is refused, because it starts both
-"FULL" and "FFBF". (default = <code>"FULL"</code>)</p></dd>
+<a href="pid_ffbf_items.html">pid_ffbf_items</a>: self or informant report, English or German). Only a
+full name is accepted, in any letter case. Any other value, a start of a
+name such as <code>"F"</code> included, is an error of class
+<code>hitop_unknown_version</code>. (default = <code>"FULL"</code>)</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>A string specifying the matching method: <code>"number"</code> to rename
 columns spelled <code>from_prefix</code> followed by an item number, or <code>"text"</code> to
 match against the literal item prompt text in <code>pid_items$Text</code>
-(<code>pid_items$TextIRF</code> for <code>version = "IRF"</code>, whose text has no "He or
-she..." stem, leading ellipsis or final period, so text copied from the
-printed informant form needs those removed first; for <code>version = "FFBF"</code>,
-any of the four texts in <a href="pid_ffbf_items.html">pid_ffbf_items</a>). (default = <code>"number"</code>)</p>
+(<code>pid_items$TextIRF</code> for <code>version = "IRF"</code>; for <code>version = "FFBF"</code>, any
+of the four texts in <a href="pid_ffbf_items.html">pid_ffbf_items</a>). Typographic quotes (‘ ’ “ ”)
+count as straight ones, and any periods, ellipses (<code>...</code> or <code>…</code>),
+spaces (the no-break space too), tabs or line breaks at the start or the
+end of the text are ignored. So a leading ellipsis and a final period do
+not count. The informant text has no "He or she..." stem, so remove that
+stem from text copied from the printed informant form first.
+(default = <code>"number"</code>)</p>
 <p>The forms number their items independently, so <code>"number"</code> reads the
 digits as an item number of the form named by <code>version</code>: under
 <code>version = "SF"</code>, <code>pid_7</code> is short-form item 7, not the full-form item the
@@ -189,11 +194,13 @@ if no column at all is named <code>from_prefix</code> followed by a number, noth
 is renamed and the report is <code>hitop_no_columns_matched</code>. Under either
 method, if some but not all of the form's items were renamed, the
 completeness report is <code>hitop_incomplete_rename</code>.</p>
-<p>Under <code>version = "FFBF"</code> and <code>method = "text"</code>, a call in which two
-columns match the same item (for example its self-report and informant
-texts, or its English and German texts) is an error, since both would
-take the same name. Rename each form's columns in its own data frame, or
-give each call its own <code>prefix</code>.</p>
+<p>Under <code>method = "text"</code>, a call in which two columns match the same item
+is an error of class <code>hitop_duplicate_item_match</code>, since both would take
+the same name. The message names the item and the columns. For the FFBF
+this happens when a data frame holds two texts of one item, for example
+its self-report and informant texts, or its English and German texts.
+Rename each form's columns in its own data frame, or give each call its
+own <code>prefix</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

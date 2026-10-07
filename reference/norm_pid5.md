@@ -38,12 +38,14 @@ norm_pid5(
 - version:
 
   Which PID-5 version the scores came from: `"FULL"` (220 items), `"SF"`
-  (100 items), or `"BF"` (25 items). The normative tables differ by
-  version. These are self-report norms: do not norm scores from
-  `score_pid5(version = "IRF")` with them. Informant scores have the
-  full form's column names, so `version = "FULL"` accepts them without a
-  warning, but the informant norms (Markon et al., 2024, Tables A–10 and
-  A–11) are not in `pid_norms`. Nor norm scores from
+  (100 items), or `"BF"` (25 items). Only a full name is accepted, in
+  any letter case. Any other value, a start of a name such as `"F"`
+  included, is an error of class `hitop_unknown_version`. The normative
+  tables differ by version. These are self-report norms: do not norm
+  scores from `score_pid5(version = "IRF")` with them. Informant scores
+  have the full form's column names, so `version = "FULL"` accepts them
+  without a warning, but the informant norms (Markon et al., 2024,
+  Tables A–10 and A–11) are not in `pid_norms`. Nor norm scores from
   `score_pid5(version = "FFBF")`: their facet and APA domain columns
   have the short form's names, so `version = "SF"` converts them with no
   version warning (only the two forensic domains are reported as not

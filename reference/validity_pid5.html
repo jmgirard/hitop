@@ -133,7 +133,9 @@ before 2.0 (<code>labelled_spss</code>) is refused the same way, but
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
 <dd><p>A string indicating the version of the PID to score: "FULL",
-"SF", or "BF". Will be automatically capitalized. The PID5BF+M and the
+"SF", or "BF". Only a full name is accepted, in any letter case. Any
+other value, a start of a name such as <code>"F"</code> included, is an error of
+class <code>hitop_unknown_version</code>. The PID5BF+M and the
 PID-5 Informant Form have no validity scales. (default = <code>"FULL"</code>)</p></dd>
 
 
