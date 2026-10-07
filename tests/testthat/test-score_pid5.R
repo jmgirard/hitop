@@ -49,6 +49,23 @@ test_that("FULL applies reverse-keying (facet with a reverse item is nonzero on 
   expect_equal(f$pid_separationInsecurity[1], 0) # contains none
 })
 
+test_that("a prorated half rounds away from zero, as the missing help says (D-095)", {
+  # Manipulativeness is FULL items 107, 125, 162, 180 and 219, none reversed,
+  # so `srange` changes nothing here. With 219 missing, 4 of 5 answers sum to
+  # -2 or 2, which prorates to -2 * 5 / 4 = -2.5 or 2.5. Away from zero gives
+  # -3 or 3, so the facet is -3 / 5 = -0.6 or 3 / 5 = 0.6. Half up would give
+  # -2 / 5 = -0.4 for the negative case.
+  one_row <- function(answers) {
+    x <- as.data.frame(matrix(NA_real_, nrow = 1, ncol = 220))
+    x[c(107, 125, 162, 180)] <- answers
+    x
+  }
+  neg <- score_pid5(one_row(c(-1, -1, 0, 0)), items = 1:220, srange = c(-3, 0), append = FALSE)
+  pos <- score_pid5(one_row(c(1, 1, 0, 0)), items = 1:220, srange = c(0, 3), append = FALSE)
+  expect_equal(neg$pid_manipulativeness, -0.6)
+  expect_equal(pos$pid_manipulativeness, 0.6)
+})
+
 test_that("FULL available-item scoring (missing = 'available') tolerates missing via rowMeans", {
   f <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", missing = "available", append = FALSE)
   # R4 drops item 1 from Anhedonia: (5*1 + 2*2)/7 = 9/7

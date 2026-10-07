@@ -47,7 +47,9 @@
 #'   FULL, SF, IRF, FFBF or BFPM domain is `NA` if any one of its three contributing
 #'   facets is `NA`). The PID-5-IRF key prints this step as "round up to the
 #'   nearest whole number". The package reads it as the nearest-whole-number
-#'   rule that every other APA PID-5 key states, with halves rounded up, so an
+#'   rule that every other APA PID-5 key states. A prorated half rounds away
+#'   from zero, which is up for the default 0 to 3 coding and down for a
+#'   negative score under a negative `srange`. So an
 #'   informant facet prorates exactly as the matching self-report facet does.
 #'   `"available"` averages whatever items are present (`rowMeans(na.rm = TRUE)`).
 #'   `"complete"` returns `NA` for any scale with a missing item
@@ -135,7 +137,8 @@
 #'
 #'   The key prints its proration step as "round up to the nearest whole
 #'   number". The package applies the nearest-whole-number rule of every other
-#'   APA PID-5 key, halves up (see `missing`). The choice matters only under
+#'   APA PID-5 key, with a prorated half rounded away from zero (see
+#'   `missing`). The choice matters only under
 #'   `missing = "apa"`, for a facet with at least one but no more than 25% of
 #'   its items unanswered whose prorated raw score has a fractional part
 #'   strictly between 0 and one half. There the

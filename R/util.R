@@ -726,6 +726,8 @@ calc_sem <- function(x) {
 
 # Round half away from zero, matching the APA scoring key's "round to the
 # nearest whole number" (base round() rounds half to even, e.g. round(2.5) = 2).
+# The name says "up", which holds for non-negative values only: -2.5 rounds to
+# -3 (D-095).
 round_half_up <- function(x) {
   sign(x) * floor(abs(x) + 0.5)
 }

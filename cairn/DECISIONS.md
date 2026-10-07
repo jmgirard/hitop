@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-095 (2026-10-07): PID-5 proration rounds a half away from zero, the rule `round_half_up()` has always applied (annotates D-090's "halves up" wording)
+
+**Context:** D-090 records that `apa_mean()` rounds a prorated raw "to the nearest whole number, halves up". `round_half_up()` computes `sign(x) * floor(abs(x) + 0.5)`, which rounds a half away from zero. The two agree for a non-negative raw. They differ when `srange` is negative and a prorated raw is a negative half: -2.5 becomes -3, where half up gives -2. `validate_range()` admits a negative `srange`. The help text and SOURCES.md repeated D-090's wording.
+
+**Decision:** The rule is half away from zero, and the code stays as it is. The help text, the `round_half_up()` comment and SOURCES.md now say so. D-090's decision stands: the IRF prorates with the same rule as the other versions. Rejected: changing the code to round a negative half up. That moves scored output (GP2) for a coding no APA key uses, and no source prints a rule for negative scores.
+
+**Consequences:** M170 ships the wording and a test of both signs on the FULL Manipulativeness facet. No scored value changes. Evidence that reopens: a PID-5 key or erratum that rounds a negative half toward zero.
+
 ### D-094 (2026-10-07): The PID-5 functions accept `version` as a full name only, and refuse a bad `version` or a duplicate text match under two public classes (the successor entry D-034(c) requires for new exported conditions)
 
 **Context:** Seven PID-5 functions resolve `version` with `toupper()` and then `match.arg()`. A bad value gets match.arg's error, which says `'arg'` and blames `match.arg()`. Prefixes resolve: `"S"` means SF, and `"F"` means FULL in `validity_pid5()`, `norm_pid5()` and `plot_pid5()` but became ambiguous in the other four when FFBF arrived (M162). `rename_pid5_items(method = "text")` refuses two columns that match one item for FFBF only. For the other versions it returns duplicate column names with no error.
