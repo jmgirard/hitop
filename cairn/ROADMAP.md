@@ -1,19 +1,18 @@
 # Roadmap
 
-_Last hygiene check: 2026-10-07 (M169 done): archived, M166 row pruned, the formula clause left the question-gaps row, the "Formula caveat reach" row filed, no lesson added (LESSONS at its byte budget). validate green._
+_Last hygiene check: 2026-10-07 (M170 done): archived, M167 row pruned, no lesson added (LESSONS at its byte budget). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M170 | PID-5 version refusals and item-text matching | review | — | normal | milestones/M170-pid5-version-text-matching.md |
+| M170 | PID-5 version refusals and item-text matching | done | — | normal | milestones/archive/M170-pid5-version-text-matching.md |
 | M171 | APA notice in PID-5 online exports and adult Word footers | planned | — | normal | milestones/M171-apa-pid5-notice.md |
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | blocked | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | blocked | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
 | M169 | Spreadsheet formula caveat for response files | done | — | normal | milestones/archive/M169-formula-caveat.md |
 | M163 | PID-5 forensic form (FFBF) English forms | blocked | M162 | normal | milestones/M163-pid5ffbf-forms.md |
-| M167 | Module Builder test reach | done | M166 | high | milestones/archive/M167-builder-test-reach.md |
 | M168 | Study link length-check gaps | done | — | high | milestones/archive/M168-link-length-gaps.md |
 
 ## Candidates
