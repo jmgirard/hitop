@@ -1034,6 +1034,31 @@ test_that("the Supabase export reads two rows and scores to the table-derived me
   )
 })
 
+# A copy of a store export whose first row has the participant `=1+1` and a
+# `q_note` answer `=1+1`, which a spreadsheet program could run as a formula.
+formula_copy <- function(path, dir) {
+  lines <- readLines(path, warn = FALSE)
+  first <- strsplit(lines[2], ",", fixed = TRUE)[[1]]
+  first[2] <- "=1+1"
+  lines[2] <- paste(first, collapse = ",")
+  lines[1] <- paste0(lines[1], ",q_note")
+  lines[-1] <- paste0(lines[-1], c(",=1+1", ","))
+  out <- file.path(dir, basename(path))
+  writeLines(lines, out)
+  out
+}
+
+test_that("a participant and an answer of =1+1 read as text from both store exports", {
+  dir <- withr::local_tempdir()
+  exports <- c(sheet = example_file("responses-sheet-hitopbr.csv"),
+               supabase = fixture("supabase-hitopbr.csv"))
+  for (kind in names(exports)) {
+    out <- read_form_responses(formula_copy(exports[[kind]], dir))
+    expect_identical(out$participant[1], "=1+1", info = kind)
+    expect_identical(out$q_note, c("=1+1", NA_character_), info = kind)
+  }
+})
+
 # ---- A file saved under the page's random order ----------------------------
 #
 # The page keeps the item columns in the instrument's order and writes the
