@@ -3,13 +3,15 @@
 # `devtools::load_all()` with the specs in `data-raw/json_export.R`, and
 # `tests/testthat/test-json-export.R` calls it directly.
 #
-# `spec` is a list with `stem`, `items` (a keying table with a `Text` column),
-# `number_col` (the column of `items` that numbers this form) and
-# `instructions` (a `*_instructions` object). One table can carry more than
-# one form: `pid_items` numbers the FULL, SF, BF, BFPM and IRF forms in five
-# columns, each NA on the rows its form omits. The writer reads `Text`, so it
-# writes self-report wording; the IRF's informant wording is `TextIRF`. The writer keeps the rows where
-# `number_col` is not NA, in ascending order of it.
+# `spec` is a list with `stem`, `items` (a keying table), `number_col` (the
+# column of `items` that numbers this form), `instructions` (a
+# `*_instructions` object) and an optional `text_col` (the column of `items`
+# that holds this form's wording, `Text` when absent). One table can carry
+# more than one form: `pid_items` numbers the FULL, SF, BF, BFPM and IRF
+# forms in five columns, each NA on the rows its form omits, and holds the
+# IRF's informant wording in `TextIRF`, so an IRF spec names
+# `text_col = "TextIRF"`. The writer keeps the rows where `number_col` is not
+# NA, in ascending order of it.
 #
 # Format 1.0, top level:
 #   format          "1.0"
@@ -28,6 +30,7 @@
 # text connection and emits CRLF on Windows (LESSONS 2026-07-16), which
 # would break the md5 lock.
 write_instrument_json <- function(spec, path, build_date = Sys.Date()) {
+  text_col <- if (is.null(spec$text_col)) "Text" else spec$text_col
   number <- as.integer(spec$items[[spec$number_col]])
   keep <- !is.na(number)
   items <- spec$items[keep, , drop = FALSE]
@@ -61,7 +64,7 @@ write_instrument_json <- function(spec, path, build_date = Sys.Date()) {
     items = data.frame(
       number = number,
       name = item_names(paste0(spec$stem, "_"), number, max_n),
-      text = as.character(items$Text),
+      text = as.character(items[[text_col]]),
       stringsAsFactors = FALSE
     )
   )

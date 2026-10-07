@@ -269,6 +269,35 @@ test_that("write_instrument_json() writes non-NA rows in ascending number order"
   )
 })
 
+test_that("write_instrument_json() reads the wording from the spec's text_col", {
+  # An informant spec numbered by IRF must write the informant wording,
+  # `TextIRF`, not the self-report `Text` the writer reads by default.
+  spec <- list(
+    stem = "pid5irf",
+    items = pid_items,
+    number_col = "IRF",
+    text_col = "TextIRF",
+    instructions = hitop:::pid_instructions
+  )
+  path <- withr::local_tempfile(fileext = ".json")
+  hitop:::write_instrument_json(spec, path, build_date = as.Date("2026-01-02"))
+  items <- jsonlite::fromJSON(path, simplifyVector = FALSE)$items
+  number <- vapply(items, function(r) r$number, integer(1))
+  text <- vapply(items, function(r) r$text, character(1))
+  expect_identical(number, sort(stats::na.omit(pid_items$IRF)))
+  expect_identical(text, pid_items$TextIRF[match(number, pid_items$IRF)])
+  # Control: the same spec without `text_col` writes the self-report wording,
+  # which differs on every IRF row.
+  spec$text_col <- NULL
+  hitop:::write_instrument_json(spec, path, build_date = as.Date("2026-01-02"))
+  self <- vapply(
+    jsonlite::fromJSON(path, simplifyVector = FALSE)$items,
+    function(r) r$text, character(1)
+  )
+  expect_identical(self, pid_items$Text[match(number, pid_items$IRF)])
+  expect_false(any(self == text))
+})
+
 # A fresh write of each spec at its manifest row's date is the committed file
 # byte for byte, so a writer edit that was never rerun into inst/extdata/
 # reds here. The bytes carry `packageVersion`, so a version bump without a
