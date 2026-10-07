@@ -44,7 +44,7 @@ A researcher who uses hitop-form learns two facts: a spreadsheet program can run
 
 - [x] T1: Cut `m169-formula-caveat` in hitop and in the hitop-form checkout (`/Users/jmgirard/github/hitop-form`). Record a milestone-local decision: the M095 review's rejection of formula escaping (O15) stands, with the added reason that a direct post bypasses any page-side escape.
 - [x] T2: In `tests/testthat/test-read_form_responses.R`, add the four AC4 cases. Build the files from `inst/examples/responses-sheet-hitopbr.csv` and `tests/testthat/fixtures/supabase-hitopbr.csv`. Add a `q_` column to each, as the article's chunk near `online-collection.Rmd:184` does. Assert with `expect_identical()` against the typed literal. Plant a reader change that alters a leading `=` and see the new tests go red, then restore it.
-- [ ] T3: In hitop-form's `README.md`, write the two facts in the three AC1 sections. If the Supabase section (near line 1076) already states both, log it as a no-op. Limit the Google Sheet sentence near line 910 to the sheet itself (AC3).
+- [x] T3: In hitop-form's `README.md`, write the two facts in the three AC1 sections. If the Supabase section (near line 1076) already states both, log it as a no-op. Limit the Google Sheet sentence near line 910 to the sheet itself (AC3).
 - [ ] T4: In the article, write the two facts in "3. Download the sheet as CSV" and "The Supabase route". Limit the sentence in "1. Deploy the sheet's script" (near line 50) to the sheet itself, and judge the sentence near line 147 (AC3).
 - [ ] T5: Run `grep -n -i -E 'formula|=1\+1'` over both files. Judge each whole sentence outside fenced code and record the ledger in the work log (AC3). Run `devtools::test(filter = "read_form_responses")` and `pkgdown::check_pkgdown()`. Render the article after `devtools::load_all()`.
 
@@ -59,6 +59,7 @@ A researcher who uses hitop-form learns two facts: a spreadsheet program can run
 - 2026-10-06: implement started. Branch `m169-formula-caveat` cut in hitop and in the hitop-form checkout, both from a synced main. Five untracked `devel/hitopdat_*` files in hitop belong to the blocked HiTOP-DAT work and stay unstaged.
 - 2026-10-06: T1 done: decision M169-D1 recorded.
 - 2026-10-06: T2 done. `formula_copy()` and one test in `test-read_form_responses.R` set row 1's participant to `=1+1` and add a `q_note` of `=1+1` to the sheet download and the Supabase export. A planted `sub("^=", "'=", ...)` over the reader's character columns failed the new test on all 4 cases, and also 2 older tests. Restored. Suite: 1157 tests, 0 failed, 15 skipped.
+- 2026-10-06: T3 done (hitop-form d2f4dbe). The Supabase section named only a participant code and not `read_form_responses()`, so it was edited, not logged as a no-op. Before writing the page-file claim, I observed `read_form_responses()` on a copy of `tests/fixtures/responses-hitopbr-questions.csv` with participant and `q_note` set to `=1+1`: both came back `"=1+1"`. No hitop-form spec reads the changed prose. The local Playwright run is skipped because only README prose changed, and hitop-form CI runs at review.
 
 ## Decisions
 
