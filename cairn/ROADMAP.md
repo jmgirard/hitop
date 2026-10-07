@@ -7,7 +7,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M170 | PID-5 version refusals and item-text matching | review | — | normal | milestones/M170-pid5-version-text-matching.md |
+| M170 | PID-5 version refusals and item-text matching | in-progress | — | normal | milestones/M170-pid5-version-text-matching.md |
 | M171 | APA notice in PID-5 online exports and adult Word footers | planned | — | normal | milestones/M171-apa-pid5-notice.md |
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | blocked | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | blocked | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
