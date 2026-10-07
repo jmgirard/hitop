@@ -51,5 +51,5 @@ E. (2013). *The Personality Inventory for DSM-5—Brief Form
 ``` r
 # Write a PID-5-BF child form Qualtrics import file to a temporary location
 generate_qualtrics_pid5bfchild(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/Rtmp1zuGnT/file1a734f17b60.txt
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmpj67eQL/file1b031ddf7baa.txt
 ```
