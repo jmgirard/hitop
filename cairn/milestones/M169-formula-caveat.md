@@ -67,6 +67,7 @@ A researcher who uses hitop-form learns two facts: a spreadsheet program can run
 - 2026-10-06: the corrected claim, "You can also open the file in the spreadsheet as text" (README, Supabase section), was spreadsheet behavior no record covers. It was deleted (hitop-form 8d2af62), so no re-read was owed. Status set to review. The suite last ran clean after T2, and no R or test file changed after that.
 - 2026-10-06: review return 1: consistency gate failed on NEWS. The profile requires a NEWS entry for user-visible changes, and NEWS.md has a "Documentation and website" section in the development version. The plan's "no NEWS entry" missed the article change. Add an entry there for the article's formula caveat.
 - 2026-10-06: minor amendment: T6 added for review return 1. Done: NEWS.md gained an entry as the first bullet of the development version's "Documentation and website" section. Its `read_form_responses()` claim is held by the AC4 test. Status set to review.
+- 2026-10-07: step-7 approval: m169-formula-caveat approved for merge, with the companion /Users/jmgirard/github/hitop-form m169-formula-caveat merged first.
 
 ## Decisions
 
