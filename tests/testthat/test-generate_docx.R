@@ -54,7 +54,7 @@ test_that("an invalid papersize is rejected by match.arg", {
   )
 })
 
-# ---- Smoke coverage: all 8 DOCX generators ----------------------------------
+# ---- Smoke coverage: all 10 DOCX generators ---------------------------------
 
 test_that("all DOCX generators produce a non-empty document with their own text", {
   skip_if_no_docx()
@@ -66,6 +66,9 @@ test_that("all DOCX generators produce a non-empty document with their own text"
     list(fn = generate_docx_pid5bf,  text = first_clean_text(pid_items$Text[!is.na(pid_items$BF)])),
     list(fn = generate_docx_pid5bfpm, text = first_clean_text(pid_items$Text[!is.na(pid_items$BFPM)])),
     list(fn = generate_docx_pid5irf, text = first_clean_text(pid_items$TextIRF[!is.na(pid_items$IRF)])),
+    # The child forms print the adult items (D-091).
+    list(fn = generate_docx_pid5child, text = first_clean_text(pid_items$Text[!is.na(pid_items$FULL)])),
+    list(fn = generate_docx_pid5bfchild, text = first_clean_text(pid_items$Text[!is.na(pid_items$BF)])),
     # HSUM DOCX is a curated overview, not an item table; assert a stable phrase.
     list(fn = generate_docx_hitophsum, text = "In what forms did you use nicotine")
   )
@@ -259,7 +262,9 @@ test_that("the PID legend prints two options per line, in printed order", {
     generate_docx_pid5sf,
     generate_docx_pid5bf,
     generate_docx_pid5bfpm,
-    generate_docx_pid5irf
+    generate_docx_pid5irf,
+    generate_docx_pid5child,
+    generate_docx_pid5bfchild
   )) {
     f <- withr::local_tempfile(fileext = ".docx")
     suppressMessages(gen(file = f))

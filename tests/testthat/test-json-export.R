@@ -6,8 +6,8 @@
 #
 # Each spec states its form's item count. Every form numbers its items 1 to
 # `count`, so the expected numbers are `seq_len(count)`, in ascending order
-# (D-065). `pid_items` numbers three forms in three columns, each NA on the
-# rows its form omits. Each item's expected text is the text of the table row
+# (D-065). `pid_items` numbers five forms in five columns (three of them
+# exported here), each NA on the rows its form omits. Each item's expected text is the text of the table row
 # its form numbers with that item's number, looked up by number rather than
 # rebuilt by the writer's own subset and sort.
 
@@ -490,8 +490,8 @@ test_that("the export report discriminates each planted defect", {
   expect_identical(export_report(changed_stem, spec), "stem")
 })
 
-# The three PID-5 forms come out of one table through its three number
-# columns, so a form's export can disagree with the table in two ways a
+# The three exported PID-5 forms come out of one table through three of its
+# five number columns, so a form's export can disagree with the table in two ways a
 # one-form export cannot: it can carry an item another form owns, and it can
 # number its items to another form's width. `leaked_item` and
 # `substituted_text` are the first way: an added item changes the count, and
