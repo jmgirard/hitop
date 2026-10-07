@@ -142,12 +142,13 @@ web app that runs as you and that anyone can access. Copy the web app
 URL, which ends in <code>/exec</code>.</p>
 <p>The script appends one row per request to a tab named
 <code>Responses</code>, taking the first row’s keys as the header. It
-writes every cell as text, so a participant code such as
-<code>007</code> keeps its zeros and a value such as <code>=1+1</code>
-stays those four characters rather than becoming a formula. It refuses a
-request whose body is not one object, holds more than 1000 keys, or has
-a key outside lower-case letters, digits and underscores, so no one can
-grow the header without limit or put a formula in it.</p>
+writes every cell behind a leading apostrophe and formats it as text, so
+a participant code such as <code>007</code> keeps its zeros and, in the
+sheet itself, a value such as <code>=1+1</code> stays those four
+characters rather than becoming a formula. It refuses a request whose
+body is not one object, holds more than 1000 keys, or has a key outside
+lower-case letters, digits and underscores, so no one can grow the
+header without limit or put a formula in it.</p>
 <p>Deploy one sheet and script per form. A key the header lacks is added
 to it, so a sheet that receives two forms’ rows holds the union of their
 columns. When the two forms are two instruments,
@@ -231,6 +232,11 @@ such a link if you want the column sixth.</p>
 <p>Anyone who has the link can post a row to the sheet, because the
 script’s URL is inside the link. Look over the sheet before scoring
 it.</p>
+<p>The download does not keep the apostrophe. A participant identifier
+or a text answer that starts with <code>=</code>, such as
+<code>=1+1</code>, is text in the sheet. If you open the downloaded file
+in a spreadsheet program, it can read such a cell as a formula.
+<code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> returns it as text.</p>
 </div>
 <div class="section level2">
 <h2 id="read-the-file">4. Read the file<a class="anchor" aria-label="anchor" href="#read-the-file"></a>
@@ -258,22 +264,23 @@ the page. The package installs it as an example, and
 <span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_21 &lt;int&gt;, hitopbr_22 &lt;int&gt;, hitopbr_23 &lt;int&gt;, hitopbr_24 &lt;int&gt;, …</span></span></span></code></pre></div>
 <p>Each row of the file is a row of the result. The lead columns are
 typed: <code>participant</code> is character, so the codes
-<code>=1+1</code> and <code>007</code> come back as the sheet stored
-them; <code>form_build</code> is character, the page’s build date as the
-file holds it, such as <code>"2026-09-20"</code>; <code>submitted</code>
-is a UTC date-time. Convert <code>form_build</code> with
-<code><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date()</a></code> when you need a date. Every item column is an
-integer. The sixth column, <code>item_order</code>, is the order the
-participant saw the items, as item numbers, when the file records one
-and <code>NA</code> when it does not, and scoring does not read it. The
-page records it when the study link asks for a random order, which the
-“Show the items in a random order” box sets, in the Study Link Builder’s
-“Item order” section. The seventh and eighth columns,
-<code>prolific_study</code> and <code>prolific_session</code>, are the
-study and session identifiers Prolific passed to the page when the link
-recruits through Prolific, as <a href="#the-prolific-route">the Prolific
-route</a> below describes, and <code>NA</code> when it does not, as
-here. Scoring does not read them either.</p>
+<code>=1+1</code> and <code>007</code> come back as text, as the sheet
+itself stored them; <code>form_build</code> is character, the page’s
+build date as the file holds it, such as <code>"2026-09-20"</code>;
+<code>submitted</code> is a UTC date-time. Convert
+<code>form_build</code> with <code><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date()</a></code> when you need a
+date. Every item column is an integer. The sixth column,
+<code>item_order</code>, is the order the participant saw the items, as
+item numbers, when the file records one and <code>NA</code> when it does
+not, and scoring does not read it. The page records it when the study
+link asks for a random order, which the “Show the items in a random
+order” box sets, in the Study Link Builder’s “Item order” section. The
+seventh and eighth columns, <code>prolific_study</code> and
+<code>prolific_session</code>, are the study and session identifiers
+Prolific passed to the page when the link recruits through Prolific, as
+<a href="#the-prolific-route">the Prolific route</a> below describes,
+and <code>NA</code> when it does not, as here. Scoring does not read
+them either.</p>
 <p>A folder can hold the download beside any files participants sent by
 hand: <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads every <code>.csv</code>
 file in it, file by file in path order, and each file’s rows in its own
@@ -438,6 +445,10 @@ responses to Supabase</a> walks the setup. The table’s CSV export from
 the dashboard’s Table Editor reads with
 <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> exactly as the sheet’s download
 does.</p>
+<p>In the table itself, a participant identifier or a text answer such
+as <code>=1+1</code> is stored as those four characters. If you open the
+export in a spreadsheet program, it can read such a cell as a formula.
+<code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> returns it as text.</p>
 </div>
 <div class="section level2">
 <h2 id="the-prolific-route">The Prolific route<a class="anchor" aria-label="anchor" href="#the-prolific-route"></a>

@@ -33,12 +33,13 @@ code, save, and deploy it as a web app that runs as you and that anyone
 can access. Copy the web app URL, which ends in `/exec`.
 
 The script appends one row per request to a tab named `Responses`,
-taking the first row’s keys as the header. It writes every cell as text,
-so a participant code such as `007` keeps its zeros and a value such as
-`=1+1` stays those four characters rather than becoming a formula. It
-refuses a request whose body is not one object, holds more than 1000
-keys, or has a key outside lower-case letters, digits and underscores,
-so no one can grow the header without limit or put a formula in it.
+taking the first row’s keys as the header. It writes every cell behind a
+leading apostrophe and formats it as text, so a participant code such as
+`007` keeps its zeros and, in the sheet itself, a value such as `=1+1`
+stays those four characters rather than becoming a formula. It refuses a
+request whose body is not one object, holds more than 1000 keys, or has
+a key outside lower-case letters, digits and underscores, so no one can
+grow the header without limit or put a formula in it.
 
 Deploy one sheet and script per form. A key the header lacks is added to
 it, so a sheet that receives two forms’ rows holds the union of their
@@ -125,6 +126,13 @@ sixth.
 Anyone who has the link can post a row to the sheet, because the
 script’s URL is inside the link. Look over the sheet before scoring it.
 
+The download does not keep the apostrophe. A participant identifier or a
+text answer that starts with `=`, such as `=1+1`, is text in the sheet.
+If you open the downloaded file in a spreadsheet program, it can read
+such a cell as a formula.
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+returns it as text.
+
 ## 4. Read the file
 
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
@@ -156,9 +164,9 @@ responses
 
 Each row of the file is a row of the result. The lead columns are typed:
 `participant` is character, so the codes `=1+1` and `007` come back as
-the sheet stored them; `form_build` is character, the page’s build date
-as the file holds it, such as `"2026-09-20"`; `submitted` is a UTC
-date-time. Convert `form_build` with
+text, as the sheet itself stored them; `form_build` is character, the
+page’s build date as the file holds it, such as `"2026-09-20"`;
+`submitted` is a UTC date-time. Convert `form_build` with
 [`as.Date()`](https://rdrr.io/r/base/as.Date.html) when you need a date.
 Every item column is an integer. The sixth column, `item_order`, is the
 order the participant saw the items, as item numbers, when the file
@@ -347,6 +355,12 @@ walks the setup. The table’s CSV export from the dashboard’s Table
 Editor reads with
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 exactly as the sheet’s download does.
+
+In the table itself, a participant identifier or a text answer such as
+`=1+1` is stored as those four characters. If you open the export in a
+spreadsheet program, it can read such a cell as a formula.
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+returns it as text.
 
 ## The Prolific route
 
