@@ -61,10 +61,10 @@ full item count and rounded to the nearest whole number before averaging (a
 FULL, SF, IRF, FFBF or BFPM domain is \code{NA} if any one of its three contributing
 facets is \code{NA}). The PID-5-IRF key prints this step as "round up to the
 nearest whole number". The package reads it as the nearest-whole-number
-rule that every other APA PID-5 key states. A prorated half rounds away
-from zero, which is up for the default 0 to 3 coding and down for a
-negative score under a negative \code{srange}. So an
-informant facet prorates exactly as the matching self-report facet does.
+rule that every other APA PID-5 key states, so an informant facet
+prorates exactly as the matching self-report facet does. A prorated half
+rounds away from zero, which is up for the default 0 to 3 coding and
+down for a negative score under a negative \code{srange}.
 \code{"available"} averages whatever items are present (\code{rowMeans(na.rm = TRUE)}).
 \code{"complete"} returns \code{NA} for any scale with a missing item
 (\code{rowMeans(na.rm = FALSE)}). With no missing items the three agree. (default
@@ -168,12 +168,13 @@ mark and whose wording is not reversed; the package does not reverse them.
 The key prints its proration step as "round up to the nearest whole
 number". The package applies the nearest-whole-number rule of every other
 APA PID-5 key, with a prorated half rounded away from zero (see
-\code{missing}). The choice matters only under
-\code{missing = "apa"}, for a facet with at least one but no more than 25\% of
-its items unanswered whose prorated raw score has a fractional part
-strictly between 0 and one half. There the
-package's facet score is 1/n lower than a ceiling would give, for a facet
-of n items.
+\code{missing}). For a non-negative prorated raw score, the choice matters
+only under \code{missing = "apa"}, for a facet with at least one but no more
+than 25\% of its items unanswered whose prorated raw score has a
+fractional part strictly between 0 and one half. There the package's
+facet score is 1/n lower than a ceiling would give, for a facet of n
+items. Under a negative \code{srange} a negative prorated raw score can also
+differ from a ceiling at other fractions.
 
 Informant scores have the full form's column names, and nothing in the
 output records the version. Do not pass them to \code{\link[=norm_pid5]{norm_pid5()}} or

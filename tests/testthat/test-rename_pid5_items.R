@@ -132,7 +132,7 @@ test_that("method = 'text' reports unmatchable item text under its own class", {
 
     # Positive control: an entry differing from a real item's text only in
     # surrounding whitespace is matched, the comparison running under
-    # `trimws()`. Without it the family above could be vacuous.
+    # `normalize_item_text()`. Without it the family above could be vacuous.
     padded <- paste0("  ", form$text[[2]], "  ")
 
     item_text <- c(form$text[[1]], padded, unmatchable)
@@ -467,11 +467,37 @@ test_that("two columns matching one item are refused by class in every form", {
       ),
       classes = "error"
     )
-    expect_s3_class(cnd, "hitop_duplicate_item_match")
-    msg <- conditionMessage(cnd)
-    expect_true(grepl("first_col", msg, fixed = TRUE), label = v)
-    expect_true(grepl("second_col", msg, fixed = TRUE), label = v)
-    expect_true(grepl(as.character(item), msg, fixed = TRUE), label = v)
+    expect_true(inherits(cnd, "hitop_duplicate_item_match"), label = v)
+    # The item and both columns sit on one line of the message.
+    line <- sprintf('Item %d: "first_col", "second_col"', item)
+    expect_true(grepl(line, conditionMessage(cnd), fixed = TRUE), label = v)
+  }
+})
+
+test_that("a duplicate refusal pairs each item with its own columns", {
+  full <- pid_items[!is.na(pid_items$FULL), ]
+  text <- full$Text[match(c(2L, 1L, 2L, 1L), full$FULL)]
+  cnd <- rlang::catch_cnd(
+    rename_pid5_items(
+      data.frame(a = 1, b = 2, `c{x}` = 3, d = 4, check.names = FALSE),
+      method = "text", item_cols = c("a", "b", "c{x}", "d"), item_text = text
+    ),
+    classes = "error"
+  )
+  expect_s3_class(cnd, "hitop_duplicate_item_match")
+  msg <- conditionMessage(cnd)
+  # A brace in a column name prints as written.
+  expect_true(grepl('Item 2: "a", "c{x}"', msg, fixed = TRUE))
+  expect_true(grepl('Item 1: "b", "d"', msg, fixed = TRUE))
+})
+
+test_that("no two items of one form's text pool are equal once normalized", {
+  # A text edit that made two items equal after normalization would send a
+  # column to the wrong item without any other test failing.
+  for (v in names(text_pools())) {
+    pool <- text_pools()[[v]]
+    per_text <- tapply(pool$n, normalize_item_text(pool$text), function(k) length(unique(k)))
+    expect_true(all(per_text == 1), label = v)
   }
 })
 

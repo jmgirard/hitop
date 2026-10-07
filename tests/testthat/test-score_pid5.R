@@ -350,8 +350,9 @@ test_that("APA keeps a facet at exactly 25% missing (prorated, not NA)", {
 
 test_that("APA half-integer prorated raw rounds up (BF Disinhibition)", {
   # BF Disinhibition = 1,2,3,5,6. Item 1 NA; items 2,3,5,6 = 0,0,1,1 (sum = 2);
-  # 1 of 5 missing (20% <= 25%). Prorated raw = round(2*5/4) = round(2.5). APA
-  # rounds half UP -> 3, average = 3/5 = 0.6 (base round-half-to-even gives 0.4).
+  # 1 of 5 missing (20% <= 25%). Prorated raw = round(2*5/4) = round(2.5). A
+  # half rounds away from zero (D-095), so up here -> 3, average = 3/5 = 0.6
+  # (base round-half-to-even gives 0.4).
   b <- as.data.frame(matrix(1L, nrow = 1, ncol = 25))
   names(b) <- sprintf("pid5bf_%02d", 1:25)
   b[1, 1] <- NA_integer_

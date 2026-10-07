@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-096 (2026-10-07): D-094 reverses M031's `version` choice and keeps factor input; its Consequences sentence on all choice arguments is withdrawn (annotates D-094)
+
+**Context:** M170's review found three gaps in D-094. M031 kept `version` (and `missing`) on `match.arg()` at a gated amendment, and D-094 does not cite it. D-094's Consequences says "The HiTOP and PID-5 functions now resolve their choice arguments the same way, by full name." That is false. `missing`, `method`, `target`, `level` and `metric` keep `match.arg()` and its prefixes, and the HiTOP functions' `rlang::arg_match()` is case-sensitive where the PID-5 `version` is not. Under `match.arg()`, `toupper()` turned a factor `version` into a string, so a factor was accepted. D-094 does not mention factors.
+
+**Decision:** (a) D-094(a) reverses M031's choice for `version` only. Jeff's plan-gate choice and the pre-1.0 waiver in D-094 stand as the reason. `missing` keeps `match.arg()`. (b) D-094's Consequences sentence on all choice arguments is withdrawn. Only `version` changed. (c) A factor `version` is read as its labels and resolves as a string does, so the one input that worked and was not an abbreviation keeps working.
+
+**Consequences:** M170 ships (c) with a test. D-094(a) to (c) and its other Consequences stand. Evidence that reopens (b): a milestone that moves another PID-5 choice argument off `match.arg()`.
+
 ### D-095 (2026-10-07): PID-5 proration rounds a half away from zero, the rule `round_half_up()` has always applied (annotates D-090's "halves up" wording)
 
 **Context:** D-090 records that `apa_mean()` rounds a prorated raw "to the nearest whole number, halves up". `round_half_up()` computes `sign(x) * floor(abs(x) + 0.5)`, which rounds a half away from zero. The two agree for a non-negative raw. They differ when `srange` is negative and a prorated raw is a negative half: -2.5 becomes -3, where half up gives -2. `validate_range()` admits a negative `srange`. The help text and SOURCES.md repeated D-090's wording.

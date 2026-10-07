@@ -31,6 +31,11 @@
 # would break the md5 lock.
 write_instrument_json <- function(spec, path, build_date = Sys.Date()) {
   text_col <- if (is.null(spec$text_col)) "Text" else spec$text_col
+  if (!text_col %in% names(spec$items)) {
+    cli::cli_abort(
+      "The spec's {.field text_col} {.val {text_col}} is not a column of its items table."
+    )
+  }
   number <- as.integer(spec$items[[spec$number_col]])
   keep <- !is.na(number)
   items <- spec$items[keep, , drop = FALSE]

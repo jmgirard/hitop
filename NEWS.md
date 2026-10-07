@@ -799,7 +799,8 @@
 
 * **`rename_pid5_items(method = "text")` matches text copied from a printed
   form.** Typographic quotes (‘ ’ “ ”) match straight ones, and any
-  periods, ellipses (`...` or `…`), spaces, tabs or line breaks at the
+  periods, ellipses (`...` or `…`), spaces (the no-break space too), tabs
+  or line breaks at the
   start or the end of the text do not count. Text copied from the printed informant form still needs its
   "He or she..." stem removed.
 

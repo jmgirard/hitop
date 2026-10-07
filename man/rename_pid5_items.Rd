@@ -33,9 +33,10 @@ match against the literal item prompt text in \code{pid_items$Text}
 (\code{pid_items$TextIRF} for \code{version = "IRF"}; for \code{version = "FFBF"}, any
 of the four texts in \link{pid_ffbf_items}). Typographic quotes (‘ ’ “ ”)
 count as straight ones, and any periods, ellipses (\code{...} or \verb{…}),
-spaces, tabs or line breaks at the start or the end of the text are
-ignored. So a leading ellipsis and a final period do not count. The informant text has no "He or she..." stem, so
-remove that stem from text copied from the printed informant form first.
+spaces (the no-break space too), tabs or line breaks at the start or the
+end of the text are ignored. So a leading ellipsis and a final period do
+not count. The informant text has no "He or she..." stem, so remove that
+stem from text copied from the printed informant form first.
 (default = \code{"number"})
 
 The forms number their items independently, so \code{"number"} reads the

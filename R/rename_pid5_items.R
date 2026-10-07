@@ -26,9 +26,10 @@
 #'   (`pid_items$TextIRF` for `version = "IRF"`; for `version = "FFBF"`, any
 #'   of the four texts in [pid_ffbf_items]). Typographic quotes (‘ ’ “ ”)
 #'   count as straight ones, and any periods, ellipses (`...` or `…`),
-#'   spaces, tabs or line breaks at the start or the end of the text are
-#'   ignored. So a leading ellipsis and a final period do not count. The informant text has no "He or she..." stem, so
-#'   remove that stem from text copied from the printed informant form first.
+#'   spaces (the no-break space too), tabs or line breaks at the start or the
+#'   end of the text are ignored. So a leading ellipsis and a final period do
+#'   not count. The informant text has no "He or she..." stem, so remove that
+#'   stem from text copied from the printed informant form first.
 #'   (default = `"number"`)
 #'
 #'   The forms number their items independently, so `"number"` reads the
@@ -223,10 +224,19 @@ rename_pid5_items <- function(
       ## informant, or English and German). D-094(c).
       dup_n <- unique(matched_n[duplicated(matched_n)])
       if (length(dup_n) > 0) {
-        dup_cols <- colnames(data)[data_locs[matched_n %in% dup_n]]
+        ## One line per item, naming its columns, so several duplicated
+        ## items stay paired with their own columns.
+        cols_of <- colnames(data)[data_locs]
+        pairs <- vapply(dup_n, function(n) {
+          cols <- cols_of[matched_n == n]
+          line <- paste0("Item ", n, ": ", paste0('"', cols, '"', collapse = ", "))
+          ## cli reads braces as code, and a column name can hold them.
+          gsub("}", "}}", gsub("{", "{{", line, fixed = TRUE), fixed = TRUE)
+        }, character(1))
+        names(pairs) <- rep("x", length(pairs))
         cli::cli_abort(c(
-          "Two or more columns match the same {label} item: {.val {dup_n}}.",
-          "x" = "The columns are {.val {dup_cols}}.",
+          "Two or more columns match the same {label} item.",
+          pairs,
           "i" = "Give each item one column. Rename each form's columns in its own data frame, or give each call its own {.arg prefix}."
         ), class = "hitop_duplicate_item_match")
       }

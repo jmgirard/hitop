@@ -296,6 +296,13 @@ test_that("write_instrument_json() reads the wording from the spec's text_col", 
   )
   expect_identical(self, pid_items$Text[match(number, pid_items$IRF)])
   expect_false(any(self == text))
+  # A misspelled text column is refused by name, not written.
+  spec$text_col <- "TextIrf"
+  expect_error(
+    hitop:::write_instrument_json(spec, path, build_date = as.Date("2026-01-02")),
+    "TextIrf",
+    fixed = TRUE
+  )
 })
 
 # A fresh write of each spec at its manifest row's date is the committed file

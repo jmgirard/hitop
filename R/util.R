@@ -182,13 +182,13 @@ warn_item_order <- function(x, call = rlang::caller_env(),
 # Internal Helper: Put PID-5 item text in one form before matching (M170).
 # Typographic single and double quotes become straight ones. Any run of
 # periods, ellipses and whitespace at the start or the end is dropped, which
-# removes a leading ellipsis, final periods and surrounding spaces, tabs and
-# line breaks.
+# removes a leading ellipsis, final periods and surrounding spaces (the
+# no-break space included), tabs and line breaks.
 normalize_item_text <- function(x) {
   x <- gsub("[\u2018\u2019]", "'", x)
   x <- gsub("[\u201c\u201d]", "\"", x)
-  x <- sub("^[.\u2026 \t\r\n]+", "", x)
-  sub("[.\u2026 \t\r\n]+$", "", x)
+  x <- sub("^[.\u2026\u00a0 \t\r\n]+", "", x)
+  sub("[.\u2026\u00a0 \t\r\n]+$", "", x)
 }
 
 # Internal Helper: Resolve a PID-5 `version` argument to one of `choices`.
@@ -196,16 +196,23 @@ normalize_item_text <- function(x) {
 # the function's whole default vector and resolves to its first name,
 # "FULL". Anything else is refused under `hitop_unknown_version`.
 resolve_pid5_version <- function(version, choices, call = rlang::caller_env()) {
-  if (is.character(version) && identical(toupper(version), choices)) {
+  ## A factor reads as its labels, as `toupper()` read it before D-094.
+  if (is.factor(version)) {
+    version <- as.character(version)
+  }
+  if (is.character(version) && identical(unname(toupper(version)), choices)) {
     return(choices[[1]])
   }
   if (is.character(version) && length(version) == 1 && !is.na(version)) {
-    resolved <- toupper(version)
-    if (resolved %in% choices) {
-      return(resolved)
+    hit <- match(toupper(version), choices)
+    if (!is.na(hit)) {
+      return(choices[[hit]])
     }
   }
   given <- deparse1(version)
+  if (nchar(given) > 60) {
+    given <- paste0(substr(given, 1, 57), "...")
+  }
   cli::cli_abort(c(
     "{.arg version} must be one of {.or {.val {choices}}}.",
     "x" = "You supplied {.code {given}}."

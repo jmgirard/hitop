@@ -92,3 +92,27 @@ Researchers get a clear, classed refusal for a bad PID-5 `version` or an ambiguo
 - 2026-10-07 re-review after the AC2 amendment: main still at 32f5dfca; the branch changed only tracking files since the evidence above.
 - AC2 evidence (amended wording): the help-text, search and test evidence above stands, and test-score_pid5.R passes again. `git diff main...HEAD -- R/util.R` adds `normalize_item_text()`, `resolve_pid5_version()` and comment lines only. The bodies of `round_half_up()` and `apa_mean()` have no changed line.
 - Consistency gate: `cairn_validate.py` exits 0, every check passing, with 34 advisory warnings, none new to this branch. No principle changed, so `cairn_impact` is skipped. `devtools::document()` leaves no diff, and `pkgdown::check_pkgdown()` finds no problems. README.Rmd and README.md are untouched. NEWS.md has the entries, with no milestone numbers. The only new file is a test file, so no `.Rbuildignore` entry is needed. `devtools::check()` gives 0 errors, 0 warnings and 0 notes.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the IRF help's "matters only ... fractional part strictly between 0 and one half" is false under a negative `srange` — fix now (scoped to a non-negative raw, with a sentence on negative raws).
+- diff-bug #2: with two duplicated items the refusal pools all columns into one list, so the pairing is lost — fix now (one "Item n: columns" line per item, braces escaped for cli; new pairing test).
+- diff-bug #3: one column listed twice is refused as "two or more columns" — fix now through #2's per-item line, which shows the repeated name.
+- diff-bug #4: a factor `version` worked under `match.arg()` and is now refused, which NEWS does not say — fix now (a factor reads as its labels; test case; D-096(c)).
+- diff-bug #5: the resolver returns the input's attributes, such as names or AsIs — fix now (returns the element of `choices`).
+- diff-bug #6: `deparse1()` puts an input of any length into the message — fix now (cut at 60 characters).
+- diff-bug #7: a no-break space at either end is not trimmed — fix now (added to the trimmed run; help and NEWS say so).
+- diff-bug #8: a misspelled `text_col` gives an unclear `data.frame()` error — fix now (refused by name; test).
+- diff-bug #9: the item-number assertion matches any "1" in the message — fix now (asserts the whole `Item n: "first_col", "second_col"` line).
+- diff-bug #10: the double-quote probes change nothing in the BF+M pool, which has no double quote — reject, planned change: AC4 applies each quote probe wherever a text has the mark, and the FULL, SF and IRF pools carry 3 to 5 each.
+- diff-bug #11: the "So an informant facet prorates exactly" sentence no longer follows the sentence before it — fix now (sentences reordered).
+- diff-bug #12: long roxygen and NEWS lines — reject, style.
+- blame-history #1: D-094 does not cite M031, whose amendment kept `version` on `match.arg()` — fix now (D-096(a)).
+- blame-history #2: D-094's Consequences says every choice argument now resolves by full name, which is false — fix now (D-096(b) withdraws it).
+- blame-history #3: no standing test that normalization keeps every item distinct — fix now (new collision test over all six pools).
+- blame-history #4: `rename_hitopsr_items()` still matches under `trimws()` and returns duplicate names — follow-up, candidate row "Helpers behind newer conventions", part (b).
+- blame-history #5: the FFBF duplicate test now asserts the class, not the prose — reject, false: the message's item and columns are asserted in test-rename_pid5_items.R, and D-034(c) puts message text outside the contract.
+- blame-history #6: the removed `switch()` defaults leave `n_items` NULL if a future version joins `choices` but not the `switch` — reject, planned change: T1 named the removal, and the resolver refuses everything outside `choices`.
+- blame-history #7: the NEWS breaking entries cover two functions that 0.2.0 never released — reject, false: the development section already lists breaks against development builds, as the old "B" entry did.
+- blame-history #8: test-score_pid5.R:354 still says "rounds half UP"; plus `text_col` (diff-bug #8) and line length (diff-bug #12) — fix now for the comment.
+- prior-review #1: the factor refusal (diff-bug #4) — fixed with it.
+- prior-review #2: `expect_s3_class()` in loops names no failing iteration — fix now (`expect_true(inherits(...), label = )`).
+- prior-review #3: a test comment still says matching runs under `trimws()` — fix now.

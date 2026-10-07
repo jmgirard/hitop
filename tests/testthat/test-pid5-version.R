@@ -100,7 +100,7 @@ test_that("each PID-5 function refuses a value that is not one full name, by cla
     for (value in refused) {
       label <- paste(fn, deparse1(value))
       cnd <- rlang::catch_cnd(version_calls[[fn]](value, "FULL"), classes = "error")
-      expect_s3_class(cnd, "hitop_unknown_version")
+      expect_true(inherits(cnd, "hitop_unknown_version"), label = label)
       expect_identical(rlang::call_name(cnd$call), fn, label = label)
       msg <- conditionMessage(cnd)
       expect_true(grepl("version", msg, fixed = TRUE), label = label)
@@ -124,6 +124,8 @@ test_that("each PID-5 function resolves a full name in any case, and an omitted 
     }
     full <- call("FULL", "FULL")
     expect_identical(call(, "FULL"), full, label = paste(fn, "omitted"))
+    # A factor reads as its label, as it did under match.arg().
+    expect_identical(call(factor("full"), "FULL"), full, label = paste(fn, "factor"))
     expect_identical(call(tolower(choices_of(fn)), "FULL"), full, label = paste(fn, "default vector"))
   }
 })
