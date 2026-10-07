@@ -1034,6 +1034,32 @@ test_that("the Supabase export reads two rows and scores to the table-derived me
   )
 })
 
+# A copy of a store export whose second row has the participant `=1+1` and
+# whose first row has a `q_note` answer `=1+1`, values a spreadsheet program
+# could run as a formula. Neither export holds `=1+1` in its second row.
+formula_copy <- function(path, dir) {
+  lines <- readLines(path, warn = FALSE)
+  second <- strsplit(lines[3], ",", fixed = TRUE)[[1]]
+  second[2] <- "=1+1"
+  lines[3] <- paste(second, collapse = ",")
+  lines[1] <- paste0(lines[1], ",q_note")
+  lines[-1] <- paste0(lines[-1], c(",=1+1", ","))
+  out <- file.path(dir, basename(path))
+  writeLines(lines, out)
+  out
+}
+
+test_that("a participant and an answer of =1+1 read as text from both store exports", {
+  dir <- withr::local_tempdir()
+  exports <- c(sheet = example_file("responses-sheet-hitopbr.csv"),
+               supabase = fixture("supabase-hitopbr.csv"))
+  for (kind in names(exports)) {
+    out <- read_form_responses(formula_copy(exports[[kind]], dir))
+    expect_identical(out$participant[2], "=1+1", info = kind)
+    expect_identical(out$q_note, c("=1+1", NA_character_), info = kind)
+  }
+})
+
 # ---- A file saved under the page's random order ----------------------------
 #
 # The page keeps the item columns in the instrument's order and writes the
@@ -2484,6 +2510,17 @@ test_that("q_ cells read as written: a formula, a leading zero, a comma and a li
   expect_identical(out$q_code, "007")
   expect_identical(out$q_comma, "a, b")
   expect_identical(out$q_lines, "first\nsecond")
+})
+
+test_that("a participant of =1+1 in the page's saved file reads as text", {
+  dir <- withr::local_tempdir()
+  f <- answer_file(dir, "p001.csv", c(item_names, "q_note"),
+                   list(c("4", "1", "=1+1")), participant = "=1+1")
+
+  out <- read_form_responses(f)
+
+  expect_identical(out$participant, "=1+1")
+  expect_identical(out$q_note, "=1+1")
 })
 
 test_that("q_ columns come in order of first appearance, files in path order", {
