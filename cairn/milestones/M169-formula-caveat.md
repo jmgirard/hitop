@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M169: Spreadsheet formula caveat for response files
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — researcher-facing setup docs in hitop-form's README and the package article
-- **Branch/PR:** —
+- **Branch/PR:** m169-formula-caveat; companion: /Users/jmgirard/github/hitop-form m169-formula-caveat
 
 ## Goal
 
@@ -42,7 +42,7 @@ A researcher who uses hitop-form learns two facts: a spreadsheet program can run
 
 ## Tasks
 
-- [ ] T1: Cut `m169-formula-caveat` in hitop and in the hitop-form checkout (`/Users/jmgirard/github/hitop-form`). Record a milestone-local decision: the M095 review's rejection of formula escaping (O15) stands, with the added reason that a direct post bypasses any page-side escape.
+- [x] T1: Cut `m169-formula-caveat` in hitop and in the hitop-form checkout (`/Users/jmgirard/github/hitop-form`). Record a milestone-local decision: the M095 review's rejection of formula escaping (O15) stands, with the added reason that a direct post bypasses any page-side escape.
 - [ ] T2: In `tests/testthat/test-read_form_responses.R`, add the four AC4 cases. Build the files from `inst/examples/responses-sheet-hitopbr.csv` and `tests/testthat/fixtures/supabase-hitopbr.csv`. Add a `q_` column to each, as the article's chunk near `online-collection.Rmd:184` does. Assert with `expect_identical()` against the typed literal. Plant a reader change that alters a leading `=` and see the new tests go red, then restore it.
 - [ ] T3: In hitop-form's `README.md`, write the two facts in the three AC1 sections. If the Supabase section (near line 1076) already states both, log it as a no-op. Limit the Google Sheet sentence near line 910 to the sheet itself (AC3).
 - [ ] T4: In the article, write the two facts in "3. Download the sheet as CSV" and "The Supabase route". Limit the sentence in "1. Deploy the sheet's script" (near line 50) to the sheet itself, and judge the sentence near line 147 (AC3).
@@ -56,7 +56,11 @@ A researcher who uses hitop-form learns two facts: a spreadsheet program can run
 - 2026-10-06: plan gate chose docs and tests over a page-side escape that the reader removes. Anyone with a study link can post a row directly, so the escape is bypassable. It also changes the file format in both repos. Falsified by a store that accepts rows only from the page, or by a report of an honest participant's answer that ran as a formula.
 - 2026-10-06: criteria audit (full mode, fresh Opus reader) returned 5 findings, all applied. AC1 is narrowed to identifiers and text answers, because D-064 refuses item cells that are not whole numbers. The test reference moved from AC1 to T2. AC3 judges whole sentences that contain `formula` or `=1+1`, not lines that contain `formula`. AC4 is new, because only the participant cases had tests for the two exports. The Supabase section can already satisfy AC1 (T3 logs a no-op).
 - 2026-10-06: lessons applied: M111 (a sheet's text format alone does not stop a formula, the apostrophe does) limits the sheet claim. M096 (an article renders against the installed package) puts `load_all()` before the render in T5. M116 gives the companion merge spelling. No NEWS entry, because no exported behavior changes.
+- 2026-10-06: implement started. Branch `m169-formula-caveat` cut in hitop and in the hitop-form checkout, both from a synced main. Five untracked `devel/hitopdat_*` files in hitop belong to the blocked HiTOP-DAT work and stay unstaged.
+- 2026-10-06: T1 done: decision M169-D1 recorded.
 
 ## Decisions
+
+- M169-D1 (2026-10-06): The M095 review's rejection of formula escaping (finding O15) stands. Its reason was that R reads the file and that a spreadsheet's cell execution is the spreadsheet's setting. This milestone adds a second reason. Anyone with a study link can post a row directly to the sheet script or the Supabase table. An escape written by the page therefore does not stop a planted formula. The page keeps writing answers unchanged, and the docs carry the caveat.
 
 ## Review
