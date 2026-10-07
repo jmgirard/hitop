@@ -1,6 +1,6 @@
 # M145: HiTOP-DAT Qualtrics import file
 
-- **Status:** planned
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** M143, M144
 - **Driving RR:** —
@@ -53,6 +53,7 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
 
 - 2026-09-29: created by /milestone-plan, together with M143 and M144.
 - 2026-09-29: plan chose a .txt import file built from the tables over shipping a cleaned copy of the shared .qsf. The other instruments use the .txt route, and the .qsf carries unsourced scoring. Falsified by a Qualtrics .txt import that cannot hold the DAT's answer sets.
+- 2026-10-06: blocked. Jeff is waiting for confirmation of the HiTOP-DAT items and questions. After that confirmation arrives, the milestone is workable again.
 
 ## Decisions
 

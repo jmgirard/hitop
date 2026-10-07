@@ -1,6 +1,6 @@
 # M144: HiTOP-DAT Word forms and REDCap dictionary
 
-- **Status:** planned
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** M143
 - **Driving RR:** —
@@ -56,6 +56,7 @@ Researchers can build and download HiTOP-DAT paper forms and a REDCap data dicti
 
 - 2026-09-29: created by /milestone-plan, together with M143 and M145. This plan carries five fixes from M143's criteria audit. The parse checks run both ways and cover the instructions. The item number is named as the battery number. AC3 binds the shipped files, not the md5 test. The refusals are enumerated from `formals()`. T3 settles the footer text.
 - 2026-09-29: plan chose to extend the shared builders with an answer set per item over separate DAT-only builders. The HiTOP-HSUM REDCap builder already carries per-set choices. Falsified by an extension that changes the output of another instrument's form or dictionary.
+- 2026-10-06: blocked. Jeff is waiting for confirmation of the HiTOP-DAT items and questions. After that confirmation arrives, the milestone is workable again.
 
 ## Decisions
 
