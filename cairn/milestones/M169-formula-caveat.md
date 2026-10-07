@@ -28,10 +28,10 @@ A researcher who uses hitop-form learns two facts: a spreadsheet program can run
 
 ## Acceptance criteria
 
-- [ ] AC1: In hitop-form's `README.md`, three sections each state two facts. The sections are "Where the file lands" (the file the page saves with no store), "Send responses to a Google Sheet" (the `webhook` kind, for the sheet's CSV download) and "Send responses to Supabase" (the `supabase` kind, for the Table Editor export). These are no store plus the two kinds that `STORE_KINDS` in `form.js` lists. The first fact: a participant identifier or text answer that starts with `=`, such as `=1+1`, can be read as a formula when the file is opened in a spreadsheet program. The second fact: `read_form_responses()` returns it as text.
-- [ ] AC2: `vignettes/articles/online-collection.Rmd` states the same two facts in "3. Download the sheet as CSV" and in "The Supabase route".
-- [ ] AC3: In hitop-form's `README.md` and in `vignettes/articles/online-collection.Rmd`, every sentence outside fenced code that contains `formula` or `=1+1` (case-insensitive) and says a value stays text or is not read as a formula limits that claim to the cell in the sheet or table itself.
-- [ ] AC4: `read_form_responses()` returns a participant identifier of `=1+1` and a `q_` answer of `=1+1` as the character value `"=1+1"`, from a Google Sheet download and from a Supabase export. A test asserts each of the four cases.
+- [x] AC1: In hitop-form's `README.md`, three sections each state two facts. The sections are "Where the file lands" (the file the page saves with no store), "Send responses to a Google Sheet" (the `webhook` kind, for the sheet's CSV download) and "Send responses to Supabase" (the `supabase` kind, for the Table Editor export). These are no store plus the two kinds that `STORE_KINDS` in `form.js` lists. The first fact: a participant identifier or text answer that starts with `=`, such as `=1+1`, can be read as a formula when the file is opened in a spreadsheet program. The second fact: `read_form_responses()` returns it as text.
+- [x] AC2: `vignettes/articles/online-collection.Rmd` states the same two facts in "3. Download the sheet as CSV" and in "The Supabase route".
+- [x] AC3: In hitop-form's `README.md` and in `vignettes/articles/online-collection.Rmd`, every sentence outside fenced code that contains `formula` or `=1+1` (case-insensitive) and says a value stays text or is not read as a formula limits that claim to the cell in the sheet or table itself.
+- [x] AC4: `read_form_responses()` returns a participant identifier of `=1+1` and a `q_` answer of `=1+1` as the character value `"=1+1"`, from a Google Sheet download and from a Supabase export. A test asserts each of the four cases.
 
 ## Coverage
 
@@ -77,3 +77,28 @@ A researcher who uses hitop-form learns two facts: a spreadsheet program can run
 Pass 1 (2026-10-06), stopped at the step-4 gate before the reviewers ran. Criterion evidence passed but is not ticked, because the return re-runs it.
 - AC1 to AC4: section greps found both facts in each of the 3 README and 2 article sections. The sweep found every value claim limited to the sheet or table itself. The AC4 test had 4 expectations and 0 failures (261 tests in the file, 0 failed).
 - Gate: `cairn_validate` exit 0. `document()` no diff. README.md current. `check_pkgdown()` no problems. `check()` 0 errors, 0 warnings, 0 notes. NEWS: no entry for the article change, so this fails (review return 1).
+
+Pass 2 (2026-10-06). hitop and hitop-form are both 0 commits behind origin/main.
+- AC1: in hitop-form README.md, outside fenced code, each of "Where the file lands", "Send responses to a Google Sheet" and "Send responses to Supabase" has 1 match each for "participant identifier or a text answer", "can … read such a cell as a formula" and "`read_form_responses()` returns … as text". `STORE_KINDS` is `['webhook', 'supabase']` (form.js:1071). Pass.
+- AC2: in the article, "3. Download the sheet as CSV" and "The Supabase route" each have 1 match for each of the same three phrases. Pass.
+- AC3: the awk sweep (outside fenced code, `formula` or `=1+1`, case-insensitive) hit README lines 865, 866, 917, 1013, 1015, 1088 and 1090, and article lines 51, 54, 134, 136, 152, 301 and 302. Read as whole sentences, each value claim says "in the sheet itself", "in the sheet", "in the table itself" or "as the sheet itself stored them". The other hits are the caveat. Article 51-54 "put a formula in it" is about header keys, not values. Pass.
+- AC4: `test_file("test-read_form_responses.R")` ran 261 tests with 0 failed. The test "a participant and an answer of =1+1 read as text from both store exports" ran 4 expectations (participant and `q_note`, for the sheet download and the Supabase export), with 0 failed. At implement, a planted reader change failed all 4 (T2 work-log line). Pass.
+- Gate: `cairn_validate` exit 0. `document()` no diff. README.md current. `check_pkgdown()` no problems. NEWS.md has the entry (T6). `check()` 0 errors, 0 warnings, 0 notes. No principle changed, so `cairn_impact` is skipped.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the sheet half of the participant test changes nothing, because row 1 of the sheet download already holds `=1+1` — fix now. `formula_copy()` now sets row 2, which holds `007` and `p002`. Fixed 0c4d2889.
+- diff-bug #2: "the sheet's protection" names nothing in the article — fix now. Both files now name the apostrophe, and the download "does not keep the apostrophe". Fixed 0c4d2889, hitop-form bd37f7a.
+- diff-bug #3: the sheet sentences credit "as text" alone for stopping a formula, against the M111 lesson — fix now. Each now says the cell is written behind a leading apostrophe and formatted as text. Fixed 0c4d2889, hitop-form bd37f7a.
+- diff-bug #4: "read the file in R before you open it in a spreadsheet" implies a later open is safe — fix now. It now says "rather than in a spreadsheet". Fixed hitop-form bd37f7a.
+- diff-bug #5: the saved-file claim had only a one-off check — fix now. The test "a participant of =1+1 in the page's saved file reads as text" was added. Fixed 0c4d2889.
+- diff-bug #6: the Supabase closing sentence repeats the R route — reject, style.
+- diff-bug #7: two rewrapped article lines run past 80 columns — fix now, rewrapped. Fixed 0c4d2889.
+- diff-bug #8: `study` and option labels can also start with `=` — reject, planned change. Both are researcher-set, and the plan scoped participant text.
+- diff-bug #9: the NEWS entry fits the file — reject, false (no defect reported).
+- blame-history #1: the dropped "open it in the spreadsheet as text" advice was M112's on purpose — follow-up, the new "Formula caveat reach" row. The claim audit found no record that checks it.
+- blame-history #2: "in the sheet itself" narrows an earned claim accurately — reject, false (no defect reported).
+- blame-history #3: long rewrapped lines — fix now, the same fix as diff-bug #7. Fixed 0c4d2889.
+- blame-history #4: the Supabase paragraph agrees with "exactly as the sheet's download does" — reject, false (no defect reported).
+- prior-review #1: M111's review lists `+`, `-` and `@` as formula prefixes, and the caveat names only `=` — follow-up, the new "Formula caveat reach" row. No run in this repo shows which prefixes each spreadsheet program runs.
+- prior-review #2: the dropped open-as-text advice (M112 F18) — follow-up, the same row.
+- prior-review #3: the apostrophe goes unnamed — fix now, the same fix as diff-bug #2. Fixed 0c4d2889, hitop-form bd37f7a.
+- After the fixes: a re-planted reader change failed the export test on all 4 cases and the new page-file test on both. Suite: 1158 tests, 0 failed. `check_pkgdown()` no problems. The article rendered. The AC1 and AC2 phrase counts are unchanged (1 each in all 5 sections). The AC3 sweep lines all still limit the claim to the sheet or table. The step-6 checkpoint landed after the fix commits, not before them. That changes no content.
