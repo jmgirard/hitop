@@ -185,10 +185,10 @@ warn_item_order <- function(x, call = rlang::caller_env(),
 # removes a leading ellipsis, final periods and surrounding spaces, tabs and
 # line breaks.
 normalize_item_text <- function(x) {
-  x <- gsub("[‘’]", "'", x)
-  x <- gsub("[“”]", "\"", x)
-  x <- sub("^[.… \t\r\n]+", "", x)
-  sub("[.… \t\r\n]+$", "", x)
+  x <- gsub("[\u2018\u2019]", "'", x)
+  x <- gsub("[\u201c\u201d]", "\"", x)
+  x <- sub("^[.\u2026 \t\r\n]+", "", x)
+  sub("[.\u2026 \t\r\n]+$", "", x)
 }
 
 # Internal Helper: Resolve a PID-5 `version` argument to one of `choices`.
