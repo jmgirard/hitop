@@ -9,7 +9,7 @@
 # that holds this form's wording, `Text` when absent). One table can carry
 # more than one form: `pid_items` numbers the FULL, SF, BF, BFPM and IRF
 # forms in five columns, each NA on the rows its form omits, and holds the
-# IRF's informant wording in `TextIRF`, so an IRF spec names
+# IRF's informant wording in `TextIRF`, so a spec for the IRF would name
 # `text_col = "TextIRF"`. The writer keeps the rows where `number_col` is not
 # NA, in ascending order of it.
 #

@@ -1,6 +1,6 @@
 # M170: PID-5 version refusals and item-text matching
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -73,3 +73,5 @@ Researchers get a clear, classed refusal for a bad PID-5 `version` or an ambiguo
 - 2026-10-07: T4 done. `write_instrument_json()` takes an optional `text_col` and defaults to `Text`, so the five specs did not change. The new test writes an IRF spec with `TextIRF`. Its control, the same spec without `text_col`, writes self-report text that differs on every IRF row. The byte-for-byte rebuild test of the five shipped files passes.
 - 2026-10-07: T5 done. The six child generators joined the five hand-kept lists. The Word smoke and legend lists, the Qualtrics smoke and width lists, and the REDCap smoke list pass with them. The stale counts in six test comments now match. test-generate-pid5irf.R's Society-footer list stays without the child forms, because their footer is the APA notice.
 - 2026-10-07: T6 done. NEWS rewrites the M157 "B" breaking entry as the full-names entry and adds the duplicate refusal under breaking changes, plus two entries under improvements. The AC6 search finds only refusal tests, a format string and a regex. The first `check()` warned on non-ASCII in R/util.R, because the Edit tool wrote literal curly quotes in place of `\u` escapes. The escapes are fixed, and `check()` now gives 0 errors, 0 warnings and 0 notes. Full suite before the escape fix: 0 failed. The tests under `check()` after it: clean.
+- 2026-10-07: claim audit: 54 claims read, 4 corrected — NEWS.md (which abbreviations used to resolve in which functions, and what the old error named), R/rename_pid5_items.R help and comment (normalization drops any leading or trailing run of periods, ellipses and whitespace), R/json_export.R (no IRF spec exists, so "would name").
+- 2026-10-07: implement complete; status set to review.

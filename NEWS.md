@@ -576,12 +576,15 @@
 * **The PID-5 functions take only full version names.** `score_pid5()`,
   `reliability_pid5()`, `rename_pid5_items()`, `label_pid5()`,
   `validity_pid5()`, `norm_pid5()` and `plot_pid5()` accept `version` as a
-  full name in any letter case, such as `"FULL"` or `"bf"`. An
-  abbreviation such as `"S"`, `"F"`, `"B"` or `"BFP"` used to select a
-  version, and it is now an error. Write the full name. Any refused
-  `version` is an error of class `hitop_unknown_version`, which names the
-  argument, the value given and the accepted names. Before, the error came
-  from `match.arg()` and named neither the argument nor the function.
+  full name in any letter case, such as `"FULL"` or `"bf"`. Before, an
+  abbreviation selected a version where it was unique among that
+  function's names: `"S"` selected the SF in all seven functions, `"BFP"`
+  the PID5BF+M in the four that take it, and `"F"` and `"B"` the FULL and
+  BF in `validity_pid5()`, `norm_pid5()` and `plot_pid5()`. Each is now an
+  error, so write the full name. Any refused `version` is an error of class
+  `hitop_unknown_version`, which names the argument, the value given and
+  the accepted names. Before, the error came from `match.arg()`. Its
+  message called the argument `'arg'`, and it did not name the function.
 
 * **`rename_pid5_items(method = "text")` refuses two columns that match one
   item, for every form.** Both columns would take the same name. Before,
@@ -795,9 +798,9 @@
 ## Improvements and fixes
 
 * **`rename_pid5_items(method = "text")` matches text copied from a printed
-  form.** Typographic quotes (‘ ’ “ ”) match straight ones, and a leading
-  ellipsis, a final period and spaces, tabs or line breaks around the text
-  do not count. Text copied from the printed informant form still needs its
+  form.** Typographic quotes (‘ ’ “ ”) match straight ones, and any
+  periods, ellipses (`...` or `…`), spaces, tabs or line breaks at the
+  start or the end of the text do not count. Text copied from the printed informant form still needs its
   "He or she..." stem removed.
 
 * **The `score_pid5()` help states the proration rounding rule exactly.** A

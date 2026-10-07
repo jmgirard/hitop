@@ -31,10 +31,10 @@ name such as \code{"F"} included, is an error of class
 columns spelled \code{from_prefix} followed by an item number, or \code{"text"} to
 match against the literal item prompt text in \code{pid_items$Text}
 (\code{pid_items$TextIRF} for \code{version = "IRF"}; for \code{version = "FFBF"}, any
-of the four texts in \link{pid_ffbf_items}). Four differences do not count:
-typographic quotes (‘ ’ “ ”) in place of straight ones, a leading
-ellipsis (\code{...} or \verb{…}), a final period, and spaces, tabs or line breaks
-around the text. The informant text has no "He or she..." stem, so
+of the four texts in \link{pid_ffbf_items}). Typographic quotes (‘ ’ “ ”)
+count as straight ones, and any periods, ellipses (\code{...} or \verb{…}),
+spaces, tabs or line breaks at the start or the end of the text are
+ignored. So a leading ellipsis and a final period do not count. The informant text has no "He or she..." stem, so
 remove that stem from text copied from the printed informant form first.
 (default = \code{"number"})
 

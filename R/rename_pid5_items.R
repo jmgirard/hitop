@@ -24,10 +24,10 @@
 #'   columns spelled `from_prefix` followed by an item number, or `"text"` to
 #'   match against the literal item prompt text in `pid_items$Text`
 #'   (`pid_items$TextIRF` for `version = "IRF"`; for `version = "FFBF"`, any
-#'   of the four texts in [pid_ffbf_items]). Four differences do not count:
-#'   typographic quotes (‘ ’ “ ”) in place of straight ones, a leading
-#'   ellipsis (`...` or `…`), a final period, and spaces, tabs or line breaks
-#'   around the text. The informant text has no "He or she..." stem, so
+#'   of the four texts in [pid_ffbf_items]). Typographic quotes (‘ ’ “ ”)
+#'   count as straight ones, and any periods, ellipses (`...` or `…`),
+#'   spaces, tabs or line breaks at the start or the end of the text are
+#'   ignored. So a leading ellipsis and a final period do not count. The informant text has no "He or she..." stem, so
 #'   remove that stem from text copied from the printed informant form first.
 #'   (default = `"number"`)
 #'
@@ -204,8 +204,8 @@ rename_pid5_items <- function(
     }
 
     ## Match text against this form's item texts only, both sides put in one
-    ## form first (typographic quotes, a leading ellipsis, a final period and
-    ## surrounding whitespace do not count). For the FFBF the pool holds four
+    ## form first (typographic quotes, and leading and trailing periods,
+    ## ellipses and whitespace, do not count). For the FFBF the pool holds four
     ## texts per item.
     locs <- match(normalize_item_text(item_text), normalize_item_text(text_pool))
 
