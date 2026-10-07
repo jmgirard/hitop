@@ -425,3 +425,88 @@ test_that("version = 'BFPM' matches item text to the BF+M number", {
     fixed = TRUE
   )
 })
+
+# Text matching across every form (M170, D-094) --------------------------------
+
+# Each form's text pool and the item number of each text, typed from the
+# tables the help page names: `pid_items` Text (TextIRF for the IRF) and the
+# four texts of `pid_ffbf_items`.
+text_pools <- function() {
+  one <- function(v, col) {
+    keep <- !is.na(pid_items[[v]])
+    list(text = pid_items[[col]][keep], n = pid_items[[v]][keep])
+  }
+  list(
+    FULL = one("FULL", "Text"),
+    SF = one("SF", "Text"),
+    BF = one("BF", "Text"),
+    BFPM = one("BFPM", "Text"),
+    IRF = one("IRF", "TextIRF"),
+    FFBF = list(
+      text = c(pid_ffbf_items$Text, pid_ffbf_items$TextIRF,
+               pid_ffbf_items$TextDE, pid_ffbf_items$TextIRFDE),
+      n = rep(pid_ffbf_items$FFBF, 4)
+    )
+  )
+}
+
+stems <- c(FULL = "pid5_", SF = "pid5sf_", BF = "pid5bf_", BFPM = "pid5bfpm_",
+           IRF = "pid5irf_", FFBF = "pid5ffbf_")
+widths <- c(FULL = 3, SF = 3, BF = 2, BFPM = 2, IRF = 3, FFBF = 3)
+
+test_that("two columns matching one item are refused by class in every form", {
+  pools <- text_pools()
+  for (v in names(pools)) {
+    text <- pools[[v]]$text[1]
+    item <- pools[[v]]$n[1]
+    cnd <- rlang::catch_cnd(
+      rename_pid5_items(
+        data.frame(first_col = 1, second_col = 2), version = v,
+        method = "text", item_cols = c("first_col", "second_col"),
+        item_text = c(text, text)
+      ),
+      classes = "error"
+    )
+    expect_s3_class(cnd, "hitop_duplicate_item_match")
+    msg <- conditionMessage(cnd)
+    expect_true(grepl("first_col", msg, fixed = TRUE), label = v)
+    expect_true(grepl("second_col", msg, fixed = TRUE), label = v)
+    expect_true(grepl(as.character(item), msg, fixed = TRUE), label = v)
+  }
+})
+
+test_that("text matching ignores typographic quotes, a leading ellipsis, a final period and whitespace", {
+  variants <- list(
+    lsquo = function(x) gsub("'", "‘", x, fixed = TRUE),
+    rsquo = function(x) gsub("'", "’", x, fixed = TRUE),
+    ldquo = function(x) gsub("\"", "“", x, fixed = TRUE),
+    rdquo = function(x) gsub("\"", "”", x, fixed = TRUE),
+    dots = function(x) paste0("...", x),
+    ellipsis = function(x) paste0("…", x),
+    period = function(x) paste0(x, "."),
+    space = function(x) paste0(" \t", x, "\r\n "),
+    all = function(x) {
+      x <- gsub("'", "’", gsub("\"", "“", x, fixed = TRUE), fixed = TRUE)
+      paste0("\n …", x, ". \t")
+    }
+  )
+  pools <- text_pools()
+  for (v in names(pools)) {
+    pool <- pools[[v]]
+    cols <- paste0("c", seq_along(pool$text))
+    expected <- sprintf(paste0("%s%0", widths[[v]], "d"), stems[[v]], pool$n)
+    # The FFBF pool holds four texts per item, so each text is renamed in its
+    # own call, a quarter of the pool at a time.
+    groups <- split(seq_along(pool$text), rep(seq_len(length(pool$text) / length(unique(pool$n))), each = length(unique(pool$n))))
+    for (vn in names(variants)) {
+      for (g in groups) {
+        df <- as.data.frame(stats::setNames(as.list(seq_along(g)), cols[g]))
+        out <- suppressWarnings(rename_pid5_items(
+          df, version = v, method = "text", item_cols = cols[g],
+          item_text = variants[[vn]](pool$text[g])
+        ))
+        expect_identical(names(out), expected[g], label = paste(v, vn))
+      }
+    }
+  }
+})

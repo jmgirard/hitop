@@ -23,10 +23,13 @@
 #' @param method A string specifying the matching method: `"number"` to rename
 #'   columns spelled `from_prefix` followed by an item number, or `"text"` to
 #'   match against the literal item prompt text in `pid_items$Text`
-#'   (`pid_items$TextIRF` for `version = "IRF"`, whose text has no "He or
-#'   she..." stem, leading ellipsis or final period, so text copied from the
-#'   printed informant form needs those removed first; for `version = "FFBF"`,
-#'   any of the four texts in [pid_ffbf_items]). (default = `"number"`)
+#'   (`pid_items$TextIRF` for `version = "IRF"`; for `version = "FFBF"`, any
+#'   of the four texts in [pid_ffbf_items]). Four differences do not count:
+#'   typographic quotes (‘ ’ “ ”) in place of straight ones, a leading
+#'   ellipsis (`...` or `…`), a final period, and spaces, tabs or line breaks
+#'   around the text. The informant text has no "He or she..." stem, so
+#'   remove that stem from text copied from the printed informant form first.
+#'   (default = `"number"`)
 #'
 #'   The forms number their items independently, so `"number"` reads the
 #'   digits as an item number of the form named by `version`: under
@@ -62,11 +65,13 @@
 #'   method, if some but not all of the form's items were renamed, the
 #'   completeness report is `hitop_incomplete_rename`.
 #'
-#'   Under `version = "FFBF"` and `method = "text"`, a call in which two
-#'   columns match the same item (for example its self-report and informant
-#'   texts, or its English and German texts) is an error, since both would
-#'   take the same name. Rename each form's columns in its own data frame, or
-#'   give each call its own `prefix`.
+#'   Under `method = "text"`, a call in which two columns match the same item
+#'   is an error of class `hitop_duplicate_item_match`, since both would take
+#'   the same name. The message names the item and the columns. For the FFBF
+#'   this happens when a data frame holds two texts of one item, for example
+#'   its self-report and informant texts, or its English and German texts.
+#'   Rename each form's columns in its own data frame, or give each call its
+#'   own `prefix`.
 #'
 #' @references Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
 #'   (2013). *The Personality Inventory for DSM-5—Informant Form
@@ -198,10 +203,11 @@ rename_pid5_items <- function(
       )
     }
 
-    ## Match text against this form's item texts only (using trimws for
-    ## robustness against surrounding whitespace, as `rename_hitopsr_items()`
-    ## does). For the FFBF the pool holds four texts per item.
-    locs <- match(trimws(item_text), trimws(text_pool))
+    ## Match text against this form's item texts only, both sides put in one
+    ## form first (typographic quotes, a leading ellipsis, a final period and
+    ## surrounding whitespace do not count). For the FFBF the pool holds four
+    ## texts per item.
+    locs <- match(normalize_item_text(item_text), normalize_item_text(text_pool))
 
     if (any(is.na(locs))) {
       missing_idx <- which(is.na(locs))
@@ -212,14 +218,17 @@ rename_pid5_items <- function(
 
     if (length(locs) > 0) {
       matched_n <- pool_numbers[locs]
-      ## Two of the FFBF's four texts of one item (self and informant, or
-      ## English and German) would give two columns the same name.
+      ## Two columns matching one item would take the same name, in any form:
+      ## a repeated text, or two of the FFBF's four texts of one item (self and
+      ## informant, or English and German). D-094(c).
       dup_n <- unique(matched_n[duplicated(matched_n)])
-      if (version == "FFBF" && length(dup_n) > 0) {
+      if (length(dup_n) > 0) {
+        dup_cols <- colnames(data)[data_locs[matched_n %in% dup_n]]
         cli::cli_abort(c(
           "Two or more columns match the same {label} item: {.val {dup_n}}.",
-          "i" = "Rename each form's columns in its own data frame, or give each call its own {.arg prefix}."
-        ))
+          "x" = "The columns are {.val {dup_cols}}.",
+          "i" = "Give each item one column. Rename each form's columns in its own data frame, or give each call its own {.arg prefix}."
+        ), class = "hitop_duplicate_item_match")
       }
       colnames(data)[data_locs] <- item_names(prefix, matched_n, max_n = max_n)
     }

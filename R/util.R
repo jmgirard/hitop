@@ -179,6 +179,18 @@ warn_item_order <- function(x, call = rlang::caller_env(),
   invisible(NULL)
 }
 
+# Internal Helper: Put PID-5 item text in one form before matching (M170).
+# Typographic single and double quotes become straight ones. Any run of
+# periods, ellipses and whitespace at the start or the end is dropped, which
+# removes a leading ellipsis, final periods and surrounding spaces, tabs and
+# line breaks.
+normalize_item_text <- function(x) {
+  x <- gsub("[‘’]", "'", x)
+  x <- gsub("[“”]", "\"", x)
+  x <- sub("^[.… \t\r\n]+", "", x)
+  sub("[.… \t\r\n]+$", "", x)
+}
+
 # Internal Helper: Resolve a PID-5 `version` argument to one of `choices`.
 # Full names only, in any letter case (D-094). An omitted argument arrives as
 # the function's whole default vector and resolves to its first name,

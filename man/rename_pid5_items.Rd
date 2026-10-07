@@ -30,10 +30,13 @@ name such as \code{"F"} included, is an error of class
 \item{method}{A string specifying the matching method: \code{"number"} to rename
 columns spelled \code{from_prefix} followed by an item number, or \code{"text"} to
 match against the literal item prompt text in \code{pid_items$Text}
-(\code{pid_items$TextIRF} for \code{version = "IRF"}, whose text has no "He or
-she..." stem, leading ellipsis or final period, so text copied from the
-printed informant form needs those removed first; for \code{version = "FFBF"},
-any of the four texts in \link{pid_ffbf_items}). (default = \code{"number"})
+(\code{pid_items$TextIRF} for \code{version = "IRF"}; for \code{version = "FFBF"}, any
+of the four texts in \link{pid_ffbf_items}). Four differences do not count:
+typographic quotes (‘ ’ “ ”) in place of straight ones, a leading
+ellipsis (\code{...} or \verb{…}), a final period, and spaces, tabs or line breaks
+around the text. The informant text has no "He or she..." stem, so
+remove that stem from text copied from the printed informant form first.
+(default = \code{"number"})
 
 The forms number their items independently, so \code{"number"} reads the
 digits as an item number of the form named by \code{version}: under
@@ -74,11 +77,13 @@ is renamed and the report is \code{hitop_no_columns_matched}. Under either
 method, if some but not all of the form's items were renamed, the
 completeness report is \code{hitop_incomplete_rename}.
 
-Under \code{version = "FFBF"} and \code{method = "text"}, a call in which two
-columns match the same item (for example its self-report and informant
-texts, or its English and German texts) is an error, since both would
-take the same name. Rename each form's columns in its own data frame, or
-give each call its own \code{prefix}.
+Under \code{method = "text"}, a call in which two columns match the same item
+is an error of class \code{hitop_duplicate_item_match}, since both would take
+the same name. The message names the item and the columns. For the FFBF
+this happens when a data frame holds two texts of one item, for example
+its self-report and informant texts, or its English and German texts.
+Rename each form's columns in its own data frame, or give each call its
+own \code{prefix}.
 }
 \description{
 Rename data frame columns to the standard PID-5 item names of one form,

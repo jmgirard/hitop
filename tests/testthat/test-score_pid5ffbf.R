@@ -306,7 +306,7 @@ test_that("rename_pid5_items() refuses two columns that match the same FFBF item
         "Ich habe an nichts wirklich Interesse (z.B. Freizeitmaßnahmen, Bücher, Zeitschriften, Serien, Sport)"
       )
     ),
-    "Two or more columns match the same PID-5-FFBF item"
+    class = "hitop_duplicate_item_match"
   )
 })
 
