@@ -117,3 +117,4 @@ Researchers get a clear, classed refusal for a bad PID-5 `version` or an ambiguo
 - prior-review #2: `expect_s3_class()` in loops names no failing iteration — fix now, fixed 12f0d374 (`expect_true(inherits(...), label = )`).
 - prior-review #3: a test comment still says matching runs under `trimws()` — fix now, fixed 12f0d374.
 - After the fixes: `devtools::test()` 0 failed, 0 errors, 15 skipped; `devtools::check()` 0 errors, 0 warnings, 0 notes; `cairn_validate.py` passes. ROADMAP is 59 lines and 23,997 bytes after the follow-up row, with two rows compressed to fit.
+- 2026-10-07 resume (route d, user re-ran review after the merge chip was dismissed): no PR exists, main is still at 32f5dfca, and no file outside cairn/ changed since 12f0d374, the tree the test, check and validate runs above verified. The evidence and dispositions stand, and the merge question is posed again.
