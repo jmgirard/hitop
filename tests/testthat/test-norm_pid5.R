@@ -926,7 +926,7 @@ test_that("norm_pid5() handles the R edge cases", {
   )
   expect_error(
     norm_pid5(df, scores = "detachment", version = "XX", prefix = ""),
-    "should be one of"
+    class = "hitop_unknown_version"
   )
   expect_error(
     norm_pid5(df, scores = list("detachment"), version = "BF", prefix = ""),

@@ -10,8 +10,10 @@
 #'   positions (mirroring the `items` argument of [score_pid5()]). Each column
 #'   must be numeric (or logical) and each may be named only once.
 #' @param version Which PID-5 version the scores came from: `"FULL"` (220
-#'   items), `"SF"` (100 items), or `"BF"` (25 items). The normative tables
-#'   differ by version. These are self-report norms: do not norm scores from
+#'   items), `"SF"` (100 items), or `"BF"` (25 items). Only a full name is
+#'   accepted, in any letter case. Any other value, a start of a name such as
+#'   `"F"` included, is an error of class `hitop_unknown_version`. The
+#'   normative tables differ by version. These are self-report norms: do not norm scores from
 #'   `score_pid5(version = "IRF")` with them. Informant scores have the full
 #'   form's column names, so `version = "FULL"` accepts them without a
 #'   warning, but the informant norms (Markon et al., 2024, Tables A–10 and
@@ -192,8 +194,7 @@ norm_pid5 <- function(
   prefix = "pid_",
   append = TRUE
 ) {
-  version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF"))
+  version <- resolve_pid5_version(version, c("FULL", "SF", "BF"))
   validate_data(data)
   ## The shared validators are told which argument to blame: every complaint
   ## about this argument says `scores`, the name the caller actually wrote,

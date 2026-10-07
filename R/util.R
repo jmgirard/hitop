@@ -179,6 +179,27 @@ warn_item_order <- function(x, call = rlang::caller_env(),
   invisible(NULL)
 }
 
+# Internal Helper: Resolve a PID-5 `version` argument to one of `choices`.
+# Full names only, in any letter case (D-094). An omitted argument arrives as
+# the function's whole default vector and resolves to its first name,
+# "FULL". Anything else is refused under `hitop_unknown_version`.
+resolve_pid5_version <- function(version, choices, call = rlang::caller_env()) {
+  if (is.character(version) && identical(toupper(version), choices)) {
+    return(choices[[1]])
+  }
+  if (is.character(version) && length(version) == 1 && !is.na(version)) {
+    resolved <- toupper(version)
+    if (resolved %in% choices) {
+      return(resolved)
+    }
+  }
+  given <- deparse1(version)
+  cli::cli_abort(c(
+    "{.arg version} must be one of {.or {.val {choices}}}.",
+    "x" = "You supplied {.code {given}}."
+  ), class = "hitop_unknown_version", call = call)
+}
+
 validate_range <- function(x, call = rlang::caller_env()) {
   cli_assert(
     condition = rlang::is_integerish(x, n = 2),

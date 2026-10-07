@@ -644,15 +644,12 @@ test_that("BFPM standard errors follow the facet and domain rules", {
   expect_true(is.na(d$pid_emotionalLability_se[4]))
 })
 
-test_that("version abbreviations: 'B' is ambiguous and 'BFP' selects BFPM", {
+test_that("version abbreviations 'B' and 'BFP' are refused, and 'bfpm' selects BFPM", {
   x <- fx_pid5bfpm()
-  expect_error(
-    score_pid5(x, items = 1:36, version = "B"),
-    "should be one of",
-    fixed = TRUE
-  )
+  expect_error(score_pid5(x, items = 1:36, version = "B"), class = "hitop_unknown_version")
+  expect_error(score_pid5(x, items = 1:36, version = "bfp"), class = "hitop_unknown_version")
   expect_identical(
-    score_pid5(x, items = 1:36, version = "bfp", append = FALSE),
+    score_pid5(x, items = 1:36, version = "bfpm", append = FALSE),
     score_pid5(x, items = 1:36, version = "BFPM", append = FALSE)
   )
 })
@@ -923,11 +920,11 @@ test_that("IRF scores match hand-computed values under the APA rule (D-090)", {
   expect_false(isTRUE(all.equal(f$pid_depressivity[1], 29 / 14)))
 })
 
-test_that("IRF version is matched case-insensitively and by abbreviation", {
+test_that("IRF version is matched case-insensitively, and an abbreviation is refused", {
   x <- fx_pid5irf()
   ref <- score_pid5(x, items = 1:218, version = "IRF", append = FALSE)
   expect_identical(score_pid5(x, items = 1:218, version = "irf", append = FALSE), ref)
-  expect_identical(score_pid5(x, items = 1:218, version = "I", append = FALSE), ref)
+  expect_error(score_pid5(x, items = 1:218, version = "I"), class = "hitop_unknown_version")
 })
 
 test_that("IRF independent recomputation from the key's typed tables, each missing mode", {

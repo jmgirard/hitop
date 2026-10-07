@@ -200,7 +200,7 @@ test_that("label_pid5() matches `version` case-insensitively and validates its a
     attr(label_pid5(df, target = "items", version = "bf")$pid5bf_01, "label"),
     pid_items$Text[match(1L, pid_items$BF)]
   )
-  expect_error(label_pid5(df, target = "items", version = "XX"))
+  expect_error(label_pid5(df, target = "items", version = "XX"), class = "hitop_unknown_version")
   expect_error(label_pid5(df, target = "nonsense", version = "BF"))
   expect_error(label_pid5(df, target = "items", version = "BF", prefix = 1))
   expect_error(label_pid5("not a data frame", target = "items", version = "BF"))
@@ -393,7 +393,7 @@ test_that("validity_pid5(), norm_pid5() and plot_pid5() refuse version = 'IRF'",
     function() norm_pid5(x, version = "IRF"),
     function() plot_pid5(x, version = "IRF")
   )) {
-    expect_error(fn(), 'should be one of "FULL", "SF", "BF"', fixed = TRUE)
+    expect_error(fn(), class = "hitop_unknown_version")
   }
 })
 
@@ -459,7 +459,7 @@ test_that("validity_pid5(), norm_pid5() and plot_pid5() refuse version = 'BFPM'"
     function() norm_pid5(x, version = "BFPM"),
     function() plot_pid5(x, version = "BFPM")
   )) {
-    expect_error(fn(), 'should be one of "FULL", "SF", "BF"', fixed = TRUE)
+    expect_error(fn(), class = "hitop_unknown_version")
   }
 })
 

@@ -16,9 +16,10 @@
 #'   (the 36-item PID5BF+M), `"IRF"` (the 218-item Informant Form, whose
 #'   text matches `pid_items$TextIRF`), or `"FFBF"` (the 100-item Forensic
 #'   Faceted Brief Form, whose text matches any of the four texts in
-#'   [pid_ffbf_items]: self or informant report, English or German). Matched
-#'   case-insensitively; `"F"` is refused, because it starts both
-#'   "FULL" and "FFBF". (default = `"FULL"`)
+#'   [pid_ffbf_items]: self or informant report, English or German). Only a
+#'   full name is accepted, in any letter case. Any other value, a start of a
+#'   name such as `"F"` included, is an error of class
+#'   `hitop_unknown_version`. (default = `"FULL"`)
 #' @param method A string specifying the matching method: `"number"` to rename
 #'   columns spelled `from_prefix` followed by an item number, or `"text"` to
 #'   match against the literal item prompt text in `pid_items$Text`
@@ -97,8 +98,7 @@ rename_pid5_items <- function(
   validate_string(prefix, arg = "prefix", allow_null = TRUE)
 
   ## Resolve the version, as `score_pid5()` does
-  version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
+  version <- resolve_pid5_version(version, c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
 
   ## Resolve this form's rows, its text, its output stem and its padding
   ## width. The informant form has its own wording (D-089(b)).

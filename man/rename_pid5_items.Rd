@@ -22,9 +22,10 @@ rename_pid5_items(
 (the 36-item PID5BF+M), \code{"IRF"} (the 218-item Informant Form, whose
 text matches \code{pid_items$TextIRF}), or \code{"FFBF"} (the 100-item Forensic
 Faceted Brief Form, whose text matches any of the four texts in
-\link{pid_ffbf_items}: self or informant report, English or German). Matched
-case-insensitively; \code{"F"} is refused, because it starts both
-"FULL" and "FFBF". (default = \code{"FULL"})}
+\link{pid_ffbf_items}: self or informant report, English or German). Only a
+full name is accepted, in any letter case. Any other value, a start of a
+name such as \code{"F"} included, is an error of class
+\code{hitop_unknown_version}. (default = \code{"FULL"})}
 
 \item{method}{A string specifying the matching method: \code{"number"} to rename
 columns spelled \code{from_prefix} followed by an item number, or \code{"text"} to

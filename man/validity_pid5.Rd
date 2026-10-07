@@ -39,7 +39,9 @@ before 2.0 (\code{labelled_spss}) is refused the same way, but
 \code{na_values} or \code{na_range} attribute declares to \code{NA} first.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
-"SF", or "BF". Will be automatically capitalized. The PID5BF+M and the
+"SF", or "BF". Only a full name is accepted, in any letter case. Any
+other value, a start of a name such as \code{"F"} included, is an error of
+class \code{hitop_unknown_version}. The PID5BF+M and the
 PID-5 Informant Form have no validity scales. (default = \code{"FULL"})}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum

@@ -150,31 +150,32 @@ test_that("FFBF refuses a data frame with the wrong number of items", {
   )
 })
 
-test_that("FFBF version is matched case-insensitively and by an unambiguous abbreviation", {
+test_that("FFBF version is matched case-insensitively, and an abbreviation is refused", {
   x <- fx_pid5ffbf()
   ref <- score_pid5(x, items = 1:100, version = "FFBF", append = FALSE)
   expect_identical(score_pid5(x, items = 1:100, version = "ffbf", append = FALSE), ref)
-  expect_identical(score_pid5(x, items = 1:100, version = "FF", append = FALSE), ref)
+  expect_error(
+    score_pid5(x, items = 1:100, version = "FF"),
+    class = "hitop_unknown_version"
+  )
 })
 
-test_that("version = \"F\" is refused where FFBF is a version, and is FULL elsewhere", {
-  # "F" abbreviates both "FULL" and "FFBF" in the four functions that gained
-  # FFBF, so match.arg() refuses it there.
+test_that("version = \"F\" is refused in every PID-5 function (D-094)", {
   x <- fx_pid5ffbf()
-  expect_error(score_pid5(x, items = 1:100, version = "F"), "should be one of")
-  expect_error(reliability_pid5(x, items = 1:100, version = "F"), "should be one of")
-  expect_error(rename_pid5_items(x, version = "F"), "should be one of")
-  expect_error(label_pid5(x, version = "F"), "should be one of")
-  # The three functions without FFBF still read "F" as "FULL".
-  expect_identical(
+  expect_error(score_pid5(x, items = 1:100, version = "F"), class = "hitop_unknown_version")
+  expect_error(reliability_pid5(x, items = 1:100, version = "F"), class = "hitop_unknown_version")
+  expect_error(rename_pid5_items(x, version = "F"), class = "hitop_unknown_version")
+  expect_error(label_pid5(x, version = "F"), class = "hitop_unknown_version")
+  # The three functions without FFBF read "F" as "FULL" before M170.
+  expect_error(
     validity_pid5(fx_pid5(), items = 1:220, version = "F", append = FALSE),
-    validity_pid5(fx_pid5(), items = 1:220, version = "FULL", append = FALSE)
+    class = "hitop_unknown_version"
   )
   scored <- score_pid5(sim_pid5[1:3, ], items = 1:220, version = "FULL")
   sc <- paste0("pid_", pid_domains$camelCase)
-  expect_identical(
-    suppressWarnings(norm_pid5(scored, scores = sc, version = "F", append = FALSE)),
-    suppressWarnings(norm_pid5(scored, scores = sc, version = "FULL", append = FALSE))
+  expect_error(
+    norm_pid5(scored, scores = sc, version = "F", append = FALSE),
+    class = "hitop_unknown_version"
   )
 })
 
@@ -258,7 +259,7 @@ test_that("validity_pid5(), norm_pid5() and plot_pid5() refuse version = 'FFBF'"
     refusals$plot_pid5 <- function() plot_pid5(x, version = "FFBF")
   }
   for (nm in names(refusals)) {
-    expect_error(refusals[[nm]](), "should be one of", info = nm)
+    expect_error(refusals[[nm]](), class = "hitop_unknown_version", info = nm)
   }
 })
 

@@ -1,13 +1,13 @@
 # M170: PID-5 version refusals and item-text matching
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — error behavior and text matching of seven exported functions
-- **Branch/PR:** —
+- **Branch/PR:** m170-pid5-version-text-matching
 
 ## Goal
 
@@ -48,7 +48,7 @@ Researchers get a clear, classed refusal for a bad PID-5 `version` or an ambiguo
 
 ## Tasks
 
-- [ ] T1: Add the `version` check to `R/util.R` and use it at the seven `match.arg(version)` sites (R/score_pid5.R:358, R/reliability_pid5.R:96, R/rename_pid5_items.R:100, R/label_pid5.R:76, R/validity_pid5.R:85, R/norm_pid5.R:195, R/plot_pid5.R:117). Delete the unreachable `switch()` defaults (R/score_pid5.R:369, R/reliability_pid5.R:105). Rewrite each `@param version` and the "F" note in NEWS. Replace the tests that expect a prefix to resolve or a prose refusal: test-score_pid5ffbf.R:157-181, test-score_pid5.R:648-658 and :925-931, and test-plot_pid5.R:581-587. Write AC1's tests.
+- [x] T1: Add the `version` check to `R/util.R` and use it at the seven `match.arg(version)` sites (R/score_pid5.R:358, R/reliability_pid5.R:96, R/rename_pid5_items.R:100, R/label_pid5.R:76, R/validity_pid5.R:85, R/norm_pid5.R:195, R/plot_pid5.R:117). Delete the unreachable `switch()` defaults (R/score_pid5.R:369, R/reliability_pid5.R:105). Rewrite each `@param version` and the "F" note in NEWS. Replace the tests that expect a prefix to resolve or a prose refusal: test-score_pid5ffbf.R:157-181, test-score_pid5.R:648-658 and :925-931, and test-plot_pid5.R:581-587. Write AC1's tests.
 - [ ] T2: Fix the rounding text (R/score_pid5.R:46-51, 136-143, 197-201, the `apa_mean()` comment in R/util.R, and SOURCES.md, marked `corrected M170`). Append D-095, which annotates D-090: the rule rounds a half away from zero, which is "up" for non-negative codings. Write AC2's test.
 - [ ] T3: In R/rename_pid5_items.R:201-225, normalize both sides before `match()`, refuse duplicate matches for every version under the new class, and name the columns in the message. Update the `method` help (:19-26). Check that normalization joins no two items of one pool. Write AC3's and AC4's tests.
 - [ ] T4: Add a text-column field to the JSON spec (R/json_export.R:64, data-raw/json_export.R:24-60) with `Text` as the default. Write AC5's test.
@@ -66,3 +66,5 @@ Researchers get a clear, classed refusal for a bad PID-5 `version` or an ambiguo
 - 2026-10-07: criteria audit (full mode, fresh Opus reader) returned 17 findings on the three drafted milestones. All were applied or carried. For M170: AC1 lists the full names and probes the omitted argument, "B", "FF", empty, NA, NULL and two values, with a class (findings 1 to 3). AC2 names the Manipulativeness facet, adds SOURCES.md and the D-090 annotation, and says "no function body" (4, 17). AC4 probes combined differences and each quote mark, defines whitespace, and updates the help (5, 6). The Word layout findings (7 to 13) went to the "APA PID-5 Word layout" candidate row. Findings 14 to 16 shaped M171.
 - 2026-10-07: re-audit of AC1 after the full-names answer (fresh Opus reader, full mode, together with M171) returned 5 findings on M170, all applied. D-093 was already taken, so the classes and the waiver are D-094 and the rounding note is D-095. The whole default vector counts as omitted. The resolution test adds a mixed case, and the refusals add `1`. Probes run on valid input, and `plot_pid5()` skips without ggplot2. T1 lists the four test files that expect prefixes, and AC6's search covers `data-raw/` and both quote marks.
 - 2026-10-07: test-generate_redcap.R:97-105 is edited by both M170 (T5) and M171 (T3). M170 goes first, and M171 rebases onto it.
+- 2026-10-07: implement started on branch m170-pid5-version-text-matching. Untracked `devel/hitopdat_*` files are not this milestone's and stay unstaged.
+- 2026-10-07: T1 done. `resolve_pid5_version()` in R/util.R replaces the seven `match.arg()` sites, and the unreachable `switch()` defaults are gone from score, reliability and validity. New test-pid5-version.R (AC1). Eight older tests now expect the class. Planting `match.arg()` back turned the refusal test red (108 failures). Full suite: 0 failed, 15 skipped.

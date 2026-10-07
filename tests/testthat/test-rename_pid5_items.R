@@ -250,8 +250,7 @@ test_that("rename_pid5_items validates its arguments", {
 
   expect_error(
     rename_pid5_items(df, version = "XL"),
-    'should be one of "FULL", "SF", "BF"',
-    fixed = TRUE
+    class = "hitop_unknown_version"
   )
   expect_error(
     rename_pid5_items(df, version = "FULL", method = "text"),

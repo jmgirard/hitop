@@ -7,7 +7,9 @@
 #'
 #' @inheritParams score_pid5
 #' @param version A string indicating the version of the PID to score: "FULL",
-#'   "SF", or "BF". Will be automatically capitalized. The PID5BF+M and the
+#'   "SF", or "BF". Only a full name is accepted, in any letter case. Any
+#'   other value, a start of a name such as `"F"` included, is an error of
+#'   class `hitop_unknown_version`. The PID5BF+M and the
 #'   PID-5 Informant Form have no validity scales. (default = `"FULL"`)
 #'
 #' @return A \link[tibble]{tibble} containing all validity scores and all
@@ -82,14 +84,12 @@ validity_pid5 <- function(
   # Assertions (helpers default call = caller_env() = this function, so aborts
   # are attributed to validity_pid5())
   validate_data(data)
-  version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF"))
+  version <- resolve_pid5_version(version, c("FULL", "SF", "BF"))
   n_items <- switch(
     version,
     "FULL" = 220,
     "SF" = 100,
-    "BF" = 25,
-    cli::cli_abort("Invalid `version` argument")
+    "BF" = 25
   )
   validate_items(items, n = n_items)
   validate_item_uniqueness(items)

@@ -57,10 +57,9 @@
   self-report text. Two new exported tables hold the form:
   `pid_ffbf_items` (each item's facet, reverse flag and four texts) and
   `pid_ffbf_domains` (the 7 domains and their facets). `pid_scales` gains an
-  `FFBF` element and now has 6 elements. `version = "F"` no longer
-  abbreviates `"FULL"` in `score_pid5()`, `reliability_pid5()`,
-  `rename_pid5_items()` and `label_pid5()`, because it also starts `"FFBF"`;
-  spell out `"FULL"`. `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do
+  `FFBF` element and now has 6 elements. The PID-5 functions take only
+  full version names, so spell out `"FULL"` (see Breaking changes).
+  `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do
   not take the new version. FFBF facet and APA domain columns carry the short
   form's names, so do not norm or plot them as `version = "SF"`.
 

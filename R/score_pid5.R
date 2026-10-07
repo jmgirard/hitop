@@ -32,9 +32,9 @@
 #' @param version A string indicating the version of the PID to score: "FULL",
 #'   "SF", "BF", "BFPM" (the 36-item PID5BF+M), "IRF" (the 218-item
 #'   Informant Form), or "FFBF" (the 100-item Forensic Faceted Brief Form).
-#'   Will be automatically capitalized. A unique start of a name is accepted,
-#'   but `"F"` is refused, because it starts both "FULL" and "FFBF".
-#'   (default = `"FULL"`)
+#'   Only a full name is accepted, in any letter case. Any other value, a
+#'   start of a name such as `"F"` included, is an error of class
+#'   `hitop_unknown_version`. (default = `"FULL"`)
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param prefix An optional string to add before each scale column name. If no
@@ -355,8 +355,7 @@ score_pid5 <- function(
 ) {
   ## Resolve the version and its item count (shared arg validation runs in the
   ## engine; version is PID-specific and resolved here)
-  version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
+  version <- resolve_pid5_version(version, c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
   missing <- match.arg(missing)
   n_items <- switch(
     version,
@@ -365,8 +364,7 @@ score_pid5 <- function(
     "BF" = 25,
     "BFPM" = 36,
     "IRF" = 218,
-    "FFBF" = 100,
-    cli::cli_abort("Invalid `version` argument")
+    "FFBF" = 100
   )
 
   ## Resolve this version's instrument data: which items reverse, the per-scale
