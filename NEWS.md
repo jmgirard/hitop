@@ -1041,6 +1041,13 @@
 
 ## Documentation and website
 
+* **The online-collection article warns that a spreadsheet program can run a
+  participant's text as a formula.** In a Google Sheet download or a Supabase
+  export, a participant identifier or a text answer that starts with `=`,
+  such as `=1+1`, is text in the sheet or table. If you open the file in a
+  spreadsheet program, it can read such a cell as a formula.
+  `read_form_responses()` returns it as text.
+
 * **`hitophsum_choices`'s help page reported the wrong number of rows.** Its
   `@format` section said 42 rows; the dataset has 185. The other twenty shipped
   datasets' row counts were checked against their objects and are correct.

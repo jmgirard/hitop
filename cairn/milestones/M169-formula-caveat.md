@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M169: Spreadsheet formula caveat for response files
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -47,6 +47,7 @@ A researcher who uses hitop-form learns two facts: a spreadsheet program can run
 - [x] T3: In hitop-form's `README.md`, write the two facts in the three AC1 sections. If the Supabase section (near line 1076) already states both, log it as a no-op. Limit the Google Sheet sentence near line 910 to the sheet itself (AC3).
 - [x] T4: In the article, write the two facts in "3. Download the sheet as CSV" and "The Supabase route". Limit the sentence in "1. Deploy the sheet's script" (near line 50) to the sheet itself, and judge the sentence near line 147 (AC3).
 - [x] T5: Run `grep -n -i -E 'formula|=1\+1'` over both files. Judge each whole sentence outside fenced code and record the ledger in the work log (AC3). Run `devtools::test(filter = "read_form_responses")` and `pkgdown::check_pkgdown()`. Render the article after `devtools::load_all()`.
+- [x] T6: Add a NEWS.md entry under "Documentation and website" for the article's formula caveat (review return 1).
 
 ## Work log
 
@@ -65,6 +66,7 @@ A researcher who uses hitop-form learns two facts: a spreadsheet program can run
 - 2026-10-06: claim audit: 25 claims read, 1 corrected — tests/testthat/test-read_form_responses.R, vignettes/articles/online-collection.Rmd, hitop-form README.md
 - 2026-10-06: the corrected claim, "You can also open the file in the spreadsheet as text" (README, Supabase section), was spreadsheet behavior no record covers. It was deleted (hitop-form 8d2af62), so no re-read was owed. Status set to review. The suite last ran clean after T2, and no R or test file changed after that.
 - 2026-10-06: review return 1: consistency gate failed on NEWS. The profile requires a NEWS entry for user-visible changes, and NEWS.md has a "Documentation and website" section in the development version. The plan's "no NEWS entry" missed the article change. Add an entry there for the article's formula caveat.
+- 2026-10-06: minor amendment: T6 added for review return 1. Done: NEWS.md gained an entry as the first bullet of the development version's "Documentation and website" section. Its `read_form_responses()` claim is held by the AC4 test. Status set to review.
 
 ## Decisions
 
