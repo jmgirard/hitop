@@ -10,7 +10,9 @@
 #'   `_ptl` columns produced by [norm_pid5()]. More than one row is an error --
 #'   a profile plot shows one respondent.
 #' @param version Which PID-5 version the scores came from: `"FULL"` (220
-#'   items), `"SF"` (100 items), or `"BF"` (25 items). Matched case-insensitively.
+#'   items), `"SF"` (100 items), or `"BF"` (25 items). Only a full name is
+#'   accepted, in any letter case. Any other value, a start of a name such as
+#'   `"F"` included, is an error of class `hitop_unknown_version`.
 #'   The PID-5 Informant Form has no norms in this package, so `version` does
 #'   not take `"IRF"`. Do not plot scores from `score_pid5(version = "IRF")`
 #'   as `"FULL"`: they would be compared with self-report norms. Nor plot
@@ -114,8 +116,7 @@ plot_pid5 <- function(
     )
   )
 
-  version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF"))
+  version <- resolve_pid5_version(version, c("FULL", "SF", "BF"))
   level <- match.arg(level)
   metric <- match.arg(metric)
   validate_data(data)

@@ -51,7 +51,7 @@ status, so the table has an *external* oracle. Verified item-by-item on
 | `BFPM` form instructions and 0–3 response labels (English) | APA PID-5 instructions and labels as stored in `pid_instructions`; FU Berlin PID5BF+M sheet (Kerber, 2020) | sheet p. 1 | ✅ Maintainer sign-off 2026-10-03 (M158). No English BF+M form text is on the shelf. Bach et al. (2020) and Kerber et al. (2022, with supplement) print none. The German sheet's instructions translate `pid_instructions$start` sentence by sentence, and its four labels sit on the same 0–3 values. The BF+M forms reuse `pid_instructions`, as the BF forms do. |
 | IRF item text (218 items) and `Facet` → items (25 facets) | APA PID-5 Informant Form (Markon et al., 2013) | pp. 2–7 form, p. 8 Facet Table | ✅ `data-raw/check_pid_irf_text.R` matches all 218 texts and 25 facets (2026-10-03, M159). Each IRF item shares its facet with the self-report item it maps to. See [apa2013pid5irf](references/apa2013pid5irf.md) |
 | IRF reverse-keying | APA PID-5 Informant Form | p. 8 Step 1 and Facet Table, p. 9 | ✅ The Facet Table's 14 R marks, by maintainer sign-off 2026-10-03 (M159, D-089). Step 1's extra 98 and 176 are read as a printing error. **OQ-4 resolved** |
-| IRF proration rounding | APA PID-5 Informant Form | p. 9 | ✅ The key prints "round up to the nearest whole number". The package applies the series' nearest-whole-number rule, halves up (D-090, from RR07). **OQ-5 resolved** |
+| IRF proration rounding | APA PID-5 Informant Form | p. 9 | ✅ The key prints "round up to the nearest whole number". The package applies the series' nearest-whole-number rule, with a half rounded away from zero (D-090, from RR07; wording corrected M170, D-095). **OQ-5 resolved** |
 | IRF form text: instructions, rating prompt, stem, 0–3 labels and footer notice (`pid_irf_instructions`) | APA PID-5 Informant Form | pp. 2–7 | ✅ `data-raw/check_pid_irf_text.R` matches start, continue, prompt, the APA notice, the stem and the labels to the PDF (2026-10-04, M160). The forms print the opening paragraph, then the prompt and stem at the head of each page, and the notice in the Word footer. The response labels are stored as a copy of `pid_instructions$options`, which equal the form's column heads. Maintainer sign-off at M160's merge gate. |
 | Child forms (ages 11 to 17): item text, order and keying of the 220-item and 25-item forms; their instructions, 0–3 labels and footer notices (`pid_child_instructions`) | APA PID-5 Child Age 11–17 and PID-5-BF Child Age 11–17 (Krueger et al., 2013) | full form pp. 2–9, brief form pp. 2–3 | ✅ `data-raw/check_pid_child_text.R` finds the 245 texts in order, the reverse list, the Facet Table, the Domain Table rows and the BF key equal to `pid_items`, `pid_scales$FULL`, `pid_scales$BF` and `pid_domains`, and matches the stored instructions, notices and labels to the PDFs (2026-10-04, M161). So the child forms score as `FULL` and `BF`, and the keying tables do not change. See [apa2013pid5child](references/apa2013pid5child.md). |
 | `pid_ffbf_items`: FFBF item text (100 items, self and informant, English and German) and `Facet` → items (25 facets × 4) | Niemeyer et al. (2022), Table S3 (OSF supplement) | Table S3 pp. 1–11 | ✅ `data-raw/check_pid_ffbf_text.R` matches all 400 texts and 100 facets to a second reading of the PDF, and the 25 facet lists to the authors' code (2026-10-04, M162). The text rule is on `cairn/references/niemeyer2022.md`. Jeff signed off the keying at M162's merge question (2026-10-04). |
@@ -174,7 +174,7 @@ The full-form key states, verbatim (Krueger et al., 2013, p. 8):
 > because of missing item responses.
 
 So under `apa_scoring = TRUE`: a facet with > 25% missing → NA; otherwise average =
-`round(partial_sum × n_items / n_answered) / n_items` (round **half up**, matching
+`round(partial_sum × n_items / n_answered) / n_items` (round **half away from zero**, corrected M170, matching
 "nearest whole number"; base R `round()` rounds half to even); a FULL/SF domain is
 NA if any of its 3 primary facets is NA. `apa_scoring = FALSE` restores the prior
 `rowMeans(na.rm = TRUE)` behavior. **SF caveat:** Maples et al. (2015) specifies no
@@ -186,8 +186,8 @@ item: ≤ 1 missing prorates, ≥ 2 → NA). See D-009.
 the DSM-5-TR edition (sha256 `ce366db46f324ba7…`), and its sentence is unchanged:
 "round to the nearest whole number". Two APA Level 2 keys carry worked examples
 that round 23.33 to 23 (Anxiety) and 26.67 to 27 (Depression). They support
-"nearest" over a ceiling. Neither tests an exact half, so the half-up reading
-stays a reading. The IRF key alone prints "round up": see OQ-5 and D-090.
+"nearest" over a ceiling. Neither tests an exact half, so the half-away-from-zero
+reading (corrected M170) stays a reading. The IRF key alone prints "round up": see OQ-5 and D-090.
 
 ## PID-5 normative tables (2026-07-30, M025)
 
@@ -712,7 +712,7 @@ the Step 1 list reads as the self-report list partly renumbered. Details: [apa20
 
 ### OQ-5 [RESOLVED 2026-10-03]: The IRF key prints "round up" for proration
 
-**Resolution:** the IRF prorates with the nearest-whole-number rule, halves up,
+**Resolution:** the IRF prorates with the nearest-whole-number rule, a half rounded away from zero (corrected M170),
 as every other PID-5 version does (D-090, from RB07/RR07,
 `cairn/reviews/archive/`). Jeff sent the question to an independent review at
 M159's T4 stop.

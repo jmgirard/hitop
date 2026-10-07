@@ -19,7 +19,9 @@ plot_pid5(
 a profile plot shows one respondent.}
 
 \item{version}{Which PID-5 version the scores came from: \code{"FULL"} (220
-items), \code{"SF"} (100 items), or \code{"BF"} (25 items). Matched case-insensitively.
+items), \code{"SF"} (100 items), or \code{"BF"} (25 items). Only a full name is
+accepted, in any letter case. Any other value, a start of a name such as
+\code{"F"} included, is an error of class \code{hitop_unknown_version}.
 The PID-5 Informant Form has no norms in this package, so \code{version} does
 not take \code{"IRF"}. Do not plot scores from \code{score_pid5(version = "IRF")}
 as \code{"FULL"}: they would be compared with self-report norms. Nor plot

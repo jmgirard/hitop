@@ -110,8 +110,8 @@ test_that("`breaks` keeps its documented 0 and NULL disable values", {
 test_that("every exported Qualtrics and REDCap generator guards its shared arguments", {
   # NEWS says these arguments are checked on *every* generate_qualtrics_*() and
   # generate_redcap_*(), so the claim is enforced over the whole exported
-  # family rather than a sample of it. Ten of the eleven inherit the guards
-  # from build_qualtrics_txt()/build_redcap_zip(); generate_redcap_hitophsum()
+  # family rather than a sample of it. All but one inherit the guards from
+  # build_qualtrics_txt()/build_redcap_zip(); generate_redcap_hitophsum()
   # builds its dictionary itself and carries them directly.
   fns <- grep(
     "^generate_(qualtrics|redcap)_",

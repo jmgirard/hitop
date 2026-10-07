@@ -49,6 +49,23 @@ test_that("FULL applies reverse-keying (facet with a reverse item is nonzero on 
   expect_equal(f$pid_separationInsecurity[1], 0) # contains none
 })
 
+test_that("a prorated half rounds away from zero, as the missing help says (D-095)", {
+  # Manipulativeness is FULL items 107, 125, 162, 180 and 219, none reversed,
+  # so `srange` changes nothing here. With 219 missing, 4 of 5 answers sum to
+  # -2 or 2, which prorates to -2 * 5 / 4 = -2.5 or 2.5. Away from zero gives
+  # -3 or 3, so the facet is -3 / 5 = -0.6 or 3 / 5 = 0.6. Half up would give
+  # -2 / 5 = -0.4 for the negative case.
+  one_row <- function(answers) {
+    x <- as.data.frame(matrix(NA_real_, nrow = 1, ncol = 220))
+    x[c(107, 125, 162, 180)] <- answers
+    x
+  }
+  neg <- score_pid5(one_row(c(-1, -1, 0, 0)), items = 1:220, srange = c(-3, 0), append = FALSE)
+  pos <- score_pid5(one_row(c(1, 1, 0, 0)), items = 1:220, srange = c(0, 3), append = FALSE)
+  expect_equal(neg$pid_manipulativeness, -0.6)
+  expect_equal(pos$pid_manipulativeness, 0.6)
+})
+
 test_that("FULL available-item scoring (missing = 'available') tolerates missing via rowMeans", {
   f <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", missing = "available", append = FALSE)
   # R4 drops item 1 from Anhedonia: (5*1 + 2*2)/7 = 9/7
@@ -333,8 +350,9 @@ test_that("APA keeps a facet at exactly 25% missing (prorated, not NA)", {
 
 test_that("APA half-integer prorated raw rounds up (BF Disinhibition)", {
   # BF Disinhibition = 1,2,3,5,6. Item 1 NA; items 2,3,5,6 = 0,0,1,1 (sum = 2);
-  # 1 of 5 missing (20% <= 25%). Prorated raw = round(2*5/4) = round(2.5). APA
-  # rounds half UP -> 3, average = 3/5 = 0.6 (base round-half-to-even gives 0.4).
+  # 1 of 5 missing (20% <= 25%). Prorated raw = round(2*5/4) = round(2.5). A
+  # half rounds away from zero (D-095), so up here -> 3, average = 3/5 = 0.6
+  # (base round-half-to-even gives 0.4).
   b <- as.data.frame(matrix(1L, nrow = 1, ncol = 25))
   names(b) <- sprintf("pid5bf_%02d", 1:25)
   b[1, 1] <- NA_integer_
@@ -644,15 +662,12 @@ test_that("BFPM standard errors follow the facet and domain rules", {
   expect_true(is.na(d$pid_emotionalLability_se[4]))
 })
 
-test_that("version abbreviations: 'B' is ambiguous and 'BFP' selects BFPM", {
+test_that("version abbreviations 'B' and 'BFP' are refused, and 'bfpm' selects BFPM", {
   x <- fx_pid5bfpm()
-  expect_error(
-    score_pid5(x, items = 1:36, version = "B"),
-    "should be one of",
-    fixed = TRUE
-  )
+  expect_error(score_pid5(x, items = 1:36, version = "B"), class = "hitop_unknown_version")
+  expect_error(score_pid5(x, items = 1:36, version = "bfp"), class = "hitop_unknown_version")
   expect_identical(
-    score_pid5(x, items = 1:36, version = "bfp", append = FALSE),
+    score_pid5(x, items = 1:36, version = "bfpm", append = FALSE),
     score_pid5(x, items = 1:36, version = "BFPM", append = FALSE)
   )
 })
@@ -923,11 +938,11 @@ test_that("IRF scores match hand-computed values under the APA rule (D-090)", {
   expect_false(isTRUE(all.equal(f$pid_depressivity[1], 29 / 14)))
 })
 
-test_that("IRF version is matched case-insensitively and by abbreviation", {
+test_that("IRF version is matched case-insensitively, and an abbreviation is refused", {
   x <- fx_pid5irf()
   ref <- score_pid5(x, items = 1:218, version = "IRF", append = FALSE)
   expect_identical(score_pid5(x, items = 1:218, version = "irf", append = FALSE), ref)
-  expect_identical(score_pid5(x, items = 1:218, version = "I", append = FALSE), ref)
+  expect_error(score_pid5(x, items = 1:218, version = "I"), class = "hitop_unknown_version")
 })
 
 test_that("IRF independent recomputation from the key's typed tables, each missing mode", {

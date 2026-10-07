@@ -57,10 +57,9 @@
   self-report text. Two new exported tables hold the form:
   `pid_ffbf_items` (each item's facet, reverse flag and four texts) and
   `pid_ffbf_domains` (the 7 domains and their facets). `pid_scales` gains an
-  `FFBF` element and now has 6 elements. `version = "F"` no longer
-  abbreviates `"FULL"` in `score_pid5()`, `reliability_pid5()`,
-  `rename_pid5_items()` and `label_pid5()`, because it also starts `"FFBF"`;
-  spell out `"FULL"`. `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do
+  `FFBF` element and now has 6 elements. The PID-5 functions take only
+  full version names, so spell out `"FULL"` (see Breaking changes).
+  `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do
   not take the new version. FFBF facet and APA domain columns carry the short
   form's names, so do not norm or plot them as `version = "SF"`.
 
@@ -574,12 +573,24 @@
 
 ## Breaking changes
 
-* **`version = "B"` no longer means the PID-5-BF.** The PID-5 functions
-  match `version` without regard to case and accept a unique abbreviation.
-  `"B"` used to abbreviate `"BF"` only. It now also abbreviates `"BFPM"`, so
-  `score_pid5()`, `reliability_pid5()`, `rename_pid5_items()` and
-  `label_pid5()` refuse it. Write `"BF"`. An abbreviation such as `"BFP"`
-  selects the PID5BF+M.
+* **The PID-5 functions take only full version names.** `score_pid5()`,
+  `reliability_pid5()`, `rename_pid5_items()`, `label_pid5()`,
+  `validity_pid5()`, `norm_pid5()` and `plot_pid5()` accept `version` as a
+  full name in any letter case, such as `"FULL"` or `"bf"`. Before, an
+  abbreviation selected a version where it was unique among that
+  function's names: `"S"` selected the SF in all seven functions, `"BFP"`
+  the PID5BF+M in the four that take it, and `"F"` and `"B"` the FULL and
+  BF in `validity_pid5()`, `norm_pid5()` and `plot_pid5()`. Each is now an
+  error, so write the full name. Any refused `version` is an error of class
+  `hitop_unknown_version`, which names the argument, the value given and
+  the accepted names. Before, the error came from `match.arg()`. Its
+  message called the argument `'arg'`, and it did not name the function.
+
+* **`rename_pid5_items(method = "text")` refuses two columns that match one
+  item, for every form.** Both columns would take the same name. Before,
+  only the PID-5-FFBF refused, and the other forms returned two columns
+  with one name. The error now has the class `hitop_duplicate_item_match`
+  and names the columns.
 
 * **A HiTOP-SR module edited by hand is refused.** `score_hitopsr()`,
   `reliability_hitopsr()`, `generate_docx_hitopsr()`,
@@ -785,6 +796,18 @@
   has been rebuilt with the corrected item lists.
 
 ## Improvements and fixes
+
+* **`rename_pid5_items(method = "text")` matches text copied from a printed
+  form.** Typographic quotes (‘ ’ “ ”) match straight ones, and any
+  periods, ellipses (`...` or `…`), spaces (the no-break space too), tabs
+  or line breaks at the
+  start or the end of the text do not count. Text copied from the printed informant form still needs its
+  "He or she..." stem removed.
+
+* **The `score_pid5()` help states the proration rounding rule exactly.** A
+  prorated half rounds away from zero. For the default 0 to 3 coding this
+  is "halves up", as before. Under a negative `srange` a negative half
+  rounds down. No score changes.
 
 * **The hitop-form Study Link Builder says what went wrong where it was
   silent, and its module rows say more.** If `form.js` does not load, or

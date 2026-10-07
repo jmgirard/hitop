@@ -179,6 +179,46 @@ warn_item_order <- function(x, call = rlang::caller_env(),
   invisible(NULL)
 }
 
+# Internal Helper: Put PID-5 item text in one form before matching (M170).
+# Typographic single and double quotes become straight ones. Any run of
+# periods, ellipses and whitespace at the start or the end is dropped, which
+# removes a leading ellipsis, final periods and surrounding spaces (the
+# no-break space included), tabs and line breaks.
+normalize_item_text <- function(x) {
+  x <- gsub("[\u2018\u2019]", "'", x)
+  x <- gsub("[\u201c\u201d]", "\"", x)
+  x <- sub("^[.\u2026\u00a0 \t\r\n]+", "", x)
+  sub("[.\u2026\u00a0 \t\r\n]+$", "", x)
+}
+
+# Internal Helper: Resolve a PID-5 `version` argument to one of `choices`.
+# Full names only, in any letter case (D-094). An omitted argument arrives as
+# the function's whole default vector and resolves to its first name,
+# "FULL". Anything else is refused under `hitop_unknown_version`.
+resolve_pid5_version <- function(version, choices, call = rlang::caller_env()) {
+  ## A factor reads as its labels, as `toupper()` read it before D-094.
+  if (is.factor(version)) {
+    version <- as.character(version)
+  }
+  if (is.character(version) && identical(unname(toupper(version)), choices)) {
+    return(choices[[1]])
+  }
+  if (is.character(version) && length(version) == 1 && !is.na(version)) {
+    hit <- match(toupper(version), choices)
+    if (!is.na(hit)) {
+      return(choices[[hit]])
+    }
+  }
+  given <- deparse1(version)
+  if (nchar(given) > 60) {
+    given <- paste0(substr(given, 1, 57), "...")
+  }
+  cli::cli_abort(c(
+    "{.arg version} must be one of {.or {.val {choices}}}.",
+    "x" = "You supplied {.code {given}}."
+  ), class = "hitop_unknown_version", call = call)
+}
+
 validate_range <- function(x, call = rlang::caller_env()) {
   cli_assert(
     condition = rlang::is_integerish(x, n = 2),
@@ -705,6 +745,8 @@ calc_sem <- function(x) {
 
 # Round half away from zero, matching the APA scoring key's "round to the
 # nearest whole number" (base round() rounds half to even, e.g. round(2.5) = 2).
+# The name says "up", which holds for non-negative values only: -2.5 rounds to
+# -3 (D-095).
 round_half_up <- function(x) {
   sign(x) * floor(abs(x) + 0.5)
 }

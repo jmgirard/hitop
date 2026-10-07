@@ -23,9 +23,10 @@ columns. (default = \code{"items"})}
 (the 36-item PID5BF+M), \code{"IRF"} (the 218-item Informant Form, labelled
 with its informant wording from \code{pid_items$TextIRF}), or \code{"FFBF"} (the
 100-item Forensic Faceted Brief Form, labelled with its English
-self-report text from \code{pid_ffbf_items$Text}, also for informant data). Matched
-case-insensitively; \code{"F"} is refused, because it starts both
-"FULL" and "FFBF". The forms number their
+self-report text from \code{pid_ffbf_items$Text}, also for informant data).
+Only a full name is accepted, in any letter case. Any other value, a
+start of a name such as \code{"F"} included, is an error of class
+\code{hitop_unknown_version}. The forms number their
 items independently and
 score different sets of scales, so the form named here decides both the
 text attached to an item column and which scale columns are recognized.

@@ -39,8 +39,9 @@ before 2.0 (\code{labelled_spss}) is refused the same way, but
 \item{version}{A string indicating the version of the PID to score: "FULL",
 "SF", "BF", "BFPM" (the 36-item PID5BF+M), "IRF" (the 218-item
 Informant Form), or "FFBF" (the 100-item Forensic Faceted Brief Form).
-Will be automatically capitalized; \code{"F"} is refused, because it starts both
-"FULL" and "FFBF". (default = \code{"FULL"})}
+Only a full name is accepted, in any letter case. Any other value, a
+start of a name such as \code{"F"} included, is an error of class
+\code{hitop_unknown_version}. (default = \code{"FULL"})}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the items, used for reverse-coding. (default = \code{c(0, 3)})}

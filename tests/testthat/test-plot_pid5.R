@@ -578,12 +578,9 @@ test_that("axis bounds come from pid_norms rather than a chosen constant", {
 })
 
 
-test_that("version = \"F\" still plots as FULL, since plot_pid5() has no FFBF (M162)", {
+test_that("version = \"F\" is refused, as in the other PID-5 functions (D-094)", {
   normed <- normed_one("FULL")
-  expect_identical(
-    ggplot2::ggplot_build(plot_pid5(normed, version = "F"))$data,
-    ggplot2::ggplot_build(plot_pid5(normed, version = "FULL"))$data
-  )
+  expect_error(plot_pid5(normed, version = "F"), class = "hitop_unknown_version")
 })
 
 
@@ -660,7 +657,7 @@ test_that("ggplot2 being unavailable is reported, not hit as a namespace error",
 test_that("version is matched case-insensitively and bad arguments abort", {
   normed <- normed_one("BF")
   expect_no_error(plot_pid5(normed, version = "bf"))
-  expect_error(plot_pid5(normed, version = "XX"))
+  expect_error(plot_pid5(normed, version = "XX"), class = "hitop_unknown_version")
   expect_error(plot_pid5(normed, version = "BF", level = "domains"))
   expect_error(plot_pid5(normed, version = "BF", metric = "tscore"))
   expect_error(plot_pid5(as.list(normed), version = "BF"), regexp = "data frame")

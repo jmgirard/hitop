@@ -22,17 +22,22 @@ rename_pid5_items(
 (the 36-item PID5BF+M), \code{"IRF"} (the 218-item Informant Form, whose
 text matches \code{pid_items$TextIRF}), or \code{"FFBF"} (the 100-item Forensic
 Faceted Brief Form, whose text matches any of the four texts in
-\link{pid_ffbf_items}: self or informant report, English or German). Matched
-case-insensitively; \code{"F"} is refused, because it starts both
-"FULL" and "FFBF". (default = \code{"FULL"})}
+\link{pid_ffbf_items}: self or informant report, English or German). Only a
+full name is accepted, in any letter case. Any other value, a start of a
+name such as \code{"F"} included, is an error of class
+\code{hitop_unknown_version}. (default = \code{"FULL"})}
 
 \item{method}{A string specifying the matching method: \code{"number"} to rename
 columns spelled \code{from_prefix} followed by an item number, or \code{"text"} to
 match against the literal item prompt text in \code{pid_items$Text}
-(\code{pid_items$TextIRF} for \code{version = "IRF"}, whose text has no "He or
-she..." stem, leading ellipsis or final period, so text copied from the
-printed informant form needs those removed first; for \code{version = "FFBF"},
-any of the four texts in \link{pid_ffbf_items}). (default = \code{"number"})
+(\code{pid_items$TextIRF} for \code{version = "IRF"}; for \code{version = "FFBF"}, any
+of the four texts in \link{pid_ffbf_items}). Typographic quotes (‘ ’ “ ”)
+count as straight ones, and any periods, ellipses (\code{...} or \verb{…}),
+spaces (the no-break space too), tabs or line breaks at the start or the
+end of the text are ignored. So a leading ellipsis and a final period do
+not count. The informant text has no "He or she..." stem, so remove that
+stem from text copied from the printed informant form first.
+(default = \code{"number"})
 
 The forms number their items independently, so \code{"number"} reads the
 digits as an item number of the form named by \code{version}: under
@@ -73,11 +78,13 @@ is renamed and the report is \code{hitop_no_columns_matched}. Under either
 method, if some but not all of the form's items were renamed, the
 completeness report is \code{hitop_incomplete_rename}.
 
-Under \code{version = "FFBF"} and \code{method = "text"}, a call in which two
-columns match the same item (for example its self-report and informant
-texts, or its English and German texts) is an error, since both would
-take the same name. Rename each form's columns in its own data frame, or
-give each call its own \code{prefix}.
+Under \code{method = "text"}, a call in which two columns match the same item
+is an error of class \code{hitop_duplicate_item_match}, since both would take
+the same name. The message names the item and the columns. For the FFBF
+this happens when a data frame holds two texts of one item, for example
+its self-report and informant texts, or its English and German texts.
+Rename each form's columns in its own data frame, or give each call its
+own \code{prefix}.
 }
 \description{
 Rename data frame columns to the standard PID-5 item names of one form,

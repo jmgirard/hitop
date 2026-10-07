@@ -16,16 +16,21 @@
 #'   (the 36-item PID5BF+M), `"IRF"` (the 218-item Informant Form, whose
 #'   text matches `pid_items$TextIRF`), or `"FFBF"` (the 100-item Forensic
 #'   Faceted Brief Form, whose text matches any of the four texts in
-#'   [pid_ffbf_items]: self or informant report, English or German). Matched
-#'   case-insensitively; `"F"` is refused, because it starts both
-#'   "FULL" and "FFBF". (default = `"FULL"`)
+#'   [pid_ffbf_items]: self or informant report, English or German). Only a
+#'   full name is accepted, in any letter case. Any other value, a start of a
+#'   name such as `"F"` included, is an error of class
+#'   `hitop_unknown_version`. (default = `"FULL"`)
 #' @param method A string specifying the matching method: `"number"` to rename
 #'   columns spelled `from_prefix` followed by an item number, or `"text"` to
 #'   match against the literal item prompt text in `pid_items$Text`
-#'   (`pid_items$TextIRF` for `version = "IRF"`, whose text has no "He or
-#'   she..." stem, leading ellipsis or final period, so text copied from the
-#'   printed informant form needs those removed first; for `version = "FFBF"`,
-#'   any of the four texts in [pid_ffbf_items]). (default = `"number"`)
+#'   (`pid_items$TextIRF` for `version = "IRF"`; for `version = "FFBF"`, any
+#'   of the four texts in [pid_ffbf_items]). Typographic quotes (‘ ’ “ ”)
+#'   count as straight ones, and any periods, ellipses (`...` or `…`),
+#'   spaces (the no-break space too), tabs or line breaks at the start or the
+#'   end of the text are ignored. So a leading ellipsis and a final period do
+#'   not count. The informant text has no "He or she..." stem, so remove that
+#'   stem from text copied from the printed informant form first.
+#'   (default = `"number"`)
 #'
 #'   The forms number their items independently, so `"number"` reads the
 #'   digits as an item number of the form named by `version`: under
@@ -61,11 +66,13 @@
 #'   method, if some but not all of the form's items were renamed, the
 #'   completeness report is `hitop_incomplete_rename`.
 #'
-#'   Under `version = "FFBF"` and `method = "text"`, a call in which two
-#'   columns match the same item (for example its self-report and informant
-#'   texts, or its English and German texts) is an error, since both would
-#'   take the same name. Rename each form's columns in its own data frame, or
-#'   give each call its own `prefix`.
+#'   Under `method = "text"`, a call in which two columns match the same item
+#'   is an error of class `hitop_duplicate_item_match`, since both would take
+#'   the same name. The message names the item and the columns. For the FFBF
+#'   this happens when a data frame holds two texts of one item, for example
+#'   its self-report and informant texts, or its English and German texts.
+#'   Rename each form's columns in its own data frame, or give each call its
+#'   own `prefix`.
 #'
 #' @references Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
 #'   (2013). *The Personality Inventory for DSM-5—Informant Form
@@ -97,8 +104,7 @@ rename_pid5_items <- function(
   validate_string(prefix, arg = "prefix", allow_null = TRUE)
 
   ## Resolve the version, as `score_pid5()` does
-  version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
+  version <- resolve_pid5_version(version, c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
 
   ## Resolve this form's rows, its text, its output stem and its padding
   ## width. The informant form has its own wording (D-089(b)).
@@ -198,10 +204,11 @@ rename_pid5_items <- function(
       )
     }
 
-    ## Match text against this form's item texts only (using trimws for
-    ## robustness against surrounding whitespace, as `rename_hitopsr_items()`
-    ## does). For the FFBF the pool holds four texts per item.
-    locs <- match(trimws(item_text), trimws(text_pool))
+    ## Match text against this form's item texts only, both sides put in one
+    ## form first (typographic quotes, and leading and trailing periods,
+    ## ellipses and whitespace, do not count). For the FFBF the pool holds four
+    ## texts per item.
+    locs <- match(normalize_item_text(item_text), normalize_item_text(text_pool))
 
     if (any(is.na(locs))) {
       missing_idx <- which(is.na(locs))
@@ -212,14 +219,26 @@ rename_pid5_items <- function(
 
     if (length(locs) > 0) {
       matched_n <- pool_numbers[locs]
-      ## Two of the FFBF's four texts of one item (self and informant, or
-      ## English and German) would give two columns the same name.
+      ## Two columns matching one item would take the same name, in any form:
+      ## a repeated text, or two of the FFBF's four texts of one item (self and
+      ## informant, or English and German). D-094(c).
       dup_n <- unique(matched_n[duplicated(matched_n)])
-      if (version == "FFBF" && length(dup_n) > 0) {
+      if (length(dup_n) > 0) {
+        ## One line per item, naming its columns, so several duplicated
+        ## items stay paired with their own columns.
+        cols_of <- colnames(data)[data_locs]
+        pairs <- vapply(dup_n, function(n) {
+          cols <- cols_of[matched_n == n]
+          line <- paste0("Item ", n, ": ", paste0('"', cols, '"', collapse = ", "))
+          ## cli reads braces as code, and a column name can hold them.
+          gsub("}", "}}", gsub("{", "{{", line, fixed = TRUE), fixed = TRUE)
+        }, character(1))
+        names(pairs) <- rep("x", length(pairs))
         cli::cli_abort(c(
-          "Two or more columns match the same {label} item: {.val {dup_n}}.",
-          "i" = "Rename each form's columns in its own data frame, or give each call its own {.arg prefix}."
-        ))
+          "Two or more columns match the same {label} item.",
+          pairs,
+          "i" = "Give each item one column. Rename each form's columns in its own data frame, or give each call its own {.arg prefix}."
+        ), class = "hitop_duplicate_item_match")
       }
       colnames(data)[data_locs] <- item_names(prefix, matched_n, max_n = max_n)
     }

@@ -32,9 +32,9 @@
 #' @param version A string indicating the version of the PID to score: "FULL",
 #'   "SF", "BF", "BFPM" (the 36-item PID5BF+M), "IRF" (the 218-item
 #'   Informant Form), or "FFBF" (the 100-item Forensic Faceted Brief Form).
-#'   Will be automatically capitalized. A unique start of a name is accepted,
-#'   but `"F"` is refused, because it starts both "FULL" and "FFBF".
-#'   (default = `"FULL"`)
+#'   Only a full name is accepted, in any letter case. Any other value, a
+#'   start of a name such as `"F"` included, is an error of class
+#'   `hitop_unknown_version`. (default = `"FULL"`)
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param prefix An optional string to add before each scale column name. If no
@@ -47,8 +47,10 @@
 #'   FULL, SF, IRF, FFBF or BFPM domain is `NA` if any one of its three contributing
 #'   facets is `NA`). The PID-5-IRF key prints this step as "round up to the
 #'   nearest whole number". The package reads it as the nearest-whole-number
-#'   rule that every other APA PID-5 key states, with halves rounded up, so an
-#'   informant facet prorates exactly as the matching self-report facet does.
+#'   rule that every other APA PID-5 key states, so an informant facet
+#'   prorates exactly as the matching self-report facet does. A prorated half
+#'   rounds away from zero, which is up for the default 0 to 3 coding and
+#'   down for a negative score under a negative `srange`.
 #'   `"available"` averages whatever items are present (`rowMeans(na.rm = TRUE)`).
 #'   `"complete"` returns `NA` for any scale with a missing item
 #'   (`rowMeans(na.rm = FALSE)`). With no missing items the three agree. (default
@@ -135,12 +137,14 @@
 #'
 #'   The key prints its proration step as "round up to the nearest whole
 #'   number". The package applies the nearest-whole-number rule of every other
-#'   APA PID-5 key, halves up (see `missing`). The choice matters only under
-#'   `missing = "apa"`, for a facet with at least one but no more than 25% of
-#'   its items unanswered whose prorated raw score has a fractional part
-#'   strictly between 0 and one half. There the
-#'   package's facet score is 1/n lower than a ceiling would give, for a facet
-#'   of n items.
+#'   APA PID-5 key, with a prorated half rounded away from zero (see
+#'   `missing`). For a non-negative prorated raw score, the choice matters
+#'   only under `missing = "apa"`, for a facet with at least one but no more
+#'   than 25% of its items unanswered whose prorated raw score has a
+#'   fractional part strictly between 0 and one half. There the package's
+#'   facet score is 1/n lower than a ceiling would give, for a facet of n
+#'   items. Under a negative `srange` a negative prorated raw score can also
+#'   differ from a ceiling at other fractions.
 #'
 #'   Informant scores have the full form's column names, and nothing in the
 #'   output records the version. Do not pass them to [norm_pid5()] or
@@ -355,8 +359,7 @@ score_pid5 <- function(
 ) {
   ## Resolve the version and its item count (shared arg validation runs in the
   ## engine; version is PID-specific and resolved here)
-  version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
+  version <- resolve_pid5_version(version, c("FULL", "SF", "BF", "BFPM", "IRF", "FFBF"))
   missing <- match.arg(missing)
   n_items <- switch(
     version,
@@ -365,8 +368,7 @@ score_pid5 <- function(
     "BF" = 25,
     "BFPM" = 36,
     "IRF" = 218,
-    "FFBF" = 100,
-    cli::cli_abort("Invalid `version` argument")
+    "FFBF" = 100
   )
 
   ## Resolve this version's instrument data: which items reverse, the per-scale
