@@ -79,6 +79,7 @@ Researchers get a clear, classed refusal for a bad PID-5 `version` or an ambiguo
 - 2026-10-07: re-audit: AC2 (full) — nothing blocking. The two named functions hold all proration rounding (`apa_mean()` is called only from score_engine.R:103), the branch meets the clause, and the test tells away-from-zero from half up and from base `round()`. One optional rewording ("between the `function` line and the closing brace") was not taken, so no second reader is owed.
 - 2026-10-07: amendment return: AC2 — "The rounding code does not change: `git diff main...HEAD -- R/util.R` shows no change inside the bodies of `round_half_up()` and `apa_mean()`."
 - 2026-10-07: amendment done; status set to review.
+- 2026-10-07: step-7 approval: m170-pid5-version-text-matching approved for merge
 
 ## Review
 
