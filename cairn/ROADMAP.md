@@ -11,7 +11,6 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M145 | HiTOP-DAT Qualtrics import file | blocked | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
 | M169 | Spreadsheet formula caveat for response files | review | — | normal | milestones/M169-formula-caveat.md |
 | M163 | PID-5 forensic form (FFBF) English forms | blocked | M162 | normal | milestones/M163-pid5ffbf-forms.md |
-| M166 | Module Builder failure reports | done | — | high | milestones/archive/M166-builder-failure-reports.md |
 | M167 | Module Builder test reach | done | M166 | high | milestones/archive/M167-builder-test-reach.md |
 | M168 | Study link length-check gaps | done | — | high | milestones/archive/M168-link-length-gaps.md |
 
