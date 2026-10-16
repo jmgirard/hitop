@@ -349,3 +349,39 @@ skip_if_no_docx <- function() {
   testthat::skip_if_not_installed("officer")
   testthat::skip_if_not_installed("flextable")
 }
+
+# ---- DOCX blocks ------------------------------------------------------------
+#
+# The document body's top-level paragraphs and tables, in document order, for
+# a form whose sections interleave instructions and tables (the HiTOP-DAT).
+# Returns a list of blocks: list(type = "p", text = <string>) for a paragraph
+# outside any table, and list(type = "tbl", rows = <list of character
+# vectors>) for a table, one vector of cell texts per row. A cell's or
+# paragraph's text joins its <w:t> runs, with each line break (officer writes
+# `<w:br w:type="textWrapping"/>`; a bare `<w:br/>` is the same) read as "\n".
+# A page break (`w:type="page"`) is not a line, so it reads as nothing. The forms nest no table in another, so a lazy match ends each table
+# at its own closing tag.
+docx_blocks <- function(file) {
+  xml <- read_docx_xml(file)
+  body <- sub("(?s)^.*?<w:body>(.*)</w:body>.*$", "\\1", xml, perl = TRUE)
+  text_of <- function(x) {
+    x <- gsub('<w:br(| w:type="textWrapping")/>', "<w:t>\n</w:t>", x)
+    runs <- regmatches(x, gregexpr("(?s)<w:t[^>]*>[^<]*</w:t>", x, perl = TRUE))[[1]]
+    unescape_xml(paste(gsub("<[^>]+>", "", runs), collapse = ""))
+  }
+  pieces <- regmatches(
+    body,
+    gregexpr("(?s)<w:tbl[ >].*?</w:tbl>|<w:p[ >].*?</w:p>|<w:p/>", body, perl = TRUE)
+  )[[1]]
+  lapply(pieces, function(piece) {
+    if (grepl("^<w:tbl[ >]", piece)) {
+      rows <- regmatches(piece, gregexpr("(?s)<w:tr[ >].*?</w:tr>", piece, perl = TRUE))[[1]]
+      list(type = "tbl", rows = lapply(rows, function(row) {
+        cells <- regmatches(row, gregexpr("(?s)<w:tc[ >].*?</w:tc>", row, perl = TRUE))[[1]]
+        vapply(cells, text_of, character(1), USE.NAMES = FALSE)
+      }))
+    } else {
+      list(type = "p", text = text_of(piece))
+    }
+  })
+}
