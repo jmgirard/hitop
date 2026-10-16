@@ -73,3 +73,25 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
 - 2026-10-16 AC4 evidence: "generate_qualtrics_hitopdat refuses a bad value of each argument" ran with 16 expectations and 0 failed. Its map equals the generator's formals, and each of the 5 arguments is refused with its validator's message, with no file written. The arguments and values are `file` c("a.txt", "b.txt"), `block_name` 1, `id_prefix` NA, `include_instructions` NA and `breaks` -1, which gives "out of range". `breaks = 1.5` is refused as "not whole", and 0 and NULL are accepted (3 expectations, 0 failed). `file` and `id_prefix` are checked by `validate_string()` in the generator, and the others by the builder's existing validators.
 - 2026-10-16 gate: `cairn_validate.py` exits 1 in the working tree only on "roadmap<->disk orphans" for the untracked M172 draft, which is not on this branch. On a clean HEAD copy it exits 0, with 37 advisories. `devtools::document()` leaves no diff. `pkgdown::check_pkgdown()` reports no problems. NEWS has the entry, and README.md was rebuilt from README.Rmd. No new top-level files. No principle changed, so `cairn_impact` is skipped.
 - spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the recode claim is untested by a live import, and the 0, 2, 4 harm sets would show a position-based recode — follow-up, row "DAT online file gaps" (AC2's wording is the bound statement and claims nothing about a live import).
+- diff-bug #2: the 10-line DUDIT instruction is unconfirmed in a live import — follow-up, row "DAT online file gaps".
+- diff-bug #3: `import-instructions.Rmd` leaves the HiTOP-DAT out of its `.txt` list — fix now.
+- diff-bug #4: the help's "each of the seven measures that has instruction text" can read as seven questions — fix now (now "six of the seven measures, all but the CAPE").
+- diff-bug #5: `page_header` combined with `sections` would number headers by item — fix now (a `stopifnot()` refuses the combination, as in `build_redcap_zip()`).
+- diff-bug #6: a first section not at row 1, or unsorted rows, misplaces breaks — fix now (same `stopifnot()`).
+- diff-bug #7: `choices` of the wrong length or type fails with no argument named — fix now (`stopifnot()` on length and type).
+- diff-bug #8: a misnamed measure would silently drop its instruction — reject, false as a defect: the AC1 test asserts the six texts and fails on that mistake.
+- diff-bug #9: the Qualtrics file has no source notice, unlike the Word footer — follow-up, row "DAT online file gaps" (the REDCap file has none either).
+- diff-bug #10: the `expect_setequal()` type assertion is weak — reject, false: `expect_setequal()` fails on any third question type, which is what its comment states.
+- diff-bug #11: the "module = NULL … byte-identical" test title no longer describes the DAT case — fix now (retitled to the width check it makes).
+- diff-bug #12: `artifacts.R`'s filter and note were overwritten — reject, planned change: the script's own header says it records the last build it ran.
+- blame-history #1: a page break inside a measure does not repeat the instruction, unlike REDCap (M144) and the IRF `page_header` (M160) — follow-up, row "DAT online file gaps"; AC1 binds one copy of each text, so repeating them changes the plan, which is the user's decision at the merge question.
+- blame-history #2: no guard on `sections` as `build_redcap_zip()` has — fix now (same fix as diff-bug #5 and #6).
+- blame-history #3: `test-download-pages.R` comments still say the DAT has no Qualtrics file — fix now.
+- blame-history #4: `cairn/DESIGN.md` lines 14 and 47 still say the DAT has no Qualtrics file — fix now.
+- blame-history #5: the ID-width loop's comment says it locks every existing generator — fix now (same fix as diff-bug #11).
+- blame-history #6: `rebuild_formats` was narrowed to `qualtrics` — reject, planned change (the script's rule to rebuild only the format that changed).
+- blame-history #7: the log says T3 removed a duplicate byte test the diff does not show — reject, false: T1's commit added it and T3 removed it, so the net diff holds none, as the log states.
+- prior-review #1: no instruction repeated after an in-measure break, regressing the M144 and M160 fixes — follow-up, row "DAT online file gaps" (same finding as blame-history #1).
+- prior-review #2: DESIGN.md is stale — fix now (same as blame-history #4).
+- prior-review #3: `generate_docx_hitopdat()`'s `@seealso` does not name the Qualtrics generator — fix now (the Word and Qualtrics help pages now cross-link).

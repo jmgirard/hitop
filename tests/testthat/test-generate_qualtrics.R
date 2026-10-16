@@ -138,9 +138,10 @@ test_that("generate_qualtrics_hitopsr(module =) emits exactly the module's items
   expect_true(parsed$has_instructions)
 })
 
-test_that("module = NULL leaves Qualtrics output byte-identical for all instruments", {
+test_that("every full Qualtrics export pads its IDs to the instrument's width", {
   # Locks the shared-helper padding change (nrow -> max item number): every
-  # existing generator must be unaffected.
+  # generator's full export keeps the instrument's width and numbers 1 to n.
+  # The HiTOP-DAT has no `module`; it joins for the width check alone.
   gens <- list(
     generate_qualtrics_hitopsr,
     generate_qualtrics_hitopbr,

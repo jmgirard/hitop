@@ -42,9 +42,9 @@ multiple-choice question whose choices are the values and labels of the
 item's own answer set (\code{hitopdat_choices}). Each answer carries its
 scoring value from \code{hitopdat_choices$Value} as its Qualtrics recode
 value, written in the file as the answer's \verb{[[Choice:<value>]]} tag.
-With \code{include_instructions = TRUE}, each of the seven measures that has
-instruction text (all but the CAPE) opens with a descriptive text
-question holding it. That question's ID is
+With \code{include_instructions = TRUE}, each measure that has instruction
+text opens with a descriptive text question holding it: six of the
+seven measures, all but the CAPE. That question's ID is
 \verb{<id_prefix>_<measure>_instructions}, where \verb{<measure>} is the measure's
 name in lower case with each run of other characters made \verb{_}
 (\code{hdat_whodas_instructions}, \code{hdat_idas_ii_instructions}). Each measure

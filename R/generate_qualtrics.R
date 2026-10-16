@@ -452,9 +452,9 @@ generate_qualtrics_pid5bfchild <- function(
 #'   item's own answer set (`hitopdat_choices`). Each answer carries its
 #'   scoring value from `hitopdat_choices$Value` as its Qualtrics recode
 #'   value, written in the file as the answer's `[[Choice:<value>]]` tag.
-#'   With `include_instructions = TRUE`, each of the seven measures that has
-#'   instruction text (all but the CAPE) opens with a descriptive text
-#'   question holding it. That question's ID is
+#'   With `include_instructions = TRUE`, each measure that has instruction
+#'   text opens with a descriptive text question holding it: six of the
+#'   seven measures, all but the CAPE. That question's ID is
 #'   `<id_prefix>_<measure>_instructions`, where `<measure>` is the measure's
 #'   name in lower case with each run of other characters made `_`
 #'   (`hdat_whodas_instructions`, `hdat_idas_ii_instructions`). Each measure
@@ -630,6 +630,12 @@ build_qualtrics_txt <- function(
   if (is.null(choices)) {
     item_choices <- rep(list(choices_block(instructions$options)), nrow(items))
   } else {
+    # One answer set per item, each a data frame, or items would lose or
+    # borrow their answers.
+    stopifnot(
+      length(choices) == nrow(items),
+      all(vapply(choices, is.data.frame, logical(1)))
+    )
     item_choices <- lapply(choices, choices_block)
   }
 
