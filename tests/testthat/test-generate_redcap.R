@@ -91,7 +91,7 @@ test_that("generate_redcap_pid5 pads to 3 digits and paginates correctly", {
   expect_equal(which(items[["Section Header"]] == "<br>"), seq(16L, 211L, by = 15L))
 })
 
-# ---- Smoke coverage: the 9 shared-path generators ---------------------------
+# ---- Smoke coverage: the 10 shared-path generators --------------------------
 
 test_that("all shared-path REDCap generators produce a valid dictionary", {
   cases <- list(
@@ -103,7 +103,9 @@ test_that("all shared-path REDCap generators produce a valid dictionary", {
     list(fn = generate_redcap_pid5bfpm, n = 36L),
     list(fn = generate_redcap_pid5irf, n = 218L),
     list(fn = generate_redcap_pid5child, n = 220L),
-    list(fn = generate_redcap_pid5bfchild, n = 25L)
+    list(fn = generate_redcap_pid5bfchild, n = 25L),
+    # The HiTOP-DAT has one instruction row per measure but the CAPE: six.
+    list(fn = generate_redcap_hitopdat, n = nrow(hitopdat_items), instructions = 6L)
   )
   for (case in cases) {
     f <- withr::local_tempfile(fileext = ".zip")
@@ -111,7 +113,8 @@ test_that("all shared-path REDCap generators produce a valid dictionary", {
     expect_gt(file.info(f)$size, 0)
     r <- read_redcap_csv(f)
     expect_identical(names(r), redcap_cols)
-    expect_equal(nrow(r), case$n + 1L) # + instruction row
+    instructions <- if (is.null(case$instructions)) 1L else case$instructions
+    expect_equal(nrow(r), case$n + instructions) # + instruction rows
   }
 })
 

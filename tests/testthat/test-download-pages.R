@@ -1,8 +1,9 @@
 # Locks what the instrument download pages render (vignettes/articles/
-# download-*.Rmd): three cards in the row, an online-form strip under it on
-# the five pages with a JSON export and none on the HSUM, PID5BF+M,
-# PID-5-IRF and two PID-5 child form pages,
-# and an anchor
+# download-*.Rmd): a card in the row for each of Word, Qualtrics and REDCap
+# that the manifest holds (two on the HiTOP-DAT page, which has no Qualtrics
+# file yet), an online-form strip under it on the five
+# pages with a JSON export and none on the HSUM, PID5BF+M, PID-5-IRF, two
+# PID-5 child form and HiTOP-DAT pages, and an anchor
 # to every manifest file. Each page's `downloads` chunk is extracted with
 # knitr::purl() and evaluated against the sourced helpers, so the checks read
 # rendered HTML rather than page source. Also locks the Instruments menu of
@@ -10,9 +11,22 @@
 # neither vignettes/articles nor _pkgdown.yml is installed.
 
 # The pages with no JSON export, so no online-form strip: the HSUM, the
-# PID5BF+M, the PID-5-IRF and the two PID-5 child forms, which the online
-# form does not offer.
-no_strip_stems <- c("hitophsum", "pid5bfpm", "pid5irf", "pid5child", "pid5bfchild")
+# PID5BF+M, the PID-5-IRF, the two PID-5 child forms and the HiTOP-DAT,
+# which the online form does not offer.
+no_strip_stems <- c(
+  "hitophsum", "pid5bfpm", "pid5irf", "pid5child", "pid5bfchild", "hitopdat"
+)
+
+# The cards each page's row renders: one for each of Word, Qualtrics and
+# REDCap that the manifest holds for the instrument. Every page has all three
+# but the HiTOP-DAT's, whose Qualtrics import file is not built yet; read from
+# the manifest, the count follows when it ships.
+expected_cards <- function(stem) {
+  m <- latest_manifest()
+  formats <- m$format[sub("[_.].*$", "", m$file) == stem]
+  groups <- c(docx_us = "docx", docx_a4 = "docx", qualtrics = "qualtrics", redcap = "redcap")
+  length(unique(groups[formats[formats %in% names(groups)]]))
+}
 
 articles_dir <- function() {
   testthat::test_path("..", "..", "vignettes", "articles")
@@ -61,17 +75,17 @@ decode_c <- function(p) {
   rawToChar(jsonlite::base64_dec(paste0(b64, strrep("=", pad))))
 }
 
-test_that("each download page renders exactly three cards in its row", {
+test_that("each download page renders its cards in one row", {
   skip_if(!dir.exists(articles_dir()), "vignettes/articles not available")
   skip_if_not_installed("knitr")
   pages <- download_pages()
-  expect_length(pages, 10)
+  expect_length(pages, 11)
   for (page in pages) {
     fences <- render_downloads_chunk(page)
     row <- fences[startsWith(fences, '<div class="row mt-4 hitop-downloads">')]
     expect_length(row, 1)
     cards <- gregexpr('<div class="col-md-4 mb-4">', row, fixed = TRUE)[[1]]
-    expect_equal(sum(cards > 0), 3, info = basename(page))
+    expect_equal(sum(cards > 0), expected_cards(page_stem(page)), info = basename(page))
   }
 })
 

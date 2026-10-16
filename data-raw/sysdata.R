@@ -91,7 +91,13 @@ hitophsum_instructions <- list(
 ## kept as "\n", other runs of spaces made one space. The IDAS-II and CAT-PD
 ## texts head each of their grids in the file, the same text on every grid.
 ## The CAPE block has no instruction text, recorded as NA.
+## `notice` is the Word forms' footer line. It names each measure with the
+## author and year of its heading in the revised HiTOP-DAT manual's "Measures
+## and reference data" section, in battery order. The WHODAS heading's
+## "& others" and year (1988) are left out, because the battery uses the
+## later 12-item WHODAS (cairn/SOURCES.md, "HiTOP-DAT", DAT-16).
 hitopdat_instructions <- list(
+  notice = "Copyright and sources: WHODAS (World Health Organization); IDAS-II (Watson et al., 2012); AUDIT (Saunders et al., 1993); DUDIT (Berman et al., 2007); CAPE (Stefanis et al., 2002); CAT-PD (Simms et al., 2011); PHQ-15 (Kroenke et al., 2002).",
   start = c(
     "WHODAS" = "In the last 30 days, how much difficulty did you have in:",
     "IDAS-II" = "Below is a list of feelings, sensations, problems, and experiences that people sometimes have. Read each item to determine how well it describes your recent feelings and experiences. Then, enter the choice that best describes how much you have felt or experienced things this way during THE PAST TWO WEEKS, including today.",

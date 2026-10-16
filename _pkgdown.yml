@@ -29,6 +29,8 @@ navbar:
         href: articles/download-hitopbr.html
       - text: "HiTOP Harmful Substance Use (HSUM)"
         href: articles/download-hitophsum.html
+      - text: "HiTOP Digital Assessment and Tracker (DAT)"
+        href: articles/download-hitopdat.html
       - text: "PID-5 Full (PID-5)"
         href: articles/download-pid5.html
       - text: "PID-5 Short Form (SF)"
@@ -121,6 +123,7 @@ reference:
   - generate_docx_hitopbr
   - generate_docx_hitopsr
   - generate_docx_hitophsum
+  - generate_docx_hitopdat
   - generate_docx_pid5
   - generate_docx_pid5sf
   - generate_docx_pid5bf
@@ -140,6 +143,7 @@ reference:
   - generate_redcap_hitopbr
   - generate_redcap_hitopsr
   - generate_redcap_hitophsum
+  - generate_redcap_hitopdat
   - generate_redcap_pid5
   - generate_redcap_pid5sf
   - generate_redcap_pid5bf

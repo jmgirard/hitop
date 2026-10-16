@@ -624,6 +624,26 @@ make_domain_table <- function(
     flextable::set_table_properties(layout = "fixed", align = "left")
 }
 
+# Internal Helper: the paragraph of one instruction text. Each "\n" becomes a
+# line break, so an instruction that lists its lines (the HiTOP-DAT's DUDIT
+# drug list) keeps them. A text with no "\n" is one run, as before.
+instruction_fpar <- function(text, prop, par_prop) {
+  # strsplit() drops a trailing empty piece and returns nothing for "", so
+  # both are put back: a final "\n" still ends in a line break.
+  lines <- strsplit(text, "\n", fixed = TRUE)[[1]]
+  if (!length(lines) || endsWith(text, "\n")) {
+    lines <- c(lines, "")
+  }
+  runs <- list()
+  for (k in seq_along(lines)) {
+    if (k > 1L) {
+      runs <- c(runs, list(officer::run_linebreak()))
+    }
+    runs <- c(runs, list(officer::ftext(lines[k], prop = prop)))
+  }
+  do.call(officer::fpar, c(runs, list(fp_p = par_prop)))
+}
+
 # Internal Helper: Assemble the actual Word Document
 build_hitop_doc <- function(
   file,
@@ -638,8 +658,20 @@ build_hitop_doc <- function(
   font_family,
   crosswalk_msg = NULL,
   table_3 = NULL,
-  footer_notice = NULL
+  footer_notice = NULL,
+  sections = NULL
 ) {
+  # `sections`, when given, replaces `instr_text` and `table_1` with a list of
+  # sections, each `list(instruction = <text or NA>, tables = <flextables>)`,
+  # printed in order: the instruction paragraph, then its tables. A battery of
+  # several measures (the HiTOP-DAT) passes one section per measure, each with
+  # its own instruction and one table per run of items sharing an answer set.
+  # NULL makes the one section every other form prints, through the same calls
+  # as before, so their documents are unchanged.
+  if (is.null(sections)) {
+    sections <- list(list(instruction = instr_text, tables = list(table_1)))
+  }
+
   inst_prop <- officer::fp_text(
     font.size = font_size,
     font.family = font_family
@@ -661,14 +693,29 @@ build_hitop_doc <- function(
   my_header <- officer::block_list(header_text)
   my_footer <- build_docx_footer(font_size, font_family, notice = footer_notice)
 
-  my_doc <- officer::read_docx() |>
-    officer::body_add_fpar(
-      officer::fpar(
-        officer::ftext(instr_text, prop = inst_prop),
-        fp_p = inst_par_prop
-      )
-    ) |>
-    flextable::body_add_flextable(value = table_1)
+  # Word joins two tables with nothing between them into one table, so a
+  # blank paragraph separates the tables of a section, and a section with no
+  # instruction (the HiTOP-DAT's CAPE) from the section before it.
+  gap_par <- officer::fpar(fp_p = officer::fp_par(padding.bottom = 6))
+  my_doc <- officer::read_docx()
+  for (k in seq_along(sections)) {
+    section <- sections[[k]]
+    if (!is.na(section$instruction)) {
+      my_doc <- my_doc |>
+        officer::body_add_fpar(
+          instruction_fpar(section$instruction, inst_prop, inst_par_prop)
+        )
+    } else if (k > 1L) {
+      my_doc <- my_doc |> officer::body_add_fpar(gap_par)
+    }
+    for (j in seq_along(section$tables)) {
+      if (j > 1L) {
+        my_doc <- my_doc |> officer::body_add_fpar(gap_par)
+      }
+      my_doc <- my_doc |>
+        flextable::body_add_flextable(value = section$tables[[j]])
+    }
+  }
 
   scoring_page <- include_scoring && !is.null(table_2)
 
@@ -1832,4 +1879,114 @@ generate_docx_pid5bfchild <- function(
     font_size,
     font_family
   )
+}
+
+#' Generate a Word Document for the HiTOP-DAT
+#'
+#' Write the 382 items of the HiTOP Digital Assessment and Tracker (HiTOP-DAT)
+#' battery as a paper form. The items are numbered 1 to 382 in battery order
+#' (`hitopdat_items$Item`), through its seven measures: the WHODAS, IDAS-II,
+#' AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Each measure's instruction text
+#' comes before its first item; the CAPE has none. Each item shows the values
+#' of its own answer set (`hitopdat_choices`), and the legend above each run
+#' of items that share an answer set gives that set's values and labels. The
+#' footer credits each measure's authors. The form has no scoring page,
+#' because the package ships no HiTOP-DAT scoring key.
+#'
+#' @param file Character string specifying the output file path. Defaults to
+#'   `"hitopdat.docx"`.
+#' @param papersize Character string specifying the paper dimensions. Must be
+#'   one of `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
+#' @param title Character string for the document header title. Defaults to
+#'   `"HiTOP-DAT"`.
+#' @param font_size Numeric value greater than 0 specifying the base font size
+#'   in points. Defaults to `10`.
+#' @param font_family Character string specifying the font family to be used.
+#'   Defaults to `"Times New Roman"`.
+#'
+#' @return Invisibly returns the path to the created file (`file`).
+#'
+#' @seealso [hitopdat_items], [hitopdat_choices], and
+#'   [generate_redcap_hitopdat()] for the REDCap import file.
+#'
+#' @examples
+#' \donttest{
+#' # Write a HiTOP-DAT paper form to a temporary Word document
+#' generate_docx_hitopdat(file = tempfile(fileext = ".docx"))
+#' }
+#'
+#' @export
+generate_docx_hitopdat <- function(
+  file = "hitopdat.docx",
+  papersize = c("us", "a4"),
+  title = "HiTOP-DAT",
+  font_size = 10,
+  font_family = "Times New Roman"
+) {
+  validate_string(file, "file")
+  papersize <- match.arg(papersize)
+  validate_string(title, "title")
+  validate_positive_number(font_size, "font_size")
+  validate_string(font_family, "font_family")
+  dims <- get_page_dims(papersize)
+
+  build_hitop_doc(
+    file,
+    title,
+    instr_text = NULL,
+    scoring_msg = NULL,
+    table_1 = NULL,
+    table_2 = NULL,
+    include_scoring = FALSE,
+    dims = dims,
+    font_size = font_size,
+    font_family = font_family,
+    footer_notice = hitopdat_instructions$notice,
+    sections = hitopdat_docx_sections(dims$pw, font_size, font_family)
+  )
+}
+
+# Internal Helper: the HiTOP-DAT form's sections, one per measure in battery
+# order. A section holds the measure's instruction (NA for the CAPE) and one
+# items table per run of consecutive items sharing an answer set: the AUDIT
+# and DUDIT change answer sets between items, and every table's legend and
+# option columns are its own set's.
+hitopdat_docx_sections <- function(printable_w, font_size, font_family) {
+  items <- hitopdat_items[order(hitopdat_items$Item), ]
+  # A section holds a measure's rows; a measure whose items were not one
+  # block in battery order would print out of that order.
+  stopifnot(!anyDuplicated(rle(items$Measure)$values))
+  lapply(unique(items$Measure), function(measure) {
+    rows <- items[items$Measure == measure, ]
+    sets <- rows$Choice_Set
+    run <- cumsum(c(TRUE, sets[-1] != sets[-length(sets)]))
+    tables <- lapply(split(seq_len(nrow(rows)), run), function(i) {
+      choices <- hitopdat_choices[hitopdat_choices$Choice_Set == sets[i[1]], ]
+      opts <- data.frame(value = choices$Value, label = choices$Label)
+      make_items_table(
+        rows[i, ],
+        "Item",
+        opts,
+        printable_w,
+        font_size,
+        font_family,
+        opts_per_line = legend_per_line(opts, font_size, printable_w)
+      )
+    })
+    list(
+      instruction = unname(hitopdat_instructions$start[[measure]]),
+      tables = unname(tables)
+    )
+  })
+}
+
+# Internal Helper: how many options a legend line holds. A legend stays on
+# one line when it is no longer than 80 characters at the default 10-point
+# font on the US page's 7-inch printable width; the limit shrinks as the font
+# grows or the page narrows. A longer legend prints two options per line, as
+# the PID-5 forms do, so Word does not break a label in the middle.
+legend_per_line <- function(opts, font_size = 10, printable_w = 7) {
+  one_line <- paste(paste(opts$value, opts$label, sep = " = "), collapse = " \u2022 ")
+  limit <- 80 * (10 / font_size) * (printable_w / 7)
+  if (nchar(one_line) <= limit) nrow(opts) else 2L
 }

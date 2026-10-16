@@ -1,0 +1,77 @@
+---
+title: "HiTOP-DAT Instrument"
+output: rmarkdown::html_vignette
+toc: false
+vignette: >
+  %\VignetteIndexEntry{HiTOP-DAT Instrument}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Welcome to the HiTOP Digital Assessment and Tracker (HiTOP-DAT) resources page. The HiTOP-DAT is a battery of 382 items from seven published measures: the WHODAS, IDAS-II, AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Here you can download printable Word forms and a REDCap import file. Each form gives each measure's instructions, where it has them, before its first item and shows each item with its own response options. The `hitop` package does not score the HiTOP-DAT yet.
+
+```{r setup, include=FALSE}
+source("_download-helpers.R")
+```
+
+```{=html}
+<h3 class="mt-4 mb-3">Ready-to-Use Downloads</h3>
+<p class="text-muted">Choose the format that best fits your immediate research needs.</p>
+```
+
+```{r downloads, echo=FALSE, results='asis'}
+download_cards("HiTOP-DAT", list(
+  dl_card(
+    "📄", "Printable Document",
+    "Use these Microsoft Word documents for printing, paper administration, or sending to the IRB.",
+    dl_link("English (A4 Paper)", "../downloads/hitopdat_A4.docx"),
+    dl_link("English (US Paper)", "../downloads/hitopdat_US.docx")
+  ),
+  dl_card(
+    "🏥", "REDCap Import",
+    "Use this compressed archive file to import the battery as a new instrument in your REDCap project.",
+    dl_link("English (ZIP File)", "../downloads/hitopdat_redcap.zip"),
+    ref_link("Import Instructions", "../articles/import-instructions.html#redcap-zip")
+  )
+))
+```
+
+```{=html}
+<hr class="mt-5 mb-4">
+
+<h3 class="mb-3">Explore the R Package Features</h3>
+<p class="text-muted">The <code>hitop</code> package holds the battery's items, response options and scales, and can build the printable and REDCap files from scratch, so you can adapt them before fielding the battery.</p>
+
+<div class="row mt-4">
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📋 Instrument Information</h5>
+        <p class="card-text">Access the item list, the response options of each item, and the scale memberships directly from the package namespace.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/hitopdat_items.html" class="btn btn-sm btn-outline-secondary">Items</a>
+          <a href="../reference/hitopdat_choices.html" class="btn btn-sm btn-outline-secondary">Response Options</a>
+          <a href="../reference/hitopdat_scales.html" class="btn btn-sm btn-outline-secondary">Scales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🛠️ Custom File Generation</h5>
+        <p class="card-text">Need to change the formatting or the REDCap page breaks? Build customized DOCX and REDCap files programmatically.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/generate_docx_hitopdat.html" class="btn btn-sm btn-outline-secondary">Printable</a>
+          <a href="../reference/generate_redcap_hitopdat.html" class="btn btn-sm btn-outline-secondary">REDCap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+```{r versions, echo=FALSE, results='asis'}
+versions_section("HiTOP-DAT")
+```

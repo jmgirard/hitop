@@ -40,7 +40,8 @@ flat_text_builders <- list(
   pid5bfchild_redcap.zip = function(file) generate_redcap_pid5bfchild(file = file),
   hitopsr_redcap.zip = function(file) generate_redcap_hitopsr(file = file),
   hitopbr_redcap.zip = function(file) generate_redcap_hitopbr(file = file),
-  hitophsum_redcap.zip = function(file) generate_redcap_hitophsum(file = file)
+  hitophsum_redcap.zip = function(file) generate_redcap_hitophsum(file = file),
+  hitopdat_redcap.zip = function(file) generate_redcap_hitopdat(file = file)
 )
 
 test_that("every flat-text manifest row but the API-built QSF has a builder here", {

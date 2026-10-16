@@ -486,8 +486,21 @@ build_redcap_zip <- function(
   required,
   breaks,
   page_header = NULL,
+  choices = NULL,
+  sections = NULL,
   call = rlang::caller_env()
 ) {
+  # `choices`, when given, is one REDCap choices string per item row, for an
+  # instrument whose items do not share one answer set (the HiTOP-DAT). NULL
+  # builds the one string every item of the other instruments carries.
+  #
+  # `sections`, when given, is a list of `row` (the first item row of each
+  # section, ascending, the first being 1), `name` (each section's
+  # instruction field name) and `text` (its instruction, or NA for none). It
+  # replaces the single instruction row from `instructions`: each section's
+  # instruction field comes before its first item, each section after the
+  # first opens a new page, and `breaks` counts the items of each section
+  # from its start. NULL keeps the one instruction row of every other export.
   # `page_header`, when given, is the Section Header text at each page break
   # in place of the bare "<br>", so every page after the first restates the
   # PID-5 Informant Form's rating prompt and stem (M160 review). NULL keeps
@@ -509,12 +522,16 @@ build_redcap_zip <- function(
   validate_count(breaks, arg = "breaks", min = 0, allow_null = TRUE, call = call)
 
   # 1. Format the REDCap choices string from instructions
-  choice_pairs <- paste(
-    instructions$options$value,
-    instructions$options$label,
-    sep = ", "
-  )
-  formatted_choices <- paste(choice_pairs, collapse = " | ")
+  if (is.null(choices)) {
+    choice_pairs <- paste(
+      instructions$options$value,
+      instructions$options$label,
+      sep = ", "
+    )
+    formatted_choices <- paste(choice_pairs, collapse = " | ")
+  } else {
+    formatted_choices <- choices
+  }
 
   # 2. Build the item variable names: lowercase stem, underscore, item number
   #    zero-padded to the width of the INSTRUMENT's largest item number
@@ -544,15 +561,52 @@ build_redcap_zip <- function(
     stringsAsFactors = FALSE
   )
 
-  # 4. Insert Page Breaks based on the 'breaks' argument
-  if (!is.null(breaks) && breaks > 0 && nrow(item_rows) > breaks) {
-    # Find the positions where breaks should occur
-    break_positions <- seq(from = breaks + 1, to = nrow(item_rows), by = breaks)
-
-    # REDCap triggers a page break when there is text in the Section Header column
-    item_rows$`Section Header`[break_positions] <-
-      if (is.null(page_header)) "<br>" else page_header
+  if (!is.null(sections)) {
+    # The sections path writes its own page headers, so a `page_header`
+    # passed with it would be dropped without a word. Section rows must start
+    # at the first item and ascend, or items would be lost or repeated.
+    stopifnot(
+      is.null(page_header),
+      sections$row[1] == 1L,
+      !is.unsorted(sections$row, strictly = TRUE)
+    )
+    # 4-5. Per section: page breaks counted from the section's start, its
+    # instruction field before its first item, and a new page for each
+    # section after the first. A page break inside a section restates the
+    # section's instruction in its Section Header, so a later page does not
+    # show items with no stem (the WHODAS items complete "how much difficulty
+    # did you have in:"); the HiTOP-DAT source file repeats the IDAS-II and
+    # CAT-PD instructions over each grid the same way. A section with none
+    # breaks with "<br>".
+    ends <- c(sections$row[-1] - 1L, nrow(item_rows))
+    pieces <- lapply(seq_along(sections$row), function(k) {
+      block <- insert_page_breaks(
+        item_rows[sections$row[k]:ends[k], , drop = FALSE],
+        breaks,
+        if (is.na(sections$text[k])) "<br>" else sections$text[k]
+      )
+      if (!is.na(sections$text[k])) {
+        block <- rbind(
+          redcap_descriptive_row(sections$name[k], form_name, sections$text[k]),
+          block
+        )
+      }
+      if (k > 1L) {
+        block$`Section Header`[1] <- "<br>"
+      }
+      block
+    })
+    data_dictionary <- do.call(rbind, pieces)
+    rownames(data_dictionary) <- NULL
+    return(write_redcap_zip(data_dictionary, file))
   }
+
+  # 4. Insert Page Breaks based on the 'breaks' argument
+  item_rows <- insert_page_breaks(
+    item_rows,
+    breaks,
+    if (is.null(page_header)) "<br>" else page_header
+  )
 
   # 5. Build the Instructions Row
   instruction_text <- instructions$start[1]
@@ -561,24 +615,10 @@ build_redcap_zip <- function(
       !is.na(instruction_text) &&
       nchar(instruction_text) > 0
   ) {
-    instruction_row <- data.frame(
-      `Variable / Field Name` = paste0(tolower(instrument), "_instructions"),
-      `Form Name` = form_name,
-      `Section Header` = NA_character_,
-      `Field Type` = "descriptive",
-      `Field Label` = instruction_text,
-      `Choices, Calculations, OR Slider Labels` = NA_character_,
-      `Field Note` = NA_character_,
-      `Text Validation Type OR Show Slider Number` = NA_character_,
-      `Text Validation Min` = NA_character_,
-      `Text Validation Max` = NA_character_,
-      `Identifier?` = NA_character_,
-      `Branching Logic (Show field only if...)` = NA_character_,
-      `Required Field?` = NA_character_,
-      `Custom Alignment` = NA_character_,
-      `Question Number (surveys only)` = NA_character_,
-      check.names = FALSE,
-      stringsAsFactors = FALSE
+    instruction_row <- redcap_descriptive_row(
+      paste0(tolower(instrument), "_instructions"),
+      form_name,
+      instruction_text
     )
 
     # Bind the instructions to the top of the items
@@ -591,6 +631,41 @@ build_redcap_zip <- function(
   write_redcap_zip(data_dictionary, file)
 }
 
+# Internal Helper: put `header` in the Section Header of every `breaks`-th item
+# row after the first page. REDCap starts a new page at a field whose Section
+# Header holds text. A NULL or 0 `breaks`, or rows that fit on one page, are
+# returned unchanged.
+insert_page_breaks <- function(rows, breaks, header) {
+  if (!is.null(breaks) && breaks > 0 && nrow(rows) > breaks) {
+    break_positions <- seq(from = breaks + 1, to = nrow(rows), by = breaks)
+    rows$`Section Header`[break_positions] <- header
+  }
+  rows
+}
+
+# Internal Helper: one descriptive (text-only) dictionary row, the field that
+# shows an instruction.
+redcap_descriptive_row <- function(name, form_name, text) {
+  data.frame(
+    `Variable / Field Name` = name,
+    `Form Name` = form_name,
+    `Section Header` = NA_character_,
+    `Field Type` = "descriptive",
+    `Field Label` = text,
+    `Choices, Calculations, OR Slider Labels` = NA_character_,
+    `Field Note` = NA_character_,
+    `Text Validation Type OR Show Slider Number` = NA_character_,
+    `Text Validation Min` = NA_character_,
+    `Text Validation Max` = NA_character_,
+    `Identifier?` = NA_character_,
+    `Branching Logic (Show field only if...)` = NA_character_,
+    `Required Field?` = NA_character_,
+    `Custom Alignment` = NA_character_,
+    `Question Number (surveys only)` = NA_character_,
+    check.names = FALSE,
+    stringsAsFactors = FALSE
+  )
+}
 
 # The one path by which every REDCap instrument archive is written. REDCap
 # imports an archive holding a single member named `instrument.csv`, so the
@@ -909,4 +984,91 @@ generate_redcap_hitophsum <- function(
 
   # 9. Export directly to ZIP
   write_redcap_zip(data_dictionary, file)
+}
+
+#' Generate a REDCap Instrument ZIP File for the HiTOP-DAT
+#'
+#' @description Generates a REDCap data dictionary for the HiTOP Digital
+#'   Assessment and Tracker (HiTOP-DAT) battery and packages it into an
+#'   Instrument ZIP file for uploading. The 382 item fields are `hdat_001` to
+#'   `hdat_382` in battery order (`hitopdat_items$Item`), each a radio field
+#'   whose choices are the values and labels of the item's own answer set
+#'   (`hitopdat_choices`). Each of the seven measures opens with a
+#'   descriptive field holding its instruction text, except the CAPE, which
+#'   has none. The field is named `hdat_<measure>_instructions`, where
+#'   `<measure>` is the measure's name in lower case with each run of other
+#'   characters made `_` (`hdat_whodas_instructions`,
+#'   `hdat_idas_ii_instructions`). Each measure after the first starts a
+#'   new page. A page break inside a measure restates the measure's
+#'   instruction text in the section header of the page's first item.
+#'
+#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
+#'
+#' @param file Character string. The destination path for the output ZIP file.
+#'   Defaults to `"hitopdat_redcap.zip"`.
+#' @param form_name Character string. The internal name of the form in REDCap.
+#'   Defaults to `"hitopdat_questionnaire"`.
+#' @param required Logical. Whether the items should be marked as required.
+#'   Defaults to `TRUE`.
+#' @param breaks Integer or `NULL`. The number of items of a measure to
+#'   display before inserting a page break, counted from the start of each
+#'   measure. Set to `0` or `NULL` to break pages only between measures.
+#'   Defaults to `15`.
+#'
+#' @return Invisibly returns the path to the created file (`file`).
+#'
+#' @examples
+#' # Write a HiTOP-DAT REDCap instrument ZIP to a temporary location
+#' generate_redcap_hitopdat(file = tempfile(fileext = ".zip"))
+#'
+#' @export
+generate_redcap_hitopdat <- function(
+  file = "hitopdat_redcap.zip",
+  form_name = "hitopdat_questionnaire",
+  required = TRUE,
+  breaks = 15
+) {
+  # build_redcap_zip() checks `form_name`, `required` and `breaks`; `file`
+  # is checked here, before any path is built from it.
+  validate_string(file, "file")
+
+  items <- hitopdat_items[order(hitopdat_items$Item), ]
+
+  # One choices string per answer set, as generate_redcap_hitophsum() builds
+  # them, then one per item from its set.
+  choice_pairs <- paste(
+    hitopdat_choices$Value,
+    hitopdat_choices$Label,
+    sep = ", "
+  )
+  set_choices <- vapply(
+    split(choice_pairs, hitopdat_choices$Choice_Set),
+    function(x) paste(x, collapse = " | "),
+    character(1)
+  )
+
+  first <- !duplicated(items$Measure)
+  measures <- items$Measure[first]
+
+  build_redcap_zip(
+    items = items,
+    max_n = max(hitopdat_items$Item),
+    instructions = NULL,
+    file = file,
+    instrument = "HDAT",
+    form_name = form_name,
+    required = required,
+    breaks = breaks,
+    choices = unname(set_choices[items$Choice_Set]),
+    sections = list(
+      row = which(first),
+      name = paste0(
+        "hdat_",
+        gsub("[^a-z0-9]+", "_", tolower(measures)),
+        "_instructions"
+      ),
+      text = unname(hitopdat_instructions$start[measures])
+    )
+  )
 }
