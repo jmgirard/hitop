@@ -44,8 +44,9 @@ pak::pak("jmgirard/hitop")
 
 The PID-5 is the Personality Inventory for DSM-5. HiTOP-SR, HiTOP-BR and
 HiTOP-HSUM are the HiTOP Self-Report, the HiTOP Brief Report and the
-HiTOP Harmful Substance Use Module. The two child forms are for ages 11
-to 17.
+HiTOP Harmful Substance Use Module. The HiTOP-DAT is the HiTOP Digital
+Assessment and Tracker, a battery of seven published measures. The two
+child forms are for ages 11 to 17.
 
 Items is the number of items. Scoring and Reliability mark the
 instruments that the `score_*()` and `reliability_*()` functions take.
@@ -59,6 +60,7 @@ files, and JSON files for the online form.
 | HiTOP-SR | 405 | Yes | Yes | [Scoring HiTOP-SR](https://jmgirard.github.io/hitop/articles/hitopsr_scoring.html) | Word, Qualtrics, REDCap, JSON |
 | HiTOP-BR | 45 | Yes | Yes | [Scoring HiTOP-BR](https://jmgirard.github.io/hitop/articles/hitopbr_scoring.html) | Word, Qualtrics, REDCap, JSON |
 | HiTOP-HSUM | 650 |  |  |  | Word, Qualtrics, REDCap |
+| HiTOP-DAT | 382 |  |  |  |  |
 | PID-5 | 220 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html) | Word, Qualtrics, REDCap, JSON |
 | PID-5-SF | 100 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html), [Scoring PID-5-SF](https://jmgirard.github.io/hitop/articles/pid5sf_scoring.html) | Word, Qualtrics, REDCap, JSON |
 | PID-5-BF | 25 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html), [Scoring PID-5-BF](https://jmgirard.github.io/hitop/articles/pid5bf_scoring.html) | Word, Qualtrics, REDCap, JSON |

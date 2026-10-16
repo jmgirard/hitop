@@ -57,12 +57,11 @@ one of these names.
 
 ## Traces to
 
-- `data-raw/hitopdat_info.R`, `dat_scale_names`: the crosswalk from the file's category
-  names to these names.
-- `tests/testthat/test-keying-hitopdat.R`, `manual_scales`: the 57 names and their
-  measures, checked against `hitopdat_scales` in both directions.
-- `R/data.R`, `?hitopdat_scales`: "`Scale` is the name the HiTOP-DAT manual (2021)
-  gives the scale."
+- Nothing since M173 (corrected M173). The revised manual,
+  [jonas2026dat.md](jonas2026dat.md), is now the source of `hitopdat_scales$Scale`. It
+  keeps every name above except Non-Premeditation, which it calls Non-Planfulness. The
+  crosswalk in `data-raw/hitopdat_info.R`, `manual_scales` in
+  `tests/testthat/test-keying-hitopdat.R` and `?hitopdat_scales` trace to that page.
 
 ## Open questions
 

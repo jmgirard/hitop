@@ -18,12 +18,13 @@ scale_row <- function(scale) {
   hitopdat_scales[hitopdat_scales$Scale == scale, ]
 }
 
-# ---- Source: HiTOP-DAT manual (Jonas et al., 2021), "Scale definitions",  ----
-# ---- pp. 20-25: the 57 definitions in the order the manual prints them.  ----
+# ---- Source: revised HiTOP-DAT manual (Jonas et al., revised 2026-10-15,  ----
+# ---- sha256 dec767f2...), "Scale definitions": the 57 definitions in the  ----
+# ---- order the manual prints them (cairn/references/jonas2026dat.md).     ----
 # The manual tags each definition but three with its measure in parentheses,
-# writing "PHQ" for the PHQ-15. WHODAS is its own measure. Ill Temper (p. 21)
-# and Norm Violation (p. 24) carry no tag; their measures come from the IDAS-II
-# key and the IPIP key, listed below.
+# writing "PHQ" for the PHQ-15. WHODAS is its own measure. Ill Temper (under
+# Distress) and Norm Violation (under Antagonistic Externalizing) carry no tag;
+# their measures come from the IDAS-II key and the IPIP key, listed below.
 
 manual_scales <- c(
   "WHODAS" = "WHODAS",
@@ -41,7 +42,7 @@ manual_scales <- c(
   "Mania" = "IDAS-II", "Euphoria" = "IDAS-II", "Well-Being" = "IDAS-II",
   "Health Anxiety" = "CAT-PD", "Physical Symptoms" = "PHQ-15",
   "Alcohol Use" = "AUDIT", "Drug Use" = "DUDIT",
-  "Non-Premeditation" = "CAT-PD", "Non-Perseverance" = "CAT-PD",
+  "Non-Planfulness" = "CAT-PD", "Non-Perseverance" = "CAT-PD",
   "Risk Taking" = "CAT-PD", "Irresponsibility" = "CAT-PD",
   "Perfectionism" = "CAT-PD", "Workaholism" = "CAT-PD",
   "Rigidity" = "CAT-PD", "Callousness" = "CAT-PD",
@@ -61,16 +62,34 @@ test_that("the scale names are the manual's definitions, in both directions", {
   expect_false(anyDuplicated(hitopdat_scales$Scale) > 0)
 })
 
+test_that("the CAT-PD planfulness facet carries the revised manual's name", {
+  # The 2021 manual used another name; the revision says Non-Planfulness, the
+  # CAT-PD's own name (cairn/SOURCES.md, "HiTOP-DAT", DAT-10).
+  row <- scale_row("Non-Planfulness")
+  expect_equal(nrow(row), 1L)
+  expect_identical(row$camelCase, "nonPlanfulness")
+  expect_identical(row$Measure, "CAT-PD")
+  # Items from the IPIP key (SF 33, 66, 99, 197; reverse 133, 166), mapped to
+  # battery numbers, not read from the table.
+  expect_setequal(
+    row$itemNumbers[[1]],
+    battery_numbers("CAT-PD", c(33L, 66L, 99L, 197L, 133L, 166L))
+  )
+  expect_setequal(row$reverseNumbers[[1]], battery_numbers("CAT-PD", c(133L, 166L)))
+  expect_identical(names(row$itemNumbers), "nonPlanfulness")
+  # The old name's stem, spelled so that a grep for the old name finds no line.
+  expect_false(any(grepl("remeditat", c(hitopdat_scales$Scale, hitopdat_scales$camelCase),
+                         ignore.case = TRUE)))
+})
+
 test_that("each scale belongs to the measure the manual or its key names", {
   measures <- stats::setNames(hitopdat_scales$Measure, hitopdat_scales$Scale)
   expect_identical(measures[names(manual_scales)], manual_scales)
 })
 
 # The manual's name for a scale, mapped to its name in each key. A name absent
-# here is the same in the key. The manual's Non-Premeditation is IPIP's
-# Non-Planfulness, and the manual hyphenates IPIP's "Self Harm".
+# here is the same in the key. The manual hyphenates IPIP's "Self Harm".
 key_names <- c(
-  "Non-Premeditation" = "Non-Planfulness",
   "Self-Harm" = "Self Harm"
 )
 key_name <- function(manual_name) {

@@ -532,7 +532,8 @@ Table 1's printed counts now agree with row for row.
 
 `hitopdat_items`, `hitopdat_choices`, `hitopdat_scales` and the internal
 `hitopdat_instructions` are built by `data-raw/hitopdat_info.R` and
-`data-raw/sysdata.R`. Five sources:
+`data-raw/sysdata.R`. Seven sources (five from M143, the revised manual and the
+authors' email from M173):
 
 - **The file.** `data-raw/HiTOP-DAT.qsf`, a Qualtrics export titled "HiTOP-DAT -
   to share" (last modified in Qualtrics 2026-09-29), received by Jeff on
@@ -544,8 +545,27 @@ Table 1's printed counts now agree with row for row.
   `hitopdat_scale_items.csv`. The file supplies the item text, the answer labels
   and values, the instruction text and the scale memberships.
 - **The manual.** Jonas et al. (2021), *HiTOP-DAT Manual*, sha256 `0f770c4f…`:
-  [references/jonas2021dat.md](references/jonas2021dat.md). It supplies the 57
-  scale names (pp. 20-25).
+  [references/jonas2021dat.md](references/jonas2021dat.md). It supplied the 57
+  scale names (pp. 20-25) until M173 (corrected M173).
+- **The revised manual.** Jonas et al., *HiTOP-DAT Manual*, revised 2026-10-15,
+  `HiTOP-DAT Manual revised.docx` on the shelf, sha256 `dec767f2…`, sent by
+  Katherine Jonas with her email below and received by Jeff on 2026-10-15:
+  [references/jonas2026dat.md](references/jonas2026dat.md). It supplies the 57
+  scale names ("Scale definitions"). It renames one: the 2021 Non-Premeditation
+  is Non-Planfulness. Jeff signed off on it as the source of the names on
+  2026-10-16, at the M173 plan gate (D-097, which annotates D-085).
+- **The authors' email.** Katherine Jonas, the manual's first author, to Jeff,
+  received 2026-10-15 (the date is the attachments' download time, because the
+  text carries none), shelved verbatim as
+  `cairn/references/sources/jonas2026email.txt`. It answers DAT-2, DAT-3,
+  DAT-4, DAT-6, DAT-7 and DAT-10 and confirms W1 to W3 below. It also states
+  these points. The battery holds no IPIP measure, and Non-Planfulness is the
+  CAT-PD's own term. Every scale is publicly available. She believes the manual
+  cites every norm source (DAT-15 (b) finds file norms that match no cited
+  table). T 65 is the alert point she and "Roman" chose, and she told
+  clinics that they can set another. It came with Len Simms's `CAT-PD and IDAS scoring.xlsx`
+  (sha256 `8643147c…`, on the shelf), "on which the Redcap battery was based".
+  No table reads that workbook yet (DAT-15).
 - **The IPIP key.** IPIP CAT-PD-SF v1.1 key,
   <https://ipip.ori.org/newCAT-PD-SFv1.1Keys.htm>, read 2026-09-29:
   [references/ipip2015catpdsf.md](references/ipip2015catpdsf.md). It checks the 33
@@ -573,7 +593,7 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
 | 19 IDAS-II scales, membership and reverse keys | Watson (2011) key | ✅ All 19 equal, General Depression reversing 27 and 64 |
 | 99 IDAS-II item numbers and texts | Watson (2011) key text | ✅ Equal after dropping the key's scale tags and doubled spaces |
 | WHODAS, AUDIT, DUDIT, CAPE positive, PHQ-15 totals | each measure's items in the battery | ✅ Each holds all its measure's items, none reversed |
-| 57 category names | the manual's 57 definitions | ✅ One-to-one after the crosswalk in `data-raw/hitopdat_info.R` (DAT-9, DAT-10) |
+| 57 category names | the revised manual's 57 definitions (the 2021 manual's until M173) | ✅ One-to-one after the crosswalk in `data-raw/hitopdat_info.R` (DAT-9, DAT-10) |
 
 ### Where the package departs from the file
 
@@ -592,25 +612,37 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   counts but no item key. Watson's (2011) key, on the shelf since 2026-10-01,
   matches the file on all 19 scales, including General Depression's reversal of
   Well-Being items 27 and 64.
-- **DAT-2: Well-Being prorates by 5.** The file's "IDAS Well-Being Prorated" field
+- **DAT-2 [RESOLVED 2026-10-16]: Well-Being prorates by 5.** The file's "IDAS Well-Being Prorated" field
   is the category's `Score` times 5 divided by its `Items`, but the scale has 8
-  items.
-- **DAT-3: CAPE-Negative points at missing categories.** The "CAPE - Negative" and
+  items. Resolved by the email: the prorating by 5 is an error, and Well-Being
+  prorates over its 8 items. No table holds the rule yet. It binds HiTOP-DAT
+  scoring.
+- **DAT-3 [RESOLVED 2026-10-16]: CAPE-Negative points at missing categories.** The "CAPE - Negative" and
   "CAPE - Negative pct complete" fields read categories `SC_9yT5N61EpLWOHA1` and
   `SC_2twVHgmxnX87Nsx`, which the file does not define. The battery has no negative
   CAPE items, and the trash block holds none either (checked 2026-09-29).
-- **DAT-4: CAPE items graded into undefined categories.** Each of the 20 CAPE items
+  Resolved by the email: the CAPE negative items were removed on purpose,
+  because they correlate highly with the IDAS-II and negative-affect items. So
+  the fields are left over from a removed scale, and no package table needs
+  them.
+- **DAT-4 [RESOLVED 2026-10-16]: CAPE items graded into undefined categories.** Each of the 20 CAPE items
   is graded into `SC_02gyF0VanSUJdiJ` and `SC_eRmZgjWMMEFwFeZ` as well as "CAPE -
-  Positive". Neither is defined.
+  Positive". Neither is defined. Resolved as DAT-3: the battery keeps only the
+  CAPE positive scale (the email, and the revised manual's "Measures and
+  reference data"). `hitopdat_scales` keeps only "Positive Symptoms".
 - **DAT-5: IDAS-II item 99's grades.** The file grades "Skip" as 6 in Social
   Anxiety and leaves "Extremely" ungraded. The package gives item 99 the `idas`
   answer set like the other 98 items.
-- **DAT-6: The PHQ-15 menstrual item is out.** The file moves PHQ-15 item 4
+- **DAT-6 [RESOLVED 2026-10-16]: The PHQ-15 menstrual item is out.** The file moves PHQ-15 item 4
   ("Menstrual cramps or other problems with your periods (women only)?") to its
   trash block. The battery has 14 PHQ-15 items. Taken as deliberate (working fact
-  W2 below).
-- **DAT-7: 382 items, not 405.** The Society's HiTOP-DAT page says the battery
+  W2 below). Resolved by the email: the item is out on purpose. The battery has
+  no way to show it only to respondents who menstruate, and no norms exist for
+  that split.
+- **DAT-7 [RESOLVED 2026-10-16]: 382 items, not 405.** The Society's HiTOP-DAT page says the battery
   has 405 items. The file has 382. Taken as correct (working fact W1 below).
+  Resolved by the email: the web page is wrong. The email gives no total, but
+  it accounts for each count the page gets wrong (W1), which leaves 382.
 - **DAT-8: The AUDIT standard-drink picture.** The file shows a graphic titled
   "Standard drink" above the AUDIT. No dataset holds it.
 - **DAT-9: The file's spellings.** Its categories spell "Sucidality",
@@ -618,9 +650,13 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   counter spells "Traumatic Instrusions". The package uses the manual's spellings.
   The DUDIT instruction spells "DMT (dimethyltrypamine)" for dimethyltryptamine;
   `hitopdat_instructions` keeps the file's text.
-- **DAT-10: Non-Premeditation.** The manual says Non-Premeditation (p. 23) where
-  the IPIP key and the file say Non-Planfulness. The package uses the manual's name.
-  The manual's "Self-Harm" is IPIP's "Self Harm".
+- **DAT-10 [RESOLVED 2026-10-16]: Non-Premeditation.** The manual says Non-Premeditation (p. 23) where
+  the IPIP key and the file say Non-Planfulness. The package used the 2021 manual's name until M173.
+  The manual's "Self-Harm" is IPIP's "Self Harm". Resolved by the email and the
+  revised manual ("Scale definitions"): Non-Planfulness is the CAT-PD's term, and
+  the revision uses it alone. `hitopdat_scales` says Non-Planfulness from M173.
+  The email says that the DAT report also prints the old name. That report
+  belongs to the Society, and the package ships no copy.
 - **DAT-11: Answer values are the file's grades.** `hitopdat_choices$Value` is the
   value the file gives each label in a forward-scored category. Each measure's
   published scoring rule has not been read against these values.
@@ -636,22 +672,41 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   complete as `CAT-PD%20Self Harm`, with a literal space where every other field
   uses `%20`. Nobody tested this in Qualtrics. It never shows the five CAT-PD domain
   scores or CAPE-Negative, and Disconstraint has no percent-complete field.
+- **DAT-15: Two facts found at the M173 plan (2026-10-16).** (a) The revised
+  manual's Physical Symptoms definition still lists "menstrual cramps or other
+  pain (Women only)", though the battery leaves that item out (DAT-6). (b) The
+  file's IDAS-II T-score norms differ from Watson et al. (2012) Table 2's
+  "Adults" column (p. 407, N = 1,091, the sample the manual names) on all 18
+  scales that Table 2 prints. Those 18 have the same mean and SD in the
+  workbook that came with the email ([watson2012.md](references/watson2012.md)
+  holds the Table 2 values). Examples: Cleaning is M 11.83, SD 5.05 in the file and
+  9.05, 3.73 in Table 2 and the workbook. Well-Being is 22.40, 7.42 in the file
+  and 23.35, 6.71 in both. Table 2 prints no General Depression row. The
+  workbook gives it 44.99, 14.75 and the file 41.94, 14.75. The workbook's 33
+  CAT-PD means and SDs equal the file's at the file's two decimals. Neither is
+  in print. Jeff can tell Katherine Jonas of both facts. (b) binds HiTOP-DAT
+  T scores.
 
-### Working facts (need confirmation)
+### Working facts (confirmed 2026-10-16)
 
 The tables build on these points. They come from an email to Jeff from a HiTOP-DAT
-user (2026-10-01). Each needs confirmation by the Society or a publication.
+user (2026-10-01). W1 to W3 were confirmed by the manual's first author in the
+email of 2026-10-15. W4 is still open.
 
 - **W1: The battery has 382 items.** The Society page,
   <https://www.hitop-system.org/hitop-digital-assessment-and-tracker-hitop-dat>
   (read 2026-10-01), says 405. It lists 16 WHODAS items where the file has 12, and
   14 CAPE negative items that the battery leaves out. It lists 15 PHQ-15 items, and
   7 Mistrust and 9 Non-Perseverance items where IPIP has 6 each. Those differences
-  sum to 23, which is 405 minus 382.
+  sum to 23, which is 405 minus 382. [RESOLVED 2026-10-16] Confirmed by the
+  email: the web page is wrong. The WHODAS short form has 12 items, and the
+  page's Mistrust and Non-Perseverance counts are wrong.
 - **W2: PHQ-15 item 4 is out on purpose.** The battery leaves out the item on
-  menstrual periods.
+  menstrual periods. [RESOLVED 2026-10-16] Confirmed by the email (DAT-6).
 - **W3: The battery uses only the CAPE positive factor.** The manual says the same
-  (p. 12): the CAT-PD and the IDAS cover the CAPE's other factors.
+  (p. 12): the CAT-PD and the IDAS cover the CAPE's other factors. [RESOLVED
+  2026-10-16] Confirmed by the email (DAT-3) and the revised manual's "Measures
+  and reference data".
 - **W4: Who built the Qualtrics file is not known.**
 
 ## Open questions (need source adjudication)

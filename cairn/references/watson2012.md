@@ -26,6 +26,15 @@ scale holds or which it reverses, because it prints no item numbers.
   Traumatic Avoidance (4), Traumatic Intrusions (4), Checking (3), Appetite Loss (3),
   Appetite Gain (3). They sum to 99, the item count the paper gives for the IDAS-II
   (p. 404).
+- Table 2, p. 407, "Descriptive Statistics for the IDAS-II Scales in the Combined
+  Patient, Adult, and Student Samples". The "Adults" column (N = 1,091), M and SD, read
+  2026-10-16 by M173 from the `pdftotext -layout` output of the shelf copy, as (M, SD):
+  Dysphoria (19.37, 7.57), Traumatic Avoidance (6.62, 3.39), Traumatic Intrusions (6.05,
+  3.01), Panic (10.73, 3.90), Insomnia (11.48, 4.97), Claustrophobia (6.06, 2.63), Social
+  Anxiety (10.02, 4.56), Lassitude (12.50, 5.04), Appetite Loss (4.61, 2.21), Suicidality
+  (7.12, 2.37), Ill Temper (7.87, 3.73), Mania (8.05, 3.67), Checking (4.52, 2.33),
+  Cleaning (9.05, 3.73), Ordering (7.98, 3.54), Appetite Gain (6.14, 2.88), Euphoria
+  (8.26, 3.14), Well-Being (23.35, 6.71). No General Depression row.
 - General Depression is not in Table 1. The discussion (p. 418) says the instrument
   "also includes a General Depression scale". The paper prints no item count for it.
 - The paper prints example items in quotation marks but no item numbers, no scoring
@@ -35,6 +44,8 @@ scale holds or which it reverses, because it prints no item numbers.
 
 - `tests/testthat/test-keying-hitopdat.R`, `watson_counts`: the 18 counts, checked
   against `hitopdat_scales$nItems`.
+- `cairn/SOURCES.md` "HiTOP-DAT", DAT-15 (b): the Table 2 adult values, compared with
+  the Qualtrics file's and the workbook's IDAS-II norms. No package table reads them yet.
 
 ## Open questions
 

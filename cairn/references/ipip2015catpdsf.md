@@ -22,8 +22,10 @@ form items each facet holds, which it reverses, and each item's text.
   (6 items; ...)". Each item row gives "SF #", "CAT #" and the item text, with "(RK)"
   after a reversed item.
 - 33 facets and 216 rows. Each SF number from 1 to 216 appears once.
-- The page names the facets "Self Harm" and "Non-Planfulness". The DAT manual says
-  "Self-Harm" and "Non-Premeditation".
+- The page names the facets "Self Harm" and "Non-Planfulness". The 2021 DAT manual
+  says "Self-Harm" and "Non-Premeditation". The revised manual
+  ([jonas2026dat.md](jonas2026dat.md)) says "Self-Harm" and "Non-Planfulness"
+  (corrected M173).
 - The note under the key: "SF scales are scored by averaging item responses within
   each scale. RK item responses must be reversed prior to averaging (i.e., keyed = 6 –
   item response)."

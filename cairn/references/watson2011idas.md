@@ -30,8 +30,9 @@ number and text.
   31, 40, 48, 51, 52, 57, 61, 64*. The note "*reverse-keyed item" marks 27 and 64. The
   other 18 scales hold each of the 99 items once and reverse none. Their counts equal
   Watson et al. (2012, Table 1, p. 406).
-- The key names the scales as the DAT manual does (p. 12 and pp. 20-25), with no
-  spelling differences.
+- The key names the scales as the DAT manual does (2021, p. 12 and pp. 20-25), with no
+  spelling differences. The revised manual ([jonas2026dat.md](jonas2026dat.md)) keeps
+  the same IDAS-II names (corrected M173).
 
 ## Traces to
 
