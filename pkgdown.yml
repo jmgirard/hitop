@@ -3,6 +3,7 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   articles/download-hitopbr: download-hitopbr.html
+  articles/download-hitopdat: download-hitopdat.html
   articles/download-hitophsum: download-hitophsum.html
   articles/download-hitopsr: download-hitopsr.html
   articles/download-pid5: download-pid5.html
@@ -22,7 +23,7 @@ articles:
   pid5bf_scoring: pid5bf_scoring.html
   pid5sf_scoring: pid5sf_scoring.html
   articles/scales-hitopsr: scales-hitopsr.html
-last_built: 2026-10-16T18:22Z
+last_built: 2026-10-16T20:54Z
 urls:
   reference: https://jmgirard.github.io/hitop/reference
   article: https://jmgirard.github.io/hitop/articles

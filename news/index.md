@@ -12,7 +12,20 @@
   `hitopdat_scales` has the 57 scales, each with its battery item
   numbers and the items it reverses. The scale names follow the revised
   HiTOP-DAT manual, which calls one CAT-PD facet Non-Planfulness. The
-  package has no scoring function and no forms for the battery yet.
+  package has no scoring function for the battery yet.
+
+- **HiTOP-DAT Word forms and REDCap import file.**
+  [`generate_docx_hitopdat()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopdat.md)
+  writes the battery’s 382 items as a paper form, numbered 1 to 382 in
+  battery order. Each measure’s instructions, where it has them, come
+  before its first item. Each item shows the values of its own answer
+  set, under a legend that gives that set’s labels. The footer names the
+  source of each of the seven measures. The form has no scoring page.
+  [`generate_redcap_hitopdat()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopdat.md)
+  writes a REDCap data dictionary with item fields `hdat_001` to
+  `hdat_382`, each with its own answer set, and one instruction field
+  before each measure that has instructions. The US and A4 Word forms
+  and the REDCap file are also on a new HiTOP-DAT download page.
 
 - **[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
   scores the PID5BF+M.** `version = "BFPM"` scores the 36-item modified

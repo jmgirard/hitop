@@ -6,6 +6,7 @@
 <url><loc>https://jmgirard.github.io/hitop/LICENSE.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/SUPPORT.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/articles/download-hitopbr.html</loc></url>
+<url><loc>https://jmgirard.github.io/hitop/articles/download-hitopdat.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/articles/download-hitophsum.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/articles/download-hitopsr.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/articles/download-pid5.html</loc></url>
@@ -33,6 +34,7 @@
 <url><loc>https://jmgirard.github.io/hitop/reference/calc_alpha.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/calc_omega.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_docx_hitopbr.html</loc></url>
+<url><loc>https://jmgirard.github.io/hitop/reference/generate_docx_hitopdat.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_docx_hitophsum.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_docx_pid5.html</loc></url>
@@ -52,6 +54,7 @@
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5irf.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5sf.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_redcap_hitopbr.html</loc></url>
+<url><loc>https://jmgirard.github.io/hitop/reference/generate_redcap_hitopdat.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_redcap_hitophsum.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_redcap_pid5.html</loc></url>

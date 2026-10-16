@@ -59,5 +59,5 @@ Step-by-step import instructions for Qualtrics and REDCap:
 ``` r
 # Write a HiTOP-HSUM REDCap instrument ZIP to a temporary location
 generate_redcap_hitophsum(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/RtmpjsQqmz/file1a951bb32dc2.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpwfEheJ/file1a8448c47382.zip
 ```

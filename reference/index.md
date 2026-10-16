@@ -83,6 +83,8 @@ community norm.
   : Generate a Word Document for the HiTOP-SR Assessment
 - [`generate_docx_hitophsum()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitophsum.md)
   : Generate a Word Document for the HiTOP-HSUM Assessment Overview
+- [`generate_docx_hitopdat()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopdat.md)
+  : Generate a Word Document for the HiTOP-DAT
 - [`generate_docx_pid5()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5.md)
   : Generate a Word Document for the PID-5 (Full)
 - [`generate_docx_pid5sf()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5sf.md)
@@ -123,6 +125,8 @@ community norm.
   : Generate a REDCap Instrument ZIP File for the HiTOP-SR
 - [`generate_redcap_hitophsum()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitophsum.md)
   : Generate a REDCap Instrument ZIP File for the HiTOP-HSUM
+- [`generate_redcap_hitopdat()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopdat.md)
+  : Generate a REDCap Instrument ZIP File for the HiTOP-DAT
 - [`generate_redcap_pid5()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5.md)
   : Generate a REDCap Instrument ZIP File for the PID-5 (Full)
 - [`generate_redcap_pid5sf()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5sf.md)
