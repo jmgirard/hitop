@@ -123,6 +123,7 @@ reference:
   - generate_docx_hitopbr
   - generate_docx_hitopsr
   - generate_docx_hitophsum
+  - generate_docx_hitopdat
   - generate_docx_pid5
   - generate_docx_pid5sf
   - generate_docx_pid5bf
@@ -142,6 +143,7 @@ reference:
   - generate_redcap_hitopbr
   - generate_redcap_hitopsr
   - generate_redcap_hitophsum
+  - generate_redcap_hitopdat
   - generate_redcap_pid5
   - generate_redcap_pid5sf
   - generate_redcap_pid5bf
