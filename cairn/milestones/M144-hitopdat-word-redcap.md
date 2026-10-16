@@ -75,6 +75,7 @@ Researchers can build and download HiTOP-DAT paper forms and a REDCap data dicti
 - 2026-10-16: review found that the 8 work-log lines from "T1 done" to "T6 done" had been appended below `## Review` by a script; moved unchanged into the work log, in their order.
 - 2026-10-16: review fixes (`38035fdf`). While proving two new tests could fail, a `git checkout --` meant to undo the plants also undid the uncommitted fixes in `R/generate_docx.R` and `R/generate_redcap.R`; they were re-applied from the same edit text and their diff re-read before commit. The plants had been red on top of the fixes.
 - 2026-10-16: the REDCap fix changes the DAT dictionary, so `data/hitop_artifacts.rda` was reset to `main`'s copy and `data-raw/artifacts.R` rerun: one row per DAT file (63 rows), new md5s. The rebuilt Word forms parse the same as the first build; the dictionary differs only in the Section Header of the 20 in-measure page breaks.
+- 2026-10-16: step-7 approval: m144-hitopdat-word-redcap approved for merge
 
 ## Decisions
 
