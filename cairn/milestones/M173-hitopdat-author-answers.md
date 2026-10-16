@@ -1,6 +1,6 @@
 # M173: HiTOP-DAT names, records and announcement after the authors' answers
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -57,7 +57,7 @@ The three HiTOP-DAT tables ship announced, with scale names and provenance taken
 - [x] T4: In SOURCES.md "HiTOP-DAT", add the revised manual and the email as sources. Resolve DAT-2 (the file's Well-Being prorating by 5 is an error, and the scale prorates over its 8 items), DAT-3 and DAT-4 (the CAPE negative items were removed on purpose), DAT-6 and W2 (PHQ-15 item 4 is out on purpose, with the reason), DAT-7 and W1 (382 items, and the web page's counts are wrong), DAT-10 (the revised manual says Non-Planfulness) and W3. Record the email's other statements: the battery holds no IPIP measure, every scale is public, the manual cites every norm source, and T 65 is the alert point the authors chose, which clinics may change. Add DAT-15: the revised manual's Physical Symptoms definition still lists menstrual cramps, and the Qualtrics file's IDAS-II norms differ from Watson et al. (2012) Table 2's adult column on all 19 scales, where the workbook's 18 Table 2 scales equal it.
 - [x] T5: Append the decision entry of AC5.
 - [x] T6: Remove `@keywords internal` from the three tables in `R/data.R`, and turn the test "the three tables' help pages are marked internal" in `test-data-hitopdat.R` into a test that none is. Add the three to "Instrument Data" in `_pkgdown.yml`. Write the NEWS entry from the help pages as built. Add the README row, name the HiTOP-DAT in the paragraph above the table, extend `test-readme-capabilities.R` to check it, and rebuild the README. In `cairn/DESIGN.md`, change the two passages that call the tables not yet announced.
-- [ ] T7: Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
+- [x] T7: Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
 
@@ -79,6 +79,7 @@ The three HiTOP-DAT tables ship announced, with scale names and provenance taken
 - 2026-10-16: T5 done. D-097 annotates D-085. M172's draft plans a decision entry too. If it lands on main first and takes D-097, this branch renumbers at merge.
 - 2026-10-16: T6 done. The internal keyword is gone from the three help pages, and the test now asserts its absence and that each page parsed. The tables have `_pkgdown.yml` rows, a NEWS entry, a README row with the HiTOP-DAT named in the paragraph above, and a `dat` stem in `test-readme-capabilities.R`. The two DESIGN.md passages are updated. Plants: dropping the README row gives 5 failures, and adding the keyword back gives 1. Both were restored by copy.
 - 2026-10-16: claim audit: 36 claims read, 1 corrected — R/data.R (`?hitopdat_scales` cited "revised 2026", a year the title page does not print. It now says "revised version of 2026-10-15", the date from the file's metadata).
+- 2026-10-16: T7 done. On `e815ec63` plus the claim fix: `devtools::test()` gave 0 failures, 15 skips and 29,068 passes. `pkgdown::check_pkgdown()` found no problems. `devtools::check()` gave 0 errors, 0 warnings and 0 notes. Status set to review.
 - 2026-10-16: implementation choice: the NEWS entry goes under "New features", because 0.2.0 shipped without these tables.
 
 ## Decisions
