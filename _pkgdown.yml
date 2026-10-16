@@ -29,6 +29,8 @@ navbar:
         href: articles/download-hitopbr.html
       - text: "HiTOP Harmful Substance Use (HSUM)"
         href: articles/download-hitophsum.html
+      - text: "HiTOP Digital Assessment and Tracker (DAT)"
+        href: articles/download-hitopdat.html
       - text: "PID-5 Full (PID-5)"
         href: articles/download-pid5.html
       - text: "PID-5 Short Form (SF)"

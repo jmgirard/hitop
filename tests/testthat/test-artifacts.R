@@ -81,7 +81,7 @@ test_that("download-page links point at the staged site copies", {
   skip_if(!dir.exists(articles), "vignettes/articles not available")
   m <- latest_manifest()
   pages <- list.files(articles, pattern = "^download-.*\\.Rmd$", full.names = TRUE)
-  expect_length(pages, 10)
+  expect_length(pages, 11)
 
   linked <- character(0)
   for (page in pages) {
@@ -169,7 +169,7 @@ test_that("download pages link the centralized import-instructions article", {
   }
 
   pages <- list.files(articles, pattern = "^download-.*\\.Rmd$", full.names = TRUE)
-  expect_length(pages, 10)
+  expect_length(pages, 11)
   for (page in pages) {
     text <- paste(readLines(page, warn = FALSE), collapse = "\n")
     # REDCap card links the article's REDCap section.
@@ -178,6 +178,11 @@ test_that("download pages link the centralized import-instructions article", {
       fixed = TRUE, info = basename(page)
     )
     # Qualtrics card links the right section: HSUM ships a .qsf, the rest .txt.
+    # The HiTOP-DAT page has no Qualtrics card until its import file ships.
+    if (basename(page) == "download-hitopdat.Rmd") {
+      expect_no_match(text, "#qualtrics-", fixed = TRUE, info = basename(page))
+      next
+    }
     q_anchor <- if (basename(page) == "download-hitophsum.Rmd") {
       "articles/import-instructions.html#qualtrics-qsf"
     } else {
