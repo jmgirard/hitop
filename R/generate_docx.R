@@ -1972,10 +1972,11 @@ hitopdat_docx_sections <- function(printable_w, font_size, font_family) {
   })
 }
 
-# Internal Helper: how many options a legend line holds. A legend that fits
-# on one line stays on one; a longer one prints two options per line, as the
-# PID-5 forms do, so Word does not break a label in the middle.
+# Internal Helper: how many options a legend line holds. A legend of 80
+# characters or fewer stays on one line, which fits the default 10-point
+# font; a longer one prints two options per line, as the PID-5 forms do, so
+# Word does not break a label in the middle.
 legend_per_line <- function(opts) {
-  one_line <- paste(paste(opts$value, opts$label, sep = " = "), collapse = " • ")
+  one_line <- paste(paste(opts$value, opts$label, sep = " = "), collapse = " \u2022 ")
   if (nchar(one_line) <= 80L) nrow(opts) else 2L
 }

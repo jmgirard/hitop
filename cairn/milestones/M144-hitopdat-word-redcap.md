@@ -1,6 +1,6 @@
 # M144: HiTOP-DAT Word forms and REDCap dictionary
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M143, M173
 - **Driving RR:** —
@@ -50,7 +50,7 @@ Researchers can build and download HiTOP-DAT paper forms and a REDCap data dicti
 - [x] T3: Write the footer notice for the DAT forms. `test-artifacts.R` needs "Copyright" in every footer. The notice names each measure as AC3 says. Record in SOURCES.md the seven citations, the manual's WHODAS year as an open question, and the redistribution permission Jeff confirmed at the M143 plan gate.
 - [x] T4: Write the parse-back tests (AC1, AC2) and the per-argument refusal tests (AC4).
 - [x] T5: Add the DAT rows to `data-raw/artifacts.R`, build the artifacts and stage the pkgdown copies. Write `vignettes/articles/download-hitopdat.Rmd`, add it to the navbar, and change the page counts of 10 in `test-artifacts.R` and `test-download-pages.R` to 11. Until the Qualtrics file ships, the DAT page has two cards, so the three-card and Qualtrics-link checks except it. DESIGN.md's count of download articles follows.
-- [ ] T6: Add a NEWS entry and the `_pkgdown.yml` reference rows. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
+- [x] T6: Add a NEWS entry and the `_pkgdown.yml` reference rows. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
 
@@ -74,3 +74,5 @@ Researchers can build and download HiTOP-DAT paper forms and a REDCap data dicti
 - 2026-10-16: T4 done. `test-generate-hitopdat.R` parses both Word forms (new helper `docx_blocks()`: top-level paragraphs and tables in order, line breaks as "\n") and the REDCap dictionary back against `hitopdat_items`, `hitopdat_choices` and `hitopdat_instructions`; checks the footer's seven citations (stated in the test from the manual's headings), no scoring page, the measure page breaks, and one refusal per formal, the map checked against `formals()`. It adds a no-regression lock (D-054): every other instrument's fresh Word form and REDCap dictionary parse as its committed file, scoring rows as a set because testthat's C collation sorts "p-Factor" differently. Plants seen red: a run given the measure's first answer set, one choices string for all items, the `file` check removed, a space added to every instruction run, and "<br />" for "<br>".
 - 2026-10-16: T5 done. `data-raw/artifacts.R` gains the DAT Word and REDCap specs (rebuild limited to `hitopdat`, docx and redcap); the run added exactly three manifest rows (60 to 63) and staged 48 site copies. New `download-hitopdat.Rmd` (Word and REDCap cards, no online strip), a navbar entry after the HSUM, page counts 10 to 11, the DAT page excepted from the Qualtrics-card checks and given two cards, the README DAT row's Forms "Word, REDCap", DESIGN.md "eleven download articles". Choices: the overview page is left alone, since `test-overview.R` locks it to the three main HiTOP instruments; the manifest records `instrument_version` "1.0" for the DAT as for every artifact, though no source names a DAT version. No office suite is installed, so the forms' layout was checked by parse only, not by eye.
 - 2026-10-16: T6 in progress. NEWS gains the HiTOP-DAT forms entry, and the tables entry's "no forms for the battery yet" now says no scoring function only. `_pkgdown.yml` lists both generators; `pkgdown::check_pkgdown()` found no problems. The full suite had 3 failures, all export-count locks that a new shipped export must update: `test-export-padding-width.R` (19 to 20 generated online exports, twice) and `test-response-value-no-move.R` (the DAT REDCap builder added to `flat_text_builders`); both files now pass.
+- 2026-10-16: claim audit: 46 claims read, 4 corrected — vignettes/articles/download-hitopdat.Rmd (CAPE has no instruction), R/generate_docx.R (`legend_per_line()` comment ties the 80 characters to the default 10-point font), data-raw/sysdata.R and tests/testthat/test-generate-hitopdat.R (the WHODAS drops "& others" as well as the year), R/generate_redcap.R (how `<measure>` becomes the field name). The same reader re-read the 4 and found them right.
+- 2026-10-16: T6 done. The first `devtools::check()` gave 1 warning: a literal bullet in `legend_per_line()`'s code, now "\u2022" (the other non-ASCII characters in R/generate_docx.R are in comments). Second run: 0 errors, 0 warnings, 0 notes. `devtools::test()`: 0 failures, 30485 passed, 15 skipped. `pkgdown::check_pkgdown()`: no problems. Status set to review.

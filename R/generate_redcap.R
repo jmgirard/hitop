@@ -981,9 +981,11 @@ generate_redcap_hitophsum <- function(
 #'   `hdat_382` in battery order (`hitopdat_items$Item`), each a radio field
 #'   whose choices are the values and labels of the item's own answer set
 #'   (`hitopdat_choices`). Each of the seven measures opens with a
-#'   descriptive field holding its instruction text, named
-#'   `hdat_<measure>_instructions` (`hdat_whodas_instructions`, for example),
-#'   except the CAPE, which has none. Each measure after the first starts a
+#'   descriptive field holding its instruction text, except the CAPE, which
+#'   has none. The field is named `hdat_<measure>_instructions`, where
+#'   `<measure>` is the measure's name in lower case with each run of other
+#'   characters made `_` (`hdat_whodas_instructions`,
+#'   `hdat_idas_ii_instructions`). Each measure after the first starts a
 #'   new page.
 #'
 #' @seealso Step-by-step import instructions for Qualtrics and REDCap:

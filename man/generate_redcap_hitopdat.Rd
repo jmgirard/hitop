@@ -36,9 +36,11 @@ Instrument ZIP file for uploading. The 382 item fields are \code{hdat_001} to
 \code{hdat_382} in battery order (\code{hitopdat_items$Item}), each a radio field
 whose choices are the values and labels of the item's own answer set
 (\code{hitopdat_choices}). Each of the seven measures opens with a
-descriptive field holding its instruction text, named
-\verb{hdat_<measure>_instructions} (\code{hdat_whodas_instructions}, for example),
-except the CAPE, which has none. Each measure after the first starts a
+descriptive field holding its instruction text, except the CAPE, which
+has none. The field is named \verb{hdat_<measure>_instructions}, where
+\verb{<measure>} is the measure's name in lower case with each run of other
+characters made \verb{_} (\code{hdat_whodas_instructions},
+\code{hdat_idas_ii_instructions}). Each measure after the first starts a
 new page.
 }
 \examples{

@@ -122,7 +122,7 @@ test_that("the Word footer names the source of each of the seven measures", {
   footer <- read_docx_footer(f)
   # Stated here from the revised manual's "Measures and reference data"
   # headings (cairn/SOURCES.md, "HiTOP-DAT"), not read from the package: the
-  # WHODAS without the 1988 its heading prints (DAT-16).
+  # WHODAS without the "& others, 1988" its heading prints (DAT-16).
   sources <- c(
     "WHODAS (World Health Organization)",
     "IDAS-II (Watson et al., 2012)",

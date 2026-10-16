@@ -8,7 +8,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Welcome to the HiTOP Digital Assessment and Tracker (HiTOP-DAT) resources page. The HiTOP-DAT is a battery of 382 items from seven published measures: the WHODAS, IDAS-II, AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Here you can download printable Word forms and a REDCap import file. Each form gives every measure's instructions before its first item and shows each item with its own response options. The `hitop` package does not score the HiTOP-DAT yet.
+Welcome to the HiTOP Digital Assessment and Tracker (HiTOP-DAT) resources page. The HiTOP-DAT is a battery of 382 items from seven published measures: the WHODAS, IDAS-II, AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Here you can download printable Word forms and a REDCap import file. Each form gives each measure's instructions, where it has them, before its first item and shows each item with its own response options. The `hitop` package does not score the HiTOP-DAT yet.
 
 ```{r setup, include=FALSE}
 source("_download-helpers.R")

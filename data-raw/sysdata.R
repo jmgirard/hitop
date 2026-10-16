@@ -93,9 +93,9 @@ hitophsum_instructions <- list(
 ## The CAPE block has no instruction text, recorded as NA.
 ## `notice` is the Word forms' footer line. It names each measure with the
 ## author and year of its heading in the revised HiTOP-DAT manual's "Measures
-## and reference data" section, in battery order. The WHODAS heading's year
-## (1988) is left out, because the battery uses the later 12-item WHODAS 2.0
-## (cairn/SOURCES.md, "HiTOP-DAT", DAT-16).
+## and reference data" section, in battery order. The WHODAS heading's
+## "& others" and year (1988) are left out, because the battery uses the
+## later 12-item WHODAS (cairn/SOURCES.md, "HiTOP-DAT", DAT-16).
 hitopdat_instructions <- list(
   notice = "Copyright and sources: WHODAS (World Health Organization); IDAS-II (Watson et al., 2012); AUDIT (Saunders et al., 1993); DUDIT (Berman et al., 2007); CAPE (Stefanis et al., 2002); CAT-PD (Simms et al., 2011); PHQ-15 (Kroenke et al., 2002).",
   start = c(
