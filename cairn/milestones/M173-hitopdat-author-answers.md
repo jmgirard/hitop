@@ -1,13 +1,13 @@
 # M173: HiTOP-DAT names, records and announcement after the authors' answers
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — renames a scale in the exported `hitopdat_scales` and announces the three HiTOP-DAT tables
-- **Branch/PR:** —
+- **Branch/PR:** m173-hitopdat-author-answers
 
 ## Goal
 
@@ -51,7 +51,7 @@ The three HiTOP-DAT tables ship announced, with scale names and provenance taken
 
 ## Tasks
 
-- [ ] T1: The plan copied `HiTOP-DAT Manual revised.docx` (sha256 `dec767f2b504cd5cb664bd1d9f53b962dd2041621418cc12cc391705a0df9031`) and `CAT-PD and IDAS scoring.xlsx` (sha256 `8643147c2178f0f53dbb083a9ac398116a8fb19eab02646d35f35d116dec9467`) to `cairn/references/sources/`. Confirm both sha256 values. Write `cairn/references/jonas2026dat.md` from the source-note template, with its `INDEX.md` line. The .docx prints no page numbers, so anchors are section headings. In `jonas2021dat.md`, mark that the revised manual is now the source of the names (corrected M173), and move its "Traces to" lines to the new note.
+- [x] T1: The plan copied `HiTOP-DAT Manual revised.docx` (sha256 `dec767f2b504cd5cb664bd1d9f53b962dd2041621418cc12cc391705a0df9031`) and `CAT-PD and IDAS scoring.xlsx` (sha256 `8643147c2178f0f53dbb083a9ac398116a8fb19eab02646d35f35d116dec9467`) to `cairn/references/sources/`. Confirm both sha256 values. Write `cairn/references/jonas2026dat.md` from the source-note template, with its `INDEX.md` line. The .docx prints no page numbers, so anchors are section headings. In `jonas2021dat.md`, mark that the revised manual is now the source of the names (corrected M173), and move its "Traces to" lines to the new note.
 - [ ] T2: In `data-raw/hitopdat_info.R`, map "CAT - Non-Planfulness" to "Non-Planfulness". Rerun the script. Compare the rebuilt `hitopdat_scales` with the one at `bdb2b153` and confirm that only the renamed row changed. Also grep the bare stem `remeditation` in every `data-raw/` script (LESSONS M077).
 - [ ] T3: In `test-keying-hitopdat.R`, rename the `manual_scales` entry, drop the `key_names` line that is now an identity, and fix the comment above it. Add the test of AC1. In `R/data.R`, cite the revised manual in `?hitopdat_scales`.
 - [ ] T4: In SOURCES.md "HiTOP-DAT", add the revised manual and the email as sources. Resolve DAT-2 (the file's Well-Being prorating by 5 is an error, and the scale prorates over its 8 items), DAT-3 and DAT-4 (the CAPE negative items were removed on purpose), DAT-6 and W2 (PHQ-15 item 4 is out on purpose, with the reason), DAT-7 and W1 (382 items, and the web page's counts are wrong), DAT-10 (the revised manual says Non-Planfulness) and W3. Record the email's other statements: the battery holds no IPIP measure, every scale is public, the manual cites every norm source, and T 65 is the alert point the authors chose, which clinics may change. Add DAT-15: the revised manual's Physical Symptoms definition still lists menstrual cramps, and the Qualtrics file's IDAS-II norms differ from Watson et al. (2012) Table 2's adult column on all 19 scales, where the workbook's 18 Table 2 scales equal it.
@@ -71,6 +71,8 @@ The three HiTOP-DAT tables ship announced, with scale names and provenance taken
 - 2026-10-16: plan commit edits the ROADMAP. M144 and M145 go back to planned, M144 now depends on M173, and the HiTOP-DAT candidate row gains the email's facts and ` — started M173`. The release row's HiTOP-DAT clause names M173 inline but takes no started token, because the ROADMAP is at its 24,000-byte budget. Two wide rows (form text, PID-5 norms) were shortened with no fact removed. Post-merge hygiene trims the clause.
 - 2026-10-16: no open GitHub issue or PR overlaps this scope (1 open issue, #87, on hosting data).
 - 2026-10-16: plan puts the announcement in this milestone rather than a separate one, at Jeff's choice. Falsified if the rename and the announcement need separate reviews.
+- 2026-10-16: implement started on `m173-hitopdat-author-answers`. The untracked M172 file and `devel/` files of other work stay unstaged.
+- 2026-10-16: T1 done. Both shelf files match their sha256. `jonas2026dat.md` and its INDEX line are written, and `jonas2021dat.md` now points its traces there (corrected M173). cairn_validate fails only on the unregistered M172 file.
 
 ## Decisions
 
