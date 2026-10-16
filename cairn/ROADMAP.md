@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-10-16 (M173 done): archived, M168 row pruned, HiTOP-DAT and release rows trimmed, no lesson added. validate fails only on the unregistered M172 draft._
+_Last hygiene check: 2026-10-16 (M144 done): archived, M169 row pruned, "DAT version" row added, no lesson added. validate fails only on the unregistered M172 draft._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
@@ -10,9 +10,8 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M170 | PID-5 version refusals and item-text matching | done | — | normal | milestones/archive/M170-pid5-version-text-matching.md |
 | M171 | APA notice in PID-5 online exports and adult Word footers | planned | — | normal | milestones/M171-apa-pid5-notice.md |
 | M173 | HiTOP-DAT names, records and announcement after the authors' answers | done | — | normal | milestones/archive/M173-hitopdat-author-answers.md |
-| M144 | HiTOP-DAT Word forms and REDCap dictionary | review | M143, M173 | normal | milestones/M144-hitopdat-word-redcap.md |
+| M144 | HiTOP-DAT Word forms and REDCap dictionary | done | M143, M173 | normal | milestones/archive/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
-| M169 | Spreadsheet formula caveat for response files | done | — | normal | milestones/archive/M169-formula-caveat.md |
 | M163 | PID-5 forensic form (FFBF) English forms | blocked | M162 | normal | milestones/M163-pid5ffbf-forms.md |
 
 ## Candidates
