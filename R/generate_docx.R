@@ -628,7 +628,12 @@ make_domain_table <- function(
 # line break, so an instruction that lists its lines (the HiTOP-DAT's DUDIT
 # drug list) keeps them. A text with no "\n" is one run, as before.
 instruction_fpar <- function(text, prop, par_prop) {
+  # strsplit() drops a trailing empty piece and returns nothing for "", so
+  # both are put back: a final "\n" still ends in a line break.
   lines <- strsplit(text, "\n", fixed = TRUE)[[1]]
+  if (!length(lines) || endsWith(text, "\n")) {
+    lines <- c(lines, "")
+  }
   runs <- list()
   for (k in seq_along(lines)) {
     if (k > 1L) {
@@ -1948,6 +1953,9 @@ generate_docx_hitopdat <- function(
 # option columns are its own set's.
 hitopdat_docx_sections <- function(printable_w, font_size, font_family) {
   items <- hitopdat_items[order(hitopdat_items$Item), ]
+  # A section holds a measure's rows; a measure whose items were not one
+  # block in battery order would print out of that order.
+  stopifnot(!anyDuplicated(rle(items$Measure)$values))
   lapply(unique(items$Measure), function(measure) {
     rows <- items[items$Measure == measure, ]
     sets <- rows$Choice_Set
@@ -1962,7 +1970,7 @@ hitopdat_docx_sections <- function(printable_w, font_size, font_family) {
         printable_w,
         font_size,
         font_family,
-        opts_per_line = legend_per_line(opts)
+        opts_per_line = legend_per_line(opts, font_size, printable_w)
       )
     })
     list(
@@ -1972,11 +1980,13 @@ hitopdat_docx_sections <- function(printable_w, font_size, font_family) {
   })
 }
 
-# Internal Helper: how many options a legend line holds. A legend of 80
-# characters or fewer stays on one line, which fits the default 10-point
-# font; a longer one prints two options per line, as the PID-5 forms do, so
-# Word does not break a label in the middle.
-legend_per_line <- function(opts) {
+# Internal Helper: how many options a legend line holds. A legend stays on
+# one line when it is no longer than 80 characters at the default 10-point
+# font on the US page's 7-inch printable width; the limit shrinks as the font
+# grows or the page narrows. A longer legend prints two options per line, as
+# the PID-5 forms do, so Word does not break a label in the middle.
+legend_per_line <- function(opts, font_size = 10, printable_w = 7) {
   one_line <- paste(paste(opts$value, opts$label, sep = " = "), collapse = " \u2022 ")
-  if (nchar(one_line) <= 80L) nrow(opts) else 2L
+  limit <- 80 * (10 / font_size) * (printable_w / 7)
+  if (nchar(one_line) <= limit) nrow(opts) else 2L
 }

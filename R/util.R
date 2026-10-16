@@ -333,7 +333,11 @@ validate_positive_number <- function(x, arg, call = rlang::caller_env()) {
     condition = is.numeric(x) && length(x) == 1L && is.finite(x) && x > 0,
     message = c(
       "The {.arg {arg}} argument must be a single number greater than 0.",
-      "x" = "You supplied {.cls {class(x)}} of length {length(x)}."
+      "x" = if (is.numeric(x) && length(x) == 1L) {
+        "You supplied {x}."
+      } else {
+        "You supplied {.cls {class(x)}} of length {length(x)}."
+      }
     ),
     call = call
   )

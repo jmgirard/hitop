@@ -562,15 +562,28 @@ build_redcap_zip <- function(
   )
 
   if (!is.null(sections)) {
+    # The sections path writes its own page headers, so a `page_header`
+    # passed with it would be dropped without a word. Section rows must start
+    # at the first item and ascend, or items would be lost or repeated.
+    stopifnot(
+      is.null(page_header),
+      sections$row[1] == 1L,
+      !is.unsorted(sections$row, strictly = TRUE)
+    )
     # 4-5. Per section: page breaks counted from the section's start, its
     # instruction field before its first item, and a new page for each
-    # section after the first.
+    # section after the first. A page break inside a section restates the
+    # section's instruction in its Section Header, so a later page does not
+    # show items with no stem (the WHODAS items complete "how much difficulty
+    # did you have in:"); the HiTOP-DAT source file repeats the IDAS-II and
+    # CAT-PD instructions over each grid the same way. A section with none
+    # breaks with "<br>".
     ends <- c(sections$row[-1] - 1L, nrow(item_rows))
     pieces <- lapply(seq_along(sections$row), function(k) {
       block <- insert_page_breaks(
         item_rows[sections$row[k]:ends[k], , drop = FALSE],
         breaks,
-        "<br>"
+        if (is.na(sections$text[k])) "<br>" else sections$text[k]
       )
       if (!is.na(sections$text[k])) {
         block <- rbind(
@@ -986,7 +999,8 @@ generate_redcap_hitophsum <- function(
 #'   `<measure>` is the measure's name in lower case with each run of other
 #'   characters made `_` (`hdat_whodas_instructions`,
 #'   `hdat_idas_ii_instructions`). Each measure after the first starts a
-#'   new page.
+#'   new page. A page break inside a measure restates the measure's
+#'   instruction text in the section header of the page's first item.
 #'
 #' @seealso Step-by-step import instructions for Qualtrics and REDCap:
 #'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}

@@ -54,7 +54,7 @@ test_that("an invalid papersize is rejected by match.arg", {
   )
 })
 
-# ---- Smoke coverage: all 10 DOCX generators ---------------------------------
+# ---- Smoke coverage: all 11 DOCX generators ---------------------------------
 
 test_that("all DOCX generators produce a non-empty document with their own text", {
   skip_if_no_docx()
@@ -69,6 +69,7 @@ test_that("all DOCX generators produce a non-empty document with their own text"
     # The child forms print the adult items (D-091).
     list(fn = generate_docx_pid5child, text = first_clean_text(pid_items$Text[!is.na(pid_items$FULL)])),
     list(fn = generate_docx_pid5bfchild, text = first_clean_text(pid_items$Text[!is.na(pid_items$BF)])),
+    list(fn = generate_docx_hitopdat, text = first_clean_text(hitopdat_items$Text)),
     # HSUM DOCX is a curated overview, not an item table; assert a stable phrase.
     list(fn = generate_docx_hitophsum, text = "In what forms did you use nicotine")
   )

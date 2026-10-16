@@ -115,10 +115,45 @@ test_that("the DUDIT instruction keeps its list lines as line breaks", {
   expect_equal(sum(breaks > 0), n_lines)
 })
 
-test_that("the Word footer names the source of each of the seven measures", {
+# Which legends print on one line and which split two options per line. The
+# rule is a layout choice, stated here as the line count each set's legend
+# takes: at the default 10-point font the five-option sets with long labels
+# split, and the shorter sets do not; at 16 points every set splits.
+legend_lines <- function(file) {
+  tables <- Filter(function(b) b$type == "tbl", docx_blocks(file))
+  items <- dat_items()
+  out <- list()
+  for (tbl in tables) {
+    firsts <- vapply(tbl$rows, `[`, character(1), 1)
+    number <- as.integer(sub(ITEM_ROW, "\\1", grep(ITEM_ROW, firsts, value = TRUE)[1]))
+    out[[items$Choice_Set[items$Item == number]]] <- sum(grepl("^[0-9]+ = ", firsts))
+  }
+  unlist(out)
+}
+
+test_that("a legend splits two options per line only when it is long", {
   skip_if_no_docx()
   f <- withr::local_tempfile(fileext = ".docx")
   suppressMessages(generate_docx_hitopdat(file = f))
+  got <- legend_lines(f)
+  one_line <- c("whodas", "audit_drinks", "audit_harm", "dudit_times", "dudit_harm", "cape", "phq15")
+  split <- c("idas", "audit_freq", "audit_often", "dudit_freq", "dudit_often", "catpd")
+  expect_setequal(names(got), c(one_line, split))
+  expect_true(all(got[one_line] == 1), info = paste(one_line, got[one_line], collapse = " "))
+  # Five options at two per line take three lines.
+  expect_true(all(got[split] == 3), info = paste(split, got[split], collapse = " "))
+
+  f16 <- withr::local_tempfile(fileext = ".docx")
+  suppressMessages(generate_docx_hitopdat(file = f16, font_size = 16))
+  got16 <- legend_lines(f16)
+  n_opts <- table(hitopdat_choices$Choice_Set)
+  expect_equal(unname(got16), unname(as.vector(ceiling(n_opts[names(got16)] / 2))))
+})
+
+for (ps in c("us", "a4")) test_that(paste("the", ps, "Word footer names the source of each of the seven measures"), {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  suppressMessages(generate_docx_hitopdat(file = f, papersize = ps))
   footer <- read_docx_footer(f)
   # Stated here from the revised manual's "Measures and reference data"
   # headings (cairn/SOURCES.md, "HiTOP-DAT"), not read from the package: the
@@ -231,6 +266,20 @@ test_that("each REDCap measure after the first starts a page, and breaks count f
   # that is a measure's opening rather than an item break.
   cape_first <- sprintf("hdat_%03d", min(items$Item[items$Measure == "CAPE"]))
   expect_setequal(item_breaks, c(want, cape_first))
+
+  # An item break restates its measure's instruction, so a later page does
+  # not show items with no stem; the CAPE, with none, breaks with "<br>".
+  instruction <- hitopdat_instructions$start
+  for (field in setdiff(item_breaks, cape_first)) {
+    measure <- items$Measure[items$Item == as.integer(sub("^hdat_", "", field))]
+    want_header <- if (is.na(instruction[[measure]])) "<br>" else unname(instruction[[measure]])
+    expect_equal(
+      dd[["Section Header"]][dd[["Variable / Field Name"]] == field],
+      want_header,
+      info = field
+    )
+  }
+  expect_equal(dd[["Section Header"]][dd[["Variable / Field Name"]] == cape_first], "<br>")
 })
 
 # ---- Refusals (AC4) ---------------------------------------------------------
@@ -352,6 +401,12 @@ test_that("every other instrument's fresh Word form parses as its committed file
       form_parse(file.path(extdata, m$file[i])),
       info = m$file[i]
     )
+    # docx_blocks() reads a line break and a literal "\n" alike, so the line
+    # breaks are counted too: a form whose text gained a "\n" would show here.
+    breaks <- function(file) {
+      sum(gregexpr('<w:br w:type="textWrapping"/>', read_docx_xml(file), fixed = TRUE)[[1]] > 0)
+    }
+    expect_equal(breaks(f), breaks(file.path(extdata, m$file[i])), info = m$file[i])
   }
 })
 

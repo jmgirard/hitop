@@ -170,6 +170,8 @@ test_that("download pages link the centralized import-instructions article", {
 
   pages <- list.files(articles, pattern = "^download-.*\\.Rmd$", full.names = TRUE)
   expect_length(pages, 11)
+  m_q <- latest_manifest()
+  m_q <- m_q[m_q$format == "qualtrics", ]
   for (page in pages) {
     text <- paste(readLines(page, warn = FALSE), collapse = "\n")
     # REDCap card links the article's REDCap section.
@@ -178,17 +180,22 @@ test_that("download pages link the centralized import-instructions article", {
       fixed = TRUE, info = basename(page)
     )
     # Qualtrics card links the right section: HSUM ships a .qsf, the rest .txt.
-    # The HiTOP-DAT page has no Qualtrics card until its import file ships.
-    if (basename(page) == "download-hitopdat.Rmd") {
+    # A page whose instrument has no Qualtrics file in the manifest (the
+    # HiTOP-DAT until its import file ships) links no Qualtrics section.
+    stem <- sub("^download-(.*)\\.Rmd$", "\\1", basename(page))
+    has_qualtrics <- any(
+      sub("[_.].*$", "", m_q$file) == stem
+    )
+    if (!has_qualtrics) {
       expect_no_match(text, "#qualtrics-", fixed = TRUE, info = basename(page))
-      next
-    }
-    q_anchor <- if (basename(page) == "download-hitophsum.Rmd") {
-      "articles/import-instructions.html#qualtrics-qsf"
     } else {
-      "articles/import-instructions.html#qualtrics-txt"
+      q_anchor <- if (basename(page) == "download-hitophsum.Rmd") {
+        "articles/import-instructions.html#qualtrics-qsf"
+      } else {
+        "articles/import-instructions.html#qualtrics-txt"
+      }
+      expect_match(text, q_anchor, fixed = TRUE, info = basename(page))
     }
-    expect_match(text, q_anchor, fixed = TRUE, info = basename(page))
     # The per-generator #details links are fully superseded.
     expect_no_match(
       text, "generate_redcap_[a-z0-9]+\\.html#details",
@@ -212,7 +219,7 @@ test_that("a source checkout stages the pkgdown download copies", {
   # back to the two installed copies. They have to: under `R CMD check` the
   # suite runs from a built tarball where `.Rbuildignore` has removed
   # `pkgdown/` entirely. That tolerance also meant a renamed or deleted
-  # directory left both of them green in a checkout, where the 37 staged
+  # directory left both of them green in a checkout, where the staged
   # files are tracked and are the copies the site serves (D-033). This is the
   # floor they lean on: in a checkout the directory is there, or the suite
   # fails.

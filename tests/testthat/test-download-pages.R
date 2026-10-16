@@ -1,6 +1,7 @@
 # Locks what the instrument download pages render (vignettes/articles/
-# download-*.Rmd): three cards in the row (two on the HiTOP-DAT page, which
-# has no Qualtrics file yet), an online-form strip under it on the five
+# download-*.Rmd): a card in the row for each of Word, Qualtrics and REDCap
+# that the manifest holds (two on the HiTOP-DAT page, which has no Qualtrics
+# file yet), an online-form strip under it on the five
 # pages with a JSON export and none on the HSUM, PID5BF+M, PID-5-IRF, two
 # PID-5 child form and HiTOP-DAT pages, and an anchor
 # to every manifest file. Each page's `downloads` chunk is extracted with
@@ -16,9 +17,16 @@ no_strip_stems <- c(
   "hitophsum", "pid5bfpm", "pid5irf", "pid5child", "pid5bfchild", "hitopdat"
 )
 
-# The cards each page's row renders: Word, Qualtrics and REDCap, except the
-# HiTOP-DAT page, whose Qualtrics import file is not built yet.
-expected_cards <- function(stem) if (stem == "hitopdat") 2 else 3
+# The cards each page's row renders: one for each of Word, Qualtrics and
+# REDCap that the manifest holds for the instrument. Every page has all three
+# but the HiTOP-DAT's, whose Qualtrics import file is not built yet; read from
+# the manifest, the count follows when it ships.
+expected_cards <- function(stem) {
+  m <- latest_manifest()
+  formats <- m$format[sub("[_.].*$", "", m$file) == stem]
+  groups <- c(docx_us = "docx", docx_a4 = "docx", qualtrics = "qualtrics", redcap = "redcap")
+  length(unique(groups[formats[formats %in% names(groups)]]))
+}
 
 articles_dir <- function() {
   testthat::test_path("..", "..", "vignettes", "articles")

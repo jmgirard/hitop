@@ -41,7 +41,8 @@ has none. The field is named \verb{hdat_<measure>_instructions}, where
 \verb{<measure>} is the measure's name in lower case with each run of other
 characters made \verb{_} (\code{hdat_whodas_instructions},
 \code{hdat_idas_ii_instructions}). Each measure after the first starts a
-new page.
+new page. A page break inside a measure restates the measure's
+instruction text in the section header of the page's first item.
 }
 \examples{
 # Write a HiTOP-DAT REDCap instrument ZIP to a temporary location
