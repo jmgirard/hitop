@@ -60,6 +60,7 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
 - 2026-10-16: correction to the T1 line: its new byte test duplicated the existing lock in `test-response-value-no-move.R`, so T3 removes it; that lock covers the nine other `.txt` files.
 - 2026-10-16: checkpoint, T2 to T5 edits written (help statement, parse-back and refusal tests, DAT added to the hand-kept test lists, artifact built and staged, download page, README row, NEWS, reference index); the full suite is still running, so no task is ticked yet. The untracked M172 draft stays unstaged.
 - 2026-10-16: T2, T3, T4 done. Full `devtools::test()`: 0 failed, 0 errors, 15 skipped (merge-base checks); `document()` left no diff. T3 parses with a new `read_qualtrics_questions()` helper (per-question choices, multi-line text); the help text names the `[[Choice:<value>]]` tag and claims nothing about a live import. T4 rebuilt only the DAT `.txt` (`rebuild_formats = "qualtrics"`); the file is LF, and its staged copy is byte-identical. The README capability row gained Qualtrics.
+- 2026-10-16: claim audit: 37 claims read, 6 corrected — R/generate_qualtrics.R (instruction sentence names `include_instructions` and drops the CAPE "Its ID" slip), NEWS.md and the build note (name the `[[Choice:<value>]]` tag; the note says "where it has one"), two test comments. The help's recode sentence stays as AC2 requires; it names the tag. The manifest row was regenerated from `main`'s manifest so its `changes` text carries the corrected note; the `.txt` bytes did not move.
 
 ## Decisions
 

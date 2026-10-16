@@ -127,8 +127,9 @@ check_filters_matched <- function() {
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
   "First build of the HiTOP-DAT Qualtrics import file: the 382 battery items",
-  "in battery order, each measure's instruction before its first item, and",
-  "each item's own answer set with its scoring values as recode values."
+  "in battery order, each measure's instruction, where it has one, before its",
+  "first item, and each item's own answer set with its scoring values in the",
+  "[[Choice:<value>]] tags."
 )
 qsf_build_date <- as.Date("2026-08-19")
 qsf_note <- paste(

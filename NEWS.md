@@ -24,8 +24,9 @@
 
 * **HiTOP-DAT Qualtrics import file.** `generate_qualtrics_hitopdat()` writes
   a Qualtrics import file with questions `hdat_001` to `hdat_382` in battery
-  order. Each question has the answers of its own answer set, and each answer
-  carries its value from `hitopdat_choices` as its recode value. Each measure
+  order. Each question has the answers of its own answer set, and each
+  answer's `[[Choice:<value>]]` tag carries its value from
+  `hitopdat_choices`. Each measure
   that has instructions opens with them as a text question, and each measure
   after the first starts a new page. The file is also on the HiTOP-DAT
   download page.

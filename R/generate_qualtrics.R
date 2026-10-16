@@ -452,8 +452,9 @@ generate_qualtrics_pid5bfchild <- function(
 #'   item's own answer set (`hitopdat_choices`). Each answer carries its
 #'   scoring value from `hitopdat_choices$Value` as its Qualtrics recode
 #'   value, written in the file as the answer's `[[Choice:<value>]]` tag.
-#'   Each of the seven measures opens with a descriptive text question holding its instruction text,
-#'   except the CAPE, which has none. Its ID is
+#'   With `include_instructions = TRUE`, each of the seven measures that has
+#'   instruction text (all but the CAPE) opens with a descriptive text
+#'   question holding it. That question's ID is
 #'   `<id_prefix>_<measure>_instructions`, where `<measure>` is the measure's
 #'   name in lower case with each run of other characters made `_`
 #'   (`hdat_whodas_instructions`, `hdat_idas_ii_instructions`). Each measure

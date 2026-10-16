@@ -295,11 +295,11 @@ test_that("the Qualtrics file holds each item with its own answer set and recode
   expect_identical(vapply(mc, `[[`, "", "id"), sprintf("hdat_%03d", 1:382))
   expect_identical(vapply(mc, `[[`, "", "text"), items$Text)
   # Each item's [[Choice:value]] values and labels are its answer set's, in
-  # the set's order: the recode values the help page names.
+  # the set's order: the [[Choice:<value>]] tags the help page names.
   for (k in seq_along(mc)) {
     expect_identical(mc[[k]]$choices, dat_set(items$Choice_Set[k]), info = mc[[k]]$id)
   }
-  # The file holds the items and the instructions and nothing else.
+  # Every question is an item (MC) or an instruction (DB).
   expect_setequal(vapply(qs, `[[`, "", "type"), c("MC", "DB"))
 })
 
