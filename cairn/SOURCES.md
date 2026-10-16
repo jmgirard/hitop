@@ -686,6 +686,31 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   CAT-PD means and SDs equal the file's at the file's two decimals. Neither is
   in print. Jeff can tell Katherine Jonas of both facts. (b) binds HiTOP-DAT
   T scores.
+- **DAT-16: The WHODAS citation (2026-10-16, M144).** The revised manual's
+  "Measures and reference data" heading credits the WHODAS to "World Health
+  Organization & others, 1988". The battery uses the 12-item WHODAS (W1), a
+  later instrument than a 1988 source. The manual's reference list has no
+  entry for it. At the M144 implement stop (2026-10-16), Jeff chose to credit
+  the World Health Organization with no year in the Word footer. Ask the
+  authors which WHODAS source they mean.
+
+### Redistribution and the measures' sources (2026-10-16, M144)
+
+- **Permission.** At the M143 plan gate (2026-09-29), Jeff confirmed that
+  publishing the battery's item text is allowed. Katherine Jonas's email of
+  2026-10-15 (above) states that every scale is publicly available. The
+  package ships the text in `hitopdat_items` and in the Word forms and REDCap
+  dictionary that `generate_docx_hitopdat()` and `generate_redcap_hitopdat()`
+  write.
+- **The measures' citations.** Each measure's heading in the revised manual's
+  "Measures and reference data" section gives an author and year. The manual's
+  reference list has no full entry for these, so the headings are the record:
+  WHODAS (World Health Organization & others, 1988, DAT-16), IDAS-II
+  (Watson et al., 2012), AUDIT (Saunders et al., 1993), DUDIT (Berman et al.,
+  2007), CAPE (Stefanis et al., 2002), CAT-PD (Simms et al., 2011) and PHQ-15
+  (Kroenke et al., 2002, printed without its semicolon). The Word footer
+  (`hitopdat_instructions$notice`, `data-raw/sysdata.R`) names each measure
+  with these, the WHODAS without its year.
 
 ### Working facts (confirmed 2026-10-16)
 
