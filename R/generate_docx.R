@@ -1906,7 +1906,8 @@ generate_docx_pid5bfchild <- function(
 #'
 #' @return Invisibly returns the path to the created file (`file`).
 #'
-#' @seealso [hitopdat_items], [hitopdat_choices], and
+#' @seealso [hitopdat_items], [hitopdat_choices],
+#'   [generate_qualtrics_hitopdat()] for the Qualtrics import file, and
 #'   [generate_redcap_hitopdat()] for the REDCap import file.
 #'
 #' @examples

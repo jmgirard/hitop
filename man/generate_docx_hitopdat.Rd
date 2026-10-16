@@ -50,6 +50,7 @@ generate_docx_hitopdat(file = tempfile(fileext = ".docx"))
 
 }
 \seealso{
-\link{hitopdat_items}, \link{hitopdat_choices}, and
+\link{hitopdat_items}, \link{hitopdat_choices},
+\code{\link[=generate_qualtrics_hitopdat]{generate_qualtrics_hitopdat()}} for the Qualtrics import file, and
 \code{\link[=generate_redcap_hitopdat]{generate_redcap_hitopdat()}} for the REDCap import file.
 }

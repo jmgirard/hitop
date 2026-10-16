@@ -460,7 +460,9 @@ generate_qualtrics_pid5bfchild <- function(
 #'   (`hdat_whodas_instructions`, `hdat_idas_ii_instructions`). Each measure
 #'   after the first starts a new page.
 #'
-#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#' @seealso [generate_docx_hitopdat()] and [generate_redcap_hitopdat()] for
+#'   the Word forms and the REDCap import file. Step-by-step import
+#'   instructions for Qualtrics and REDCap:
 #'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
 #'
 #' @param file Character string specifying the output file path. Defaults to
@@ -632,6 +634,16 @@ build_qualtrics_txt <- function(
   }
 
   # 5. Loop through the items dataframe and append each question
+  if (!is.null(sections)) {
+    # As in build_redcap_zip(): `page_header` numbers its blocks by item,
+    # not by section, so the two are not combined. Section rows must start
+    # at the first item and ascend, or a section would open in the wrong place.
+    stopifnot(
+      is.null(page_header),
+      sections$row[1] == 1L,
+      !is.unsorted(sections$row, strictly = TRUE)
+    )
+  }
   section_rows <- if (is.null(sections)) integer(0) else sections$row
   # Items since the current section began; with no sections, every item.
   n_in_section <- 0L

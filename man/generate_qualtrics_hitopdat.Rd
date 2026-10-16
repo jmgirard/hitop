@@ -56,6 +56,8 @@ generate_qualtrics_hitopdat(file = tempfile(fileext = ".txt"))
 
 }
 \seealso{
-Step-by-step import instructions for Qualtrics and REDCap:
+\code{\link[=generate_docx_hitopdat]{generate_docx_hitopdat()}} and \code{\link[=generate_redcap_hitopdat]{generate_redcap_hitopdat()}} for
+the Word forms and the REDCap import file. Step-by-step import
+instructions for Qualtrics and REDCap:
 \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
 }

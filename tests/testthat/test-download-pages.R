@@ -1,7 +1,6 @@
 # Locks what the instrument download pages render (vignettes/articles/
 # download-*.Rmd): a card in the row for each of Word, Qualtrics and REDCap
-# that the manifest holds (two on the HiTOP-DAT page, which has no Qualtrics
-# file yet), an online-form strip under it on the five
+# that the manifest holds, an online-form strip under it on the five
 # pages with a JSON export and none on the HSUM, PID5BF+M, PID-5-IRF, two
 # PID-5 child form and HiTOP-DAT pages, and an anchor
 # to every manifest file. Each page's `downloads` chunk is extracted with
@@ -19,8 +18,7 @@ no_strip_stems <- c(
 
 # The cards each page's row renders: one for each of Word, Qualtrics and
 # REDCap that the manifest holds for the instrument. Every page has all three
-# but the HiTOP-DAT's, whose Qualtrics import file is not built yet; read from
-# the manifest, the count follows when it ships.
+# today; read from the manifest, the count follows the files that ship.
 expected_cards <- function(stem) {
   m <- latest_manifest()
   formats <- m$format[sub("[_.].*$", "", m$file) == stem]
