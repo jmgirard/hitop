@@ -4,6 +4,16 @@
 
 ### New features
 
+- **HiTOP-DAT item, answer and scale data.** Three datasets hold the
+  HiTOP-DAT (HiTOP Digital Assessment and Tracker), a battery of seven
+  measures. `hitopdat_items` has its 382 items, each with its battery
+  number, its measure, its number in that measure, its text and its
+  answer set. `hitopdat_choices` has the 13 answer sets.
+  `hitopdat_scales` has the 57 scales, each with its battery item
+  numbers and the items it reverses. The scale names follow the revised
+  HiTOP-DAT manual, which calls one CAT-PD facet Non-Planfulness. The
+  package has no scoring function and no forms for the battery yet.
+
 - **[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
   scores the PID5BF+M.** `version = "BFPM"` scores the 36-item modified
   brief form of Bach et al. (2020). It returns 18 facets of 2 items each

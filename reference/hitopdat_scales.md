@@ -2,8 +2,9 @@
 
 The scales the HiTOP-DAT scores, one row per scale: the 19 IDAS-II
 scales, the 33 CAT-PD facets, and one total each for the WHODAS, AUDIT,
-DUDIT, CAPE positive items and PHQ-15. `Scale` is the name the HiTOP-DAT
-manual (2021) gives the scale. Item numbers are battery numbers, as in
+DUDIT, CAPE positive items and PHQ-15. `Scale` is the name the revised
+HiTOP-DAT manual (Jonas et al., unpublished revised version of
+2026-10-15) gives the scale. Item numbers are battery numbers, as in
 `hitopdat_items$Item`.
 
 ## Usage

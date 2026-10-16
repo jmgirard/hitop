@@ -177,6 +177,12 @@ community norm.
   : HiTOP-HSUM Item Data
 - [`hitophsum_choices`](https://jmgirard.github.io/hitop/reference/hitophsum_choices.md)
   : HiTOP-HSUM Choice Sets
+- [`hitopdat_items`](https://jmgirard.github.io/hitop/reference/hitopdat_items.md)
+  : HiTOP-DAT Item Data
+- [`hitopdat_choices`](https://jmgirard.github.io/hitop/reference/hitopdat_choices.md)
+  : HiTOP-DAT Answer Sets
+- [`hitopdat_scales`](https://jmgirard.github.io/hitop/reference/hitopdat_scales.md)
+  : HiTOP-DAT Scale Data
 - [`pid_items`](https://jmgirard.github.io/hitop/reference/pid_items.md)
   : Personality Inventory for DSM-5 Item Data
 - [`pid_scales`](https://jmgirard.github.io/hitop/reference/pid_scales.md)
