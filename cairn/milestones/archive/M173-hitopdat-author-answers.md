@@ -1,0 +1,11 @@
+# M173: HiTOP-DAT names, records and announcement after the authors' answers
+
+**Status:** done (2026-10-16, PR #179 https://github.com/jmgirard/hitop/pull/179)
+
+**Goal:** The three HiTOP-DAT tables ship announced, with scale names and provenance taken from the revised HiTOP-DAT manual and Katherine Jonas's answers of 2026-10-15.
+
+**Outcome:** `hitopdat_scales` row 42 is Non-Planfulness (`nonPlanfulness`), renamed from Non-Premeditation through `data-raw/hitopdat_info.R`'s crosswalk. Its items and reverse keys are unchanged, and the other 56 rows and the other two tables are identical to `bdb2b153`. `test-keying-hitopdat.R`'s `manual_scales` follows the revised manual (57 names, same order), `key_names` keeps only Self-Harm, and a new test pins the facet's name, stem and IPIP-derived items. `?hitopdat_scales` cites the unpublished revised manual of 2026-10-15. The three tables are announced: no internal keyword (test flipped), `_pkgdown.yml` rows, a NEWS entry, and a README capability row checked by `test-readme-capabilities.R` (`dat` stem). Records: source note `jonas2026dat.md`, with the revised manual (sha256 `dec767f2…`), Len Simms's workbook (`8643147c…`) and the email (`jonas2026email.txt`) on the shelf. SOURCES.md "HiTOP-DAT" resolves DAT-2, -3, -4, -6, -7, -10 and W1 to W3 and adds DAT-15: the menstrual line in the revised manual, and the Qualtrics file's IDAS-II norms against Watson et al. (2012) Table 2, which the workbook matches. `watson2012.md` gains Table 2's adult column. DESIGN.md calls the tables announced. M144 and M145 went back to planned at the plan gate.
+
+**Decisions:** D-097 (the revised manual replaces the 2021 manual as the source of `hitopdat_scales$Scale`, annotating D-085, following D-082 and D-048). Milestone-local: none.
+
+**Review:** Full criteria audit at plan (6 findings, then 2 on re-audit, all fixed). Claim audit corrected 1 of 36 claims. Three-lens fan-out found 23 findings: 12 fixed on the branch (record wording, the Table 2 source, D-097's report gap, "unpublished" in the help page), 10 rejected, and 1 follow-up (DESCRIPTION to name the HiTOP-DAT once its forms ship, now in the HiTOP-DAT candidate row). Local suite 0 failures and `check()` 0/0/0. CI passed all 8 checks after one CI-wait timeout and a resume. No lesson added or retired. The HiTOP-DAT candidate row lost its announcement part.
