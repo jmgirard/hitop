@@ -39,8 +39,10 @@ import tool containing the 382 items of the HiTOP Digital Assessment and
 Tracker (HiTOP-DAT) battery. The item questions are \code{hdat_001} to
 \code{hdat_382} in battery order (\code{hitopdat_items$Item}), each a single-answer
 multiple-choice question whose choices are the values and labels of the
-item's own answer set (\code{hitopdat_choices}). Each of the seven measures
-opens with a descriptive text question holding its instruction text,
+item's own answer set (\code{hitopdat_choices}). Each answer carries its
+scoring value from \code{hitopdat_choices$Value} as its Qualtrics recode
+value, written in the file as the answer's \verb{[[Choice:<value>]]} tag.
+Each of the seven measures opens with a descriptive text question holding its instruction text,
 except the CAPE, which has none. Its ID is
 \verb{<id_prefix>_<measure>_instructions}, where \verb{<measure>} is the measure's
 name in lower case with each run of other characters made \verb{_}

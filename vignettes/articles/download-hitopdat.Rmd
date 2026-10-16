@@ -8,7 +8,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Welcome to the HiTOP Digital Assessment and Tracker (HiTOP-DAT) resources page. The HiTOP-DAT is a battery of 382 items from seven published measures: the WHODAS, IDAS-II, AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Here you can download printable Word forms and a REDCap import file. Each form gives each measure's instructions, where it has them, before its first item and shows each item with its own response options. The `hitop` package does not score the HiTOP-DAT yet.
+Welcome to the HiTOP Digital Assessment and Tracker (HiTOP-DAT) resources page. The HiTOP-DAT is a battery of 382 items from seven published measures: the WHODAS, IDAS-II, AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Here you can download printable Word forms and Qualtrics and REDCap import files. Each form gives each measure's instructions, where it has them, before its first item and shows each item with its own response options. The `hitop` package does not score the HiTOP-DAT yet.
 
 ```{r setup, include=FALSE}
 source("_download-helpers.R")
@@ -28,6 +28,12 @@ download_cards("HiTOP-DAT", list(
     dl_link("English (US Paper)", "../downloads/hitopdat_US.docx")
   ),
   dl_card(
+    "📊", "Qualtrics Import",
+    "Use this specially formatted text file to import the battery directly into your Qualtrics surveys.",
+    dl_link("English (TXT File)", "../downloads/hitopdat_qualtrics.txt"),
+    ref_link("Import Instructions", "../articles/import-instructions.html#qualtrics-txt")
+  ),
+  dl_card(
     "🏥", "REDCap Import",
     "Use this compressed archive file to import the battery as a new instrument in your REDCap project.",
     dl_link("English (ZIP File)", "../downloads/hitopdat_redcap.zip"),
@@ -40,7 +46,7 @@ download_cards("HiTOP-DAT", list(
 <hr class="mt-5 mb-4">
 
 <h3 class="mb-3">Explore the R Package Features</h3>
-<p class="text-muted">The <code>hitop</code> package holds the battery's items, response options and scales, and can build the printable and REDCap files from scratch, so you can adapt them before fielding the battery.</p>
+<p class="text-muted">The <code>hitop</code> package holds the battery's items, response options and scales, and can build the printable, Qualtrics and REDCap files from scratch, so you can adapt them before fielding the battery.</p>
 
 <div class="row mt-4">
   <div class="col-md-6 mb-4">
@@ -61,9 +67,10 @@ download_cards("HiTOP-DAT", list(
     <div class="card h-100 shadow-sm">
       <div class="card-body">
         <h5 class="card-title">🛠️ Custom File Generation</h5>
-        <p class="card-text">Need to change the formatting or the REDCap page breaks? Build customized DOCX and REDCap files programmatically.</p>
+        <p class="card-text">Need to change the formatting or the page breaks? Build customized DOCX, Qualtrics and REDCap files programmatically.</p>
         <div class="d-flex flex-wrap gap-2">
           <a href="../reference/generate_docx_hitopdat.html" class="btn btn-sm btn-outline-secondary">Printable</a>
+          <a href="../reference/generate_qualtrics_hitopdat.html" class="btn btn-sm btn-outline-secondary">Qualtrics</a>
           <a href="../reference/generate_redcap_hitopdat.html" class="btn btn-sm btn-outline-secondary">REDCap</a>
         </div>
       </div>

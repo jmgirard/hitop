@@ -57,6 +57,8 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
 - 2026-10-16: unblocked, back to planned (M173 plan gate). Katherine Jonas's email of 2026-10-15 confirms the 382 items. It still runs after M144.
 - 2026-10-16: implement started on branch m145-hitopdat-qualtrics. Six untracked files predate it (the M172 draft and five `devel/hitopdat_*` files); they stay unstaged.
 - 2026-10-16: T1 done. `build_qualtrics_txt()` takes `choices` (one data frame per item) and `sections` (row, id, text); NULL for both writes the old output, and a new test shows the nine other committed `.txt` files rebuild byte-identical. Choices made: `id_prefix` defaults to `hdat`, matching the REDCap names; instruction IDs are `<id_prefix>_<measure>_instructions`; each measure after the first starts a page and `breaks` counts within a measure, as in the REDCap file; a break inside a measure does not repeat the instruction, so each text appears once (AC1); the multi-line DUDIT instruction is written as its lines, untested against a live import.
+- 2026-10-16: correction to the T1 line: its new byte test duplicated the existing lock in `test-response-value-no-move.R`, so T3 removes it; that lock covers the nine other `.txt` files.
+- 2026-10-16: checkpoint, T2 to T5 edits written (help statement, parse-back and refusal tests, DAT added to the hand-kept test lists, artifact built and staged, download page, README row, NEWS, reference index); the full suite is still running, so no task is ticked yet. The untracked M172 draft stays unstaged.
 
 ## Decisions
 

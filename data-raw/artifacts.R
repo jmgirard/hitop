@@ -40,7 +40,7 @@ rebuild_stems <- c("hitopdat")
 ## exports emit), and because DOCX/zip rebuilds are not byte-deterministic, a
 ## needless rebuild churns a checksum and records a manifest revision that isn't
 ## one. Restrict to the format whose content actually changed.
-rebuild_formats <- c("docx", "redcap")
+rebuild_formats <- c("qualtrics")
 
 ## Both filters are plain string matches, so a typo ("pid5_bf"), a case slip
 ## ("DOCX"), or the manifest's own format vocabulary ("docx_us") would match
@@ -126,10 +126,9 @@ check_filters_matched <- function() {
 ## One note per build run, applied to every artifact rebuilt below. For the
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
-  "First build of the HiTOP-DAT Word forms and REDCap dictionary: the 382",
-  "battery items in battery order, each measure's instruction before its",
-  "first item, and each item's own answer set; the Word footer names each",
-  "measure's source."
+  "First build of the HiTOP-DAT Qualtrics import file: the 382 battery items",
+  "in battery order, each measure's instruction before its first item, and",
+  "each item's own answer set with its scoring values as recode values."
 )
 qsf_build_date <- as.Date("2026-08-19")
 qsf_note <- paste(
@@ -180,7 +179,8 @@ qualtrics_specs <- list(
   list(fn = generate_qualtrics_pid5child, stem = "pid5child", instrument = "PID-5 Child"),
   list(fn = generate_qualtrics_pid5bfchild, stem = "pid5bfchild", instrument = "PID-5-BF Child"),
   list(fn = generate_qualtrics_hitopsr, stem = "hitopsr", instrument = "HiTOP-SR"),
-  list(fn = generate_qualtrics_hitopbr, stem = "hitopbr", instrument = "HiTOP-BR")
+  list(fn = generate_qualtrics_hitopbr, stem = "hitopbr", instrument = "HiTOP-BR"),
+  list(fn = generate_qualtrics_hitopdat, stem = "hitopdat", instrument = "HiTOP-DAT")
 )
 
 for (spec in keep_specs(qualtrics_specs, "qualtrics")) {

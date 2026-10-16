@@ -449,8 +449,10 @@ generate_qualtrics_pid5bfchild <- function(
 #'   Tracker (HiTOP-DAT) battery. The item questions are `hdat_001` to
 #'   `hdat_382` in battery order (`hitopdat_items$Item`), each a single-answer
 #'   multiple-choice question whose choices are the values and labels of the
-#'   item's own answer set (`hitopdat_choices`). Each of the seven measures
-#'   opens with a descriptive text question holding its instruction text,
+#'   item's own answer set (`hitopdat_choices`). Each answer carries its
+#'   scoring value from `hitopdat_choices$Value` as its Qualtrics recode
+#'   value, written in the file as the answer's `[[Choice:<value>]]` tag.
+#'   Each of the seven measures opens with a descriptive text question holding its instruction text,
 #'   except the CAPE, which has none. Its ID is
 #'   `<id_prefix>_<measure>_instructions`, where `<measure>` is the measure's
 #'   name in lower case with each run of other characters made `_`

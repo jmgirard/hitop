@@ -85,6 +85,49 @@ read_qualtrics <- function(file) {
   )
 }
 
+# Parse a Qualtrics Advanced-Format import file into its questions, in file
+# order, for a file whose questions differ in their choices or whose text
+# runs over more than one line (the HiTOP-DAT). Returns a list with one entry
+# per [[Question:...]] tag:
+#   type     "MC" for [[Question:MC:SingleAnswer]], "DB" for [[Question:DB]]
+#   id       the [[ID:...]] value
+#   text     the lines after the ID up to the next [[...]] tag, trailing empty
+#            lines dropped, joined with "\n"
+#   choices  data.frame(value, label) from the question's own
+#            [[AdvancedChoices]] block, values as written (character); NULL for
+#            a DB question
+read_qualtrics_questions <- function(file) {
+  lines <- readLines(file, warn = FALSE, encoding = "UTF-8")
+  is_tag <- startsWith(lines, "[[")
+  starts <- which(startsWith(lines, "[[Question:"))
+  lapply(starts, function(pos) {
+    type <- if (lines[pos] == "[[Question:DB]]") "DB" else {
+      stopifnot(lines[pos] == "[[Question:MC:SingleAnswer]]")
+      "MC"
+    }
+    stopifnot(startsWith(lines[pos + 1L], "[[ID:"))
+    id <- sub("^\\[\\[ID:(.*)\\]\\]$", "\\1", lines[pos + 1L])
+    nxt <- which(is_tag & seq_along(lines) > pos + 1L)[1]
+    if (is.na(nxt)) nxt <- length(lines) + 1L
+    body <- lines[seq.int(pos + 2L, length.out = nxt - pos - 2L)]
+    while (length(body) > 0 && body[length(body)] == "") body <- body[-length(body)]
+    choices <- NULL
+    if (type == "MC") {
+      stopifnot(lines[nxt] == "[[AdvancedChoices]]")
+      j <- nxt + 1L
+      value <- character(0)
+      label <- character(0)
+      while (j <= length(lines) && grepl("^\\[\\[Choice:", lines[j])) {
+        value <- c(value, sub("^\\[\\[Choice:(.*)\\]\\]$", "\\1", lines[j]))
+        label <- c(label, lines[j + 1L])
+        j <- j + 2L
+      }
+      choices <- data.frame(value = value, label = label)
+    }
+    list(type = type, id = id, text = paste(body, collapse = "\n"), choices = choices)
+  })
+}
+
 # ---- REDCap .zip ------------------------------------------------------------
 #
 # Unzip a REDCap instrument ZIP and read its single data-dictionary CSV back as

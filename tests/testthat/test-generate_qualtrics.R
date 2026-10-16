@@ -82,7 +82,7 @@ test_that("include_instructions and breaks arguments behave", {
   expect_equal(read_qualtrics(f4)$pagebreak_after, c(10L, 20L, 30L, 40L))
 })
 
-# ---- Smoke coverage: all 9 Qualtrics generators -----------------------------
+# ---- Smoke coverage: all 10 Qualtrics generators ----------------------------
 
 test_that("all Qualtrics generators run and produce one question per source item", {
   cases <- list(
@@ -94,7 +94,8 @@ test_that("all Qualtrics generators run and produce one question per source item
     list(fn = generate_qualtrics_pid5bfpm, n = 36L),
     list(fn = generate_qualtrics_pid5irf, n = 218L),
     list(fn = generate_qualtrics_pid5child, n = 220L),
-    list(fn = generate_qualtrics_pid5bfchild, n = 25L)
+    list(fn = generate_qualtrics_pid5bfchild, n = 25L),
+    list(fn = generate_qualtrics_hitopdat, n = 382L)
   )
   for (case in cases) {
     f <- withr::local_tempfile(fileext = ".txt")
@@ -149,9 +150,10 @@ test_that("module = NULL leaves Qualtrics output byte-identical for all instrume
     generate_qualtrics_pid5bfpm,
     generate_qualtrics_pid5irf,
     generate_qualtrics_pid5child,
-    generate_qualtrics_pid5bfchild
+    generate_qualtrics_pid5bfchild,
+    generate_qualtrics_hitopdat
   )
-  widths <- c(3, 2, 3, 3, 2, 2, 3, 3, 2) # largest item numbers 405, 45, 220, 100, 25, 36, 218, 220, 25
+  widths <- c(3, 2, 3, 3, 2, 2, 3, 3, 2, 3) # largest item numbers 405, 45, 220, 100, 25, 36, 218, 220, 25, 382
   for (i in seq_along(gens)) {
     f <- withr::local_tempfile(fileext = ".txt")
     suppressMessages(gens[[i]](file = f))
