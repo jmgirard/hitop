@@ -1,13 +1,13 @@
 # M145: HiTOP-DAT Qualtrics import file
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M143, M144
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — a new exported generator and its download
-- **Branch/PR:** —
+- **Branch/PR:** m145-hitopdat-qualtrics
 
 ## Goal
 
@@ -43,7 +43,7 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
 
 ## Tasks
 
-- [ ] T1: Let `build_qualtrics_txt()` in `R/generate_qualtrics.R` take one answer set per item and one instruction per measure. Keep the output of the other instruments byte-identical, and prove it against their committed `*_qualtrics.txt` files. Add `generate_qualtrics_hitopdat()`.
+- [x] T1: Let `build_qualtrics_txt()` in `R/generate_qualtrics.R` take one answer set per item and one instruction per measure. Keep the output of the other instruments byte-identical, and prove it against their committed `*_qualtrics.txt` files. Add `generate_qualtrics_hitopdat()`.
 - [ ] T2: Document in the roxygen block of the generator that each answer carries its scoring value as its recode value (AC2).
 - [ ] T3: Write the parse-back test (AC1) and the per-argument refusal test (AC4).
 - [ ] T4: Add the row to `data-raw/artifacts.R`. Build the file with LF line endings through a binary connection (LESSONS M020). Stage the pkgdown copy, and link it from `download-hitopdat.Rmd`.
@@ -55,6 +55,8 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
 - 2026-09-29: plan chose a .txt import file built from the tables over shipping a cleaned copy of the shared .qsf. The other instruments use the .txt route, and the .qsf carries unsourced scoring. Falsified by a Qualtrics .txt import that cannot hold the DAT's answer sets.
 - 2026-10-06: blocked. Jeff is waiting for confirmation of the HiTOP-DAT items and questions. After that confirmation arrives, the milestone is workable again.
 - 2026-10-16: unblocked, back to planned (M173 plan gate). Katherine Jonas's email of 2026-10-15 confirms the 382 items. It still runs after M144.
+- 2026-10-16: implement started on branch m145-hitopdat-qualtrics. Six untracked files predate it (the M172 draft and five `devel/hitopdat_*` files); they stay unstaged.
+- 2026-10-16: T1 done. `build_qualtrics_txt()` takes `choices` (one data frame per item) and `sections` (row, id, text); NULL for both writes the old output, and a new test shows the nine other committed `.txt` files rebuild byte-identical. Choices made: `id_prefix` defaults to `hdat`, matching the REDCap names; instruction IDs are `<id_prefix>_<measure>_instructions`; each measure after the first starts a page and `breaks` counts within a measure, as in the REDCap file; a break inside a measure does not repeat the instruction, so each text appears once (AC1); the multi-line DUDIT instruction is written as its lines, untested against a live import.
 
 ## Decisions
 

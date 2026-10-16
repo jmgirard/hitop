@@ -426,3 +426,23 @@ test_that("every other instrument's fresh REDCap dictionary equals its committed
     )
   }
 })
+
+test_that("every other instrument's fresh Qualtrics file is byte-identical to its committed file", {
+  # The Qualtrics files are flat text, so the lock compares bytes. Each
+  # generator's defaults are the build data-raw/artifacts.R makes.
+  extdata <- system.file("extdata", package = "hitop")
+  m <- latest_manifest()
+  m <- m[m$format == "qualtrics" & m$instrument != "HiTOP-DAT", ]
+  m <- m[grepl("\\.txt$", m$file), ]
+  expect_gt(nrow(m), 0)
+  for (i in seq_len(nrow(m))) {
+    stem <- sub("_qualtrics\\.txt$", "", m$file[i])
+    f <- withr::local_tempfile(fileext = ".txt")
+    suppressMessages(getExportedValue("hitop", paste0("generate_qualtrics_", stem))(file = f))
+    expect_identical(
+      unname(tools::md5sum(f)),
+      unname(tools::md5sum(file.path(extdata, m$file[i]))),
+      info = m$file[i]
+    )
+  }
+})
