@@ -624,6 +624,21 @@ make_domain_table <- function(
     flextable::set_table_properties(layout = "fixed", align = "left")
 }
 
+# Internal Helper: the paragraph of one instruction text. Each "\n" becomes a
+# line break, so an instruction that lists its lines (the HiTOP-DAT's DUDIT
+# drug list) keeps them. A text with no "\n" is one run, as before.
+instruction_fpar <- function(text, prop, par_prop) {
+  lines <- strsplit(text, "\n", fixed = TRUE)[[1]]
+  runs <- list()
+  for (k in seq_along(lines)) {
+    if (k > 1L) {
+      runs <- c(runs, list(officer::run_linebreak()))
+    }
+    runs <- c(runs, list(officer::ftext(lines[k], prop = prop)))
+  }
+  do.call(officer::fpar, c(runs, list(fp_p = par_prop)))
+}
+
 # Internal Helper: Assemble the actual Word Document
 build_hitop_doc <- function(
   file,
@@ -638,8 +653,20 @@ build_hitop_doc <- function(
   font_family,
   crosswalk_msg = NULL,
   table_3 = NULL,
-  footer_notice = NULL
+  footer_notice = NULL,
+  sections = NULL
 ) {
+  # `sections`, when given, replaces `instr_text` and `table_1` with a list of
+  # sections, each `list(instruction = <text or NA>, tables = <flextables>)`,
+  # printed in order: the instruction paragraph, then its tables. A battery of
+  # several measures (the HiTOP-DAT) passes one section per measure, each with
+  # its own instruction and one table per run of items sharing an answer set.
+  # NULL makes the one section every other form prints, through the same calls
+  # as before, so their documents are unchanged.
+  if (is.null(sections)) {
+    sections <- list(list(instruction = instr_text, tables = list(table_1)))
+  }
+
   inst_prop <- officer::fp_text(
     font.size = font_size,
     font.family = font_family
@@ -661,14 +688,29 @@ build_hitop_doc <- function(
   my_header <- officer::block_list(header_text)
   my_footer <- build_docx_footer(font_size, font_family, notice = footer_notice)
 
-  my_doc <- officer::read_docx() |>
-    officer::body_add_fpar(
-      officer::fpar(
-        officer::ftext(instr_text, prop = inst_prop),
-        fp_p = inst_par_prop
-      )
-    ) |>
-    flextable::body_add_flextable(value = table_1)
+  # Word joins two tables with nothing between them into one table, so a
+  # blank paragraph separates the tables of a section, and a section with no
+  # instruction (the HiTOP-DAT's CAPE) from the section before it.
+  gap_par <- officer::fpar(fp_p = officer::fp_par(padding.bottom = 6))
+  my_doc <- officer::read_docx()
+  for (k in seq_along(sections)) {
+    section <- sections[[k]]
+    if (!is.na(section$instruction)) {
+      my_doc <- my_doc |>
+        officer::body_add_fpar(
+          instruction_fpar(section$instruction, inst_prop, inst_par_prop)
+        )
+    } else if (k > 1L) {
+      my_doc <- my_doc |> officer::body_add_fpar(gap_par)
+    }
+    for (j in seq_along(section$tables)) {
+      if (j > 1L) {
+        my_doc <- my_doc |> officer::body_add_fpar(gap_par)
+      }
+      my_doc <- my_doc |>
+        flextable::body_add_flextable(value = section$tables[[j]])
+    }
+  }
 
   scoring_page <- include_scoring && !is.null(table_2)
 

@@ -1,13 +1,13 @@
 # M144: HiTOP-DAT Word forms and REDCap dictionary
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M143, M173
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — two new exported generators and their downloads
-- **Branch/PR:** —
+- **Branch/PR:** m144-hitopdat-word-redcap
 
 ## Goal
 
@@ -58,6 +58,11 @@ Researchers can build and download HiTOP-DAT paper forms and a REDCap data dicti
 - 2026-09-29: plan chose to extend the shared builders with an answer set per item over separate DAT-only builders. The HiTOP-HSUM REDCap builder already carries per-set choices. Falsified by an extension that changes the output of another instrument's form or dictionary.
 - 2026-10-06: blocked. Jeff is waiting for confirmation of the HiTOP-DAT items and questions. After that confirmation arrives, the milestone is workable again.
 - 2026-10-16: unblocked, back to planned (M173 plan gate). Katherine Jonas's email of 2026-10-15 confirms the 382 items and says every scale is public. M173 records it in SOURCES.md, which T3 cites with the M143 permission. Now depends on M173, since both edit SOURCES.md "HiTOP-DAT".
+- 2026-10-16: implement started. Branch `m144-hitopdat-word-redcap` cut from `main` at `1c30667d`. The untracked M172 draft and `devel/hitopdat_*` files are not this milestone's and stay unstaged.
+- 2026-10-16: AC3's "7 download pages" is stale: the PID-5 forms brought the site to 10, so the new page makes 11. Amendment of the count sent to a fresh reader before writing.
+- 2026-10-16: re-audit: AC3 (full) — 2 findings: tie each copy to the md5 of the file's latest manifest row; the footer clause bound a record T3 itself writes, and the SOURCES.md permission sentence binds a recording act. Fixed in the draft: latest-row md5, footer cites the revised manual's "Measures and reference data" section, permission recording moved to T3.
+- 2026-10-16: re-audit: AC3 (full) — 3 findings: that section gives author-year citations in its headings only, and the WHODAS heading cites "World Health Organization & others, 1988" for the 12-item short form; "11 download pages" names no count method; "links each one" names no copy. Second re-audit on AC3, so the wording goes to Jeff (stop). AC3 in this file is still the plan's text.
+- 2026-10-16: T1 in progress: `build_hitop_doc()` takes a list of sections (instruction plus tables), and `instruction_fpar()` turns "\n" into line breaks. The document, header and footer parts of all 35 other Word forms (US and A4) and the 10 REDCap dictionaries match `main` byte for byte, the footer date aside.
 
 ## Decisions
 
