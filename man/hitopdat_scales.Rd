@@ -25,8 +25,8 @@ hitopdat_scales
 The scales the HiTOP-DAT scores, one row per scale: the 19 IDAS-II scales,
 the 33 CAT-PD facets, and one total each for the WHODAS, AUDIT, DUDIT, CAPE
 positive items and PHQ-15. \code{Scale} is the name the revised HiTOP-DAT
-manual (Jonas et al., revised version of 2026-10-15) gives the scale. Item
-numbers are battery numbers, as in \code{hitopdat_items$Item}.
+manual (Jonas et al., unpublished revised version of 2026-10-15) gives the
+scale. Item numbers are battery numbers, as in \code{hitopdat_items$Item}.
 }
 \details{
 Scale membership and reverse keying come from the scoring of the battery's

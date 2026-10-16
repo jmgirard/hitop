@@ -39,8 +39,10 @@ changes one name: the 2021 "Non-Premeditation" (p. 23) is "Non-Planfulness" here
   - Disinhibited Externalizing: Alcohol Use (AUDIT), Drug Use (DUDIT), Non-Planfulness,
     Non-Perseverance, Risk Taking, Irresponsibility, Perfectionism, Workaholism, Rigidity
     (each CAT-PD).
-  - Antagonistic Externalizing: Callousness, Manipulativeness, Grandiosity, Domineering
-    (CAT-PD), Norm Violation, Hostile Aggression, Rudeness (CAT-PD).
+  - Antagonistic Externalizing: Callousness, Manipulativeness, Grandiosity, Domineering,
+    Hostile Aggression and Rudeness (each CAT-PD), and Norm Violation (no tag), in the
+    printed order Callousness, Manipulativeness, Grandiosity, Domineering, Norm
+    Violation, Hostile Aggression, Rudeness.
   - Thought Disorder: Positive Symptoms (CAPE), Unusual Beliefs, Unusual Experiences,
     Fantasy Proneness, Peculiarity (each CAT-PD).
   - Detachment: Anhedonia, Exhibitionism, Social Withdrawal, Emotional Detachment,

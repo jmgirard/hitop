@@ -14,7 +14,7 @@
 
 **Decision:** The revised manual is admitted under IP1 as the source of `hitopdat_scales$Scale`, as the battery authors' own current text. This follows D-082 and D-048, which admit unpublished material that its authors send, once Jeff signs off. D-085's rule stands: the names follow the manual, and that is now the revised manual. The one change is Non-Premeditation to Non-Planfulness (`camelCase` `nonPlanfulness`). Its items and reverse keys do not change. `cairn/references/jonas2026dat.md` holds the source note. Jeff signed off on 2026-10-16 at the M173 plan gate. Rejected: keeping the 2021 name with Non-Planfulness as an alias, because the authors now use one name, and it is the name the CAT-PD and the battery's file already use.
 
-**Consequences:** M173 renames the row and points the scale-name test and `?hitopdat_scales` at the revised manual. The 2021 note `jonas2021dat.md` stays as history. The evidence that reopens this is a published manual whose scale names differ from the revision.
+**Consequences:** M173 renames the row and points the scale-name test and `?hitopdat_scales` at the revised manual. The 2021 note `jonas2021dat.md` stays as history. The email says that the Society's DAT report still prints the old name and should be revised. Until it is, a DAT user can see Non-Premeditation in the report and Non-Planfulness in the package. D-085 chose the manual's names because users read the reports and the manual, and the authors now name the facet one way. The evidence that reopens this is a published manual whose scale names differ from the revision.
 
 ### D-096 (2026-10-07): D-094 reverses M031's `version` choice and keeps factor input; its Consequences sentence on all choice arguments is withdrawn (annotates D-094)
 

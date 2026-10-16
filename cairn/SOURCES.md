@@ -559,9 +559,10 @@ authors' email from M173):
   text carries none), shelved verbatim as
   `cairn/references/sources/jonas2026email.txt`. It answers DAT-2, DAT-3,
   DAT-4, DAT-6, DAT-7 and DAT-10 and confirms W1 to W3 below. It also states
-  four facts. The battery holds no IPIP measure, and Non-Planfulness is the
-  CAT-PD's own term. Every scale is publicly available. The manual cites every
-  norm source. T 65 is the alert point she and Roman Kotov chose, and she told
+  these points. The battery holds no IPIP measure, and Non-Planfulness is the
+  CAT-PD's own term. Every scale is publicly available. She believes the manual
+  cites every norm source (DAT-15 (b) finds file norms that match no cited
+  table). T 65 is the alert point she and "Roman" chose, and she told
   clinics that they can set another. It came with Len Simms's `CAT-PD and IDAS scoring.xlsx`
   (sha256 `8643147c…`, on the shelf), "on which the Redcap battery was based".
   No table reads that workbook yet (DAT-15).
@@ -640,7 +641,8 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   that split.
 - **DAT-7 [RESOLVED 2026-10-16]: 382 items, not 405.** The Society's HiTOP-DAT page says the battery
   has 405 items. The file has 382. Taken as correct (working fact W1 below).
-  Resolved by the email: the web page is wrong, and 382 is correct (W1).
+  Resolved by the email: the web page is wrong. The email gives no total, but
+  it accounts for each count the page gets wrong (W1), which leaves 382.
 - **DAT-8: The AUDIT standard-drink picture.** The file shows a graphic titled
   "Standard drink" above the AUDIT. No dataset holds it.
 - **DAT-9: The file's spellings.** Its categories spell "Sucidality",
@@ -649,7 +651,7 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   The DUDIT instruction spells "DMT (dimethyltrypamine)" for dimethyltryptamine;
   `hitopdat_instructions` keeps the file's text.
 - **DAT-10 [RESOLVED 2026-10-16]: Non-Premeditation.** The manual says Non-Premeditation (p. 23) where
-  the IPIP key and the file say Non-Planfulness. The package uses the manual's name.
+  the IPIP key and the file say Non-Planfulness. The package used the 2021 manual's name until M173.
   The manual's "Self-Harm" is IPIP's "Self Harm". Resolved by the email and the
   revised manual ("Scale definitions"): Non-Planfulness is the CAT-PD's term, and
   the revision uses it alone. `hitopdat_scales` says Non-Planfulness from M173.
@@ -674,9 +676,10 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   manual's Physical Symptoms definition still lists "menstrual cramps or other
   pain (Women only)", though the battery leaves that item out (DAT-6). (b) The
   file's IDAS-II T-score norms differ from Watson et al. (2012) Table 2's
-  "Adults" column (N = 1,091, the sample the manual names) on all 19 scales. The
-  18 scales that Table 2 prints have the same mean and SD in the workbook that
-  came with the email. Examples: Cleaning is M 11.83, SD 5.05 in the file and
+  "Adults" column (p. 407, N = 1,091, the sample the manual names) on all 18
+  scales that Table 2 prints. Those 18 have the same mean and SD in the
+  workbook that came with the email ([watson2012.md](references/watson2012.md)
+  holds the Table 2 values). Examples: Cleaning is M 11.83, SD 5.05 in the file and
   9.05, 3.73 in Table 2 and the workbook. Well-Being is 22.40, 7.42 in the file
   and 23.35, 6.71 in both. Table 2 prints no General Depression row. The
   workbook gives it 44.99, 14.75 and the file 41.94, 14.75. The workbook's 33
