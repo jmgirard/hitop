@@ -326,6 +326,20 @@ validate_count <- function(
   invisible(NULL)
 }
 
+# One finite number above zero, whole or not: a font size of 10.5 points is a
+# size Word prints, so validate_count() would refuse a good value.
+validate_positive_number <- function(x, arg, call = rlang::caller_env()) {
+  cli_assert(
+    condition = is.numeric(x) && length(x) == 1L && is.finite(x) && x > 0,
+    message = c(
+      "The {.arg {arg}} argument must be a single number greater than 0.",
+      "x" = "You supplied {.cls {class(x)}} of length {length(x)}."
+    ),
+    call = call
+  )
+  invisible(NULL)
+}
+
 # Refuse any column that is not numeric or logical. Shared by norm_pid5() and
 # plot_pid5(), which reject such a column for the same reason: as.numeric()
 # turns a factor into its integer codes and a character column into NA -- wrong

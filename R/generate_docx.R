@@ -1875,3 +1875,107 @@ generate_docx_pid5bfchild <- function(
     font_family
   )
 }
+
+#' Generate a Word Document for the HiTOP-DAT
+#'
+#' Write the 382 items of the HiTOP Digital Assessment and Tracker (HiTOP-DAT)
+#' battery as a paper form. The items are numbered 1 to 382 in battery order
+#' (`hitopdat_items$Item`), through its seven measures: the WHODAS, IDAS-II,
+#' AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Each measure's instruction text
+#' comes before its first item; the CAPE has none. Each item shows the values
+#' of its own answer set (`hitopdat_choices`), and the legend above each run
+#' of items that share an answer set gives that set's values and labels. The
+#' footer credits each measure's authors. The form has no scoring page,
+#' because the package ships no HiTOP-DAT scoring key.
+#'
+#' @param file Character string specifying the output file path. Defaults to
+#'   `"hitopdat.docx"`.
+#' @param papersize Character string specifying the paper dimensions. Must be
+#'   one of `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
+#' @param title Character string for the document header title. Defaults to
+#'   `"HiTOP-DAT"`.
+#' @param font_size Numeric value greater than 0 specifying the base font size
+#'   in points. Defaults to `10`.
+#' @param font_family Character string specifying the font family to be used.
+#'   Defaults to `"Times New Roman"`.
+#'
+#' @return Invisibly returns the path to the created file (`file`).
+#'
+#' @seealso [hitopdat_items], [hitopdat_choices], and
+#'   [generate_redcap_hitopdat()] for the REDCap import file.
+#'
+#' @examples
+#' \donttest{
+#' # Write a HiTOP-DAT paper form to a temporary Word document
+#' generate_docx_hitopdat(file = tempfile(fileext = ".docx"))
+#' }
+#'
+#' @export
+generate_docx_hitopdat <- function(
+  file = "hitopdat.docx",
+  papersize = c("us", "a4"),
+  title = "HiTOP-DAT",
+  font_size = 10,
+  font_family = "Times New Roman"
+) {
+  validate_string(file, "file")
+  papersize <- match.arg(papersize)
+  validate_string(title, "title")
+  validate_positive_number(font_size, "font_size")
+  validate_string(font_family, "font_family")
+  dims <- get_page_dims(papersize)
+
+  build_hitop_doc(
+    file,
+    title,
+    instr_text = NULL,
+    scoring_msg = NULL,
+    table_1 = NULL,
+    table_2 = NULL,
+    include_scoring = FALSE,
+    dims = dims,
+    font_size = font_size,
+    font_family = font_family,
+    footer_notice = hitopdat_instructions$notice,
+    sections = hitopdat_docx_sections(dims$pw, font_size, font_family)
+  )
+}
+
+# Internal Helper: the HiTOP-DAT form's sections, one per measure in battery
+# order. A section holds the measure's instruction (NA for the CAPE) and one
+# items table per run of consecutive items sharing an answer set: the AUDIT
+# and DUDIT change answer sets between items, and every table's legend and
+# option columns are its own set's.
+hitopdat_docx_sections <- function(printable_w, font_size, font_family) {
+  items <- hitopdat_items[order(hitopdat_items$Item), ]
+  lapply(unique(items$Measure), function(measure) {
+    rows <- items[items$Measure == measure, ]
+    sets <- rows$Choice_Set
+    run <- cumsum(c(TRUE, sets[-1] != sets[-length(sets)]))
+    tables <- lapply(split(seq_len(nrow(rows)), run), function(i) {
+      choices <- hitopdat_choices[hitopdat_choices$Choice_Set == sets[i[1]], ]
+      opts <- data.frame(value = choices$Value, label = choices$Label)
+      make_items_table(
+        rows[i, ],
+        "Item",
+        opts,
+        printable_w,
+        font_size,
+        font_family,
+        opts_per_line = legend_per_line(opts)
+      )
+    })
+    list(
+      instruction = unname(hitopdat_instructions$start[[measure]]),
+      tables = unname(tables)
+    )
+  })
+}
+
+# Internal Helper: how many options a legend line holds. A legend that fits
+# on one line stays on one; a longer one prints two options per line, as the
+# PID-5 forms do, so Word does not break a label in the middle.
+legend_per_line <- function(opts) {
+  one_line <- paste(paste(opts$value, opts$label, sep = " = "), collapse = " • ")
+  if (nchar(one_line) <= 80L) nrow(opts) else 2L
+}
