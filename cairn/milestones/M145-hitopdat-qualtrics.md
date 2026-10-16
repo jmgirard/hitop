@@ -31,7 +31,7 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
   - `file`, `block_name` and `id_prefix`: a value that is not one string (`validate_string()`).
   - `include_instructions`: a value that is not one `TRUE` or `FALSE` (`validate_flag()`).
   - `breaks`: a value that is not a count of 0 or more, or `NULL` (`validate_count()`).
-- [ ] AC5: NEWS.md and the `_pkgdown.yml` reference index list the generator. `pkgdown::check_pkgdown()` passes. `devtools::check()` reports 0 errors and 0 warnings.
+- [x] AC5: NEWS.md and the `_pkgdown.yml` reference index list the generator. `pkgdown::check_pkgdown()` passes. `devtools::check()` reports 0 errors and 0 warnings.
 
 ## Coverage
 
@@ -75,23 +75,24 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
 - spawned: diff-bug, blame-history, prior-review
 - diff-bug #1: the recode claim is untested by a live import, and the 0, 2, 4 harm sets would show a position-based recode — follow-up, row "DAT online file gaps" (AC2's wording is the bound statement and claims nothing about a live import).
 - diff-bug #2: the 10-line DUDIT instruction is unconfirmed in a live import — follow-up, row "DAT online file gaps".
-- diff-bug #3: `import-instructions.Rmd` leaves the HiTOP-DAT out of its `.txt` list — fix now.
-- diff-bug #4: the help's "each of the seven measures that has instruction text" can read as seven questions — fix now (now "six of the seven measures, all but the CAPE").
-- diff-bug #5: `page_header` combined with `sections` would number headers by item — fix now (a `stopifnot()` refuses the combination, as in `build_redcap_zip()`).
-- diff-bug #6: a first section not at row 1, or unsorted rows, misplaces breaks — fix now (same `stopifnot()`).
-- diff-bug #7: `choices` of the wrong length or type fails with no argument named — fix now (`stopifnot()` on length and type).
+- diff-bug #3: `import-instructions.Rmd` leaves the HiTOP-DAT out of its `.txt` list — fix now, fixed a7ebf397.
+- diff-bug #4: the help's "each of the seven measures that has instruction text" can read as seven questions — fix now (now "six of the seven measures, all but the CAPE"), fixed a7ebf397.
+- diff-bug #5: `page_header` combined with `sections` would number headers by item — fix now (a `stopifnot()` refuses the combination, as in `build_redcap_zip()`), fixed 1486f18d.
+- diff-bug #6: a first section not at row 1, or unsorted rows, misplaces breaks — fix now (same `stopifnot()`), fixed 1486f18d.
+- diff-bug #7: `choices` of the wrong length or type fails with no argument named — fix now (`stopifnot()` on length and type), fixed a7ebf397.
 - diff-bug #8: a misnamed measure would silently drop its instruction — reject, false as a defect: the AC1 test asserts the six texts and fails on that mistake.
 - diff-bug #9: the Qualtrics file has no source notice, unlike the Word footer — follow-up, row "DAT online file gaps" (the REDCap file has none either).
 - diff-bug #10: the `expect_setequal()` type assertion is weak — reject, false: `expect_setequal()` fails on any third question type, which is what its comment states.
-- diff-bug #11: the "module = NULL … byte-identical" test title no longer describes the DAT case — fix now (retitled to the width check it makes).
+- diff-bug #11: the "module = NULL … byte-identical" test title no longer describes the DAT case — fix now (retitled to the width check it makes), fixed a7ebf397.
 - diff-bug #12: `artifacts.R`'s filter and note were overwritten — reject, planned change: the script's own header says it records the last build it ran.
 - blame-history #1: a page break inside a measure does not repeat the instruction, unlike REDCap (M144) and the IRF `page_header` (M160) — follow-up, row "DAT online file gaps"; AC1 binds one copy of each text, so repeating them changes the plan, which is the user's decision at the merge question.
-- blame-history #2: no guard on `sections` as `build_redcap_zip()` has — fix now (same fix as diff-bug #5 and #6).
-- blame-history #3: `test-download-pages.R` comments still say the DAT has no Qualtrics file — fix now.
-- blame-history #4: `cairn/DESIGN.md` lines 14 and 47 still say the DAT has no Qualtrics file — fix now.
-- blame-history #5: the ID-width loop's comment says it locks every existing generator — fix now (same fix as diff-bug #11).
+- blame-history #2: no guard on `sections` as `build_redcap_zip()` has — fix now (same fix as diff-bug #5 and #6), fixed 1486f18d.
+- blame-history #3: `test-download-pages.R` comments still say the DAT has no Qualtrics file — fix now, fixed 1486f18d.
+- blame-history #4: `cairn/DESIGN.md` lines 14 and 47 still say the DAT has no Qualtrics file — fix now, fixed 1486f18d.
+- blame-history #5: the ID-width loop's comment says it locks every existing generator — fix now (same fix as diff-bug #11), fixed a7ebf397.
 - blame-history #6: `rebuild_formats` was narrowed to `qualtrics` — reject, planned change (the script's rule to rebuild only the format that changed).
 - blame-history #7: the log says T3 removed a duplicate byte test the diff does not show — reject, false: T1's commit added it and T3 removed it, so the net diff holds none, as the log states.
 - prior-review #1: no instruction repeated after an in-measure break, regressing the M144 and M160 fixes — follow-up, row "DAT online file gaps" (same finding as blame-history #1).
-- prior-review #2: DESIGN.md is stale — fix now (same as blame-history #4).
-- prior-review #3: `generate_docx_hitopdat()`'s `@seealso` does not name the Qualtrics generator — fix now (the Word and Qualtrics help pages now cross-link).
+- prior-review #2: DESIGN.md is stale — fix now (same as blame-history #4), fixed 1486f18d.
+- prior-review #3: `generate_docx_hitopdat()`'s `@seealso` does not name the Qualtrics generator — fix now (the Word and Qualtrics help pages now cross-link), fixed 1486f18d.
+- 2026-10-16 AC5 evidence: on the tree after both fix commits, `devtools::check()` reports 0 errors, 0 warnings and 0 notes. `devtools::test()` has 0 failed, 0 errors and 15 skipped, all merge-base checks. `pkgdown::check_pkgdown()` reports no problems. NEWS.md has the "HiTOP-DAT Qualtrics import file" entry, and `_pkgdown.yml` lists `generate_qualtrics_hitopdat`.
