@@ -80,6 +80,7 @@ The three HiTOP-DAT tables ship announced, with scale names and provenance taken
 - 2026-10-16: T6 done. The internal keyword is gone from the three help pages, and the test now asserts its absence and that each page parsed. The tables have `_pkgdown.yml` rows, a NEWS entry, a README row with the HiTOP-DAT named in the paragraph above, and a `dat` stem in `test-readme-capabilities.R`. The two DESIGN.md passages are updated. Plants: dropping the README row gives 5 failures, and adding the keyword back gives 1. Both were restored by copy.
 - 2026-10-16: claim audit: 36 claims read, 1 corrected — R/data.R (`?hitopdat_scales` cited "revised 2026", a year the title page does not print. It now says "revised version of 2026-10-15", the date from the file's metadata).
 - 2026-10-16: T7 done. On `e815ec63` plus the claim fix: `devtools::test()` gave 0 failures, 15 skips and 29,068 passes. `pkgdown::check_pkgdown()` found no problems. `devtools::check()` gave 0 errors, 0 warnings and 0 notes. Status set to review.
+- 2026-10-16: step-7 approval: m173-hitopdat-author-answers approved for merge
 - 2026-10-16: implementation choice: the NEWS entry goes under "New features", because 0.2.0 shipped without these tables.
 
 ## Decisions
