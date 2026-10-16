@@ -44,9 +44,9 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
 ## Tasks
 
 - [x] T1: Let `build_qualtrics_txt()` in `R/generate_qualtrics.R` take one answer set per item and one instruction per measure. Keep the output of the other instruments byte-identical, and prove it against their committed `*_qualtrics.txt` files. Add `generate_qualtrics_hitopdat()`.
-- [ ] T2: Document in the roxygen block of the generator that each answer carries its scoring value as its recode value (AC2).
-- [ ] T3: Write the parse-back test (AC1) and the per-argument refusal test (AC4).
-- [ ] T4: Add the row to `data-raw/artifacts.R`. Build the file with LF line endings through a binary connection (LESSONS M020). Stage the pkgdown copy, and link it from `download-hitopdat.Rmd`.
+- [x] T2: Document in the roxygen block of the generator that each answer carries its scoring value as its recode value (AC2).
+- [x] T3: Write the parse-back test (AC1) and the per-argument refusal test (AC4).
+- [x] T4: Add the row to `data-raw/artifacts.R`. Build the file with LF line endings through a binary connection (LESSONS M020). Stage the pkgdown copy, and link it from `download-hitopdat.Rmd`.
 - [ ] T5: Add a NEWS entry and the `_pkgdown.yml` reference row. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
@@ -59,6 +59,7 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
 - 2026-10-16: T1 done. `build_qualtrics_txt()` takes `choices` (one data frame per item) and `sections` (row, id, text); NULL for both writes the old output, and a new test shows the nine other committed `.txt` files rebuild byte-identical. Choices made: `id_prefix` defaults to `hdat`, matching the REDCap names; instruction IDs are `<id_prefix>_<measure>_instructions`; each measure after the first starts a page and `breaks` counts within a measure, as in the REDCap file; a break inside a measure does not repeat the instruction, so each text appears once (AC1); the multi-line DUDIT instruction is written as its lines, untested against a live import.
 - 2026-10-16: correction to the T1 line: its new byte test duplicated the existing lock in `test-response-value-no-move.R`, so T3 removes it; that lock covers the nine other `.txt` files.
 - 2026-10-16: checkpoint, T2 to T5 edits written (help statement, parse-back and refusal tests, DAT added to the hand-kept test lists, artifact built and staged, download page, README row, NEWS, reference index); the full suite is still running, so no task is ticked yet. The untracked M172 draft stays unstaged.
+- 2026-10-16: T2, T3, T4 done. Full `devtools::test()`: 0 failed, 0 errors, 15 skipped (merge-base checks); `document()` left no diff. T3 parses with a new `read_qualtrics_questions()` helper (per-question choices, multi-line text); the help text names the `[[Choice:<value>]]` tag and claims nothing about a live import. T4 rebuilt only the DAT `.txt` (`rebuild_formats = "qualtrics"`); the file is LF, and its staged copy is byte-identical. The README capability row gained Qualtrics.
 
 ## Decisions
 
