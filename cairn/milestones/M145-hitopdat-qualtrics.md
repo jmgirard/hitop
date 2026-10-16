@@ -1,6 +1,6 @@
 # M145: HiTOP-DAT Qualtrics import file
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M143, M144
 - **Driving RR:** —
@@ -47,7 +47,7 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
 - [x] T2: Document in the roxygen block of the generator that each answer carries its scoring value as its recode value (AC2).
 - [x] T3: Write the parse-back test (AC1) and the per-argument refusal test (AC4).
 - [x] T4: Add the row to `data-raw/artifacts.R`. Build the file with LF line endings through a binary connection (LESSONS M020). Stage the pkgdown copy, and link it from `download-hitopdat.Rmd`.
-- [ ] T5: Add a NEWS entry and the `_pkgdown.yml` reference row. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
+- [x] T5: Add a NEWS entry and the `_pkgdown.yml` reference row. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
 
@@ -61,6 +61,7 @@ Researchers can import the HiTOP-DAT into Qualtrics from a file that the package
 - 2026-10-16: checkpoint, T2 to T5 edits written (help statement, parse-back and refusal tests, DAT added to the hand-kept test lists, artifact built and staged, download page, README row, NEWS, reference index); the full suite is still running, so no task is ticked yet. The untracked M172 draft stays unstaged.
 - 2026-10-16: T2, T3, T4 done. Full `devtools::test()`: 0 failed, 0 errors, 15 skipped (merge-base checks); `document()` left no diff. T3 parses with a new `read_qualtrics_questions()` helper (per-question choices, multi-line text); the help text names the `[[Choice:<value>]]` tag and claims nothing about a live import. T4 rebuilt only the DAT `.txt` (`rebuild_formats = "qualtrics"`); the file is LF, and its staged copy is byte-identical. The README capability row gained Qualtrics.
 - 2026-10-16: claim audit: 37 claims read, 6 corrected — R/generate_qualtrics.R (instruction sentence names `include_instructions` and drops the CAPE "Its ID" slip), NEWS.md and the build note (name the `[[Choice:<value>]]` tag; the note says "where it has one"), two test comments. The help's recode sentence stays as AC2 requires; it names the tag. The manifest row was regenerated from `main`'s manifest so its `changes` text carries the corrected note; the `.txt` bytes did not move.
+- 2026-10-16: T5 done; status review. On the final tree: `devtools::test()` 0 failed, 0 errors, 15 skipped; `devtools::check()` 0 errors, 0 warnings, 0 notes; `pkgdown::check_pkgdown()` no problems (`_pkgdown.yml` unchanged since). Open point for review: unlike the REDCap file, a page break inside a measure does not repeat the instruction, because AC1 binds each text to appear once.
 
 ## Decisions
 

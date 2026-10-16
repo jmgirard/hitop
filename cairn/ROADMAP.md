@@ -11,7 +11,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M171 | APA notice in PID-5 online exports and adult Word footers | planned | — | normal | milestones/M171-apa-pid5-notice.md |
 | M173 | HiTOP-DAT names, records and announcement after the authors' answers | done | — | normal | milestones/archive/M173-hitopdat-author-answers.md |
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | done | M143, M173 | normal | milestones/archive/M144-hitopdat-word-redcap.md |
-| M145 | HiTOP-DAT Qualtrics import file | in-progress | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
+| M145 | HiTOP-DAT Qualtrics import file | review | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
 | M163 | PID-5 forensic form (FFBF) English forms | blocked | M162 | normal | milestones/M163-pid5ffbf-forms.md |
 
 ## Candidates
