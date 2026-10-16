@@ -282,7 +282,8 @@ usethis::use_data(hitopdat_choices, overwrite = TRUE)
 ## HiTOP-DAT Scales
 ## One row per scale the file scores. The file's own category names and their
 ## memberships are in `data-raw/hitopdat_scale_items.csv`. `Scale` is the name of
-## the matching scale definition in the DAT manual (2021, pp. 20-25), and the
+## the matching scale definition in the revised DAT manual (2026-10-15,
+## "Scale definitions"; cairn/references/jonas2026dat.md), and the
 ## crosswalk below maps each file category to it. The file's spellings that
 ## differ are listed in cairn/SOURCES.md, "HiTOP-DAT".
 dat_scale_names <- c(
@@ -327,7 +328,7 @@ dat_scale_names <- c(
   "CAT - Manipulativeness" = "Manipulativeness",
   "CAT - Mistrust" = "Mistrust",
   "CAT - Non-Perserverance" = "Non-Perseverance",
-  "CAT - Non-Planfulness" = "Non-Premeditation",
+  "CAT - Non-Planfulness" = "Non-Planfulness",
   "CAT - Norm Violation" = "Norm Violation",
   "CAT - Peculiarity" = "Peculiarity",
   "CAT - Perfectionism" = "Perfectionism",

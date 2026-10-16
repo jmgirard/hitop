@@ -40,4 +40,4 @@ hitopdat_items
 \seealso{
 \link{hitopdat_choices}, \link{hitopdat_scales}
 }
-\keyword{internal}
+\keyword{datasets}

@@ -16,7 +16,7 @@ Ruggero, C. *HiTOP Digital Assessment and Tracker (HiTOP-DAT) Manual*, revised
 version of 2026-10-15. Unpublished. The title page prints no year and no version.
 
 **Role.** Settles the name of each scale in `hitopdat_scales$Scale` (D-085, as annotated
-by M173's decision entry). It replaces the 2021 manual for that purpose. The revision
+by D-097). It replaces the 2021 manual for that purpose. The revision
 changes one name: the 2021 "Non-Premeditation" (p. 23) is "Non-Planfulness" here.
 
 ## Extracted values

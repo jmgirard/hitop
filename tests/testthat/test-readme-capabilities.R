@@ -18,7 +18,10 @@ readme_versions <- c(
   "PID-5 Child" = "FULL", "PID-5-BF Child" = "BF"
 )
 
-readme_hitop <- c("HiTOP-SR" = "sr", "HiTOP-BR" = "br", "HiTOP-HSUM" = "hsum")
+readme_hitop <- c(
+  "HiTOP-SR" = "sr", "HiTOP-BR" = "br", "HiTOP-HSUM" = "hsum",
+  "HiTOP-DAT" = "dat"
+)
 
 readme_rows <- c(names(readme_hitop), names(readme_versions))
 
@@ -62,7 +65,8 @@ readme_items <- function(instrument) {
   if (instrument %in% names(readme_hitop)) {
     tbl <- switch(
       readme_hitop[[instrument]],
-      sr = hitopsr_items, br = hitopbr_items, hsum = hitophsum_items
+      sr = hitopsr_items, br = hitopbr_items, hsum = hitophsum_items,
+      dat = hitopdat_items
     )
     return(nrow(tbl))
   }

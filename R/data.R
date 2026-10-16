@@ -516,7 +516,6 @@
 #'   \item{Choice_Set}{Name of the item's answer set (see [hitopdat_choices])}
 #' }
 #' @seealso [hitopdat_choices], [hitopdat_scales]
-#' @keywords internal
 #' @examples
 #' hitopdat_items
 "hitopdat_items"
@@ -535,7 +534,6 @@
 #'   \item{Label}{Response label displayed to respondents}
 #' }
 #' @seealso [hitopdat_items]
-#' @keywords internal
 #' @examples
 #' hitopdat_choices
 "hitopdat_choices"
@@ -544,9 +542,9 @@
 #'
 #' The scales the HiTOP-DAT scores, one row per scale: the 19 IDAS-II scales,
 #' the 33 CAT-PD facets, and one total each for the WHODAS, AUDIT, DUDIT, CAPE
-#' positive items and PHQ-15. `Scale` is the name the HiTOP-DAT manual (2021)
-#' gives the scale. Item numbers are battery numbers, as in
-#' `hitopdat_items$Item`.
+#' positive items and PHQ-15. `Scale` is the name the revised HiTOP-DAT
+#' manual (Jonas et al., revised 2026) gives the scale. Item numbers are
+#' battery numbers, as in `hitopdat_items$Item`.
 #'
 #' Scale membership and reverse keying come from the scoring of the battery's
 #' Qualtrics file. The CAT-PD facets are checked against the IPIP CAT-PD-SF
@@ -568,7 +566,6 @@
 #'   \item{nItems}{The number of items in the scale (integer)}
 #' }
 #' @seealso [hitopdat_items]
-#' @keywords internal
 #' @examples
 #' hitopdat_scales
 "hitopdat_scales"
