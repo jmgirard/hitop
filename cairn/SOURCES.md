@@ -693,6 +693,41 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   entry for it. At the M144 implement stop (2026-10-16), Jeff chose to credit
   the World Health Organization with no year in the Word footer. Ask the
   authors which WHODAS source they mean.
+- **DAT-17: The file's scoring against the manual and its sources
+  (2026-10-17).** Read from the file's survey flow, answer grades, triggers
+  and validation settings, the workbook's cell formulas, and Watson et al.
+  (2012) Table 2. No test responses were run through Qualtrics.
+  (a) IDAS-II norms: the file's 18 pairs match none of Table 2's Patients,
+  Adults or Students columns. Its Cleaning and Checking means exceed the
+  patient means. Its M is higher on 17 scales and its SD larger on 17, so a
+  respondent at the Table 2 adult mean gets T 44.2 to 51.3. The Suicidality
+  T ≥ 65 alert needs a raw 15 under the file's norms and 11 under Table 2.
+  (b) Well-Being prorated by 5 (DAT-2): about T 40 at the adult mean, at
+  most 53.5. (c) Item 99 (DAT-5): "Skip" adds 6 to Social Anxiety and counts
+  as answered, and "Extremely" is ungraded and counts as missing.
+  (d) PHQ-15: the manual reports every scale but the AUDIT and DUDIT as a T
+  score and names Hinz et al. (2017). The file and the sample report give a
+  raw score with uncited cutoffs of 11 (men) and 14 (women), on 14 items
+  totaling 0 to 28. (e) AUDIT and DUDIT: the file prorates (× 10 or × 11 ÷
+  items answered), the manual says raw, and the workbook sums. The file and
+  sample report cut at 8 and 6 (AUDIT) and 6 and 2 (DUDIT) by sex, uncited.
+  The workbook gives 8+ (Babor et al., 2000) and 6+ (Berman et al., 2003).
+  (f) WHODAS M 3.1, SD 5.3 on the prorated 0 to 48 total, and CAPE positive
+  M 1.32, SD 0.176 on the 1 to 4 item mean. The manual names Andrews et al.
+  (2009) and Galletly et al. (2016) with no values and no reference entries.
+  The workbook's WHODAS sheet scores the 36-item form. (g) Five CAT-PD domain
+  T scores are means of facet T scores and are never printed. Negative
+  Emotionality includes Health Anxiety, which the manual puts under
+  Somatoform. (h) Every scale prorates from answered items with no minimum.
+  "% complete" counts only "Skip" answers, except the WHODAS and PHQ count
+  answered items. The AUDIT, DUDIT, CAPE and WHODAS force no response.
+  (i) Over the alert threshold, the client sees an end-of-survey screen
+  (go to an ER or contact a clinician, no resources listed), where the
+  manual says an email with local crisis resources. (j) This copy is
+  UNT-branded and both emails go to a UNT clinic Hushmail address (DAT-13).
+  (k) The 33 CAT-PD norms equal the workbook's at two decimals (T moves at
+  most 0.17). Jeff's report to Katherine Jonas and Whitney (2026-10-17)
+  asks eight questions from these points.
 
 ### Redistribution and the measures' sources (2026-10-16, M144)
 
