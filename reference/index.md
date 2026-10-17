@@ -119,6 +119,8 @@ community norm.
 - [`generate_qualtrics_pid5bfchild()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5bfchild.md)
   : Generate a Qualtrics Import File for the PID-5-BF Child Form (Ages
   11 to 17)
+- [`generate_qualtrics_hitopdat()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopdat.md)
+  : Generate a Qualtrics Import File for the HiTOP-DAT
 - [`generate_redcap_hitopbr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopbr.md)
   : Generate a REDCap Instrument ZIP File for the HiTOP-BR
 - [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)

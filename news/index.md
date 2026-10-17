@@ -27,6 +27,15 @@
   before each measure that has instructions. The US and A4 Word forms
   and the REDCap file are also on a new HiTOP-DAT download page.
 
+- **HiTOP-DAT Qualtrics import file.**
+  [`generate_qualtrics_hitopdat()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopdat.md)
+  writes a Qualtrics import file with questions `hdat_001` to `hdat_382`
+  in battery order. Each question has the answers of its own answer set,
+  and each answer’s `[[Choice:<value>]]` tag carries its value from
+  `hitopdat_choices`. Each measure that has instructions opens with them
+  as a text question, and each measure after the first starts a new
+  page. The file is also on the HiTOP-DAT download page.
+
 - **[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
   scores the PID5BF+M.** `version = "BFPM"` scores the 36-item modified
   brief form of Bach et al. (2020). It returns 18 facets of 2 items each

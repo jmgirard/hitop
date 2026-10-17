@@ -116,10 +116,11 @@
 <p>Welcome to the HiTOP Digital Assessment and Tracker (HiTOP-DAT)
 resources page. The HiTOP-DAT is a battery of 382 items from seven
 published measures: the WHODAS, IDAS-II, AUDIT, DUDIT, CAPE, CAT-PD and
-PHQ-15. Here you can download printable Word forms and a REDCap import
-file. Each form gives each measure’s instructions, where it has them,
-before its first item and shows each item with its own response options.
-The <code>hitop</code> package does not score the HiTOP-DAT yet.</p>
+PHQ-15. Here you can download printable Word forms and Qualtrics and
+REDCap import files. Each form gives each measure’s instructions, where
+it has them, before its first item and shows each item with its own
+response options. The <code>hitop</code> package does not score the
+HiTOP-DAT yet.</p>
 <h3 class="mt-4 mb-3">Ready-to-Use Downloads</h3>
 <p class="text-muted">Choose the format that best fits your immediate research needs.</p>
 <div class="row mt-4 hitop-downloads">
@@ -138,6 +139,18 @@ The <code>hitop</code> package does not score the HiTOP-DAT yet.</p>
 <div class="col-md-4 mb-4">
 <div class="card h-100 shadow-sm">
 <div class="card-body">
+<h5 class="card-title">📊 Qualtrics Import</h5>
+<p class="card-text text-muted">Use this specially formatted text file to import the battery directly into your Qualtrics surveys.</p>
+<div class="d-grid gap-2">
+<a href="../downloads/hitopdat_qualtrics.txt" class="btn btn-outline-primary hitop-dl-btn" download="hitopdat_qualtrics.txt"><span>English (TXT File)</span><span class="hitop-build-badge" title="Build date">2026-10-16</span></a>
+</div>
+<div class="text-center mt-2"><a href="../articles/import-instructions.html#qualtrics-txt" class="hitop-ref-link small">Import Instructions</a></div>
+</div>
+</div>
+</div>
+<div class="col-md-4 mb-4">
+<div class="card h-100 shadow-sm">
+<div class="card-body">
 <h5 class="card-title">🏥 REDCap Import</h5>
 <p class="card-text text-muted">Use this compressed archive file to import the battery as a new instrument in your REDCap project.</p>
 <div class="d-grid gap-2">
@@ -150,7 +163,7 @@ The <code>hitop</code> package does not score the HiTOP-DAT yet.</p>
 </div>
 <hr class="mt-5 mb-4">
 <h3 class="mb-3">Explore the R Package Features</h3>
-<p class="text-muted">The <code>hitop</code> package holds the battery's items, response options and scales, and can build the printable and REDCap files from scratch, so you can adapt them before fielding the battery.</p>
+<p class="text-muted">The <code>hitop</code> package holds the battery's items, response options and scales, and can build the printable, Qualtrics and REDCap files from scratch, so you can adapt them before fielding the battery.</p>
 
 <div class="row mt-4">
   <div class="col-md-6 mb-4">
@@ -171,9 +184,10 @@ The <code>hitop</code> package does not score the HiTOP-DAT yet.</p>
     <div class="card h-100 shadow-sm">
       <div class="card-body">
         <h5 class="card-title">🛠️ Custom File Generation</h5>
-        <p class="card-text">Need to change the formatting or the REDCap page breaks? Build customized DOCX and REDCap files programmatically.</p>
+        <p class="card-text">Need to change the formatting or the page breaks? Build customized DOCX, Qualtrics and REDCap files programmatically.</p>
         <div class="d-flex flex-wrap gap-2">
           <a href="../reference/generate_docx_hitopdat.html" class="btn btn-sm btn-outline-secondary">Printable</a>
+          <a href="../reference/generate_qualtrics_hitopdat.html" class="btn btn-sm btn-outline-secondary">Qualtrics</a>
           <a href="../reference/generate_redcap_hitopdat.html" class="btn btn-sm btn-outline-secondary">REDCap</a>
         </div>
       </div>
@@ -200,6 +214,12 @@ The <code>hitop</code> package does not score the HiTOP-DAT yet.</p>
 <td><span class="hitop-build-badge" title="Build date">2026-10-16</span></td>
 </tr>
 <tr>
+<td><code>hitopdat_qualtrics.txt</code></td>
+<td>Qualtrics import</td>
+<td>1.0</td>
+<td><span class="hitop-build-badge" title="Build date">2026-10-16</span></td>
+</tr>
+<tr>
 <td><code>hitopdat_redcap.zip</code></td>
 <td>REDCap import</td>
 <td>1.0</td>
@@ -218,6 +238,10 @@ The <code>hitop</code> package does not score the HiTOP-DAT yet.</p>
 <h4>Version history</h4>
 <div class="hitop-history-entry">
 <span class="hitop-build-badge" title="Build date">2026-10-16</span><div>First build of the HiTOP-DAT Word forms and REDCap dictionary: the 382 battery items in battery order, each measure's instruction before its first item, and each item's own answer set; the Word footer names each measure's source.<br><span class="hitop-history-files"><code>hitopdat_A4.docx</code>, <code>hitopdat_redcap.zip</code>, <code>hitopdat_US.docx</code></span>
+</div>
+</div>
+<div class="hitop-history-entry">
+<span class="hitop-build-badge" title="Build date">2026-10-16</span><div>First build of the HiTOP-DAT Qualtrics import file: the 382 battery items in battery order, each measure's instruction, where it has one, before its first item, and each item's own answer set with its scoring values in the [[Choice:&lt;value&gt;]] tags.<br><span class="hitop-history-files"><code>hitopdat_qualtrics.txt</code></span>
 </div>
 </div>
 </div>

@@ -58,7 +58,8 @@ Invisibly returns the path to the created file (`file`).
 
 [hitopdat_items](https://jmgirard.github.io/hitop/reference/hitopdat_items.md),
 [hitopdat_choices](https://jmgirard.github.io/hitop/reference/hitopdat_choices.md),
-and
+[`generate_qualtrics_hitopdat()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopdat.md)
+for the Qualtrics import file, and
 [`generate_redcap_hitopdat()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopdat.md)
 for the REDCap import file.
 
@@ -68,6 +69,6 @@ for the REDCap import file.
 # \donttest{
 # Write a HiTOP-DAT paper form to a temporary Word document
 generate_docx_hitopdat(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpTOhkvh/file1a8b156ea2e5.docx
+#> ✔ Document successfully created at /tmp/RtmpQqYUNB/file1a3a99e4e4a.docx
 # }
 ```

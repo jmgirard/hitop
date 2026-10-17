@@ -48,7 +48,7 @@ files, and JSON files for the online form.
 | HiTOP-SR | 405 | Yes | Yes | [Scoring HiTOP-SR](https://jmgirard.github.io/hitop/articles/hitopsr_scoring.html) | Word, Qualtrics, REDCap, JSON |
 | HiTOP-BR | 45 | Yes | Yes | [Scoring HiTOP-BR](https://jmgirard.github.io/hitop/articles/hitopbr_scoring.html) | Word, Qualtrics, REDCap, JSON |
 | HiTOP-HSUM | 650 |  |  |  | Word, Qualtrics, REDCap |
-| HiTOP-DAT | 382 |  |  |  | Word, REDCap |
+| HiTOP-DAT | 382 |  |  |  | Word, Qualtrics, REDCap |
 | PID-5 | 220 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html) | Word, Qualtrics, REDCap, JSON |
 | PID-5-SF | 100 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html), [Scoring PID-5-SF](https://jmgirard.github.io/hitop/articles/pid5sf_scoring.html) | Word, Qualtrics, REDCap, JSON |
 | PID-5-BF | 25 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html), [Scoring PID-5-BF](https://jmgirard.github.io/hitop/articles/pid5bf_scoring.html) | Word, Qualtrics, REDCap, JSON |
