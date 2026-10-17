@@ -1,0 +1,5709 @@
+[[AdvancedFormat]]
+
+[[Block:HiTOP-DAT]]
+
+[[Question:DB]]
+[[ID:hdat_whodas_instructions]]
+In the last 30 days, how much difficulty did you have in:
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_001]]
+Standing for long periods such as 30 minutes.
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_002]]
+Taking care of your household responsibilities.
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_003]]
+Learning a new task, for example, learning how to get to a new place.
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_004]]
+How much of a problem did you have joining in community activities (for example, festivities, religious, or other activities) in the same way as anyone else can?
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_005]]
+How much have you been emotionally affected by your health problems?
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_006]]
+Concentrating on doing something for ten minutes.
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_007]]
+Walking a long distance, such as half a mile.
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_008]]
+Washing your whole body.
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_009]]
+Getting dressed.
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_010]]
+Dealing with people you do not know.
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_011]]
+Maintaining a friendship.
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_012]]
+Your day to day work.
+[[AdvancedChoices]]
+[[Choice:0]]
+None
+[[Choice:1]]
+Mild
+[[Choice:2]]
+Moderate
+[[Choice:3]]
+Severe
+[[Choice:4]]
+Extreme/Cannot do
+
+[[PageBreak]]
+
+[[Question:DB]]
+[[ID:hdat_idas_ii_instructions]]
+Below is a list of feelings, sensations, problems, and experiences that people sometimes have. Read each item to determine how well it describes your recent feelings and experiences. Then, enter the choice that best describes how much you have felt or experienced things this way during THE PAST TWO WEEKS, including today.
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_013]]
+I did not have much of an appetite
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_014]]
+I had little interest in my usual hobbies and activities
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_015]]
+I felt optimistic
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_016]]
+I slept less than usual
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_017]]
+I felt fidgety, restless
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_018]]
+I felt exhausted
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_019]]
+I felt a pain in my chest
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_020]]
+I felt depressed
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_021]]
+I had trouble making up my mind
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_022]]
+I was proud of myself
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_023]]
+I had trouble falling asleep
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_024]]
+I was furious
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_025]]
+I had thoughts of suicide
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_026]]
+I had disturbing thoughts of something bad that happened to me
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_027]]
+I felt self-conscious knowing that others were watching me
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_028]]
+I felt dizzy or lightheaded
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_029]]
+I woke up early and could not get back to sleep
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_030]]
+I was worried about embarrassing myself socially
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_031]]
+I thought a lot about food
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_032]]
+I became anxious in a crowded public setting
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_033]]
+I blamed myself for things
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_034]]
+I cut or burned myself on purpose
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_035]]
+I felt that I had accomplished a lot
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_036]]
+I ate when I wasn't hungry
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_037]]
+I woke up much earlier than usual
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_038]]
+I felt like eating less than usual
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_039]]
+I looked forward to things with enjoyment
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_040]]
+I had nightmares that reminded me of something bad that happened
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_041]]
+I slept more than usual
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_042]]
+It took a lot of effort for me to get going
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_043]]
+I felt inadequate
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_044]]
+I was trembling or shaking
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_045]]
+I thought that the world would be better off without me
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_046]]
+I had memories of something scary that happened
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_047]]
+I felt like breaking things
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_048]]
+I woke up frequently during the night
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_049]]
+I felt enraged
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_050]]
+I hurt myself purposely
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_051]]
+I felt faint
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_052]]
+I felt discouraged about things
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_053]]
+I found it difficult to make eye contact with people
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_054]]
+I got upset thinking about something bad that happened
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_055]]
+I had trouble waking up in the morning
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_056]]
+I lost my temper and yelled at people
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_057]]
+My heart was racing or pounding
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_058]]
+I thought about my own death
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_059]]
+I found it difficult to talk with people I did not know well
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_060]]
+I found myself worrying all the time
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_061]]
+I had a very dry mouth
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_062]]
+I felt hopeful about the future
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_063]]
+I slept very poorly
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_064]]
+I thought about hurting myself
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_065]]
+I felt that I had a lot to look forward to
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_066]]
+I felt much worse in the morning than later in the day
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_067]]
+I felt drowsy, sleepy
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_068]]
+I was short of breath
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_069]]
+I talked more slowly than usual
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_070]]
+I felt like I was choking
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_071]]
+I felt like I had a lot of interesting things to do
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_072]]
+I did not feel much like eating
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_073]]
+I had trouble concentrating
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_074]]
+Little things made me mad
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_075]]
+I ate more than usual
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_076]]
+I felt like I had a lot of energy
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_077]]
+I rearranged things so that they were in a certain order
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_078]]
+I washed my hands excessively
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_079]]
+I kept racing from one activity to the next
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_080]]
+I checked things over and over again
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_081]]
+I felt the urge to rearrange things so that they were “just right”
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_082]]
+I worried a lot about germs
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_083]]
+I spoke so rapidly that others could not understand me
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_084]]
+I felt elated for no special reason
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_085]]
+I tried not to think about bad things from my past
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_086]]
+I avoided small spaces
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_087]]
+I found myself checking things, even though I knew it wasn’t necessary
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_088]]
+I avoided handling dirty things
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_089]]
+It felt like my mind was moving “a mile a minute”
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_090]]
+I felt like I was “on top of the world”
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_091]]
+I avoided situations that bring up bad memories
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_092]]
+I was afraid of getting trapped in a crowd
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_093]]
+I felt the urge to check to make sure I had done something
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_094]]
+I followed the same, fixed order in performing everyday tasks
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_095]]
+My thoughts jumped rapidly from one idea to another
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_096]]
+I felt anxious in small spaces
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_097]]
+I felt compelled to follow certain rituals
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_098]]
+I had difficulty touching something that was dirty
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_099]]
+My thoughts were moving so quickly it was hard to keep up
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_100]]
+I had so much energy it was hard for me to sit still
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_101]]
+I tried to ignore upsetting memories
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_102]]
+I was afraid of tunnels
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_103]]
+I had to clean myself because I felt contaminated
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_104]]
+I felt that I could do things that other people couldn’t
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_105]]
+I avoided talking about bad experiences from my past
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_106]]
+I avoided tight, enclosed spaces
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_107]]
+I had little rituals or habits that took up a lot of my time
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_108]]
+I avoided using public restrooms
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_109]]
+I had much more energy than usual
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_110]]
+I used an object (such as a towel) so I could avoid touching something directly
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_111]]
+I was anxious about talking in public
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little bit
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+Quite a bit
+[[Choice:5]]
+Extremely
+
+[[PageBreak]]
+
+[[Question:DB]]
+[[ID:hdat_audit_instructions]]
+Because alcohol use can affect your health and can interfere with certain medications and treatments, it is important that we ask some questions about your use of alcohol. Your answers will remain confidential so please be honest. Check the box that best describes your answer to each question.
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_112]]
+How often do you have a drink containing alcohol?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Monthly
+[[Choice:2]]
+2-4 times a month
+[[Choice:3]]
+2-3 times a week
+[[Choice:4]]
+4 or more times a week
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_113]]
+How many drinks containing alcohol do you have on a typical day when you are drinking?
+[[AdvancedChoices]]
+[[Choice:0]]
+1 or 2
+[[Choice:1]]
+3 or 4
+[[Choice:2]]
+5 or 6
+[[Choice:3]]
+7 to 9
+[[Choice:4]]
+10 or more
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_114]]
+How often do you have 6 or more drinks on one occasion?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_115]]
+How often during the last year have you found that you were not able to stop drinking daily once you had started?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_116]]
+How often during the last year have you failed to do what was normally expected of you because of drinking?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_117]]
+How often during the last year have you needed a first drink in the morning to get yourself going after a heavy drinking session?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_118]]
+How often during the last year have you had a feeling of guilt or remorse after drinking?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_119]]
+How often during the last year have you been unable to remember what happened the night before because of your drinking?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_120]]
+Have you or someone else been injured because of your drinking?
+[[AdvancedChoices]]
+[[Choice:0]]
+No
+[[Choice:2]]
+Yes, but not in the last year
+[[Choice:4]]
+Yes, during the last year
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_121]]
+Has a relative, friend, doctor, or other health care worker been concerned about your drinking or suggested you cut down?
+[[AdvancedChoices]]
+[[Choice:0]]
+No
+[[Choice:2]]
+Yes, but not in the last year
+[[Choice:4]]
+Yes, during the last year
+
+[[PageBreak]]
+
+[[Question:DB]]
+[[ID:hdat_dudit_instructions]]
+Here are a few questions about drugs. Drugs include:
+Marijuana, hash, hash oil
+Methamphetamine, phenmetraline, khat, betel nut, ritaline (methylphenidate)
+Crack, freebase, coca leaves
+Smoked heroin, heroin, opium
+Ecstasy, LSD, mescaline, peyote, PCP (phencyclidine), psilocybin, DMT (dimethyltrypamine)
+Thinner, trichlorethylene, gasoline, gas, solution, glue
+GHB, anabolic steroids, laughing gas (halothane), amyl nitrate (poppers), anticholinergics
+Pills count as drugs when you take them to feel good or get high. Pills that are sometimes used as drugs include sleeping pills, sedatives, and painkillers.
+Please answer as correctly and honestly as possible by indicating which answer is right for you.
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_122]]
+How often do you have drugs other than alcohol?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Once a month or less often
+[[Choice:2]]
+2 to 4 times a month
+[[Choice:3]]
+2 to 3 times a week
+[[Choice:4]]
+4 times a week or more often
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_123]]
+Do you use more than one drug on the same occasion?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Once a month or less often
+[[Choice:2]]
+2 to 4 times a month
+[[Choice:3]]
+2 to 3 times a week
+[[Choice:4]]
+4 times a week or more often
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_124]]
+How many times do you take drugs on a typical day when you use drugs?
+[[AdvancedChoices]]
+[[Choice:0]]
+0
+[[Choice:1]]
+1 to 2
+[[Choice:2]]
+3 to 4
+[[Choice:3]]
+5 to 6
+[[Choice:4]]
+7 or more
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_125]]
+How often are you influenced heavily by drugs?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_126]]
+Over the past year, have you felt that your longing for drugs was so strong that you could not resist it?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_127]]
+Has it happened, over the past year, that you have not been able to stop taking drugs once you started?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_128]]
+How often over the past year have you taken drugs and then neglected to do something you should have done?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_129]]
+How often over the past year have you needed to take a drug the morning after heavy drug use the day before?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_130]]
+How often over the past year have you had guilt feelings or a bad conscience because you used drugs?
+[[AdvancedChoices]]
+[[Choice:0]]
+Never
+[[Choice:1]]
+Less than monthly
+[[Choice:2]]
+Monthly
+[[Choice:3]]
+Weekly
+[[Choice:4]]
+Daily or almost daily
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_131]]
+Have you or anyone else been hurt (mentally or physically) because you used drugs?
+[[AdvancedChoices]]
+[[Choice:0]]
+No
+[[Choice:2]]
+Yes, but not in the last year
+[[Choice:4]]
+Yes, during the last year
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_132]]
+Has a relative or a friend, a doctor or a nurse, or anyone else, been worried about your drug use or said to you that you should stop using drugs?
+[[AdvancedChoices]]
+[[Choice:0]]
+No
+[[Choice:2]]
+Yes, but not in the last year
+[[Choice:4]]
+Yes, during the last year
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_133]]
+Do you ever feel as if people seem to drop hints about you or say things with a double meaning?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_134]]
+Do you ever feel as if things in magazines or on TV were written especially for you?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_135]]
+Do you ever feel as if some people are not what they seem to be?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_136]]
+Do you ever feel as if you are being persecuted in some way?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_137]]
+Do you ever feel as if there is a conspiracy against you?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_138]]
+Do you ever feel as if you are destined to be someone very important?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_139]]
+Do you ever feel that you are a very special or unusual person?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_140]]
+Do you ever think that people can communicate telepathically?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_141]]
+Do you ever feel as if electrical devices such as computers can influence the way you think?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_142]]
+Do you believe in the power of witchcraft, voodoo or the occult?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_143]]
+Do you ever feel that people look at you oddly because of your appearance?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_144]]
+Do you ever feel as if the thoughts in your head are being taken away from you?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_145]]
+Do you ever feel as if the thoughts in your head are not your own?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_146]]
+Have your thoughts ever been so vivid that you were worried other people would hear them?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_147]]
+Do you ever hear your own thoughts being echoed back to you?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_148]]
+Do you ever feel as if you are under the control of some force or power other than yourself?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_149]]
+Do you ever hear voices when you are alone?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_150]]
+Do you ever hear voices talking to each other when you are alone?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_151]]
+Do you ever feel as if a double has taken the place of a family member, friend or acquaintance?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_152]]
+Do you ever see objects, people or animals that other people cannot see?
+[[AdvancedChoices]]
+[[Choice:1]]
+Never
+[[Choice:2]]
+Sometimes
+[[Choice:3]]
+Often
+[[Choice:4]]
+Nearly Always
+
+[[PageBreak]]
+
+[[Question:DB]]
+[[ID:hdat_cat_pd_instructions]]
+For the following questions, please describe yourself as you generally are now, not as you wish to be in the future. Describe yourself as you honestly see yourself, in relation to other people you know who are the same sex and roughly the same age as you. So that you can describe yourself in an honest manner, your responses will be kept in absolute confidence.
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_153]]
+I have frequent mood swings
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_154]]
+I feel like people often are out to get something from me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_155]]
+I love to be the center of attention
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_156]]
+I am easily controlled by others in my life
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_157]]
+I care about others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_158]]
+I sometimes get lost in my daydreams
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_159]]
+I have urges to cut myself
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_160]]
+I deserve special treatment from others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_161]]
+I frequently get things mixed up in my head
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_162]]
+I feel my anxiety overwhelms me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_163]]
+I feel at times that I have left my body and am somehow outside my physical self
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_164]]
+I boss people around
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_165]]
+I expect nothing less than perfection
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_166]]
+I get angry easily
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_167]]
+I am a strange person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_168]]
+I find nothing excites me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_169]]
+I am often out for revenge
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_170]]
+I work too much
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_171]]
+I have difficulty expressing my feelings
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_172]]
+I take advantage of others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_173]]
+I believe I have supernatural powers
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_174]]
+I worry a lot about catching a serious illness
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_175]]
+I have always been a rule-breaker
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_176]]
+I enjoy going to social gatherings
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_177]]
+I insult people
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_178]]
+I do not like reading or hearing opinions that go against my way of thinking
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_179]]
+I love dangerous situations
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_180]]
+I am always worried that my partner is going to leave me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_181]]
+I quickly lose interest in the tasks I start
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_182]]
+I don't think much about sex
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_183]]
+I neglect my duties
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_184]]
+I tend to feel very hopeless
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_185]]
+I do things without thinking of the consequences
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_186]]
+I lose control over my behavior when I'm emotional
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_187]]
+I feel that others are out to get me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_188]]
+I like to stand out in a crowd
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_189]]
+I let others take advantage of me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_190]]
+I am not a caring person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_191]]
+I sometimes have fantasies that are overwhelming
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_192]]
+I have thoughts of injuring myself
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_193]]
+I should get special privileges
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_194]]
+I often feel like my thoughts make no sense
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_195]]
+I am nervous or tense most of the time
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_196]]
+I see strange figures or visions when nothing is really there
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_197]]
+I like having authority over others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_198]]
+I don't consider a task finished until it's perfect
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_199]]
+I often feel overwhelmed with rage
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_200]]
+I am odd
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_201]]
+I feel that nothing seems to make me feel good
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_202]]
+I am excited to inflict pain on others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_203]]
+I am a workaholic, with little time for fun or pleasure
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_204]]
+I think it's best to keep my emotions to myself
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_205]]
+I cheat to get ahead
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_206]]
+I can see into the future
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_207]]
+I am prone to complain about my health
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_208]]
+I get in trouble with the law
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_209]]
+I feel comfortable around people
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_210]]
+I ridicule people
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_211]]
+I find it difficult to consider as valid opinions that differ from my own
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_212]]
+I like to do frightening things
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_213]]
+I am usually convinced that my friends and romantic partners will betray me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_214]]
+I have difficulty keeping my attention on a task
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_215]]
+I have little desire for sex or romance
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_216]]
+I follow through with my plans
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_217]]
+I am sad most of the time
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_218]]
+I act without planning
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_219]]
+I have unpredictable emotions and moods
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_220]]
+I believe that, sooner or later, people always let you down
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_221]]
+I am likely to show off if I get the chance
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_222]]
+I let myself be pushed around
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_223]]
+I am a cold-hearted person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_224]]
+I sometimes find myself in a trance-like state without trying
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_225]]
+I feel that cutting myself helps me feel better
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_226]]
+I believe that I am better than others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_227]]
+I often space out and lose track of what's going on
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_228]]
+I panic easily
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_229]]
+I hear voices talking about me when nobody is really there
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_230]]
+I insist that others do things my way
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_231]]
+I am not happy until all the details are taken care of
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_232]]
+I get irritated easily
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_233]]
+I have been told that my behavior often is bizarre
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_234]]
+I am not a joyful person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_235]]
+I get even with others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_236]]
+I have noticed that I put my work ahead of too many other things
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_237]]
+I am open about my feelings
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_238]]
+I like to trick people into doing things for me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_239]]
+I am able to read the minds of others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_240]]
+I often am concerned about diseases I might have
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_241]]
+I am a law-abiding citizen
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_242]]
+I keep to myself even when I'm around other people
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_243]]
+I say inappropriate things
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_244]]
+I have been told that I am rigid and inflexible
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_245]]
+I get a thrill out of doing things that might kill me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_246]]
+I get jealous easily
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_247]]
+I am easily distracted
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_248]]
+I could easily live without having sex
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_249]]
+I keep my appointments
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_250]]
+I generally focus on the negative side of things
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_251]]
+I jump into things without thinking
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_252]]
+I overreact to every little thing in life
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_253]]
+I suspect hidden motives in others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_254]]
+I use my looks to get what I want
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_255]]
+I prefer that others make the major decisions in my life
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_256]]
+I have fixed opinions
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_257]]
+I do not care how my actions affect others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_258]]
+I feel like my imagination can run wild
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_259]]
+I frequently have thoughts about killing myself
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_260]]
+I don't think I should have to wait in lines like others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_261]]
+I often have disorganized thoughts
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_262]]
+I feel that my worry and anxiety is out of control
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_263]]
+I have had the feeling that I might not be human
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_264]]
+I make demands on others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_265]]
+I set high standards for myself and others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_266]]
+I have a violent temper
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_267]]
+I am considered to be kind of eccentric
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_268]]
+I have trouble getting interested in things
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_269]]
+I hurt people
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_270]]
+I work longer hours than most people
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_271]]
+I am not good at describing the emotions I feel throughout the day
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_272]]
+I deceive people
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_273]]
+I have the power to cast spells on others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_274]]
+I am afraid that my life will be cut short by illness
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_275]]
+I respect authority
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_276]]
+I rarely enjoy being with people
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_277]]
+I shoot my mouth off
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_278]]
+I am often accused of being narrow-minded
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_279]]
+I would do anything to get an adrenaline rush
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_280]]
+I usually believe that my friends will abandon me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_281]]
+I quit tasks as soon as I get bored
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_282]]
+I enjoy sexual experiences intensely
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_283]]
+I am a very reliable person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_284]]
+I dislike myself
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_285]]
+I am a firm believer in thinking things through
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_286]]
+I know how to cope
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_287]]
+I believe that people are basically honest and good
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_288]]
+I enjoy flirting with complete strangers
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_289]]
+I let myself be directed by others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_290]]
+I can't be bothered with others’ needs
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_291]]
+I am sometimes so preoccupied with my own thoughts I don't realize others are trying to speak to me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_292]]
+I have written a suicide note
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_293]]
+I feel that others are beneath me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_294]]
+I am easily disoriented
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_295]]
+I am generally a fearful person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_296]]
+I have had the feeling that I was someone else
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_297]]
+I have a strong need for power
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_298]]
+I demand perfection in others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_299]]
+I am not easily annoyed
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_300]]
+I would describe myself as a normal person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_301]]
+I have a lot of fun
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_302]]
+I will spread false rumors as a way to hurt others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_303]]
+I work so hard that my relationships have suffered
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_304]]
+I have difficulty showing affection
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_305]]
+I have exploited others for my own gain
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_306]]
+I can control objects with my mind
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_307]]
+I have medical problems that my doctors don't understand
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_308]]
+I have a rebellious side that gets me into trouble
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_309]]
+I do not feel close to people
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_310]]
+I have a mouth that gets me into trouble
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_311]]
+I am convinced that my way is the best way
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_312]]
+I prefer safety over risk
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_313]]
+I am paralyzed by a fear of rejection
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_314]]
+I finish what I start
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_315]]
+I see little need for romance in my life
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_316]]
+I avoid responsibilities
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_317]]
+I look at the bright side of life
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_318]]
+I make careful choices
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_319]]
+I can remain cool-headed when stressed out
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_320]]
+I am pretty trusting of others' motives
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_321]]
+I don't enjoy being in the spotlight
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_322]]
+I need others to help run my life
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_323]]
+I believe strongly that the world would be a much better place if I had my way
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_324]]
+I am not a sympathetic person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_325]]
+I sometimes have extremely vivid pictures in my head
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_326]]
+I believe that I am always right
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_327]]
+I easily lose my train of thought
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_328]]
+I am easily startled
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_329]]
+I sometimes think the TV is talking directly to me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_330]]
+I am known as a controlling person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_331]]
+I strive in every way possible to be flawless
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_332]]
+I don't let little things anger me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_333]]
+I am an energetic person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_334]]
+I am ready to hit someone when I get angry
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_335]]
+I push myself very hard to succeed
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_336]]
+I am able to describe my feelings easily
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_337]]
+I am an honest person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_338]]
+I use magic to ward off bad thoughts about me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_339]]
+I worry about my health
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_340]]
+I got in trouble a lot at school
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_341]]
+I find it difficult to approach others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_342]]
+I have a reputation for asking inappropriate questions
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_343]]
+I am inflexible when I think I'm right
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_344]]
+I am secure in my relationships
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_345]]
+I am quick to quit when the going gets tough
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_346]]
+I love the feeling of being intimately close with someone
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_347]]
+I cannot be counted on to get things done
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_348]]
+I rarely feel depressed
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_349]]
+I prefer to 'live in the moment' rather than plan things out
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_350]]
+I am indifferent to the feelings of others
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_351]]
+I treat people as inferiors
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_352]]
+I have a good memory for things I've done throughout the day
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_353]]
+I rarely worry
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_354]]
+I like to start fights
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_355]]
+I am emotionally reserved
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_356]]
+I can predict the outcome of events
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_357]]
+I think that I am in good medical condition
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_358]]
+I have done many things for which I could have been (or was) arrested
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_359]]
+I find it difficult to compromise in policy debates
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_360]]
+I generally trust my partners to be faithful to me
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_361]]
+I am not a dependable person
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_362]]
+I formulate ideas clearly
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_363]]
+I enjoy a good brawl
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_364]]
+I believe that most questions have one right answer
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_365]]
+I have intentionally done myself physical harm
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_366]]
+I am known for saying offensive things
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_367]]
+I feel as if my body, or a part of it, has disappeared
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_368]]
+I have no will to live
+[[AdvancedChoices]]
+[[Choice:1]]
+Very Untrue of Me
+[[Choice:2]]
+Moderately Untrue of Me
+[[Choice:3]]
+Neither True nor Untrue of Me
+[[Choice:4]]
+Moderately True of Me
+[[Choice:5]]
+Very True of Me
+
+[[PageBreak]]
+
+[[Question:DB]]
+[[ID:hdat_phq_15_instructions]]
+During the past 4 weeks, how much have you been bothered by any of the following problems?
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_369]]
+Stomach pain?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_370]]
+Back pain?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_371]]
+Pain in your arms, legs, or joints (knees, hips, etc.)?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_372]]
+Headaches?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_373]]
+Chest pain?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_374]]
+Dizziness?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_375]]
+Fainting spells?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_376]]
+Feeling your heart pound or race?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_377]]
+Shortness of breath?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_378]]
+Pain or problems during sexual intercourse?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_379]]
+Constipation, loose bowels, or diarrhea?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_380]]
+Nausea, gas, or indigestion?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_381]]
+Feeling tired or having low energy?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:hdat_382]]
+Trouble sleeping?
+[[AdvancedChoices]]
+[[Choice:0]]
+Not bothered at all
+[[Choice:1]]
+Bothered a little
+[[Choice:2]]
+Bothered a lot
+

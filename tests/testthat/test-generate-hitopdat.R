@@ -282,9 +282,85 @@ test_that("each REDCap measure after the first starts a page, and breaks count f
   expect_equal(dd[["Section Header"]][dd[["Variable / Field Name"]] == cape_first], "<br>")
 })
 
+# ---- Qualtrics import file ---------------------------------------------------
+
+test_that("the Qualtrics file holds each item with its own answer set and recode values", {
+  f <- withr::local_tempfile(fileext = ".txt")
+  suppressMessages(generate_qualtrics_hitopdat(file = f))
+  expect_identical(readLines(f, n = 1L), "[[AdvancedFormat]]")
+  qs <- read_qualtrics_questions(f)
+  mc <- Filter(function(q) q$type == "MC", qs)
+  items <- dat_items()
+  # Exactly hdat_001 to hdat_382, in battery order, with each item's text.
+  expect_identical(vapply(mc, `[[`, "", "id"), sprintf("hdat_%03d", 1:382))
+  expect_identical(vapply(mc, `[[`, "", "text"), items$Text)
+  # Each item's [[Choice:value]] values and labels are its answer set's, in
+  # the set's order: the [[Choice:<value>]] tags the help page names.
+  for (k in seq_along(mc)) {
+    expect_identical(mc[[k]]$choices, dat_set(items$Choice_Set[k]), info = mc[[k]]$id)
+  }
+  # Every question is an item (MC) or an instruction (DB).
+  expect_setequal(vapply(qs, `[[`, "", "type"), c("MC", "DB"))
+})
+
+test_that("the Qualtrics file puts each instruction once, before its measure's first item", {
+  f <- withr::local_tempfile(fileext = ".txt")
+  suppressMessages(generate_qualtrics_hitopdat(file = f))
+  qs <- read_qualtrics_questions(f)
+  want <- dat_instructions()
+  db <- which(vapply(qs, `[[`, "", "type") == "DB")
+  # The six texts, each once, in battery order; the DUDIT's keeps its lines.
+  expect_identical(vapply(qs[db], `[[`, "", "text"), want$text)
+  # Named for the measure, as the help page says.
+  expect_identical(
+    vapply(qs[db], `[[`, "", "id"),
+    c(
+      "hdat_whodas_instructions", "hdat_idas_ii_instructions",
+      "hdat_audit_instructions", "hdat_dudit_instructions",
+      "hdat_cat_pd_instructions", "hdat_phq_15_instructions"
+    )
+  )
+  items <- dat_items()
+  for (k in seq_len(nrow(want))) {
+    first <- min(items$Item[items$Measure == want$measure[k]])
+    expect_identical(qs[[db[k] + 1L]]$id, sprintf("hdat_%03d", first), info = want$measure[k])
+  }
+
+  # Without instructions the file holds the items alone.
+  g <- withr::local_tempfile(fileext = ".txt")
+  suppressMessages(generate_qualtrics_hitopdat(file = g, include_instructions = FALSE))
+  expect_identical(unique(vapply(read_qualtrics_questions(g), `[[`, "", "type")), "MC")
+})
+
+test_that("each Qualtrics measure after the first starts a page, and breaks count from it", {
+  items <- dat_items()
+  # The item each page break comes before: the next item question after it.
+  break_before <- function(file) {
+    lines <- readLines(file, warn = FALSE)
+    ids <- grep("^\\[\\[ID:hdat_[0-9]+\\]\\]$", lines)
+    vapply(which(lines == "[[PageBreak]]"), function(p) {
+      as.integer(sub("^\\[\\[ID:hdat_0*([0-9]+)\\]\\]$", "\\1", lines[min(ids[ids > p])]))
+    }, integer(1))
+  }
+  firsts <- vapply(unique(items$Measure), function(m) min(items$Item[items$Measure == m]), integer(1))
+
+  f <- withr::local_tempfile(fileext = ".txt")
+  suppressMessages(generate_qualtrics_hitopdat(file = f, breaks = 0))
+  expect_identical(break_before(f), unname(firsts[-1]))
+
+  f <- withr::local_tempfile(fileext = ".txt")
+  suppressMessages(generate_qualtrics_hitopdat(file = f, breaks = 10))
+  # Within a measure, a break falls before its 11th, 21st, ... item.
+  within <- unlist(lapply(unique(items$Measure), function(m) {
+    n <- items$Item[items$Measure == m]
+    n[seq_along(n) %% 10 == 1 & seq_along(n) > 1]
+  }))
+  expect_identical(break_before(f), sort(c(within, unname(firsts[-1]))))
+})
+
 # ---- Refusals (AC4) ---------------------------------------------------------
 #
-# Each formal of the two generators maps to a bad value and the words its
+# Each formal of the three generators maps to a bad value and the words its
 # check prints. The map is checked against formals(), so an argument added
 # later fails here until it has a refusal.
 DAT_REFUSALS <- list(
@@ -300,6 +376,13 @@ DAT_REFUSALS <- list(
     form_name = list(1, "`form_name` argument must be a single string"),
     required = list("yes", "`required` argument must be `TRUE` or `FALSE`"),
     breaks = list(1.5, "`breaks` argument must be a single whole number or NULL")
+  ),
+  generate_qualtrics_hitopdat = list(
+    file = list(c("a.txt", "b.txt"), "`file` argument must be a single string"),
+    block_name = list(1, "`block_name` argument must be a single string or NULL"),
+    id_prefix = list(NA_character_, "`id_prefix` argument must be a single string"),
+    include_instructions = list(NA, "`include_instructions` argument must be `TRUE` or `FALSE`"),
+    breaks = list(-1, "`breaks` argument is out of range")
   )
 )
 
@@ -309,7 +392,10 @@ for (fn_name in names(DAT_REFUSALS)) {
     fn <- getExportedValue("hitop", fn_name)
     refusals <- DAT_REFUSALS[[fn_name]]
     expect_setequal(names(refusals), names(formals(fn)))
-    ext <- if (startsWith(fn_name, "generate_docx")) ".docx" else ".zip"
+    ext <- switch(
+      sub("^generate_([a-z]+)_.*$", "\\1", fn_name),
+      docx = ".docx", redcap = ".zip", qualtrics = ".txt"
+    )
     for (arg in names(refusals)) {
       out <- withr::local_tempfile(fileext = ext)
       call_args <- list(file = out)
@@ -349,6 +435,19 @@ test_that("breaks refuses a negative count and takes 0 and NULL", {
   for (ok in list(0, NULL)) {
     expect_no_error(suppressMessages(generate_redcap_hitopdat(
       file = withr::local_tempfile(fileext = ".zip"),
+      breaks = ok
+    )))
+  }
+})
+
+test_that("the Qualtrics generator refuses a breaks that is not whole and takes 0 and NULL", {
+  expect_error(
+    generate_qualtrics_hitopdat(file = withr::local_tempfile(fileext = ".txt"), breaks = 1.5),
+    "must be a single whole number or NULL"
+  )
+  for (ok in list(0, NULL)) {
+    expect_no_error(suppressMessages(generate_qualtrics_hitopdat(
+      file = withr::local_tempfile(fileext = ".txt"),
       breaks = ok
     )))
   }
@@ -426,3 +525,6 @@ test_that("every other instrument's fresh REDCap dictionary equals its committed
     )
   }
 })
+
+# The other instruments' Qualtrics files are flat text, so their lock is a
+# byte comparison, in test-response-value-no-move.R.

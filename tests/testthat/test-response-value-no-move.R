@@ -31,6 +31,7 @@ flat_text_builders <- list(
   pid5bfchild_qualtrics.txt = function(file) generate_qualtrics_pid5bfchild(file = file),
   hitopsr_qualtrics.txt = function(file) generate_qualtrics_hitopsr(file = file),
   hitopbr_qualtrics.txt = function(file) generate_qualtrics_hitopbr(file = file),
+  hitopdat_qualtrics.txt = function(file) generate_qualtrics_hitopdat(file = file),
   pid5_redcap.zip = function(file) generate_redcap_pid5(file = file),
   pid5sf_redcap.zip = function(file) generate_redcap_pid5sf(file = file),
   pid5bf_redcap.zip = function(file) generate_redcap_pid5bf(file = file),

@@ -180,8 +180,8 @@ test_that("download pages link the centralized import-instructions article", {
       fixed = TRUE, info = basename(page)
     )
     # Qualtrics card links the right section: HSUM ships a .qsf, the rest .txt.
-    # A page whose instrument has no Qualtrics file in the manifest (the
-    # HiTOP-DAT until its import file ships) links no Qualtrics section.
+    # A page whose instrument has no Qualtrics file in the manifest links no
+    # Qualtrics section.
     stem <- sub("^download-(.*)\\.Rmd$", "\\1", basename(page))
     has_qualtrics <- any(
       sub("[_.].*$", "", m_q$file) == stem

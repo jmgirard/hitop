@@ -442,6 +442,96 @@ generate_qualtrics_pid5bfchild <- function(
   )
 }
 
+#' Generate a Qualtrics Import File for the HiTOP-DAT
+#'
+#' @description Creates a text file formatted for the Qualtrics Advanced Format
+#'   import tool containing the 382 items of the HiTOP Digital Assessment and
+#'   Tracker (HiTOP-DAT) battery. The item questions are `hdat_001` to
+#'   `hdat_382` in battery order (`hitopdat_items$Item`), each a single-answer
+#'   multiple-choice question whose choices are the values and labels of the
+#'   item's own answer set (`hitopdat_choices`). Each answer carries its
+#'   scoring value from `hitopdat_choices$Value` as its Qualtrics recode
+#'   value, written in the file as the answer's `[[Choice:<value>]]` tag.
+#'   With `include_instructions = TRUE`, each measure that has instruction
+#'   text opens with a descriptive text question holding it: six of the
+#'   seven measures, all but the CAPE. That question's ID is
+#'   `<id_prefix>_<measure>_instructions`, where `<measure>` is the measure's
+#'   name in lower case with each run of other characters made `_`
+#'   (`hdat_whodas_instructions`, `hdat_idas_ii_instructions`). Each measure
+#'   after the first starts a new page.
+#'
+#' @seealso [generate_docx_hitopdat()] and [generate_redcap_hitopdat()] for
+#'   the Word forms and the REDCap import file. Step-by-step import
+#'   instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
+#'
+#' @param file Character string specifying the output file path. Defaults to
+#'   `"hitopdat_qualtrics.txt"`.
+#' @param block_name Character string specifying the name of the block in
+#'   Qualtrics. Defaults to `"HiTOP-DAT"`.
+#' @param id_prefix Character string specifying the prefix for the question IDs.
+#'   Defaults to `"hdat"`.
+#' @param include_instructions Logical. If `TRUE` (default), includes each
+#'   measure's instruction text as a descriptive text question.
+#' @param breaks Integer or `NULL`. The number of items of a measure to
+#'   display before inserting a page break, counted from the start of each
+#'   measure. Set to `0` or `NULL` to break pages only between measures.
+#'   Defaults to `15`.
+#'
+#' @return Invisibly returns the path to the created file (`file`).
+#'
+#' @examples
+#' # Write a HiTOP-DAT Qualtrics import file to a temporary location
+#' generate_qualtrics_hitopdat(file = tempfile(fileext = ".txt"))
+#'
+#' @export
+generate_qualtrics_hitopdat <- function(
+  file = "hitopdat_qualtrics.txt",
+  block_name = "HiTOP-DAT",
+  id_prefix = "hdat",
+  include_instructions = TRUE,
+  breaks = 15
+) {
+  # build_qualtrics_txt() checks the other arguments. `file` is checked here,
+  # and `id_prefix` before the instruction IDs are built from it.
+  validate_string(file, "file")
+  validate_string(id_prefix, "id_prefix")
+
+  items <- hitopdat_items[order(hitopdat_items$Item), ]
+
+  # One (value, label) data frame per answer set, then one per item from its
+  # set, in the table's order.
+  set_choices <- lapply(
+    split(hitopdat_choices, hitopdat_choices$Choice_Set),
+    function(x) data.frame(value = x$Value, label = x$Label)
+  )
+
+  first <- !duplicated(items$Measure)
+  measures <- items$Measure[first]
+
+  build_qualtrics_txt(
+    items = items,
+    max_n = max(hitopdat_items$Item),
+    instructions = NULL,
+    file = file,
+    block_name = block_name,
+    id_prefix = id_prefix,
+    include_instructions = include_instructions,
+    breaks = breaks,
+    choices = unname(set_choices[items$Choice_Set]),
+    sections = list(
+      row = which(first),
+      id = paste0(
+        id_prefix,
+        "_",
+        gsub("[^a-z0-9]+", "_", tolower(measures)),
+        "_instructions"
+      ),
+      text = unname(hitopdat_instructions$start[measures])
+    )
+  )
+}
+
 # Internal Helper: the item questions' `[[ID:]]` values
 #
 # One place for the IDs build_qualtrics_txt() writes, so the HiTOP-SR
@@ -462,6 +552,8 @@ build_qualtrics_txt <- function(
   include_instructions,
   breaks,
   page_header = NULL,
+  choices = NULL,
+  sections = NULL,
   call = rlang::caller_env()
 ) {
   # `page_header`, when given, is a descriptive block repeated at the top of
@@ -469,6 +561,15 @@ build_qualtrics_txt <- function(
   # stem ("He or she..."), so each page restates the rating prompt and stem,
   # as the printed form does (M160 review). NULL writes no such block, so
   # every other export is unchanged.
+  #
+  # `choices` and `sections` serve a battery whose measures differ (the
+  # HiTOP-DAT); NULL for both keeps every other export unchanged.
+  # `choices` is one data frame of `value` and `label` per item, in place of
+  # `instructions$options` for all items. `sections` is
+  # list(row, id, text): each `row` starts a section, which opens with a
+  # descriptive block of that `id` and `text` (none where `text` is NA) in
+  # place of the single start block. Each section after the first starts a
+  # new page, and `breaks` counts the items from the start of each section.
   #
   # The guards live here rather than in each generate_qualtrics_*() wrapper so
   # every instrument gets them from one place; `call` defaults to the wrapper
@@ -505,7 +606,7 @@ build_qualtrics_txt <- function(
   question_ids <- qualtrics_item_ids(id_prefix, items[[1]], max_n)
 
   # 3. Add the starting instructions as a Descriptive Block (DB)
-  if (include_instructions) {
+  if (include_instructions && is.null(sections)) {
     out <- c(
       out,
       "[[Question:DB]]",
@@ -516,32 +617,76 @@ build_qualtrics_txt <- function(
   }
 
   # 4. Format choices using AdvancedChoices to ensure exact recode values
-  choices_block <- c("[[AdvancedChoices]]")
-
-  # Loop through options to set exact numeric values and labels
-  for (i in seq_len(nrow(instructions$options))) {
-    val <- instructions$options$value[i]
-    lab <- instructions$options$label[i]
-    choices_block <- c(choices_block, paste0("[[Choice:", val, "]]"), lab)
+  choices_block <- function(options) {
+    block <- c("[[AdvancedChoices]]")
+    # Loop through options to set exact numeric values and labels
+    for (i in seq_len(nrow(options))) {
+      val <- options$value[i]
+      lab <- options$label[i]
+      block <- c(block, paste0("[[Choice:", val, "]]"), lab)
+    }
+    block
+  }
+  if (is.null(choices)) {
+    item_choices <- rep(list(choices_block(instructions$options)), nrow(items))
+  } else {
+    # One answer set per item, each a data frame, or items would lose or
+    # borrow their answers.
+    stopifnot(
+      length(choices) == nrow(items),
+      all(vapply(choices, is.data.frame, logical(1)))
+    )
+    item_choices <- lapply(choices, choices_block)
   }
 
   # 5. Loop through the items dataframe and append each question
+  if (!is.null(sections)) {
+    # As in build_redcap_zip(): `page_header` numbers its blocks by item,
+    # not by section, so the two are not combined. Section rows must start
+    # at the first item and ascend, or a section would open in the wrong place.
+    stopifnot(
+      is.null(page_header),
+      sections$row[1] == 1L,
+      !is.unsorted(sections$row, strictly = TRUE)
+    )
+  }
+  section_rows <- if (is.null(sections)) integer(0) else sections$row
+  # Items since the current section began; with no sections, every item.
+  n_in_section <- 0L
   for (i in seq_len(nrow(items))) {
+    s <- match(i, section_rows)
+    if (!is.na(s)) {
+      if (s > 1L) out <- c(out, "[[PageBreak]]", "")
+      if (include_instructions && !is.na(sections$text[s])) {
+        out <- c(
+          out,
+          "[[Question:DB]]",
+          paste0("[[ID:", sections$id[s], "]]"),
+          sections$text[s],
+          ""
+        )
+      }
+      n_in_section <- 0L
+    }
+    n_in_section <- n_in_section + 1L
+
     item_text <- items$Text[i]
 
     q_block <- c(
       "[[Question:MC:SingleAnswer]]",
       paste0("[[ID:", question_ids[i], "]]"),
       item_text,
-      choices_block,
+      item_choices[[i]],
       ""
     )
 
     out <- c(out, q_block)
 
-    # Insert Page Break based on the 'breaks' argument
+    # Insert Page Break based on the 'breaks' argument. A break the next
+    # section's own page break already makes is not written twice.
     if (
-      !is.null(breaks) && breaks > 0 && (i %% breaks == 0) && (i != nrow(items))
+      !is.null(breaks) && breaks > 0 && (n_in_section %% breaks == 0) &&
+        (i != nrow(items)) && !((i + 1L) %in% section_rows)
     ) {
       out <- c(out, "[[PageBreak]]", "")
       if (!is.null(page_header)) {
