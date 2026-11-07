@@ -532,8 +532,8 @@ Table 1's printed counts now agree with row for row.
 
 `hitopdat_items`, `hitopdat_choices`, `hitopdat_scales` and the internal
 `hitopdat_instructions` are built by `data-raw/hitopdat_info.R` and
-`data-raw/sysdata.R`. Seven sources (five from M143, the revised manual and the
-authors' email from M173):
+`data-raw/sysdata.R`. Eight sources (five from M143, the revised manual and the
+authors' email from M173, and the authors' second answers, which no table reads yet):
 
 - **The file.** `data-raw/HiTOP-DAT.qsf`, a Qualtrics export titled "HiTOP-DAT -
   to share" (last modified in Qualtrics 2026-09-29), received by Jeff on
@@ -566,6 +566,35 @@ authors' email from M173):
   clinics that they can set another. It came with Len Simms's `CAT-PD and IDAS scoring.xlsx`
   (sha256 `8643147c…`, on the shelf), "on which the Redcap battery was based".
   No table reads that workbook yet (DAT-15).
+- **The authors' second answers (2026-11-07).** Replies to Jeff's 2026-10-16
+  scoring report from Whitney Ringwald (2026-10-20) and Katherine Jonas
+  (undated, after Whitney's), shelved verbatim as
+  `cairn/references/sources/jonas_ringwald2026email.txt`. Jonas sent four
+  papers, shelved as `galletly2016.pdf` (sha256 `1cfe00d3…`),
+  `andrews2009.pdf` (`64226867…`), `berman2005.pdf` (`0cf6c24f…`) and
+  `bergman2002.pdf` (`02205e7c…`). Jonas's answers follow. The IDAS-II norms
+  are Watson et al. (2012) Table 2. The REDCap version scored item means
+  against Table 2 divided by item count, and the file's values came from
+  rescaling those. Item 99's grades are an error (answers DAT-5). The PHQ-15
+  cutoffs 11 and 14 are the nearest scores to the 95th percentile in Hinz et
+  al. (2017) Table 5, which is not on the shelf (observed 2026-11-07). AUDIT
+  and DUDIT are prorated. The REDCap version took T scores from Berman (2005)
+  Table 2 and Bergman (2002) Table 6, with DUDIT thresholds from Berman p. 26
+  and AUDIT thresholds from Bergman p. 247. CAPE positive norms are the
+  weighted mean of Galletly (2016) Table 1's male and female values. WHODAS
+  norms are Andrews (2009) Table 1's total. Scales prorate when "at least X%
+  complete (where X is maybe 60, 70?)". Domain T scores can be rescaled. The
+  CAT-PD norms were never published. Read 2026-11-07: Andrews Table 1 total
+  is M 3.1, SD 5.3; Galletly Table 1 CAPE positive is 26.26 (3.52), n 125,
+  men, and 26.58 (3.52), n 180, women, which weights to 1.32 per item; both
+  equal the file's (DAT-17 (f)). Bergman Table 6 and Berman Table 2 are split
+  by sex and age group, and Bergman Table 6 prints T 0 at raw 0 in every
+  column. Ringwald's answers differ on four points: plain AUDIT and DUDIT
+  sums, no sex-specific values, a PHQ-15 T score, and proration under 10%
+  missing. She suggests dropping General Depression and putting Health
+  Anxiety in Negative Emotionality, and cites Ringwald et al. (2023,
+  *Assessment* 30(7), 2276-2295) for domain scores. Jeff asked both to settle
+  the differences (plan gate, 2026-11-07; D-098).
 - **The IPIP key.** IPIP CAT-PD-SF v1.1 key,
   <https://ipip.ori.org/newCAT-PD-SFv1.1Keys.htm>, read 2026-09-29:
   [references/ipip2015catpdsf.md](references/ipip2015catpdsf.md). It checks the 33
