@@ -595,9 +595,12 @@ authors' email from M173, and the authors' second answers, which no table reads 
   Anxiety in Negative Emotionality, and cites Ringwald et al. (2023,
   *Assessment* 30(7), 2276-2295) for domain scores. Jeff asked both to settle
   the differences (plan gate, 2026-11-07; D-098).
-- **Ringwald et al. (2023), read 2026-11-07.** The article (PMC10413206)
-  was read through a web fetch. Its PDF is not on the shelf, because PMC
-  answers scripts with a CAPTCHA (observed 2026-11-07). Its OSF project
+- **Ringwald et al. (2023), read 2026-11-07.** The author manuscript
+  (PMC10413206), shelved from Jeff's copy as `ringwald2023.pdf` (sha256
+  `50ec96c3…`). The facts below were read first through a web fetch, then
+  checked against the shelved PDF's text. The citation it gives for the
+  norms is Simms, Goldberg, Roberts, Watson, Welte and Rotterman (2011),
+  which is not on the shelf (observed 2026-11-07). Its OSF project
   (osf.io/3jazv) gave the supplement, shelved as `ringwald2023_supp.pdf`
   (sha256 `bfdf8346…`, OSF file xd963), and the domain scoring script, shelved
   as `ringwald2023_domain_score.R` (`479052ee…`, OSF file yfjb6). Facts read:
