@@ -595,6 +595,27 @@ authors' email from M173, and the authors' second answers, which no table reads 
   Anxiety in Negative Emotionality, and cites Ringwald et al. (2023,
   *Assessment* 30(7), 2276-2295) for domain scores. Jeff asked both to settle
   the differences (plan gate, 2026-11-07; D-098).
+- **Ringwald et al. (2023), read 2026-11-07.** The article (PMC10413206)
+  was read through a web fetch. Its PDF is not on the shelf, because PMC
+  answers scripts with a CAPTCHA (observed 2026-11-07). Its OSF project
+  (osf.io/3jazv) gave the supplement, shelved as `ringwald2023_supp.pdf`
+  (sha256 `bfdf8346…`, OSF file xd963), and the domain scoring script, shelved
+  as `ringwald2023_domain_score.R` (`479052ee…`, OSF file yfjb6). Facts read:
+  the article converts CAT-PD scale means to T scores with "established norms
+  for the CAT-PD" and cites Simms et al. (2011). It scores a domain as the
+  mean of the facet T scores with primary loadings, and recommends the
+  six-factor Geomin model, which adds Anankastia. Table S3 gives facet T-score
+  descriptives in the pooled sample (N 3,987, means 43.1 to 54.1), not raw
+  norms, and no domain means or SDs. The script's five-factor target domains
+  differ from the Qualtrics file's (DAT-17 (g)). The file puts Self Harm and
+  Cognitive Problems in Negative Emotionality. It puts Fantasy Proneness and
+  Peculiarity in Psychoticism, and Perfectionism and Rigidity (reversed) in
+  Disconstraint. The script puts Perfectionism and Fantasy Proneness in
+  Negative Emotionality and Depressiveness in Detachment too. It puts
+  Rigidity in Antagonism and Self Harm in Psychoticism. It puts Cognitive
+  Problems and Peculiarity in Disconstraint. Both put Health Anxiety in
+  Negative Emotionality. The OSF data (`catpd_abbr_revised_labelled.csv`, not
+  downloaded) holds pooled facet T scores.
 - **The IPIP key.** IPIP CAT-PD-SF v1.1 key,
   <https://ipip.ori.org/newCAT-PD-SFv1.1Keys.htm>, read 2026-09-29:
   [references/ipip2015catpdsf.md](references/ipip2015catpdsf.md). It checks the 33
