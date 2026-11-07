@@ -600,7 +600,10 @@ authors' email from M173, and the authors' second answers, which no table reads 
   `50ec96c3…`). The facts below were read first through a web fetch, then
   checked against the shelved PDF's text. The citation it gives for the
   norms is Simms, Goldberg, Roberts, Watson, Welte and Rotterman (2011),
-  which is not on the shelf (observed 2026-11-07). Its OSF project
+  *Journal of Personality Assessment*, shelved from Jeff's Zotero library as
+  `simms2011.pdf` (sha256 `3f52b17a…`). It prints no norms: its three
+  tables are the trait models, the candidate traits and the item block
+  design (read 2026-11-07). Its OSF project
   (osf.io/3jazv) gave the supplement, shelved as `ringwald2023_supp.pdf`
   (sha256 `bfdf8346…`, OSF file xd963), and the domain scoring script, shelved
   as `ringwald2023_domain_score.R` (`479052ee…`, OSF file yfjb6). Facts read:
