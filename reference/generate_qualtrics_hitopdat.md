@@ -74,5 +74,5 @@ instructions for Qualtrics and REDCap:
 ``` r
 # Write a HiTOP-DAT Qualtrics import file to a temporary location
 generate_qualtrics_hitopdat(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpCVsbHR/file190c74d3e133.txt
+#> ✔ Qualtrics import file successfully created at /tmp/RtmpbcmSdc/file19f62591d91a.txt
 ```
