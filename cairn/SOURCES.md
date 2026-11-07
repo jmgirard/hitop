@@ -595,6 +595,18 @@ authors' email from M173, and the authors' second answers, which no table reads 
   Anxiety in Negative Emotionality, and cites Ringwald et al. (2023,
   *Assessment* 30(7), 2276-2295) for domain scores. Jeff asked both to settle
   the differences (plan gate, 2026-11-07; D-098).
+- **Hinz et al. (2017), read 2026-11-07.** *Journal of Psychosomatic
+  Research, 96*, 27-31, doi:10.1016/j.jpsychores.2016.12.017, shelved from
+  Jeff's Zotero library as `hinz2017.pdf` (sha256 `89365892…`). German
+  general population, N 9,250. The menstruation item is left out, so the
+  sum runs 0 to 28 (Table 2 note), as in the battery. One missing item is
+  replaced with the rounded mean of the others (p. 28). Table 2 gives the
+  total score M 4.62, SD 3.59 for men (n 4,435), 6.31, 4.06 for women
+  (n 4,815) and 5.50, 3.93 for all. Table 5 gives the percentage scoring at
+  or below each sum, by sex. For men, 11 is 94.7 and 12 is 96.2. For women,
+  13 is 93.7 and 14 is 95.4. So 11 and 14 are the sums nearest the 95th
+  percentile, as Jonas says. A cutoff of 11 or more flags 7.4% of men
+  (100 − 92.6), and 14 or more flags 6.3% of women (100 − 93.7).
 - **Ringwald et al. (2023), read 2026-11-07.** The author manuscript
   (PMC10413206), shelved from Jeff's copy as `ringwald2023.pdf` (sha256
   `50ec96c3…`). The facts below were read first through a web fetch, then
