@@ -51,5 +51,5 @@ E. (2013). *The Personality Inventory for DSM-5 (PID-5)—Child Age
 ``` r
 # Write a PID-5 child form Qualtrics import file to a temporary location
 generate_qualtrics_pid5child(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/Rtmpy2Ffm9/file1ace77d3ced2.txt
+#> ✔ Qualtrics import file successfully created at /tmp/RtmpzNUOfx/file1a2954de23ff.txt
 ```
