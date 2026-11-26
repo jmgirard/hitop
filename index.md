@@ -62,3 +62,5 @@ For PID-5 validity scales and norms, see
 [`?validity_pid5`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
 and
 [`?norm_pid5`](https://jmgirard.github.io/hitop/reference/norm_pid5.md).
+For HiTOP-DAT T scores, see
+[`?norm_hitopdat`](https://jmgirard.github.io/hitop/reference/norm_hitopdat.md).

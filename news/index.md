@@ -5,13 +5,14 @@
 ### New features
 
 - **HiTOP-DAT item, answer and scale data.** Three datasets hold the
-  HiTOP-DAT (HiTOP Digital Assessment and Tracker), a battery of seven
-  measures. `hitopdat_items` has its 382 items, each with its battery
-  number, its measure, its number in that measure, its text and its
-  answer set. `hitopdat_choices` has the 13 answer sets.
-  `hitopdat_scales` has the 57 scales, each with its battery item
-  numbers and the items it reverses. The scale names follow the revised
-  HiTOP-DAT manual, which calls one CAT-PD facet Non-Planfulness.
+  items, answer sets and scales of the HiTOP-DAT (HiTOP Digital
+  Assessment and Tracker), a battery of seven measures. `hitopdat_items`
+  has its 382 items, each with its battery number, its measure, its
+  number in that measure, its text and its answer set.
+  `hitopdat_choices` has the 13 answer sets. `hitopdat_scales` has the
+  57 scales, each with its battery item numbers and the items it
+  reverses. The scale names follow the revised HiTOP-DAT manual, which
+  calls one CAT-PD facet Non-Planfulness.
 
 - **[`score_hitopdat()`](https://jmgirard.github.io/hitop/reference/score_hitopdat.md)
   scores the HiTOP-DAT.** It returns a raw score on 56 of the battery’s
@@ -24,7 +25,25 @@
   that share the scale is `NA`. A `_complete` column per scale gives its
   answered share. An answer that is not a value of its item’s answer set
   in `hitopdat_choices` is an error of the new class
-  `hitop_invalid_answer`. The function gives no T scores.
+  `hitop_invalid_answer`. The function gives no T scores;
+  [`norm_hitopdat()`](https://jmgirard.github.io/hitop/reference/norm_hitopdat.md)
+  does.
+
+- **[`norm_hitopdat()`](https://jmgirard.github.io/hitop/reference/norm_hitopdat.md)
+  gives HiTOP-DAT T scores.** It converts the
+  [`score_hitopdat()`](https://jmgirard.github.io/hitop/reference/score_hitopdat.md)
+  scores of 53 scales to whole-number T scores, rounded half away from
+  zero, against the norms the battery’s authors named: the WHODAS
+  against Andrews et al. (2009), the 18 IDAS-II scales against Watson et
+  al. (2012), CAPE positive symptoms against Galletly et al. (2016), and
+  the 33 CAT-PD facets against Len Simms’s unpublished scoring workbook.
+  The new dataset `hitopdat_norms` holds each scale’s mean, SD and
+  source. Two logical columns flag an IDAS-II Suicidality or CAT-PD
+  Self-Harm T score of at least `alert_t`, 65 by default, the authors’
+  alert point. The AUDIT, DUDIT and PHQ-15 get no T score: the AUDIT and
+  DUDIT wait on the authors’ answer about their sex-split norms, and the
+  authors keep the PHQ-15 on its cutoffs. A score column that is not
+  numeric is an error of class `hitop_nonnumeric_items`.
 
 - **HiTOP-DAT Word forms and REDCap import file.**
   [`generate_docx_hitopdat()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopdat.md)

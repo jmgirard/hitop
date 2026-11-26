@@ -76,10 +76,13 @@ Qualtrics and REDCap files programmatically.
 
 Score each scale but General Depression by its measure's rule, with
 reverse-keying, proration of partly answered scales by the battery
-authors' rule, and the share of each scale answered.
+authors' rule, and the share of each scale answered. Convert 53 of the
+scores to T scores against the norms the authors named, with alerts for
+high Suicidality and Self-Harm.
 
 [Score
 HiTOP-DAT](https://jmgirard.github.io/hitop/reference/score_hitopdat.md)
+[T scores](https://jmgirard.github.io/hitop/reference/norm_hitopdat.md)
 
 ### Versions
 

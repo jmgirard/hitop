@@ -17,6 +17,8 @@
 
 - [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
   : Convert PID-5 scale scores to normative T scores and percentiles
+- [`norm_hitopdat()`](https://jmgirard.github.io/hitop/reference/norm_hitopdat.md)
+  : Convert HiTOP-DAT Scale Scores to T Scores
 
 ## Score Intervals
 
@@ -191,6 +193,8 @@ community norm.
   : HiTOP-DAT Answer Sets
 - [`hitopdat_scales`](https://jmgirard.github.io/hitop/reference/hitopdat_scales.md)
   : HiTOP-DAT Scale Data
+- [`hitopdat_norms`](https://jmgirard.github.io/hitop/reference/hitopdat_norms.md)
+  : HiTOP-DAT Norms
 - [`pid_items`](https://jmgirard.github.io/hitop/reference/pid_items.md)
   : Personality Inventory for DSM-5 Item Data
 - [`pid_scales`](https://jmgirard.github.io/hitop/reference/pid_scales.md)
