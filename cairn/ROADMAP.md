@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-11-25 (M174 done): archived, M144 row pruned, started token dropped from the HiTOP-DAT row, three lessons marked used, no lesson captured (LESSONS.md holds 43 of 25)._
+_Last hygiene check: 2026-11-26 (M175 done): archived, M145 row pruned, Known issues #16 added, no lesson captured or marked (the two used ones exceed 450 bytes; LESSONS.md holds 43 of 25)._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
@@ -9,10 +9,9 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 |---|---|---|---|---|---|
 | M171 | APA notice in PID-5 online exports and adult Word footers | planned | — | normal | milestones/M171-apa-pid5-notice.md |
 | M172 | HiTOP-SR item-text matching and duplicate refusal | planned | — | normal | milestones/M172-hitopsr-text-matching.md |
-| M175 | HiTOP-DAT T scores and the suicide-risk alert | review | M174 | normal | milestones/M175-hitopdat-t-scores.md |
+| M175 | HiTOP-DAT T scores and the suicide-risk alert | done | M174 | normal | milestones/archive/M175-hitopdat-t-scores.md |
 | M174 | HiTOP-DAT raw scale scores | done | — | normal | milestones/archive/M174-hitopdat-raw-scores.md |
 | M173 | HiTOP-DAT names, records and announcement after the authors' answers | done | — | normal | milestones/archive/M173-hitopdat-author-answers.md |
-| M145 | HiTOP-DAT Qualtrics import file | done | M143, M144 | normal | milestones/archive/M145-hitopdat-qualtrics.md |
 | M163 | PID-5 forensic form (FFBF) English forms | blocked | M162 | normal | milestones/M163-pid5ffbf-forms.md |
 
 ## Candidates
