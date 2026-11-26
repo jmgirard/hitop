@@ -38,12 +38,15 @@ test_that("each row names its reference sample, N and source", {
   )
   expect_identical(
     hitopdat_norms$N,
-    c(8824L, rep(1091L, 18), 305L, rep(NA_integer_, 33))
+    c(8824L, rep(1091L, 18), rep(NA_integer_, 34))
   )
   expect_identical(
-    unique(hitopdat_norms$Sample[measure == "IDAS-II"]),
-    "Combined community adult samples (Iowa and South Bend)"
+    hitopdat_norms$Sample,
+    c(
+      "2007 Australian National Survey of Mental Health and Well-being, adults aged 16 to 85",
+      rep("Combined community adult samples (Iowa and South Bend)", 18),
+      "Port Pirie Cohort Study adults aged 25 to 29, men (n 125) and women (n 180)",
+      rep("Community", 33)
+    )
   )
-  expect_identical(unique(hitopdat_norms$Sample[measure == "CAT-PD"]), "Community")
-  expect_false(anyNA(hitopdat_norms$Sample))
 })

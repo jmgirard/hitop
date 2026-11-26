@@ -1,6 +1,6 @@
 # M175: HiTOP-DAT T scores and the suicide-risk alert
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M174
 - **Driving RR:** —
@@ -68,3 +68,41 @@
 - 2026-11-25: claim audit: 59 claims read, 5 corrected — R/norm_hitopdat.R, R/data.R, data-raw/hitopdat_norms.R, NEWS.md. Four sites said the PHQ-15 gets no T score "yet"; Jonas's 2026-11-18 answer keeps it on its cutoffs, so they now say no T score, with the AUDIT and DUDIT waiting on the sex-split answer (AC5's "yet" holds for those two). One code comment credited the half-away-from-zero rule to the authors' files, which only call round(x, 0); the Scope line's "as both of the authors' versions round" is right for whole numbers and left as planned.
 - 2026-11-25: full `devtools::test()` (run after the sweep fixes): 1 failure, test-vignette-export-coverage — `norm_hitopdat` had no vignette call or reference link. Added a "T scores" reference button to the scoring card of vignettes/articles/download-hitopdat.Rmd (minor sub-task under T5); that test and test-download-pages now pass.
 - 2026-11-25: T5 done: roxygen, NEWS entry, `_pkgdown.yml` (norm_hitopdat under Norms, hitopdat_norms with the HiTOP-DAT data), README line pointing to `?norm_hitopdat`. Full `devtools::test()` 0 failures after the vignette link (the one failing file re-run green); `devtools::check()` 0 errors, 0 warnings, 1 note (a gitignored top-level Rplots.pdf left by this session's `run_examples()`, since removed). Status → review.
+- 2026-11-25: review pass 1: four lenses spawned; fix-now items committed on the branch (Review section). Full test and check clean at 99acb92d, before those fixes.
+- 2026-11-25: amendment routed: AC5 — "They say that the AUDIT, DUDIT and PHQ-15 get no T score yet" is false for the PHQ-15: Jonas's 2026-11-18 answer keeps it on its cutoffs, and the help pages now say so. Status → in-progress for the AC5 wording amendment alone.
+
+## Review
+
+Pass 1 (2026-11-25). Default branch unmoved since the cut (origin/main 0e14453b); no PR; Copilot round off.
+
+- gate: `cairn_validate.py` exit 0 (34 advisory warnings, all from before this branch). Full `devtools::test()` at 99acb92d: 0 failures. `devtools::check()` at 99acb92d: 0 errors, 0 warnings, 0 notes.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: two Sample strings (WHODAS, IDAS-II) appear in no committed source note, though AC1's test types them — fix now (added to andrews2009.md p. 2 and p. 4, watson2012.md pp. 404-405), fixed 99acb92d
+- diff-bug #2: the WHODAS and CAPE Sample strings were checked only as non-NA — fix now (whole Sample column now typed in test-hitopdat_norms.R)
+- diff-bug #3: CAPE N 305 is a sum Galletly does not print, against AC1's "its N where the source prints one" — fix now (CAPE N is NA; the n's stay in `Sample`)
+- diff-bug #4: AC5's "get no T score yet" is false for the PHQ-15, which the authors keep on its cutoffs (Jonas, 2026-11-18) — amendment return (AC5 wording; see work log)
+- diff-bug #5: the missing-column abort truncates its list at 20 names — fix now (listed in full, as validate_no_output_collision() does; test with a wrong prefix)
+- diff-bug #6: `_t` columns are double where norm_pid5() returns integer — reject, planned change (AC2 fixes each `_t` as `round_half_up()`'s result)
+- diff-bug #7: `alert_t` checked inline rather than by an R/util.R validator — reject, style
+- diff-bug #8: an `Inf` score gives T `Inf` and alert TRUE — reject, false (that is the formula's value; score_hitopdat() cannot produce Inf)
+- diff-bug #9: the authors' REDCap version scores IDAS-II item means against Table 2 / item count at two decimals, so 53 of 414 raw sums differ by one T point — reject, planned change (D-098: the named source, Table 2, on the sum metric score_hitopdat() uses)
+- diff-bug #10: the signature drops norm_pid5()'s `scores` argument with no D-entry — reject, planned change (AC2 fixes the signature)
+- diff-bug #11: no breach of D-022/D-024/D-025 — noted
+- diff-bug (c): duplicate or derived test checks (two expects on one missing-column path, a five-value `alert_t` loop over one check, the repeated default-alert block, `whodas_t` in the prefix test, a comment restating `scores_at()`) — fix now (trimmed); the explicit collision and zero-row class checks and the 53-row and Measure/Scale checks stay — reject, planned change (AC1 and AC4 name them)
+- blame-history #1: IDAS-II norms differ from the authors' file (DAT-15 (b)) with no answer — reject, false (Jonas's 2026-11-07 answer names Watson Table 2; SOURCES.md "The authors' second answers")
+- blame-history #2: the CAPE mean is computed here, against D-022 — reject, planned change (AC1 names the weighted mean; D-098 admits author-named arithmetic on printed cells)
+- blame-history #3: the references say the workbook was "Sent" 2026-10-15, but that date is the download time — fix now ("Received by the package maintainer … 2026-10-15" in R/data.R and R/norm_hitopdat.R)
+- blame-history #4: `hitop_nonnumeric_items` extended past D-068's item-scoring functions — reject, planned change (AC4 names the class)
+- blame-history #5: README capability table not checked — reject, false (test-readme-capabilities.R passes; Scoring was already "Yes")
+- prior-review #1: a NaN score gives T NaN, not the documented NA — fix now (NaN set to NA before rounding; test added)
+- prior-review #2: duplicated score-column names read the first match, as in norm_pid5() and rank_scales() — known issue: **Norming and ranking functions read the first of duplicated score column names** — `norm_hitopdat()`, `norm_pid5()` and `rank_scales()` select score columns by name, so a data frame holding two columns of one name (possible with `check.names = FALSE`, refused by tibble) reads the first with no message. Accepted at the M175 gate
+- prior-review #3: duplicate names already in `data` reach tibble's error under append — reject, edge (a data frame with duplicated names, outside documented and common use; the effect is an error)
+- prior-review #4: `round_half_up()` may miss a half in floating point — reject, false (diff-bug lens checked every score score_hitopdat() can give at ≥ 80% answered: the three exact halves are exact doubles)
+- ripple #1, #5: DESIGN.md said HiTOP-DAT T scores "are not built yet" and omitted `norm_hitopdat()` — fix now, fixed e31cf051
+- ripple #2: NEWS "Three datasets hold the HiTOP-DAT" — fix now (reworded to the items, answer sets and scales), fixed e31cf051
+- ripple #3: SOURCES.md said no table reads the second answers — fix now, fixed e31cf051
+- ripple #4: `hitopdat_norms` not in `utils::globalVariables()` — reject, false (`check()` reports no undefined global)
+- ripple #6: ROADMAP's PHQ-15 wording against NEWS — reject, false (the row concerns cutoffs under men's and women's values, which the authors keep)
+- ripple #7: CLAUDE.md's opening line omits the HiTOP-DAT — follow-up, absorbed: candidate row "HiTOP-DAT after M143 to M145" item (e) already holds it
+- ripple #8: test-error-prose.R says "three" selection exports where four are listed — fix now (a count in a file this diff edits, beside counts the diff corrected)
+- ripple #9: jonas2021dat.md pointed T-score material at the candidate row — fix now, fixed e31cf051

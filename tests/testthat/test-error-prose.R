@@ -1,7 +1,7 @@
 # Both refusals are documented where a caller reads them (AC4).
 #
 # The help page of every export that appends its output states the
-# output-column collision, and the three exports taking a variable-length
+# output-column collision, and the four exports taking a variable-length
 # selection also state the empty-selection refusal. `NEWS.md` records both.
 #
 # The domain is the same getNamespaceExports() sweep the guards are tested by,
@@ -137,7 +137,7 @@ test_that("every appending export states the collision refusal on its help page"
   }
 })
 
-test_that("the three selection exports state the empty-selection refusal", {
+test_that("the four selection exports state the empty-selection refusal", {
   idx <- alias_index()
   terminators <- errors_terminator()
 

@@ -108,7 +108,8 @@ longitudinal cohort study. \emph{Psychiatry Research, 239}, 54-61.
 \doi{10.1016/j.psychres.2016.02.066}
 
 Simms, L. J. (n.d.). \emph{CAT-PD and IDAS scoring} [Unpublished Excel
-workbook]. Sent to the package maintainer by K. G. Jonas, 2026-10-15.
+workbook]. Received by the package maintainer from K. G. Jonas,
+2026-10-15.
 
 Watson, D., O'Hara, M. W., Naragon-Gainey, K., Koffel, E., Chmielewski, M.,
 Kotov, R., Stasik, S. M., & Ruggero, C. J. (2012). Development and

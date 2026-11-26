@@ -76,7 +76,8 @@
 #' \doi{10.1016/j.psychres.2016.02.066}
 #'
 #' Simms, L. J. (n.d.). *CAT-PD and IDAS scoring* \[Unpublished Excel
-#' workbook\]. Sent to the package maintainer by K. G. Jonas, 2026-10-15.
+#' workbook\]. Received by the package maintainer from K. G. Jonas,
+#' 2026-10-15.
 #'
 #' Watson, D., O'Hara, M. W., Naragon-Gainey, K., Koffel, E., Chmielewski, M.,
 #' Kotov, R., Stasik, S. M., & Ruggero, C. J. (2012). Development and
@@ -130,6 +131,9 @@ norm_hitopdat <- function(
   missing <- setdiff(score_cols, names(data))
   if (length(missing) > 0L) {
     n <- length(missing)
+    ## Listed in full, as validate_no_output_collision() lists its columns: a
+    ## caller cannot supply a column the message does not name.
+    missing <- cli::cli_vec(missing, style = list(vec_trunc = Inf))
     cli::cli_abort(c(
       "{n} score column{?s} {?is/are} not found in {.arg data}.",
       "x" = "Not found: {.val {missing}}.",
@@ -164,6 +168,8 @@ norm_hitopdat <- function(
   ## version's file states. The alerts compare the rounded T, as both do.
   t_scores <- lapply(seq_along(score_cols), function(s) {
     x <- as.numeric(scores[[s]])
+    ## A NaN score is missing, and its T is NA, as for an NA score.
+    x[is.nan(x)] <- NA_real_
     round_half_up(
       50 + 10 * (x - hitopdat_norms$M[[s]]) / hitopdat_norms$SD[[s]]
     )

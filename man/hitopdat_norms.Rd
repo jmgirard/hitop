@@ -15,9 +15,10 @@ A \link[tibble]{tibble} with 53 rows and 8 columns:
 \item{M}{The reference sample's mean}
 \item{SD}{The reference sample's standard deviation}
 \item{Sample}{The reference sample, as its source describes it}
-\item{N}{The reference sample's size (integer). \code{NA} for the CAT-PD
-facets, whose workbook gives none. For the CAPE it is the sum of the
-men's and women's n.}
+\item{N}{The reference sample's size (integer), where the source prints
+one. \code{NA} for the CAT-PD facets, whose workbook gives none, and for the
+CAPE, whose source prints the men's and women's n (in \code{Sample}) but no
+total.}
 \item{Source}{Where the mean and SD come from}
 }
 }
@@ -78,7 +79,8 @@ longitudinal cohort study. \emph{Psychiatry Research, 239}, 54-61.
 \doi{10.1016/j.psychres.2016.02.066}
 
 Simms, L. J. (n.d.). \emph{CAT-PD and IDAS scoring} [Unpublished Excel
-workbook]. Sent to the package maintainer by K. G. Jonas, 2026-10-15.
+workbook]. Received by the package maintainer from K. G. Jonas,
+2026-10-15.
 
 Watson, D., O'Hara, M. W., Naragon-Gainey, K., Koffel, E., Chmielewski, M.,
 Kotov, R., Stasik, S. M., & Ruggero, C. J. (2012). Development and
