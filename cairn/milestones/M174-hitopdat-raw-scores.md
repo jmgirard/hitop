@@ -52,7 +52,7 @@
 - [x] T1: Write the source notes `andrews2009.md`, `bergman2002.md`, `berman2005.md` and `hinz2017.md` from the shelved PDFs, each with its sha256 and INDEX line, holding the scoring rule the milestone uses. Resolve DAT-5 and DAT-17 (c), (e) and (h) in SOURCES.md, citing `jonas_ringwald2026email3.txt`.
 - [x] T2: Write `tests/testthat/test-score_hitopdat.R` first, with a helper that types the item lists and reverse keys from the keys (LESSONS 2026-10-04 (M159): random answers with `NA`, never a periodic pattern). Run it on the base and log that it fails for the missing function.
 - [ ] T3: Write `score_hitopdat()` in `R/score_hitopdat.R`. Read memberships and reverse keys from `hitopdat_scales` and answer sets from `hitopdat_items` and `hitopdat_choices`; hardcode no item number (CLAUDE.md).
-- [ ] T4: Append two D-entries: the signature departs from the family's (`min_complete` in place of `missing`, no `srange`, no `calc_se`), because the battery's answer sets differ by measure and the authors set the proration rule; and the new public class `hitop_invalid_answer` (D-034(c)).
+- [x] T4: Append two D-entries: the signature departs from the family's (`min_complete` in place of `missing`, no `srange`, no `calc_se`), because the battery's answer sets differ by measure and the authors set the proration rule; and the new public class `hitop_invalid_answer` (D-034(c)).
 - [ ] T5: Write the roxygen, NEWS entry, `_pkgdown.yml` entry and README row (`devtools::build_readme()`). Run `devtools::document()`, `devtools::test()` and `devtools::check()`.
 
 ## Work log
@@ -70,3 +70,4 @@
 - 2026-11-25: T1 done: source notes andrews2009, bergman2002, berman2005, hinz2017 with INDEX lines, read from the shelf PDFs' text with page anchors; DAT-5 resolved from Jonas's second answers (answer 2, item 99 is battery item 111) and DAT-17 (c), (e), (h) from her joint answers (answers 1, 2).
 - 2026-11-25: T2 choice: the typed IPIP and IDAS-II keys and `battery_numbers()` moved from test-keying-hitopdat.R to a new helper-hitopdat-keys.R, so the scoring test reads the same transcriptions; the keying test passes unchanged (300 expectations).
 - 2026-11-25: T2 done: test-score_hitopdat.R written; on the base it fails 10 tests, each on `could not find function "score_hitopdat"`, 2 expectations passing (the typed stem count and key names).
+- 2026-11-25: T4 done: D-099 (the signature without `srange`, `missing` and `calc_se`, with `min_complete`) and D-100 (`hitop_invalid_answer`) appended; committed before T3 while the T3 suite ran.

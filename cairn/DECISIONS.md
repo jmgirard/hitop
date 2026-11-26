@@ -8,6 +8,22 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-100 (2026-11-25): `score_hitopdat()` refuses an answer outside its item's answer set, under the new public class `hitop_invalid_answer` (the successor entry D-034(c) requires for a new exported condition; applies GP2 and GP3)
+
+**Context:** The HiTOP-DAT measures use different answer sets (`hitopdat_choices`). Four AUDIT and DUDIT items take 0, 2 or 4, so a 1 lies inside their range but is not an answer. A value outside an item's set means a wrong export coding, a shifted coding, or a "Skip" code from the battery's Qualtrics file (SOURCES.md DAT-5, DAT-11). A sum or mean over such a value is a wrong score with no error. The other scoring functions check only that a column is numeric (`hitop_nonnumeric_items`, D-068) and that `srange` is well formed.
+
+**Decision:** `score_hitopdat()` aborts when any non-missing answer is not a value of its item's answer set. The message names each refused column (up to five), its battery item number, its first refused value and the set's values, and says to use `NA` for an unanswered item. The condition is classed `hitop_invalid_answer`, a public contract under D-034(c): tests assert it, callers can catch it, and it is renamed only through a further D-entry. The check runs after `hitop_nonnumeric_items` and before `hitop_append_collision`. Rejected: setting such values to `NA` with a warning, because a shifted coding then scores silently wrong on every item that the shift keeps inside the set.
+
+**Consequences:** The other scoring functions keep their range-free behavior. The class is available to them if a later milestone adds the same check. The evidence that reopens this is a HiTOP-DAT export format whose valid codes differ from `hitopdat_choices`.
+
+### D-099 (2026-11-25): `score_hitopdat()` departs from the scoring family's signature: `min_complete` in place of `missing`, and no `srange` or `calc_se` (narrows CLAUDE.md's scoring-signature convention for the HiTOP-DAT; follows D-098)
+
+**Context:** CLAUDE.md gives the scoring signature as `(data, items, [version,] srange, prefix, missing, calc_se, append = TRUE)`. The HiTOP-DAT's seven measures use answer sets of 0 to 4, 1 to 5, 1 to 4 and 0 to 2, and four AUDIT and DUDIT items take 0, 2 or 4 (`hitopdat_choices`). The battery's authors set one proration rule for every scale: prorate a scale with at least 80% of its items answered, as a default (`jonas_ringwald2026email3.txt`, answers 1 and 2). Under D-098 their rule governs. `calc_se` is deprecated across the family (D-049).
+
+**Decision:** The signature is `score_hitopdat(data, items, prefix = "dat_", min_complete = 0.8, append = TRUE)`. (a) No `srange`: each item's range is its answer set in `hitopdat_choices`, and a reversed item scores the set's minimum plus maximum minus the answer. One range cannot describe the battery. (b) `min_complete`, one number in (0, 1], replaces `missing`. None of `missing`'s fixed choices states a minimum answered share, and the authors gave the share as a default a clinic can change. Each scale also gets a `_complete` column, its answered share. (c) No `calc_se`, because a new function does not start with an argument the family is removing. Rejected: a `missing` choice named for the authors' rule, because their rule is a number the user sets.
+
+**Consequences:** `score_hitopdat()` is the one scoring function without `srange`, `missing` and `calc_se`. A HiTOP-DAT reliability function, if one is planned, decides these arguments again. The evidence that reopens (b) is an author answer that fixes the share or replaces the rule.
+
 ### D-098 (2026-11-07): HiTOP-DAT scoring and norms follow what the battery's authors intend, unpublished norms included (narrows IP3 for the HiTOP-DAT; follows D-082 and D-097)
 
 **Context:** The authors answered Jeff's scoring questions in a second exchange (`cairn/references/sources/jonas_ringwald2026email.txt`, shelved 2026-11-07). Katherine Jonas, the manual's first author, says the 33 CAT-PD facet norms come from Len Simms's workbook and were never published. IP3 allows norms only from published, citable tables, and D-032 bars development workbooks for the HiTOP-SR and HiTOP-BR. At the 2026-11-07 plan gate the plan offered to keep IP3 and score the CAT-PD facets raw only. Jeff answered: "my job is to faithfully reproduce what the HiTOP-DAT authors intend. if THEY are happy to use unpublished norms, then that matters more than what you think."
