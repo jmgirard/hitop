@@ -595,6 +595,39 @@ authors' email from M173, and the authors' second answers, which no table reads 
   Anxiety in Negative Emotionality, and cites Ringwald et al. (2023,
   *Assessment* 30(7), 2276-2295) for domain scores. Jeff asked both to settle
   the differences (plan gate, 2026-11-07; D-098).
+- **The authors' joint answers (2026-11-18).** Jonas's and Ringwald's replies
+  to Jeff's follow-up of 2026-11-07, shelved verbatim as
+  `cairn/references/sources/jonas_ringwald2026email3.txt`. Jonas's answers
+  follow. Prorate the AUDIT and DUDIT. The default minimum is 80% answered.
+  Report both the men's and the women's thresholds, and let the clinician
+  choose. Berman Table 2's rightmost columns are all ages. Bergman Table 6's
+  T 0 at raw 0 is a percentile-method artifact to keep. The PHQ-15 stays on
+  its cutoffs. Drop General Depression. Use Ringwald's domain mapping,
+  rescaled. She accepted the offer of cleaned-up REDCap and Qualtrics
+  versions. Ringwald
+  sent the pooled facet data of Ringwald et al. (2023), shelved as
+  `ringwald2023_catpd_abbr_revised_labelled.csv` (sha256 `733154a1…`,
+  3,987 rows, 33 `_T` columns, 9999 as missing). She says the scores are
+  standardized in a way she cannot document, and offers to ask Len Simms.
+- **The authors' REDCap version (2026-11-18).** Jonas's project export,
+  `hitopdat_redcap_2026-11-18.xml` on the shelf (sha256 `e0b6235a…`, ODM 1.3.1
+  from REDCap 17.3.13, metadata only, no records). Read 2026-11-25 from its
+  calculated fields and alerts. IDAS-II, CAT-PD and CAPE
+  scores are item means, and WHODAS, AUDIT, DUDIT and PHQ-15 are sums, with
+  no proration. T scores are rounded to whole numbers. IDAS-II norms are
+  Table 2 divided by item count at two decimals; General Depression uses
+  2.25 and 0.74 (the workbook's 44.99 and 14.75 over 20). The CAT-PD norms
+  equal the Qualtrics file's. The PHQ-15 gets a T from Hinz Table 2's men's
+  row (4.62, 3.59) for everyone. The AUDIT T uses Bergman Table 6's 28-60
+  columns and the DUDIT T Berman Table 2's all-ages columns, both chosen by
+  the `demo_genid` field (0 Female, 1 Male, 2 to 7 other), and both print
+  "70+" past T 70. The AUDIT women's branch tests `demo_genid` = 1 after a
+  first branch that takes every value but 0, so a woman gets a blank AUDIT
+  T. Every gender but Female gets the men's values. The domains are the
+  rounded means of rounded facet T scores, with the Qualtrics file's facet
+  sets and reversals. Two alerts email the provider and the client when
+  Suicidality or Self-Harm T is 65 or more, from Jonas's Stony Brook
+  address.
 - **Hinz et al. (2017), read 2026-11-07.** *Journal of Psychosomatic
   Research, 96*, 27-31, doi:10.1016/j.jpsychores.2016.12.017, shelved from
   Jeff's Zotero library as `hinz2017.pdf` (sha256 `89365892…`). German
