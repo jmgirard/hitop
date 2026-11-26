@@ -1,6 +1,6 @@
 # M175: HiTOP-DAT T scores and the suicide-risk alert
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M174
 - **Driving RR:** —
@@ -31,7 +31,7 @@
 - [ ] AC2: `norm_hitopdat(data, prefix = "dat_", alert_t = 65, append = TRUE)` reads the score columns `prefix` + `camelCase` for the 53 scales. With `append = FALSE` its names equal a list typed in the test: the 53 `prefix` + `camelCase` + `"_t"` columns in `hitopdat_norms` order, then `prefix` + `"suicidality_alert"` and `prefix` + `"selfHarm_alert"`. Each `_t` equals `round_half_up(50 + 10 * (score - M) / SD)`. A test checks every `_t` column against M and SD typed in the test, at the mean (T 50), at a score whose unrounded T is 0.4 above a whole number, at one 0.6 above, and at `NA`.
 - [ ] AC3: Each alert column is `TRUE` when its scale's rounded T is at least `alert_t`, `FALSE` when below, and `NA` when the T is `NA`. A test checks each at unrounded T values of `alert_t` − 0.4 (`TRUE`) and `alert_t` − 0.6 (`FALSE`), at the default and at `alert_t = 70`.
 - [ ] AC4: A zero-row `data` returns a zero-row tibble with the AC2 names. `norm_hitopdat()` refuses each of these, and a test fires each one and asserts its condition class or message: `data` not a data frame; a score column absent from `data`; a non-numeric score column (`hitop_nonnumeric_items`); `alert_t` not one finite number; `prefix` not one string; `append` not `TRUE` or `FALSE`; an output name already in `data` (`hitop_append_collision`).
-- [ ] AC5: `?norm_hitopdat` and `?hitopdat_norms` name each norm source, say that the CAT-PD norms are the authors' unpublished workbook (D-098), and cite Katherine Jonas's email of 2026-10-15 for T 65. They say that the AUDIT, DUDIT and PHQ-15 get no T score yet. The source notes for Galletly et al. (2016) and the workbook are committed with their INDEX lines. NEWS.md and `_pkgdown.yml` list the function and the dataset. `devtools::test()` reports 0 failures, and `devtools::check()` reports 0 errors and 0 warnings.
+- [ ] AC5: `?norm_hitopdat` and `?hitopdat_norms` name each norm source, say that the CAT-PD norms are the authors' unpublished workbook (D-098), and cite Katherine Jonas's email of 2026-10-15 for T 65. They say that the AUDIT, DUDIT and PHQ-15 get no T score, that the AUDIT and DUDIT wait on the authors' answer about their sex-split norms, and that the authors keep the PHQ-15 on its cutoffs. The source notes for Galletly et al. (2016) and the workbook are committed with their INDEX lines. NEWS.md and `_pkgdown.yml` list the function and the dataset. `devtools::test()` reports 0 failures, and `devtools::check()` reports 0 errors and 0 warnings.
 
 ## Coverage
 
@@ -70,6 +70,8 @@
 - 2026-11-25: T5 done: roxygen, NEWS entry, `_pkgdown.yml` (norm_hitopdat under Norms, hitopdat_norms with the HiTOP-DAT data), README line pointing to `?norm_hitopdat`. Full `devtools::test()` 0 failures after the vignette link (the one failing file re-run green); `devtools::check()` 0 errors, 0 warnings, 1 note (a gitignored top-level Rplots.pdf left by this session's `run_examples()`, since removed). Status → review.
 - 2026-11-25: review pass 1: four lenses spawned; fix-now items committed on the branch (Review section). Full test and check clean at 99acb92d, before those fixes.
 - 2026-11-25: amendment routed: AC5 — "They say that the AUDIT, DUDIT and PHQ-15 get no T score yet" is false for the PHQ-15: Jonas's 2026-11-18 answer keeps it on its cutoffs, and the help pages now say so. Status → in-progress for the AC5 wording amendment alone.
+- 2026-11-25: re-audit: AC5 (full) — no blocking finding; the amended text holds on the branch at fd6a9a2c; it widens AC5 slightly (adds the AUDIT/DUDIT reason and the PHQ-15 cutoffs), which the reader judged proportionate and recommended keeping; "the authors keep the PHQ-15 on its cutoffs" rests on Jonas's 2026-11-18 line, Ringwald not objecting in that thread; the INDEX line's "sent" became "received". Kept as audited; no defect return is on record, so D-118 does not bind.
+- 2026-11-25: amendment return: AC5 — "They say that the AUDIT, DUDIT and PHQ-15 get no T score, that the AUDIT and DUDIT wait on the authors' answer about their sex-split norms, and that the authors keep the PHQ-15 on its cutoffs."
 
 ## Review
 

@@ -32,5 +32,5 @@
 - [berman2005.md](berman2005.md) — Berman et al. (2005), *European Addiction Research* 11, 22-31: the DUDIT sum from 0 to 44 (p. 23) behind `score_hitopdat()`, and Table 2's T scores.
 - [hinz2017.md](hinz2017.md) — Hinz et al. (2017), *J. Psychosomatic Research* 96, 27-31: the PHQ-15 sum from 0 to 28 without the menstruation item (p. 28) behind `score_hitopdat()`, and its one-item fill.
 - [galletly2016.md](galletly2016.md) — Galletly et al. (2016), *Psychiatry Research* 239, 54-61: Table 1's CAPE positive means and SD by sex (p. 56), weighted into the `positiveSymptoms` row of `hitopdat_norms`.
-- [simms2026catpdworkbook.md](simms2026catpdworkbook.md) — Len Simms's unpublished CAT-PD and IDAS scoring workbook (sent 2026-10-15): the 33 CAT-PD "Community" means and SDs, sheet "CAT-PD Scoring" E3:F35, behind `hitopdat_norms`.
+- [simms2026catpdworkbook.md](simms2026catpdworkbook.md) — Len Simms's unpublished CAT-PD and IDAS scoring workbook (received 2026-10-15): the 33 CAT-PD "Community" means and SDs, sheet "CAT-PD Scoring" E3:F35, behind `hitopdat_norms`.
 - [rfc9110.md](rfc9110.md) — RFC 9110, *HTTP Semantics*, section 4.1 (read 2026-10-01): senders and recipients are asked to support URIs of at least 8,000 octets, behind the Study Link Builder's long-link warning.
