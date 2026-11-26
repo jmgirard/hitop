@@ -35,6 +35,10 @@ scale holds or which it reverses, because it prints no item numbers.
   (7.12, 2.37), Ill Temper (7.87, 3.73), Mania (8.05, 3.67), Checking (4.52, 2.33),
   Cleaning (9.05, 3.73), Ordering (7.98, 3.54), Appetite Gain (6.14, 2.88), Euphoria
   (8.26, 3.14), Well-Being (23.35, 6.71). No General Depression row.
+- pp. 404-405: the "Adults" column is the combined adult sample, Adult Sample 1 (355
+  community adults in Eastern Iowa), Adult Sample 2 (372 in Eastern Iowa) and Adult
+  Sample 3 (364 in the South Bend area), "overall N = 1,091" (`hitopdat_norms$Sample`:
+  "Combined community adult samples (Iowa and South Bend)") — read 2026-11-25 by M175.
 - General Depression is not in Table 1. The discussion (p. 418) says the instrument
   "also includes a General Depression scale". The paper prints no item count for it.
 - The paper prints example items in quotation marks but no item numbers, no scoring

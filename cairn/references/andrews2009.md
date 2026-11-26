@@ -23,6 +23,9 @@ the WHODAS norms the authors named (Table 1's total).
   the battery's `whodas` answer set.
 - p. 3, Table 1, "Total" row, "Total" column: N 8,824, M 3.1, SD 5.3. Table 1 also
   splits the means by sex and by seven age groups.
+- p. 2: the sample is the 2007 Australian National Survey of Mental Health and
+  Well-being; p. 4: "8841 adults aged 16–85" (`hitopdat_norms$Sample`: "2007
+  Australian National Survey of Mental Health and Well-being, adults aged 16 to 85").
 - p. 4: 17 of 8,841 respondents had missing data on one or more items and were
   excluded. The paper states no rule for scoring a form with missing items.
 
