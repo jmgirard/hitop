@@ -533,7 +533,8 @@ Table 1's printed counts now agree with row for row.
 `hitopdat_items`, `hitopdat_choices`, `hitopdat_scales` and the internal
 `hitopdat_instructions` are built by `data-raw/hitopdat_info.R` and
 `data-raw/sysdata.R`. Eight sources (five from M143, the revised manual and the
-authors' email from M173, and the authors' second answers, which no table reads yet):
+authors' email from M173, and the authors' second answers, which `hitopdat_norms`
+reads since M175; corrected M175):
 
 - **The file.** `data-raw/HiTOP-DAT.qsf`, a Qualtrics export titled "HiTOP-DAT -
   to share" (last modified in Qualtrics 2026-09-29), received by Jeff on

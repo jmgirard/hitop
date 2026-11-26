@@ -65,5 +65,6 @@ one of these names.
 
 ## Open questions
 
-- The manual's reference samples and T-score material are not ingested. They belong to
-  the HiTOP-DAT scoring candidate row — observed 2026-09-29.
+- The manual's reference samples and T-score material are not ingested — observed
+  2026-09-29. `hitopdat_norms` takes its values from the sources the authors named in
+  their answers, not from this manual (corrected M175).

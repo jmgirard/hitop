@@ -2,8 +2,9 @@
 
 ## New features
 
-* **HiTOP-DAT item, answer and scale data.** Three datasets hold the HiTOP-DAT
-  (HiTOP Digital Assessment and Tracker), a battery of seven measures.
+* **HiTOP-DAT item, answer and scale data.** Three datasets hold the items,
+  answer sets and scales of the HiTOP-DAT (HiTOP Digital Assessment and
+  Tracker), a battery of seven measures.
   `hitopdat_items` has its 382 items, each with its battery number, its
   measure, its number in that measure, its text and its answer set.
   `hitopdat_choices` has the 13 answer sets. `hitopdat_scales` has the 57
