@@ -2,7 +2,7 @@
 # `data` already holds (AC1).
 #
 # The domain is swept from getNamespaceExports() and filtered on an `append`
-# formal, so an eighth appending export added later is covered without this file
+# formal, so a tenth appending export added later is covered without this file
 # being edited. The sweep is asserted non-empty and asserted to match the probe
 # table exactly: an export the sweep names with no probe is a failure, not a
 # silent omission, and a probe for something the sweep does not name means the

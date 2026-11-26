@@ -1890,8 +1890,8 @@ generate_docx_pid5bfchild <- function(
 #' comes before its first item; the CAPE has none. Each item shows the values
 #' of its own answer set (`hitopdat_choices`), and the legend above each run
 #' of items that share an answer set gives that set's values and labels. The
-#' footer credits each measure's authors. The form has no scoring page,
-#' because the package ships no HiTOP-DAT scoring key.
+#' footer credits each measure's authors. The form has no scoring page. Score
+#' its answers with [score_hitopdat()].
 #'
 #' @param file Character string specifying the output file path. Defaults to
 #'   `"hitopdat.docx"`.

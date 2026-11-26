@@ -695,7 +695,9 @@ authors' email from M173, and the authors' second answers, which no table reads 
   IDAS-II scales' items and reverse keys and the 99 IDAS-II item numbers and texts.
 
 Machine-checked in `tests/testthat/test-keying-hitopdat.R` (scales, against the
-sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions).
+sources, with the typed IPIP and IDAS-II keys in
+`tests/testthat/helper-hitopdat-keys.R`, corrected M174) and
+`tests/testthat/test-data-hitopdat.R` (items, answers, instructions).
 
 ### The file's 57 score categories against the keys and the manual
 

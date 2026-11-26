@@ -39,8 +39,8 @@ AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Each measure's instruction text
 comes before its first item; the CAPE has none. Each item shows the values
 of its own answer set (\code{hitopdat_choices}), and the legend above each run
 of items that share an answer set gives that set's values and labels. The
-footer credits each measure's authors. The form has no scoring page,
-because the package ships no HiTOP-DAT scoring key.
+footer credits each measure's authors. The form has no scoring page. Score
+its answers with \code{\link[=score_hitopdat]{score_hitopdat()}}.
 }
 \examples{
 \donttest{

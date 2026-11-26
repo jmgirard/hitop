@@ -18,7 +18,10 @@
 #'   no prefix is desired, set to an empty string `""`. (default = `"dat_"`)
 #' @param min_complete The smallest share of a scale's items that must be
 #'   answered for the scale to score: one number greater than 0 and at most 1.
-#'   The default is the battery authors' choice. Set it to `1` to score only
+#'   The answered share is compared with it within rounding error, so
+#'   `min_complete = 0.1 * 7`, which is slightly above 0.7 in floating
+#'   point, still scores a scale with 7 of its 10 items answered. The default is the battery
+#'   authors' choice. Set it to `1` to score only
 #'   fully answered scales. (default = `0.8`)
 #' @param append An optional logical indicating whether the new columns should
 #'   be added to the end of the `data` input. (default = `TRUE`)
@@ -182,8 +185,9 @@ score_hitopdat <- function(
     ncol = n_items
   )
   ## An answered share counts as meeting `min_complete` within rounding error,
-  ## so a share such as 1 - 0.3 is not refused against 7 of 10 items. Shares
-  ## of one scale differ by at least 1/20, far above this tolerance.
+  ## so `min_complete = 0.1 * 7` (slightly above 0.7) still scores 7 of 10
+  ## items. Shares of one scale differ by at least 1/20, far above this
+  ## tolerance.
   floor_share <- min_complete - sqrt(.Machine$double.eps)
 
   scored <- lapply(seq_len(nrow(scales)), function(s) {

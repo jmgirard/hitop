@@ -35,8 +35,11 @@ form items each facet holds, which it reverses, and each item's text.
 
 ## Traces to
 
-- `tests/testthat/test-keying-hitopdat.R`, `ipip_catpd_facets` and `ipip_catpd_text`:
-  every facet's items and reverse keys, and every item's text.
+- `tests/testthat/helper-hitopdat-keys.R`, `ipip_catpd_facets` (corrected M174, moved
+  there from the keying test): every facet's items and reverse keys, which
+  `tests/testthat/test-keying-hitopdat.R` checks against `hitopdat_scales` and
+  `tests/testthat/test-score_hitopdat.R` scores from.
+- `tests/testthat/test-keying-hitopdat.R`, `ipip_catpd_text`: every item's text.
 - `data-raw/hitopdat_info.R`: CAT-PD item 194's text takes "someone" from this key where
   the Qualtrics file cuts it short.
 

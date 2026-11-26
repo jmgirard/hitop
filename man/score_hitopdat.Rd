@@ -25,7 +25,10 @@ no prefix is desired, set to an empty string \code{""}. (default = \code{"dat_"}
 
 \item{min_complete}{The smallest share of a scale's items that must be
 answered for the scale to score: one number greater than 0 and at most 1.
-The default is the battery authors' choice. Set it to \code{1} to score only
+The answered share is compared with it within rounding error, so
+\code{min_complete = 0.1 * 7}, which is slightly above 0.7 in floating
+point, still scores a scale with 7 of its 10 items answered. The default is the battery
+authors' choice. Set it to \code{1} to score only
 fully answered scales. (default = \code{0.8})}
 
 \item{append}{An optional logical indicating whether the new columns should

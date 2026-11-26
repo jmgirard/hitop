@@ -31,8 +31,7 @@ short in the file, is completed from the IPIP key. The file moves the
 PHQ-15's item 4 (menstrual problems) out of the battery, so the PHQ-15 has
 14 items here and its own numbers skip 4. The
 battery gives only the CAPE's positive items, and they keep their CAPE
-numbers (2 to 42, with gaps). The battery has no scoring function in this
-package yet.
+numbers (2 to 42, with gaps). \code{\link[=score_hitopdat]{score_hitopdat()}} scores the battery.
 }
 \examples{
 hitopdat_items

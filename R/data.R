@@ -504,8 +504,7 @@
 #' PHQ-15's item 4 (menstrual problems) out of the battery, so the PHQ-15 has
 #' 14 items here and its own numbers skip 4. The
 #' battery gives only the CAPE's positive items, and they keep their CAPE
-#' numbers (2 to 42, with gaps). The battery has no scoring function in this
-#' package yet.
+#' numbers (2 to 42, with gaps). [score_hitopdat()] scores the battery.
 #'
 #' @format A \link[tibble]{tibble} with 382 rows and 5 columns:
 #' \describe{
