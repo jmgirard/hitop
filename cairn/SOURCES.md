@@ -744,9 +744,12 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   Positive". Neither is defined. Resolved as DAT-3: the battery keeps only the
   CAPE positive scale (the email, and the revised manual's "Measures and
   reference data"). `hitopdat_scales` keeps only "Positive Symptoms".
-- **DAT-5: IDAS-II item 99's grades.** The file grades "Skip" as 6 in Social
+- **DAT-5 [RESOLVED 2026-11-25]: IDAS-II item 99's grades.** The file grades "Skip" as 6 in Social
   Anxiety and leaves "Extremely" ungraded. The package gives item 99 the `idas`
-  answer set like the other 98 items.
+  answer set like the other 98 items. Resolved by Jonas's second answers
+  (`jonas_ringwald2026email.txt`, answer 2): the grades are an error, and item
+  99 scores like the other items. `score_hitopdat()` scores it (battery item
+  111) in Social Anxiety by the `idas` set (M174).
 - **DAT-6 [RESOLVED 2026-10-16]: The PHQ-15 menstrual item is out.** The file moves PHQ-15 item 4
   ("Menstrual cramps or other problems with your periods (women only)?") to its
   trash block. The battery has 14 PHQ-15 items. Taken as deliberate (working fact
@@ -841,7 +844,13 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   UNT-branded and both emails go to a UNT clinic Hushmail address (DAT-13).
   (k) The 33 CAT-PD norms equal the workbook's at two decimals (T moves at
   most 0.17). Jeff's report to Katherine Jonas and Whitney (2026-10-17)
-  asks eight questions from these points.
+  asks eight questions from these points. [RESOLVED 2026-11-25: (c), (e) and
+  (h)] (c) as DAT-5. (e) Jonas's joint answer
+  (`jonas_ringwald2026email3.txt`, answer 1): prorate the AUDIT and DUDIT.
+  Their raw score is the sum (Bergman & Källmén, 2002, p. 245; Berman et al.,
+  2005, p. 23). (h) The same answers, 1 and 2: prorate every scale with at
+  least 80% of its items answered, as the default. `score_hitopdat()` applies
+  both, with `min_complete = 0.8` and a `_complete` column per scale (M174).
 
 ### Redistribution and the measures' sources (2026-10-16, M144)
 

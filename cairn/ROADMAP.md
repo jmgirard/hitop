@@ -9,7 +9,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 |---|---|---|---|---|---|
 | M171 | APA notice in PID-5 online exports and adult Word footers | planned | — | normal | milestones/M171-apa-pid5-notice.md |
 | M172 | HiTOP-SR item-text matching and duplicate refusal | planned | — | normal | milestones/M172-hitopsr-text-matching.md |
-| M174 | HiTOP-DAT raw scale scores | planned | — | normal | milestones/M174-hitopdat-raw-scores.md |
+| M174 | HiTOP-DAT raw scale scores | in-progress | — | normal | milestones/M174-hitopdat-raw-scores.md |
 | M175 | HiTOP-DAT T scores and the suicide-risk alert | planned | M174 | normal | milestones/M175-hitopdat-t-scores.md |
 | M173 | HiTOP-DAT names, records and announcement after the authors' answers | done | — | normal | milestones/archive/M173-hitopdat-author-answers.md |
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | done | M143, M173 | normal | milestones/archive/M144-hitopdat-word-redcap.md |
