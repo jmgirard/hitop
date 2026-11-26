@@ -76,6 +76,7 @@
 - 2026-11-25: claim audit (fresh Opus reader) flagged 5 of about 85 claims. All 5 were corrected in code or wording. One was a defect: with `min_complete` below about 1.5e-8 a scale with no answered item scored NaN. It now scores NA, with a test. Re-read by the same reader is pending. The first `devtools::check()` was stopped because it predated the fix.
 - 2026-11-25: claim audit: 85 claims read, 5 corrected — R/score_hitopdat.R, R/util.R, tests/testthat/test-score_hitopdat.R, tests/testthat/helper-hitopdat-keys.R, vignettes/articles/download-hitopdat.Rmd (the reader's one re-read found all 5 corrections hold).
 - 2026-11-25: T5 done: roxygen, NEWS entry, `_pkgdown.yml` row, README row (`build_readme()`), and, added as a minor sub-task, the download page's scoring card, which replaces its stale "does not score" sentence and covers the export for the vignette-coverage test. `pkgdown::check_pkgdown()` reports no problems; `devtools::check()` gives 0 errors, 0 warnings, 0 notes. Status set to review.
+- 2026-11-25: correction to the T3 line: `1 - 0.3` equals 0.7 exactly in R, so it shows nothing about the tolerance; `0.1 * 7` is slightly above 0.7 and still scores 7 of 10 (run at review). The code comment and `?score_hitopdat` now use that example (ff3443f0).
 
 ## Review
 
@@ -89,21 +90,21 @@
 - spawned: diff-bug, blame-history, prior-review, ripple
 - diff-bug #1: logical item columns pass the answer-set check as 0/1 — reject (false): D-068 reads a logical column as its 0/1 values by decision, and those values are then checked against the set like any number; no HiTOP-DAT form or export writes logical answers.
 - diff-bug #2: NaN counts as missing without notice — reject (false): the family reads NaN as missing (`unparsed_value()`, D-068), and the scale's `_complete` column reports the missing item.
-- diff-bug #3: the rounding tolerance admits a share up to 1.5e-8 below `min_complete` while the docs say "at least" — fix now: the `min_complete` doc states the comparison is within rounding error.
+- diff-bug #3: the rounding tolerance admits a share up to 1.5e-8 below `min_complete` while the docs say "at least" — fix now: the `min_complete` doc states the comparison is within rounding error, fixed ff3443f0.
 - diff-bug #4: the non-numeric refusal is tested only with a factor — reject (false): the refusal is the shared `validate_item_columns()`, whose text, Date, list and haven kinds test-nonnumeric-items.R covers; the factor case pins this function's call of it.
 - diff-bug #5: the NaN regression is pinned on one scale — reject (false): every scale runs the same line, as the reviewer says.
 - diff-bug #6: duplicate non-item column names abort with tibble's unclassed error under `append = TRUE` — reject (edge): only a data frame with two same-named non-item columns reaches it, outside documented and common use; the effect is an error, as in `score_engine()`.
 - diff-bug #7: DESCRIPTION's roxygen version moved to 8.1.1 — reject (false): `document()` writes it and the gate requires a no-diff `document()`; the T3 work log records it.
-- diff-bug #8: the Well-Being forward test repeats what the exact recomputation covers — fix now: removed.
-- diff-bug #9: the Workaholism and Social Withdrawal values repeat the exact recomputation — fix now: removed.
+- diff-bug #8: the Well-Being forward test repeats what the exact recomputation covers — fix now: removed, fixed ff3443f0.
+- diff-bug #9: the Workaholism and Social Withdrawal values repeat the exact recomputation — fix now: removed, fixed ff3443f0.
 - diff-bug #10: the hand-typed proration case runs the path `check_proration()` compares — reject (false): it is the one expectation typed independently of both the code and the helper (check discrimination).
 - diff-bug #11: the `_complete` equality repeats the exact comparison — reject (false): it uses the typed k, independent of the helper's threshold, and AC4 names it.
-- diff-bug #12: seven `min_complete` refusal values share one assertion — fix now: kept 0, 1.1, length 2, "0.8" and `NA`; dropped −0.5 and `Inf`.
-- diff-bug #13: two `prefix` refusal cases share one path — fix now: kept `prefix = 1`.
-- diff-bug #14: four invalid answers share one path — fix now: kept 6 on a CAT-PD item and 1 on an `audit_harm` item (inside the range, outside the set).
-- diff-bug #15: the accepted min, max and `NA` block repeats the recomputation and the all-`NA` test — fix now: removed.
+- diff-bug #12: seven `min_complete` refusal values share one assertion — fix now: kept 0, 1.1, length 2, "0.8" and `NA`; dropped −0.5 and `Inf`, fixed ff3443f0.
+- diff-bug #13: two `prefix` refusal cases share one path — fix now: kept `prefix = 1`, fixed ff3443f0.
+- diff-bug #14: four invalid answers share one path — fix now: kept 6 on a CAT-PD item and 1 on an `audit_harm` item (inside the range, outside the set), fixed ff3443f0.
+- diff-bug #15: the accepted min, max and `NA` block repeats the recomputation and the all-`NA` test — fix now: removed, fixed ff3443f0.
 - diff-bug #16: the stem-count and key-name checks test the fixture — reject (false): they keep the typed stem list and key from emptying silently (check discrimination).
-- diff-bug #17: three test comments restate code — fix now: the threshold comment and the 1e-9 comment removed (the third went with #15).
+- diff-bug #17: three test comments restate code — fix now: the threshold comment and the 1e-9 comment removed (the third went with #15), fixed ff3443f0.
 - blame-history #1: the README call hardcodes the HiTOP-DAT branch — reject (false): it checks what the other branches check, as the reviewer says.
 - blame-history #2: the moved keys — noted: verified identical.
 - blame-history #3: the error-prose counts — noted: correct.
@@ -113,11 +114,11 @@
 - blame-history #7: the signature departure notes — noted: they cite D-099.
 - prior-review #1: the item-order warning fires before the collision refusal, against M060's "ahead of its warnings" — reject (false): `score_engine()` runs the same validation warning first; M060's rule concerns the warnings of building the output.
 - prior-review #2: the HiTOP-DAT row marks Scoring with an empty Tutorial cell — reject (false): the column links tutorials that exist, none exists for the HiTOP-DAT, and the README test agrees.
-- ripple #1: R/data.R `?hitopdat_items` says the battery has no scoring function — fix now.
-- ripple #2: R/generate_docx.R says the package ships no HiTOP-DAT scoring key — fix now.
+- ripple #1: R/data.R `?hitopdat_items` says the battery has no scoring function — fix now, fixed ff3443f0.
+- ripple #2: R/generate_docx.R says the package ships no HiTOP-DAT scoring key — fix now, fixed ff3443f0.
 - ripple #3: CLAUDE.md's opening line omits the HiTOP-DAT — follow-up: candidate row "Name HiTOP-DAT in the CLAUDE.md summary" (low: no user reads it; left for Jeff since CLAUDE.md is his instruction file).
-- ripple #4: DESIGN.md's Function families signature line has no departure note — fix now.
-- ripple #5: ipip2015catpdsf.md and watson2011idas.md trace the key lists to test-keying-hitopdat.R — fix now.
-- ripple #6: test-append-collision.R says "an eighth appending export" — fix now.
-- ripple #7: SOURCES.md's machine-check pointer omits the helper — fix now.
+- ripple #4: DESIGN.md's Function families signature line has no departure note — fix now, fixed ff3443f0.
+- ripple #5: ipip2015catpdsf.md and watson2011idas.md trace the key lists to test-keying-hitopdat.R — fix now, fixed ff3443f0.
+- ripple #6: test-append-collision.R says "an eighth appending export" — fix now, fixed ff3443f0.
+- ripple #7: SOURCES.md's machine-check pointer omits the helper — fix now, fixed ff3443f0.
 - Return floor: no finding shows a criterion failing or a load-bearing defect; no status change.
