@@ -44,7 +44,7 @@
 ## Tasks
 
 - [x] T1: Write the source notes `galletly2016.md` and `simms2026catpdworkbook.md` (the workbook, sha256 `8643147c…`, the cells AC1 names) with INDEX lines, and add the 18 IDAS-II rows already in `watson2012.md` to its "Traces to".
-- [ ] T2: Transcribe the workbook's 33 cells into a committed `data-raw/hitopdat_norms.csv` with the other 20 rows, and write `data-raw/hitopdat_norms.R` to build the dataset from it, adding no dependency. Write `?hitopdat_norms` in R/data.R and AC1's test.
+- [x] T2: Transcribe the workbook's 33 cells into a committed `data-raw/hitopdat_norms.csv` with the other 20 rows, and write `data-raw/hitopdat_norms.R` to build the dataset from it, adding no dependency. Write `?hitopdat_norms` in R/data.R and AC1's test.
 - [ ] T3: Write `tests/testthat/test-norm_hitopdat.R` first: AC2 to AC4, with M and SD typed in the test, never read from `hitopdat_norms`.
 - [ ] T4: Write `norm_hitopdat()` in `R/norm_hitopdat.R`, reusing the `R/util.R` validators.
 - [ ] T5: Write the roxygen, NEWS entry and `_pkgdown.yml` entries. Run `devtools::document()`, `devtools::test()` and `devtools::check()`.
@@ -62,3 +62,4 @@
 - 2026-11-25: criteria audit (fresh Opus reader, full mode, with M174) returned 21 findings. Applied to M175: the CAPE SD as the common printed SD (AC1), the workbook sheet and cells and the Andrews cell (AC1), no `scores` argument and an exact name list (AC2), no exact .5 fixture (AC2), the rounded T for alerts with ±0.4/0.6 probes (AC3), the non-numeric class and zero rows (AC4), the email in place of SOURCES.md in the help (AC5). The M176 draft's findings (Berman's women's column ends at raw 3, REDCap's "70+" cap, both-sexes T as a reading, naming, rounding before lookup) went to the authors' follow-up.
 - 2026-11-25: implement started on branch m175-hitopdat-t-scores, cut from origin/main at 0e14453b; the six untracked devel/hitopdat_* files are unrelated and stay unstaged.
 - 2026-11-25: T1 done: galletly2016.md and simms2026catpdworkbook.md written with INDEX lines; watson2012.md, andrews2009.md and SOURCES.md "The authors' email" updated to name hitopdat_norms as the reader.
+- 2026-11-25: T2 done: data-raw/hitopdat_norms.csv + .R build `hitopdat_norms` (53 rows; columns Measure, Scale, camelCase, M, SD, Sample, N, Source); the CAPE row is computed in the script from Galletly's four cells, since the weighted mean repeats. Choices: N 305 for the CAPE (the sum of the printed n), NA for the CAT-PD (workbook gives none); a Measure column added for filtering; the typed norms live in tests/testthat/helper-hitopdat-norms.R so T3's test shares them. A 1e-6 planted change to one M fails the AC1 check.

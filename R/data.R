@@ -569,6 +569,83 @@
 #' hitopdat_scales
 "hitopdat_scales"
 
+#' HiTOP-DAT Norms
+#'
+#' The mean and standard deviation that [norm_hitopdat()] converts each
+#' HiTOP-DAT scale score against, one row per normed scale. The battery's
+#' authors named each source in their answers to the package maintainer's
+#' questions in 2026, and this table takes each value from the source they
+#' named:
+#'
+#' - WHODAS: Andrews et al. (2009), Table 1, the total row and total column
+#'   (N = 8,824).
+#' - The 18 IDAS-II scales: Watson et al. (2012), Table 2, the "Adults" column
+#'   (N = 1,091).
+#' - CAPE positive symptoms: Galletly et al. (2016), Table 1. The mean is the
+#'   mean of the men's 26.26 (n = 125) and the women's 26.58 (n = 180),
+#'   weighted by their n, and the SD is the 3.52 printed for both. Both are
+#'   divided by the 20 items, because [score_hitopdat()] scores the CAPE as an
+#'   item mean.
+#' - The 33 CAT-PD facets: Len Simms's CAT-PD and IDAS scoring workbook, the
+#'   "Community" mean and SD of its "CAT-PD Scoring" sheet, at the precision
+#'   the workbook stores. These norms are unpublished. The battery's authors
+#'   use them, and the package follows the authors.
+#'
+#' Each mean and SD is on the metric [score_hitopdat()] scores the scale on:
+#' a sum for the WHODAS and the IDAS-II, and an item mean for the CAPE and the
+#' CAT-PD.
+#'
+#' The IDAS-II General Depression scale has no row, because the authors
+#' dropped it. The AUDIT, DUDIT and PHQ-15 have no row and get no T score
+#' yet: their norms are split by sex, and how to report them waits on the
+#' authors' answer.
+#'
+#' [norm_hitopdat()] also flags an IDAS-II Suicidality or CAT-PD Self-Harm
+#' T score of 65 or more, the alert point Katherine Jonas gave in her email
+#' to the package maintainer of 2026-10-15. She added that clinics may set
+#' another, so the function takes it as an argument.
+#'
+#' @format A \link[tibble]{tibble} with 53 rows and 8 columns:
+#' \describe{
+#'   \item{Measure}{The measure the scale belongs to, as in
+#'     `hitopdat_scales$Measure`}
+#'   \item{Scale}{Name of the scale, as in `hitopdat_scales$Scale`}
+#'   \item{camelCase}{The name of the scale converted to camel case, as in
+#'     `hitopdat_scales$camelCase`}
+#'   \item{M}{The reference sample's mean}
+#'   \item{SD}{The reference sample's standard deviation}
+#'   \item{Sample}{The reference sample, as its source describes it}
+#'   \item{N}{The reference sample's size (integer). `NA` for the CAT-PD
+#'     facets, whose workbook gives none. For the CAPE it is the sum of the
+#'     men's and women's n.}
+#'   \item{Source}{Where the mean and SD come from}
+#' }
+#'
+#' @references
+#' Andrews, G., Kemp, A., Sunderland, M., Von Korff, M., & Ustun, T. B.
+#' (2009). Normative data for the 12 item WHO Disability Assessment Schedule
+#' 2.0. *PLoS ONE, 4*(12), e8343. \doi{10.1371/journal.pone.0008343}
+#'
+#' Galletly, C., Clark, L., McFarlane, A., Searle, A., Sawyer, M., Sim, M.,
+#' Baghurst, P., & van Hooff, M. (2016). Childhood lead exposure, childhood
+#' trauma, substance use and subclinical psychotic experiences: A
+#' longitudinal cohort study. *Psychiatry Research, 239*, 54-61.
+#' \doi{10.1016/j.psychres.2016.02.066}
+#'
+#' Simms, L. J. (n.d.). *CAT-PD and IDAS scoring* \[Unpublished Excel
+#' workbook\]. Sent to the package maintainer by K. G. Jonas, 2026-10-15.
+#'
+#' Watson, D., O'Hara, M. W., Naragon-Gainey, K., Koffel, E., Chmielewski, M.,
+#' Kotov, R., Stasik, S. M., & Ruggero, C. J. (2012). Development and
+#' validation of new anxiety and bipolar symptom scales for an expanded
+#' version of the IDAS (the IDAS-II). *Assessment, 19*(4), 399-420.
+#' \doi{10.1177/1073191112449857}
+#'
+#' @seealso [norm_hitopdat()], [score_hitopdat()], [hitopdat_scales]
+#' @examples
+#' hitopdat_norms
+"hitopdat_norms"
+
 #' Distribution Artifact Manifest
 #'
 #' Version manifest for the prebuilt instrument artifacts. They ship in the
