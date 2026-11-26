@@ -565,7 +565,9 @@ authors' email from M173, and the authors' second answers, which no table reads 
   table). T 65 is the alert point she and "Roman" chose, and she told
   clinics that they can set another. It came with Len Simms's `CAT-PD and IDAS scoring.xlsx`
   (sha256 `8643147c…`, on the shelf), "on which the Redcap battery was based".
-  No table reads that workbook yet (DAT-15).
+  `hitopdat_norms` reads its CAT-PD norms, sheet "CAT-PD Scoring" cells
+  E3:F35 ([simms2026catpdworkbook.md](references/simms2026catpdworkbook.md);
+  corrected M175).
 - **The authors' second answers (2026-11-07).** Replies to Jeff's 2026-10-16
   scoring report from Whitney Ringwald (2026-10-20) and Katherine Jonas
   (undated, after Whitney's), shelved verbatim as

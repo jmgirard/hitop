@@ -45,7 +45,10 @@ scale holds or which it reverses, because it prints no item numbers.
 - `tests/testthat/test-keying-hitopdat.R`, `watson_counts`: the 18 counts, checked
   against `hitopdat_scales$nItems`.
 - `cairn/SOURCES.md` "HiTOP-DAT", DAT-15 (b): the Table 2 adult values, compared with
-  the Qualtrics file's and the workbook's IDAS-II norms. No package table reads them yet.
+  the Qualtrics file's and the workbook's IDAS-II norms.
+- `data-raw/hitopdat_norms.csv`: the 18 Table 2 "Adults" rows of `hitopdat_norms`, M and
+  SD on the scale-sum metric `score_hitopdat()` uses (corrected M175).
+- `tests/testthat/test-hitopdat_norms.R`: those 18 rows, typed from this page.
 
 ## Open questions
 

@@ -1,13 +1,13 @@
 # M175: HiTOP-DAT T scores and the suicide-risk alert
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M174
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, IP3, IP4, GP1, GP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — a new exported function and dataset
-- **Branch/PR:** —
+- **Branch/PR:** m175-hitopdat-t-scores
 
 ## Goal
 
@@ -43,7 +43,7 @@
 
 ## Tasks
 
-- [ ] T1: Write the source notes `galletly2016.md` and `simms2026catpdworkbook.md` (the workbook, sha256 `8643147c…`, the cells AC1 names) with INDEX lines, and add the 18 IDAS-II rows already in `watson2012.md` to its "Traces to".
+- [x] T1: Write the source notes `galletly2016.md` and `simms2026catpdworkbook.md` (the workbook, sha256 `8643147c…`, the cells AC1 names) with INDEX lines, and add the 18 IDAS-II rows already in `watson2012.md` to its "Traces to".
 - [ ] T2: Transcribe the workbook's 33 cells into a committed `data-raw/hitopdat_norms.csv` with the other 20 rows, and write `data-raw/hitopdat_norms.R` to build the dataset from it, adding no dependency. Write `?hitopdat_norms` in R/data.R and AC1's test.
 - [ ] T3: Write `tests/testthat/test-norm_hitopdat.R` first: AC2 to AC4, with M and SD typed in the test, never read from `hitopdat_norms`.
 - [ ] T4: Write `norm_hitopdat()` in `R/norm_hitopdat.R`, reusing the `R/util.R` validators.
@@ -60,3 +60,5 @@
 - 2026-11-25: plan chose a committed CSV transcribed from the workbook over reading the workbook with {readxl} in `data-raw/`, because {readxl} is no dependency and the shelf copy is gitignored. Falsified by a workbook revision with many changed cells.
 - 2026-11-25: plan chose the workbook's stored precision for the CAT-PD norms over the two decimals the REDCap version types, because the workbook is the source the authors name. Falsified by an author answer naming the two-decimal values.
 - 2026-11-25: criteria audit (fresh Opus reader, full mode, with M174) returned 21 findings. Applied to M175: the CAPE SD as the common printed SD (AC1), the workbook sheet and cells and the Andrews cell (AC1), no `scores` argument and an exact name list (AC2), no exact .5 fixture (AC2), the rounded T for alerts with ±0.4/0.6 probes (AC3), the non-numeric class and zero rows (AC4), the email in place of SOURCES.md in the help (AC5). The M176 draft's findings (Berman's women's column ends at raw 3, REDCap's "70+" cap, both-sexes T as a reading, naming, rounding before lookup) went to the authors' follow-up.
+- 2026-11-25: implement started on branch m175-hitopdat-t-scores, cut from origin/main at 0e14453b; the six untracked devel/hitopdat_* files are unrelated and stay unstaged.
+- 2026-11-25: T1 done: galletly2016.md and simms2026catpdworkbook.md written with INDEX lines; watson2012.md, andrews2009.md and SOURCES.md "The authors' email" updated to name hitopdat_norms as the reader.

@@ -31,7 +31,9 @@ the WHODAS norms the authors named (Table 1's total).
 - `R/score_hitopdat.R`: the WHODAS raw score is the sum of its 12 items.
 - `tests/testthat/test-score_hitopdat.R`: the helper's sum rule for the WHODAS.
 - `cairn/SOURCES.md` "HiTOP-DAT", "The authors' second answers": Table 1's total as
-  the WHODAS norm, which M175 applies.
+  the WHODAS norm.
+- `data-raw/hitopdat_norms.csv` and `tests/testthat/test-hitopdat_norms.R`: the `whodas`
+  row of `hitopdat_norms`, Table 1's total (corrected M175).
 
 ## Open questions
 
