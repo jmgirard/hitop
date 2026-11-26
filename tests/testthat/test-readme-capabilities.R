@@ -93,7 +93,10 @@ readme_function <- function(instrument, family) {
 # or a warning propagates and fails the test.
 readme_call <- function(fn, instrument) {
   n <- readme_items(instrument)
-  if (instrument %in% names(readme_hitop)) {
+  if (instrument == "HiTOP-DAT") {
+    # Its answer sets differ by measure, so the rows are each set's ends.
+    expect_no_warning(fn(hitopdat_answer_ends(), items = seq_len(n)))
+  } else if (instrument %in% names(readme_hitop)) {
     d <- as.data.frame(matrix(rep_len(1:4, n), nrow = 1))
     expect_no_warning(fn(d, items = seq_len(n)))
   } else {

@@ -2,7 +2,7 @@
 # `data` already holds (AC1).
 #
 # The domain is swept from getNamespaceExports() and filtered on an `append`
-# formal, so an eighth appending export added later is covered without this file
+# formal, so a tenth appending export added later is covered without this file
 # being edited. The sweep is asserted non-empty and asserted to match the probe
 # table exactly: an export the sweep names with no probe is a failure, not a
 # silent omission, and a probe for something the sweep does not name means the
@@ -72,6 +72,11 @@ collision_probes <- function() {
       data = hitop::sim_hitopbr,
       args = list(items = 1:45),
       extra = list(items = 1:45, calc_se = TRUE)
+    ),
+    score_hitopdat = list(
+      data = hitopdat_answer_ends(),
+      args = list(items = 1:382),
+      extra = NULL
     ),
     validity_pid5 = list(
       data = hitop::sim_pid5,

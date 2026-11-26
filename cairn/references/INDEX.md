@@ -27,4 +27,8 @@
 - [apa2013pid5irf.md](apa2013pid5irf.md) — The APA PID-5 Informant Form (Markon et al., 2013): its 218 item texts, its Facet and Domain Tables, the self-report alignment, and the two reverse lists that disagree on items 98 and 176.
 - [apa2013pid5child.md](apa2013pid5child.md) — The APA PID-5 child forms for ages 11 to 17 (Krueger et al., 2013), full and brief: their instructions, and a scripted check that their items and keying equal the adult `FULL` and `BF` tables.
 - [niemeyer2022.md](niemeyer2022.md) — Niemeyer et al. (2022), *JPA* 104, 30-43, with its OSF Table S3 and analysis code: the PID-5-FFBF forensic form's 100 items in four versions, its facets, its two reverse items and its domain rules.
+- [andrews2009.md](andrews2009.md) — Andrews et al. (2009), *PLoS ONE* 4(12), e8343: the 12-item WHODAS 2.0 simple sum from 0 to 48 (p. 2) behind `score_hitopdat()`, and Table 1's total norms.
+- [bergman2002.md](bergman2002.md) — Bergman & Källmén (2002), *Alcohol & Alcoholism* 37(3), 245-251: the AUDIT sum from 0 to 40 (p. 245) behind `score_hitopdat()`, and Table 6's T scores.
+- [berman2005.md](berman2005.md) — Berman et al. (2005), *European Addiction Research* 11, 22-31: the DUDIT sum from 0 to 44 (p. 23) behind `score_hitopdat()`, and Table 2's T scores.
+- [hinz2017.md](hinz2017.md) — Hinz et al. (2017), *J. Psychosomatic Research* 96, 27-31: the PHQ-15 sum from 0 to 28 without the menstruation item (p. 28) behind `score_hitopdat()`, and its one-item fill.
 - [rfc9110.md](rfc9110.md) — RFC 9110, *HTTP Semantics*, section 4.1 (read 2026-10-01): senders and recipients are asked to support URIs of at least 8,000 octets, behind the Study Link Builder's long-link warning.

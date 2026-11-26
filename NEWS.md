@@ -9,7 +9,19 @@
   `hitopdat_choices` has the 13 answer sets. `hitopdat_scales` has the 57
   scales, each with its battery item numbers and the items it reverses. The
   scale names follow the revised HiTOP-DAT manual, which calls one CAT-PD facet
-  Non-Planfulness. The package has no scoring function for the battery yet.
+  Non-Planfulness.
+
+* **`score_hitopdat()` scores the HiTOP-DAT.** It returns a raw score on 56
+  of the battery's 57 scales. The WHODAS, AUDIT, DUDIT and PHQ-15 totals and
+  the 18 IDAS-II scales are sums. The 33 CAT-PD facets and CAPE positive
+  symptoms are item means. General Depression is not scored, at the battery
+  authors' request. A scale with at least `min_complete` of its items
+  answered (default 0.8, the authors' choice) is prorated: a sum to the
+  scale's full item count, a mean over the answered items. Below that share
+  the scale is `NA`. A `_complete` column per scale gives its answered
+  share. An answer that is not a value of its item's answer set in
+  `hitopdat_choices` is an error of the new class `hitop_invalid_answer`.
+  The function gives no T scores.
 
 * **HiTOP-DAT Word forms and REDCap import file.** `generate_docx_hitopdat()`
   writes the battery's 382 items as a paper form, numbered 1 to 382 in battery

@@ -36,8 +36,11 @@ number and text.
 
 ## Traces to
 
-- `tests/testthat/test-keying-hitopdat.R`, `watson_idas_scales`: the 19 lists, checked
-  against `hitopdat_scales$itemNumbers`, `$reverseNumbers` and `$nItems`.
+- `tests/testthat/helper-hitopdat-keys.R`, `watson_idas_scales` (corrected M174, moved
+  there from the keying test): the 19 lists, which `tests/testthat/test-keying-hitopdat.R`
+  checks against `hitopdat_scales$itemNumbers`, `$reverseNumbers` and `$nItems`, and
+  `tests/testthat/test-score_hitopdat.R` scores from (18 of them, General Depression
+  left out).
 - `tests/testthat/test-keying-hitopdat.R`, `watson_idas_text`: the 99 texts, checked
   against `hitopdat_items$Text` at each IDAS-II `MeasureItem`.
 
