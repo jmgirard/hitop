@@ -1,0 +1,62 @@
+# M175: HiTOP-DAT T scores and the suicide-risk alert
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** M174
+- **Driving RR:** —
+- **Principles touched:** IP1, IP2, IP3, IP4, GP1, GP2, GP3
+- **Resolves:** —
+- **Surface tier:** user-facing — a new exported function and dataset
+- **Branch/PR:** —
+
+## Goal
+
+`norm_hitopdat()` turns `score_hitopdat()` scores into T scores against the norms the authors name, and marks Suicidality and Self-Harm T scores at or above an alert point.
+
+## Scope
+
+**In:**
+- An exported dataset `hitopdat_norms`, built by a `data-raw/` script, for 53 scales: the 18 IDAS-II scales other than General Depression, the WHODAS, CAPE positive symptoms and the 33 CAT-PD facets.
+- `norm_hitopdat()` in a new `R/norm_hitopdat.R`, returning whole-number T scores, half away from zero (`round_half_up()`, R/util.R:768), as both of the authors' versions round.
+- Alert columns for IDAS-II Suicidality and CAT-PD Self-Harm, at T 65 by default (Jonas, 2026-10-15).
+- Source notes for Galletly et al. (2016) and the authors' workbook.
+
+**Out:**
+- AUDIT, DUDIT and PHQ-15 results under men's and women's values, CAT-PD domain scores, and scored REDCap and Qualtrics files: the candidate row "HiTOP-DAT after M143 to M145".
+- Alerts on other scales. The authors alert on these two only.
+
+## Acceptance criteria
+
+- [ ] AC1: `hitopdat_norms` holds one row for each of the 53 scales, giving the scale, its `camelCase`, M, SD, the reference sample, its N where the source prints one, and the source. A test checks every row against values typed in the test from the committed source notes: Watson et al. (2012) Table 2, "Adults" column (p. 407); Andrews et al. (2009) Table 1, the Total-row, Total-column cell (N 8,824, M 3.1, SD 5.3); Galletly et al. (2016) Table 1, the n-weighted mean of the male (26.26, n 125) and female (26.58, n 180) CAPE positive means and their common printed SD (3.52), each divided by 20; and the authors' workbook, sheet "CAT-PD Scoring", cells E3:F35 ("Community"), at their stored precision.
+- [ ] AC2: `norm_hitopdat(data, prefix = "dat_", alert_t = 65, append = TRUE)` reads the score columns `prefix` + `camelCase` for the 53 scales. With `append = FALSE` its names equal a list typed in the test: the 53 `prefix` + `camelCase` + `"_t"` columns in `hitopdat_norms` order, then `prefix` + `"suicidality_alert"` and `prefix` + `"selfHarm_alert"`. Each `_t` equals `round_half_up(50 + 10 * (score - M) / SD)`. A test checks every `_t` column against M and SD typed in the test, at the mean (T 50), at a score whose unrounded T is 0.4 above a whole number, at one 0.6 above, and at `NA`.
+- [ ] AC3: Each alert column is `TRUE` when its scale's rounded T is at least `alert_t`, `FALSE` when below, and `NA` when the T is `NA`. A test checks each at unrounded T values of `alert_t` − 0.4 (`TRUE`) and `alert_t` − 0.6 (`FALSE`), at the default and at `alert_t = 70`.
+- [ ] AC4: A zero-row `data` returns a zero-row tibble with the AC2 names. `norm_hitopdat()` refuses each of these, and a test fires each one and asserts its condition class or message: `data` not a data frame; a score column absent from `data`; a non-numeric score column (`hitop_nonnumeric_items`); `alert_t` not one finite number; `prefix` not one string; `append` not `TRUE` or `FALSE`; an output name already in `data` (`hitop_append_collision`).
+- [ ] AC5: `?norm_hitopdat` and `?hitopdat_norms` name each norm source, say that the CAT-PD norms are the authors' unpublished workbook (D-098), and cite Katherine Jonas's email of 2026-10-15 for T 65. They say that the AUDIT, DUDIT and PHQ-15 get no T score yet. The source notes for Galletly et al. (2016) and the workbook are committed with their INDEX lines. NEWS.md and `_pkgdown.yml` list the function and the dataset. `devtools::test()` reports 0 failures, and `devtools::check()` reports 0 errors and 0 warnings.
+
+## Coverage
+
+- AC1 → T1, T2
+- AC2 → T3, T4
+- AC3 → T3, T4
+- AC4 → T3, T4
+- AC5 → T1, T5
+
+## Tasks
+
+- [ ] T1: Write the source notes `galletly2016.md` and `simms2026catpdworkbook.md` (the workbook, sha256 `8643147c…`, the cells AC1 names) with INDEX lines, and add the 18 IDAS-II rows already in `watson2012.md` to its "Traces to".
+- [ ] T2: Transcribe the workbook's 33 cells into a committed `data-raw/hitopdat_norms.csv` with the other 20 rows, and write `data-raw/hitopdat_norms.R` to build the dataset from it, adding no dependency. Write `?hitopdat_norms` in R/data.R and AC1's test.
+- [ ] T3: Write `tests/testthat/test-norm_hitopdat.R` first: AC2 to AC4, with M and SD typed in the test, never read from `hitopdat_norms`.
+- [ ] T4: Write `norm_hitopdat()` in `R/norm_hitopdat.R`, reusing the `R/util.R` validators.
+- [ ] T5: Write the roxygen, NEWS entry and `_pkgdown.yml` entries. Run `devtools::document()`, `devtools::test()` and `devtools::check()`.
+
+## Work log
+
+- 2026-11-25: created by /milestone-plan, together with M174.
+- 2026-11-25: tier check: milestone — new exported function and dataset.
+- 2026-11-25: idea vet: gap — T rounding: whole numbers, half away from zero, as both of the authors' versions round (D-098). Gap — alert on the rounded T, as both versions compare. Gap — CAPE SD: the common printed SD, from Jonas's "weighted mean of the male and female values", over a pooled SD the package would choose. No flaw.
+- 2026-11-25: lessons used: 2026-08-22 (M046), 2026-07-31 (M035).
+- 2026-11-25: collision check: promotes the parts "T scores against the norms the authors name" and the alert of the candidate row "HiTOP-DAT after M143 to M145"; D-022 holds, since every M and SD is an author-named printed or workbook value, not fitted here.
+- 2026-11-25: plan chose whole-number T scores (both of the authors' versions) over unrounded T, because D-098 follows the authors. Falsified by an author answer asking for decimals.
+- 2026-11-25: plan chose a committed CSV transcribed from the workbook over reading the workbook with {readxl} in `data-raw/`, because {readxl} is no dependency and the shelf copy is gitignored. Falsified by a workbook revision with many changed cells.
+- 2026-11-25: plan chose the workbook's stored precision for the CAT-PD norms over the two decimals the REDCap version types, because the workbook is the source the authors name. Falsified by an author answer naming the two-decimal values.
+- 2026-11-25: criteria audit (fresh Opus reader, full mode, with M174) returned 21 findings. Applied to M175: the CAPE SD as the common printed SD (AC1), the workbook sheet and cells and the Andrews cell (AC1), no `scores` argument and an exact name list (AC2), no exact .5 fixture (AC2), the rounded T for alerts with ±0.4/0.6 probes (AC3), the non-numeric class and zero rows (AC4), the email in place of SOURCES.md in the help (AC5). The M176 draft's findings (Berman's women's column ends at raw 3, REDCap's "70+" cap, both-sexes T as a reading, naming, rounding before lookup) went to the authors' follow-up.
