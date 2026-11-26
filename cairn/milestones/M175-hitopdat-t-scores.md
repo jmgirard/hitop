@@ -72,6 +72,8 @@
 - 2026-11-25: amendment routed: AC5 — "They say that the AUDIT, DUDIT and PHQ-15 get no T score yet" is false for the PHQ-15: Jonas's 2026-11-18 answer keeps it on its cutoffs, and the help pages now say so. Status → in-progress for the AC5 wording amendment alone.
 - 2026-11-25: re-audit: AC5 (full) — no blocking finding; the amended text holds on the branch at fd6a9a2c; it widens AC5 slightly (adds the AUDIT/DUDIT reason and the PHQ-15 cutoffs), which the reader judged proportionate and recommended keeping; "the authors keep the PHQ-15 on its cutoffs" rests on Jonas's 2026-11-18 line, Ringwald not objecting in that thread; the INDEX line's "sent" became "received". Kept as audited; no defect return is on record, so D-118 does not bind.
 - 2026-11-25: amendment return: AC5 — "They say that the AUDIT, DUDIT and PHQ-15 get no T score, that the AUDIT and DUDIT wait on the authors' answer about their sex-split norms, and that the authors keep the PHQ-15 on its cutoffs."
+- 2026-11-26: review pass 2: four fresh lenses; fix-now items committed through 63d0dfb0; evidence recorded at 63d0dfb0, AC1-AC5 ticked.
+- 2026-11-26: step-7 approval: m175-hitopdat-t-scores approved for merge
 
 ## Review
 
