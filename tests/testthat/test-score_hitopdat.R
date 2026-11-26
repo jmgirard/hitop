@@ -138,7 +138,8 @@ test_that("fully answered scores equal the recomputation from the typed keys", {
   out <- score_hitopdat(dat_frame(answers), dat_items, append = FALSE)
   expect_equal(out, recompute_hitopdat(answers))
 
-  # Each total's range as its source prints it.
+  # Each scale's range at its answer sets' ends. The WHODAS, AUDIT, DUDIT and
+  # PHQ-15 ranges are the ones their sources print.
   low <- out[41, ]
   high <- out[42, ]
   expect_identical(c(low$dat_whodas, high$dat_whodas), c(0, 48))
@@ -225,6 +226,10 @@ test_that("NA answers are missing, and zero rows give the named empty tibble", {
   out <- score_hitopdat(df, dat_items, append = FALSE)
   expect_true(all(is.na(out[paste0("dat_", dat_stems)])))
   expect_true(all(out[paste0("dat_", dat_stems, "_complete")] == 0))
+  # A scale with no answered item is NA however small min_complete is.
+  out <- score_hitopdat(df, dat_items, min_complete = 1e-9, append = FALSE)
+  expect_identical(out$dat_whodas, c(NA_real_, NA_real_))
+  expect_true(all(is.na(out[paste0("dat_", dat_stems)])))
 
   set.seed(4)
   df <- dat_frame(draw_answers(2))[0, ]

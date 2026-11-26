@@ -346,7 +346,8 @@ validate_positive_number <- function(x, arg, call = rlang::caller_env()) {
 
 # One share in (0, 1]: score_hitopdat()'s `min_complete`, the smallest share of
 # a scale's items that must be answered for the scale to score. 0 is excluded
-# because a scale with no answered item has no score to prorate.
+# because a scale with no answered item has no score to prorate; the scorer
+# also sets such a scale to NA itself, whatever the share.
 validate_share <- function(x, arg, call = rlang::caller_env()) {
   cli_assert(
     condition = is.numeric(x) && length(x) == 1L && !is.na(x) && x > 0 && x <= 1,

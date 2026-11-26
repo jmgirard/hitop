@@ -29,8 +29,8 @@
 #'   the DUDIT total, CAPE positive symptoms, 33 CAT-PD facets and the PHQ-15
 #'   total. It returns raw scores, not T scores.
 #'
-#'   **Scoring rules.** Each measure is scored by the rule of the source its
-#'   scores are read against:
+#'   **Scoring rules.** Each measure is scored on the metric of the source
+#'   named in its entry:
 #'
 #'   - WHODAS: the sum of its 12 items, 0 to 48 (Andrews et al., 2009, p. 2).
 #'   - IDAS-II: the sum of each scale's items, the metric of the norms in
@@ -202,7 +202,7 @@ score_hitopdat <- function(
     } else {
       total * n / answered
     }
-    score[share < floor_share] <- NA_real_
+    score[share < floor_share | answered == 0] <- NA_real_
     list(score = score, share = share)
   })
   out <- cbind(

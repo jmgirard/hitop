@@ -48,8 +48,8 @@ of seven measures. This function scores 56 of the 57 scales in
 the DUDIT total, CAPE positive symptoms, 33 CAT-PD facets and the PHQ-15
 total. It returns raw scores, not T scores.
 
-\strong{Scoring rules.} Each measure is scored by the rule of the source its
-scores are read against:
+\strong{Scoring rules.} Each measure is scored on the metric of the source
+named in its entry:
 \itemize{
 \item WHODAS: the sum of its 12 items, 0 to 48 (Andrews et al., 2009, p. 2).
 \item IDAS-II: the sum of each scale's items, the metric of the norms in

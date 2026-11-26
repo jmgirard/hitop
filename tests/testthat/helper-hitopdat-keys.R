@@ -1,8 +1,8 @@
 # HiTOP-DAT keys typed from their published sources, shared by
 # test-keying-hitopdat.R (which checks `hitopdat_scales` against them) and
-# test-score_hitopdat.R (which recomputes scores from them). Every number below
-# is transcribed from the source named above its block, never read from the
-# package's tables. Provenance is in cairn/SOURCES.md, "HiTOP-DAT".
+# test-score_hitopdat.R (which recomputes scores from them). Every key number
+# below is transcribed from the source named above its block, never read from
+# the package's tables. Provenance is in cairn/SOURCES.md, "HiTOP-DAT".
 #
 # The keys number items within their own measure. The package uses battery
 # numbers, so each key number is mapped through `hitopdat_items$MeasureItem`;
