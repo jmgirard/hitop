@@ -1,6 +1,6 @@
 # M175: HiTOP-DAT T scores and the suicide-risk alert
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M174
 - **Driving RR:** —
@@ -47,7 +47,7 @@
 - [x] T2: Transcribe the workbook's 33 cells into a committed `data-raw/hitopdat_norms.csv` with the other 20 rows, and write `data-raw/hitopdat_norms.R` to build the dataset from it, adding no dependency. Write `?hitopdat_norms` in R/data.R and AC1's test.
 - [x] T3: Write `tests/testthat/test-norm_hitopdat.R` first: AC2 to AC4, with M and SD typed in the test, never read from `hitopdat_norms`.
 - [x] T4: Write `norm_hitopdat()` in `R/norm_hitopdat.R`, reusing the `R/util.R` validators.
-- [ ] T5: Write the roxygen, NEWS entry and `_pkgdown.yml` entries. Run `devtools::document()`, `devtools::test()` and `devtools::check()`.
+- [x] T5: Write the roxygen, NEWS entry and `_pkgdown.yml` entries. Run `devtools::document()`, `devtools::test()` and `devtools::check()`.
 
 ## Work log
 
@@ -67,3 +67,4 @@
 - 2026-11-25: T4 done: `norm_hitopdat()` in R/norm_hitopdat.R. Choices: T columns stay double (AC2's `round_half_up()` result), not integer as in `norm_pid5()`; a missing score column aborts with a message naming the columns, unclassed; `validate_numeric_columns()` gained an optional `class` so the non-numeric refusal carries `hitop_nonnumeric_items`; `alert_t` is checked inline (one finite number, any sign). The append-collision and error-prose sweeps gained a `norm_hitopdat` probe and terminator, and the help page's Errors passage uses the sweep's collision wording.
 - 2026-11-25: claim audit: 59 claims read, 5 corrected — R/norm_hitopdat.R, R/data.R, data-raw/hitopdat_norms.R, NEWS.md. Four sites said the PHQ-15 gets no T score "yet"; Jonas's 2026-11-18 answer keeps it on its cutoffs, so they now say no T score, with the AUDIT and DUDIT waiting on the sex-split answer (AC5's "yet" holds for those two). One code comment credited the half-away-from-zero rule to the authors' files, which only call round(x, 0); the Scope line's "as both of the authors' versions round" is right for whole numbers and left as planned.
 - 2026-11-25: full `devtools::test()` (run after the sweep fixes): 1 failure, test-vignette-export-coverage — `norm_hitopdat` had no vignette call or reference link. Added a "T scores" reference button to the scoring card of vignettes/articles/download-hitopdat.Rmd (minor sub-task under T5); that test and test-download-pages now pass.
+- 2026-11-25: T5 done: roxygen, NEWS entry, `_pkgdown.yml` (norm_hitopdat under Norms, hitopdat_norms with the HiTOP-DAT data), README line pointing to `?norm_hitopdat`. Full `devtools::test()` 0 failures after the vignette link (the one failing file re-run green); `devtools::check()` 0 errors, 0 warnings, 1 note (a gitignored top-level Rplots.pdf left by this session's `run_examples()`, since removed). Status → review.
