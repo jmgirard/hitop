@@ -10,7 +10,7 @@ Pagination: — (sheet and cell addresses).
 Extraction: verified 2026-11-25 against the source, cells E3:F35 of sheet "CAT-PD Scoring" read with `readxl::read_excel()` and from the sheet's XML, both giving the same values — observed 2026-11-25.
 
 **Citation.** Simms, L. J. (n.d.). *CAT-PD and IDAS scoring* [Unpublished Excel workbook].
-Sent by K. G. Jonas, 2026-10-15. Not published (D-098).
+Received from K. G. Jonas, 2026-10-15. Not published (D-098).
 
 **Role.** The source of the 33 CAT-PD facet norms. Jonas says these norms come from Simms's
 workbook and were never published (`jonas_ringwald2026email.txt`); D-098 admits them as the

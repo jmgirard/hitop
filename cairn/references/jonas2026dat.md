@@ -67,5 +67,5 @@ changes one name: the 2021 "Non-Premeditation" (p. 23) is "Non-Planfulness" here
 ## Open questions
 
 - The manual's reference samples are described in "Measures and reference data", but their
-  means and SDs are not in it. They belong to the HiTOP-DAT scoring candidate row — observed
-  2026-10-16.
+  means and SDs are not in it — observed 2026-10-16. `hitopdat_norms` takes its values
+  from the sources the authors named in their answers (corrected M175).
