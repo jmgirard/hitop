@@ -59,4 +59,4 @@ Items is the number of items. Scoring and Reliability mark the instruments that 
 | PID-5-BF Child | 25 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html), [Scoring PID-5-BF](https://jmgirard.github.io/hitop/articles/pid5bf_scoring.html) | Word, Qualtrics, REDCap |
 | PID-5-FFBF | 100 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html) |  |
 
-For PID-5 validity scales and norms, see `?validity_pid5` and `?norm_pid5`.
+For PID-5 validity scales and norms, see `?validity_pid5` and `?norm_pid5`. For HiTOP-DAT T scores, see `?norm_hitopdat`.

@@ -34,8 +34,10 @@
 #'     CAT-PD and IDAS scoring workbook. These norms are unpublished. The
 #'     battery's authors use them, and this function follows the authors.
 #'
-#'   The AUDIT, DUDIT and PHQ-15 get no T score yet. Their norms are split by
-#'   sex, and how to report them waits on the authors' answer. The IDAS-II
+#'   The AUDIT, DUDIT and PHQ-15 get no T score. The AUDIT and DUDIT norms
+#'   are split by sex, and how to report them waits on the authors' answer.
+#'   The authors keep the PHQ-15 on its cutoff scores rather than a T score.
+#'   The IDAS-II
 #'   General Depression scale is not scored (see [score_hitopdat()]).
 #'
 #'   **Alerts.** The battery alerts on two scales: IDAS-II Suicidality and
@@ -157,8 +159,9 @@ norm_hitopdat <- function(
     validate_no_output_collision(c(t_names, alert_names), data)
   }
 
-  ## Whole-number T scores, halves away from zero, as both of the authors'
-  ## versions round; the alerts compare the rounded T, as both versions do.
+  ## Whole-number T scores, as both of the authors' versions round (each calls
+  ## round(x, 0)). Halves go away from zero (round_half_up()), a rule neither
+  ## version's file states. The alerts compare the rounded T, as both do.
   t_scores <- lapply(seq_along(score_cols), function(s) {
     x <- as.numeric(scores[[s]])
     round_half_up(

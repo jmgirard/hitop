@@ -21,7 +21,8 @@
 ## decimal that a CSV cell would truncate.
 ##
 ## General Depression is left out (the authors dropped it), and so are the
-## AUDIT, DUDIT and PHQ-15, whose T scores wait on the authors' follow-up.
+## AUDIT and DUDIT, whose sex-split norms wait on the authors' follow-up, and
+## the PHQ-15, which the authors keep on its cutoffs.
 ##
 ## Requires the package's own tables, so run after data-raw/hitopdat_info.R.
 

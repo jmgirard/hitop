@@ -54,8 +54,10 @@ CAT-PD and IDAS scoring workbook. These norms are unpublished. The
 battery's authors use them, and this function follows the authors.
 }
 
-The AUDIT, DUDIT and PHQ-15 get no T score yet. Their norms are split by
-sex, and how to report them waits on the authors' answer. The IDAS-II
+The AUDIT, DUDIT and PHQ-15 get no T score. The AUDIT and DUDIT norms
+are split by sex, and how to report them waits on the authors' answer.
+The authors keep the PHQ-15 on its cutoff scores rather than a T score.
+The IDAS-II
 General Depression scale is not scored (see \code{\link[=score_hitopdat]{score_hitopdat()}}).
 
 \strong{Alerts.} The battery alerts on two scales: IDAS-II Suicidality and

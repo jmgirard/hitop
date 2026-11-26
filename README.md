@@ -71,4 +71,4 @@ files, and JSON files for the online form.
 | PID-5-FFBF | 100 | Yes | Yes | [Scoring PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.html) |  |
 
 For PID-5 validity scales and norms, see `?validity_pid5` and
-`?norm_pid5`.
+`?norm_pid5`. For HiTOP-DAT T scores, see `?norm_hitopdat`.

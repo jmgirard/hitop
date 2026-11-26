@@ -596,9 +596,10 @@
 #' CAT-PD.
 #'
 #' The IDAS-II General Depression scale has no row, because the authors
-#' dropped it. The AUDIT, DUDIT and PHQ-15 have no row and get no T score
-#' yet: their norms are split by sex, and how to report them waits on the
-#' authors' answer.
+#' dropped it. The AUDIT, DUDIT and PHQ-15 have no row and get no T score.
+#' The AUDIT and DUDIT norms are split by sex, and how to report them waits
+#' on the authors' answer. The authors keep the PHQ-15 on its cutoff scores
+#' rather than a T score.
 #'
 #' [norm_hitopdat()] also flags an IDAS-II Suicidality or CAT-PD Self-Harm
 #' T score of 65 or more, the alert point Katherine Jonas gave in her email
