@@ -116,7 +116,7 @@
 - prior-review #2: the HiTOP-DAT row marks Scoring with an empty Tutorial cell — reject (false): the column links tutorials that exist, none exists for the HiTOP-DAT, and the README test agrees.
 - ripple #1: R/data.R `?hitopdat_items` says the battery has no scoring function — fix now, fixed ff3443f0.
 - ripple #2: R/generate_docx.R says the package ships no HiTOP-DAT scoring key — fix now, fixed ff3443f0.
-- ripple #3: CLAUDE.md's opening line omits the HiTOP-DAT — follow-up: candidate row "Name HiTOP-DAT in the CLAUDE.md summary" (low: no user reads it; left for Jeff since CLAUDE.md is his instruction file).
+- ripple #3: CLAUDE.md's opening line omits the HiTOP-DAT — follow-up: absorbed into the candidate row "HiTOP-DAT after M143 to M145", item (e), beside the battery's absence from DESCRIPTION (left for Jeff since CLAUDE.md is his instruction file; a row of its own put ROADMAP.md at its 60-line cap).
 - ripple #4: DESIGN.md's Function families signature line has no departure note — fix now, fixed ff3443f0.
 - ripple #5: ipip2015catpdsf.md and watson2011idas.md trace the key lists to test-keying-hitopdat.R — fix now, fixed ff3443f0.
 - ripple #6: test-append-collision.R says "an eighth appending export" — fix now, fixed ff3443f0.
