@@ -69,6 +69,6 @@ for the REDCap import file.
 # \donttest{
 # Write a HiTOP-DAT paper form to a temporary Word document
 generate_docx_hitopdat(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpbcmSdc/file19f66060c267.docx
+#> ✔ Document successfully created at /tmp/Rtmpy2Ffm9/file1ace53830fbf.docx
 # }
 ```
