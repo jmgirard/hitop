@@ -47,8 +47,9 @@ markup removed and line breaks within an item made spaces. CAT-PD item
 moves the PHQ-15's item 4 (menstrual problems) out of the battery, so
 the PHQ-15 has 14 items here and its own numbers skip 4. The battery
 gives only the CAPE's positive items, and they keep their CAPE numbers
-(2 to 42, with gaps). The battery has no scoring function in this
-package yet.
+(2 to 42, with gaps).
+[`score_hitopdat()`](https://jmgirard.github.io/hitop/reference/score_hitopdat.md)
+scores the battery.
 
 ## See also
 

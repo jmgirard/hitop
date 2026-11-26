@@ -30,7 +30,9 @@ feedback). Version 0.2.0, GPL-3. Maintained by Jeffrey Girard.
 
 - Scoring signature:
   `(data, items, [version,] srange, prefix, missing, calc_se, append = TRUE)`;
-  always returns a tibble. No `id`/`scales`/`tibble` arguments; all
+  always returns a tibble.
+  `score_hitopdat(data, items, prefix, min_complete, append = TRUE)`
+  departs from it (D-099). No `id`/`scales`/`tibble` arguments; all
   scales are computed. Reliability is a separate returning family
   `reliability_{pid5,hitopsr,hitopbr}(data, items, [version,] srange, alpha, omega)`
   → a per-scale tibble.

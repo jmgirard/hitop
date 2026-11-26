@@ -8,8 +8,8 @@ instruction text comes before its first item; the CAPE has none. Each
 item shows the values of its own answer set (`hitopdat_choices`), and
 the legend above each run of items that share an answer set gives that
 set's values and labels. The footer credits each measure's authors. The
-form has no scoring page, because the package ships no HiTOP-DAT scoring
-key.
+form has no scoring page. Score its answers with
+[`score_hitopdat()`](https://jmgirard.github.io/hitop/reference/score_hitopdat.md).
 
 ## Usage
 
@@ -69,6 +69,6 @@ for the REDCap import file.
 # \donttest{
 # Write a HiTOP-DAT paper form to a temporary Word document
 generate_docx_hitopdat(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpvxGIrP/file1a3145696abc.docx
+#> ✔ Document successfully created at /tmp/RtmpsmhjWU/file1a1346f98e45.docx
 # }
 ```

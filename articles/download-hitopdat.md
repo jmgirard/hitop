@@ -6,7 +6,8 @@ published measures: the WHODAS, IDAS-II, AUDIT, DUDIT, CAPE, CAT-PD and
 PHQ-15. Here you can download printable Word forms and Qualtrics and
 REDCap import files. Each form gives each measure’s instructions, where
 it has them, before its first item and shows each item with its own
-response options. The `hitop` package does not score the HiTOP-DAT yet.
+response options. The `hitop` package gives a raw score on each
+HiTOP-DAT scale but General Depression, and gives no T scores.
 
 ### Ready-to-Use Downloads
 
@@ -70,6 +71,15 @@ Qualtrics and REDCap files programmatically.
 [Printable](https://jmgirard.github.io/hitop/reference/generate_docx_hitopdat.md)
 [Qualtrics](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopdat.md)
 [REDCap](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopdat.md)
+
+##### 🧮 Scoring
+
+Score each scale but General Depression by its measure's rule, with
+reverse-keying, proration of partly answered scales by the battery
+authors' rule, and the share of each scale answered.
+
+[Score
+HiTOP-DAT](https://jmgirard.github.io/hitop/reference/score_hitopdat.md)
 
 ### Versions
 

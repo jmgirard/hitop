@@ -6,6 +6,8 @@
   : Score the HiTOP-SR Instrument
 - [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
   : Score the HiTOP-BR Instrument
+- [`score_hitopdat()`](https://jmgirard.github.io/hitop/reference/score_hitopdat.md)
+  : Score the HiTOP-DAT Battery
 - [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
   : Score the Personality Inventory for DSM-5
 - [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)

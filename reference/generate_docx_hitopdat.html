@@ -12,16 +12,16 @@ AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Each measure's instruction text
 comes before its first item; the CAPE has none. Each item shows the values
 of its own answer set (hitopdat_choices), and the legend above each run
 of items that share an answer set gives that set's values and labels. The
-footer credits each measure's authors. The form has no scoring page,
-because the package ships no HiTOP-DAT scoring key."><meta property="og:description" content="Write the 382 items of the HiTOP Digital Assessment and Tracker (HiTOP-DAT)
+footer credits each measure's authors. The form has no scoring page. Score
+its answers with score_hitopdat()."><meta property="og:description" content="Write the 382 items of the HiTOP Digital Assessment and Tracker (HiTOP-DAT)
 battery as a paper form. The items are numbered 1 to 382 in battery order
 (hitopdat_items$Item), through its seven measures: the WHODAS, IDAS-II,
 AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Each measure's instruction text
 comes before its first item; the CAPE has none. Each item shows the values
 of its own answer set (hitopdat_choices), and the legend above each run
 of items that share an answer set gives that set's values and labels. The
-footer credits each measure's authors. The form has no scoring page,
-because the package ships no HiTOP-DAT scoring key."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
+footer credits each measure's authors. The form has no scoring page. Score
+its answers with score_hitopdat()."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -99,8 +99,8 @@ AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Each measure's instruction text
 comes before its first item; the CAPE has none. Each item shows the values
 of its own answer set (<code>hitopdat_choices</code>), and the legend above each run
 of items that share an answer set gives that set's values and labels. The
-footer credits each measure's authors. The form has no scoring page,
-because the package ships no HiTOP-DAT scoring key.</p>
+footer credits each measure's authors. The form has no scoring page. Score
+its answers with <code><a href="score_hitopdat.html">score_hitopdat()</a></code>.</p>
     </div>
 
     <div class="section level2">
@@ -159,7 +159,7 @@ Defaults to <code>"Times New Roman"</code>.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Write a HiTOP-DAT paper form to a temporary Word document</span></span></span>
 <span class="r-in"><span><span class="fu">generate_docx_hitopdat</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/RtmpvxGIrP/file1a3145696abc.docx</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/RtmpsmhjWU/file1a1346f98e45.docx</span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
