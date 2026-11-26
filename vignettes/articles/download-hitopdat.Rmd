@@ -8,7 +8,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Welcome to the HiTOP Digital Assessment and Tracker (HiTOP-DAT) resources page. The HiTOP-DAT is a battery of 382 items from seven published measures: the WHODAS, IDAS-II, AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Here you can download printable Word forms and Qualtrics and REDCap import files. Each form gives each measure's instructions, where it has them, before its first item and shows each item with its own response options. The `hitop` package does not score the HiTOP-DAT yet.
+Welcome to the HiTOP Digital Assessment and Tracker (HiTOP-DAT) resources page. The HiTOP-DAT is a battery of 382 items from seven published measures: the WHODAS, IDAS-II, AUDIT, DUDIT, CAPE, CAT-PD and PHQ-15. Here you can download printable Word forms and Qualtrics and REDCap import files. Each form gives each measure's instructions, where it has them, before its first item and shows each item with its own response options. The `hitop` package gives a raw score on each HiTOP-DAT scale but General Depression, and gives no T scores.
 
 ```{r setup, include=FALSE}
 source("_download-helpers.R")
@@ -72,6 +72,18 @@ download_cards("HiTOP-DAT", list(
           <a href="../reference/generate_docx_hitopdat.html" class="btn btn-sm btn-outline-secondary">Printable</a>
           <a href="../reference/generate_qualtrics_hitopdat.html" class="btn btn-sm btn-outline-secondary">Qualtrics</a>
           <a href="../reference/generate_redcap_hitopdat.html" class="btn btn-sm btn-outline-secondary">REDCap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🧮 Scoring</h5>
+        <p class="card-text">Score each scale by its measure's own rule, with reverse-keying, proration of partly answered scales and the share of each scale answered.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/score_hitopdat.html" class="btn btn-sm btn-outline-secondary">Score HiTOP-DAT</a>
         </div>
       </div>
     </div>

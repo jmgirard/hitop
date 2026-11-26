@@ -13,6 +13,15 @@ battery_numbers <- function(measure, own) {
   rows$Item[match(own, rows$MeasureItem)]
 }
 
+# Two respondents for the export-wide sweeps (append collision, README calls):
+# every item at the lowest value of its answer set, then at the highest.
+hitopdat_answer_ends <- function() {
+  ends <- lapply(hitopdat_items$Choice_Set, function(set) {
+    range(hitopdat_choices$Value[hitopdat_choices$Choice_Set == set])
+  })
+  as.data.frame(do.call(cbind, ends))
+}
+
 # ---- Source: IPIP CAT-PD-SF v1.1 key, https://ipip.ori.org/newCAT-PD-SFv1.1Keys.htm ----
 # ---- (page last modified 2015-12-18, read 2026-09-29). Numbers are SF #.          ----
 

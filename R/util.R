@@ -344,6 +344,81 @@ validate_positive_number <- function(x, arg, call = rlang::caller_env()) {
   invisible(NULL)
 }
 
+# One share in (0, 1]: score_hitopdat()'s `min_complete`, the smallest share of
+# a scale's items that must be answered for the scale to score. 0 is excluded
+# because a scale with no answered item has no score to prorate.
+validate_share <- function(x, arg, call = rlang::caller_env()) {
+  cli_assert(
+    condition = is.numeric(x) && length(x) == 1L && !is.na(x) && x > 0 && x <= 1,
+    message = c(
+      "The {.arg {arg}} argument must be a single number greater than 0 and at most 1.",
+      "x" = if (is.numeric(x) && length(x) == 1L) {
+        "You supplied {x}."
+      } else {
+        "You supplied {.cls {class(x)}} of length {length(x)}."
+      }
+    ),
+    call = call
+  )
+  invisible(NULL)
+}
+
+# Refuse an answer that is not a value of its item's answer set. `values` holds
+# the item columns as numbers (item_numbers()), in the order of `items`, and
+# `sets` the values each one may take. NA is a missing answer and passes. The
+# report names the first five refused columns, each with its first refused
+# value in row order, and counts the rest; `hint` is the caller's closing line.
+validate_answer_sets <- function(data, items, values, sets, hint,
+                                 call = rlang::caller_env()) {
+  first_bad <- mapply(
+    function(x, set) {
+      bad <- !is.na(x) & !(x %in% set)
+      if (any(bad)) x[bad][[1]] else NULL
+    },
+    values, sets,
+    SIMPLIFY = FALSE
+  )
+  bad <- which(!vapply(first_bad, is.null, logical(1)))
+  if (length(bad) == 0L) {
+    return(invisible(NULL))
+  }
+  ## Escaped because these strings are already formatted, and cli_abort() would
+  ## interpolate a brace in a column name a second time.
+  escape_braces <- function(x) {
+    gsub("}", "}}", gsub("{", "{{", x, fixed = TRUE), fixed = TRUE)
+  }
+  positions <- if (is.character(items)) match(items, names(data)) else as.integer(items)
+  shown <- utils::head(bad, 5)
+  detail <- vapply(shown, function(j) {
+    nm <- names(data)[[positions[[j]]]]
+    label <- if (is.na(nm) || !nzchar(nm)) {
+      cli::format_inline("Column {positions[[j]]}")
+    } else {
+      cli::format_inline("{.val {nm}}")
+    }
+    value <- first_bad[[j]]
+    set <- sets[[j]]
+    escape_braces(cli::format_inline(
+      "{label} (item {j}) holds {.val {value}}, which is not one of its answers {.val {set}}."
+    ))
+  }, character(1))
+  names(detail) <- rep("x", length(detail))
+  n <- length(bad)
+  more <- n - length(shown)
+  if (more > 0) {
+    detail <- c(detail, "x" = "{more} more column{?s} {?is/are} refused.")
+  }
+  cli::cli_abort(
+    c(
+      "{n} item column{?s} {?holds an answer/hold answers} outside {?its item's answer set/their items' answer sets}.",
+      detail,
+      "i" = hint
+    ),
+    class = "hitop_invalid_answer",
+    call = call
+  )
+}
+
 # Refuse any column that is not numeric or logical. Shared by norm_pid5() and
 # plot_pid5(), which reject such a column for the same reason: as.numeric()
 # turns a factor into its integer codes and a character column into NA -- wrong

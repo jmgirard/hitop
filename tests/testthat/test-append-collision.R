@@ -73,6 +73,11 @@ collision_probes <- function() {
       args = list(items = 1:45),
       extra = list(items = 1:45, calc_se = TRUE)
     ),
+    score_hitopdat = list(
+      data = hitopdat_answer_ends(),
+      args = list(items = 1:382),
+      extra = NULL
+    ),
     validity_pid5 = list(
       data = hitop::sim_pid5,
       args = list(items = 1:220),

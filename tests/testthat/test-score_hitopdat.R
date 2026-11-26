@@ -252,7 +252,8 @@ test_that("score_hitopdat() refuses bad data, items and arguments", {
   }
   expect_error(score_hitopdat(df, dat_items, prefix = 1), "single string")
   expect_error(score_hitopdat(df, dat_items, prefix = c("a", "b")), "single string")
-  expect_error(score_hitopdat(df, dat_items, append = "yes"), "TRUE or FALSE")
+  expect_error(score_hitopdat(df, dat_items, append = "yes"),
+               "`append` argument must be `TRUE` or `FALSE`", fixed = TRUE)
 
   clash <- df
   clash$dat_whodas_complete <- 1

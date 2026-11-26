@@ -73,7 +73,7 @@ between <- function(text, from, to, info) {
 }
 
 # The closing anchor per export. `\examples{` is the next top-level macro on
-# seven of the eight pages; on norm_pid5 the Errors passage is followed by a
+# eight of the nine pages; on norm_pid5 the Errors passage is followed by a
 # further bold heading, which is the tighter cut.
 errors_terminator <- function() {
   c(
@@ -82,6 +82,7 @@ errors_terminator <- function() {
     norm_pid5 = "\\strong{Response coding.}",
     rank_scales = "\\examples{",
     score_hitopbr = "\\examples{",
+    score_hitopdat = "\\examples{",
     score_hitopsr = "\\examples{",
     score_pid5 = "\\examples{",
     validity_pid5 = "\\examples{"
@@ -154,9 +155,9 @@ test_that("the three selection exports state the empty-selection refusal", {
   }
 })
 
-test_that("the four non-selection exports do not promise an empty-selection refusal", {
+test_that("the five non-selection exports do not promise an empty-selection refusal", {
   # A page must not claim a refusal its function does not make: score_pid5() and
-  # the other three take a fixed-length `items`, which validate_items() already
+  # the other four take a fixed-length `items`, which validate_items() already
   # rejects at the wrong length.
   idx <- alias_index()
   terminators <- errors_terminator()
