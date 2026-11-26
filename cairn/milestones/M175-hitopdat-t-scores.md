@@ -45,8 +45,8 @@
 
 - [x] T1: Write the source notes `galletly2016.md` and `simms2026catpdworkbook.md` (the workbook, sha256 `8643147c…`, the cells AC1 names) with INDEX lines, and add the 18 IDAS-II rows already in `watson2012.md` to its "Traces to".
 - [x] T2: Transcribe the workbook's 33 cells into a committed `data-raw/hitopdat_norms.csv` with the other 20 rows, and write `data-raw/hitopdat_norms.R` to build the dataset from it, adding no dependency. Write `?hitopdat_norms` in R/data.R and AC1's test.
-- [ ] T3: Write `tests/testthat/test-norm_hitopdat.R` first: AC2 to AC4, with M and SD typed in the test, never read from `hitopdat_norms`.
-- [ ] T4: Write `norm_hitopdat()` in `R/norm_hitopdat.R`, reusing the `R/util.R` validators.
+- [x] T3: Write `tests/testthat/test-norm_hitopdat.R` first: AC2 to AC4, with M and SD typed in the test, never read from `hitopdat_norms`.
+- [x] T4: Write `norm_hitopdat()` in `R/norm_hitopdat.R`, reusing the `R/util.R` validators.
 - [ ] T5: Write the roxygen, NEWS entry and `_pkgdown.yml` entries. Run `devtools::document()`, `devtools::test()` and `devtools::check()`.
 
 ## Work log
@@ -63,3 +63,5 @@
 - 2026-11-25: implement started on branch m175-hitopdat-t-scores, cut from origin/main at 0e14453b; the six untracked devel/hitopdat_* files are unrelated and stay unstaged.
 - 2026-11-25: T1 done: galletly2016.md and simms2026catpdworkbook.md written with INDEX lines; watson2012.md, andrews2009.md and SOURCES.md "The authors' email" updated to name hitopdat_norms as the reader.
 - 2026-11-25: T2 done: data-raw/hitopdat_norms.csv + .R build `hitopdat_norms` (53 rows; columns Measure, Scale, camelCase, M, SD, Sample, N, Source); the CAPE row is computed in the script from Galletly's four cells, since the weighted mean repeats. Choices: N 305 for the CAPE (the sum of the printed n), NA for the CAT-PD (workbook gives none); a Measure column added for filtering; the typed norms live in tests/testthat/helper-hitopdat-norms.R so T3's test shares them. A 1e-6 planted change to one M fails the AC1 check.
+- 2026-11-25: T3 done: test-norm_hitopdat.R written first and seen red (function absent), then green after T4. Scores are built from the typed M and SD at unrounded T 50, 60.4, 60.6 and NA (expected 50, 60, 61, NA); alerts at alert_t − 0.4 and − 0.6 at 65 and 70, plus a row showing each alert reads only its own scale.
+- 2026-11-25: T4 done: `norm_hitopdat()` in R/norm_hitopdat.R. Choices: T columns stay double (AC2's `round_half_up()` result), not integer as in `norm_pid5()`; a missing score column aborts with a message naming the columns, unclassed; `validate_numeric_columns()` gained an optional `class` so the non-numeric refusal carries `hitop_nonnumeric_items`; `alert_t` is checked inline (one finite number, any sign). The append-collision and error-prose sweeps gained a `norm_hitopdat` probe and terminator, and the help page's Errors passage uses the sweep's collision wording.

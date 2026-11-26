@@ -435,7 +435,7 @@ validate_answer_sets <- function(data, items, values, sets, hint,
 # caller supplies its headline and closing line as functions of how many columns
 # offended. That count is what both pluralize on and what neither knows until
 # the check has run, which is why they are functions and not strings.
-validate_numeric_columns <- function(columns, headline, info,
+validate_numeric_columns <- function(columns, headline, info, class = NULL,
                                      call = rlang::caller_env()) {
   bad <- !vapply(columns, function(x) is.numeric(x) || is.logical(x), logical(1))
   if (!any(bad)) {
@@ -455,6 +455,7 @@ validate_numeric_columns <- function(columns, headline, info,
   n <- sum(bad)
   cli::cli_abort(
     c(escape_braces(headline(n)), detail, "i" = escape_braces(info(n))),
+    class = class,
     call = call
   )
 }

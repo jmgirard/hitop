@@ -88,6 +88,13 @@ collision_probes <- function() {
       args = list(),
       extra = NULL
     ),
+    norm_hitopdat = list(
+      data = hitop::score_hitopdat(
+        hitopdat_answer_ends(), items = 1:382, append = FALSE
+      ),
+      args = list(),
+      extra = NULL
+    ),
     rank_scales = list(
       data = NULL,
       args = list(),
