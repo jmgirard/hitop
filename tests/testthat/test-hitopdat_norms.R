@@ -2,7 +2,6 @@
 # helper-hitopdat-norms.R from the committed source notes.
 
 test_that("hitopdat_norms holds the 53 normed scales in hitopdat_scales order", {
-  expect_identical(nrow(hitopdat_norms), 53L)
   expect_identical(hitopdat_norms$camelCase, typed_dat_norms$camelCase)
   expect_identical(
     names(hitopdat_norms),

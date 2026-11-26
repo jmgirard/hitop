@@ -35,7 +35,8 @@
   at least `alert_t`, 65 by default, the authors' alert point. The AUDIT,
   DUDIT and PHQ-15 get no T score: the AUDIT and DUDIT wait on the authors'
   answer about their sex-split norms, and the authors keep the PHQ-15 on its
-  cutoffs.
+  cutoffs. A score column that is not numeric is an error of class
+  `hitop_nonnumeric_items`.
 
 * **HiTOP-DAT Word forms and REDCap import file.** `generate_docx_hitopdat()`
   writes the battery's 382 items as a paper form, numbered 1 to 382 in battery

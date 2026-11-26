@@ -10,8 +10,8 @@ norm_hitopdat(data, prefix = "dat_", alert_t = 65, append = TRUE)
 \item{data}{A data frame holding the scale score columns that
 \code{\link[=score_hitopdat]{score_hitopdat()}} returns, named \code{prefix} plus each scale's \code{camelCase}
 name in \link{hitopdat_norms}. Other columns are ignored. Each score column
-must be numeric or logical; any other column, such as text, is an error
-of class \code{hitop_nonnumeric_items}.}
+must be numeric or logical; any other column, such as text or a bit64
+\code{integer64} column, is an error of class \code{hitop_nonnumeric_items}.}
 
 \item{prefix}{The prefix of the score column names, and of the columns this
 function adds. Use the \code{prefix} given to \code{\link[=score_hitopdat]{score_hitopdat()}}. Set it to an
@@ -57,8 +57,8 @@ battery's authors use them, and this function follows the authors.
 The AUDIT, DUDIT and PHQ-15 get no T score. The AUDIT and DUDIT norms
 are split by sex, and how to report them waits on the authors' answer.
 The authors keep the PHQ-15 on its cutoff scores rather than a T score.
-The IDAS-II
-General Depression scale is not scored (see \code{\link[=score_hitopdat]{score_hitopdat()}}).
+The IDAS-II General Depression scale is not scored (see
+\code{\link[=score_hitopdat]{score_hitopdat()}}).
 
 \strong{Alerts.} The battery alerts on two scales: IDAS-II Suicidality and
 CAT-PD Self-Harm. Each alert column is \code{TRUE} when its scale's rounded T
@@ -68,8 +68,8 @@ the battery manual's first author, gave in her email to the package
 maintainer of 2026-10-15. She added that clinics may set another, for
 example to suit their state's laws.
 
-\strong{Errors.} A score column missing from \code{data} is an error that names
-it.
+\strong{Errors.} A score column missing from \code{data}, or a score column name
+held by more than one column of \code{data}, is an error that names it.
 
 With \code{append = TRUE}, a column of \code{data} whose name this call would also
 produce is an error rather than an overwrite or a duplicated column: the

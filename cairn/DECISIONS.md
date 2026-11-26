@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-101 (2026-11-25): `norm_hitopdat()` refuses a non-numeric or `integer64` score column under `hitop_nonnumeric_items` (annotates D-068's scope of that class; D-034(c) not triggered, since the class exists)
+
+**Context:** D-068 made `hitop_nonnumeric_items` public for seven item-scoring functions. `norm_pid5()`, `plot_pid5()` and `interval_*()` refuse a non-numeric score column with no class, and a candidate row keeps a class for those refusals open. M175's AC4 asks `norm_hitopdat()` to refuse a non-numeric score column under `hitop_nonnumeric_items`. Its review found that an `integer64` column passes `is.numeric()` and, without bit64 attached, is read as its bit pattern.
+
+**Decision:** `norm_hitopdat()` refuses a score column that is not numeric or logical, and an `integer64` column, as a `hitop_nonnumeric_items` condition. The class now covers this score-column refusal as well as the item-column refusals of D-068. Unlike the item columns, a score column of digit text is refused, because `score_hitopdat()` returns numbers. Rejected: a new class for score columns, because a caller of the HiTOP-DAT functions would then catch two names for one mistake.
+
+**Consequences:** One class carries two acceptance rules: item columns accept digit text and score columns do not. The other score-column refusals stay unclassed until their candidate row is promoted. The evidence that reopens this is a caller who must tell an item-column refusal from a score-column refusal by class.
+
 ### D-100 (2026-11-25): `score_hitopdat()` refuses an answer outside its item's answer set, under the new public class `hitop_invalid_answer` (the successor entry D-034(c) requires for a new exported condition; applies GP2 and GP3)
 
 **Context:** The HiTOP-DAT measures use different answer sets (`hitopdat_choices`). Four AUDIT and DUDIT items take 0, 2 or 4, so a 1 lies inside their range but is not an answer. A value outside an item's set means a wrong export coding, a shifted coding, or a "Skip" code from the battery's Qualtrics file (SOURCES.md DAT-5, DAT-11). A sum or mean over such a value is a wrong score with no error. The other scoring functions check only that a column is numeric (`hitop_nonnumeric_items`, D-068) and that `srange` is well formed.

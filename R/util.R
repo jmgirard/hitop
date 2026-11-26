@@ -420,8 +420,9 @@ validate_answer_sets <- function(data, items, values, sets, hint,
   )
 }
 
-# Refuse any column that is not numeric or logical. Shared by norm_pid5() and
-# plot_pid5(), which reject such a column for the same reason: as.numeric()
+# Refuse any column that is not numeric or logical. Shared by norm_pid5(),
+# plot_pid5() and norm_hitopdat(), which reject such a column for the same
+# reason (norm_hitopdat() alone passes `class`, hitop_nonnumeric_items): as.numeric()
 # turns a factor into its integer codes and a character column into NA -- wrong
 # answers rather than errors -- so both stop before any conversion happens. A
 # logical column is left alone: as.numeric(TRUE) is 1, which is what a 0/1

@@ -7,8 +7,8 @@
 #' @param data A data frame holding the scale score columns that
 #'   [score_hitopdat()] returns, named `prefix` plus each scale's `camelCase`
 #'   name in [hitopdat_norms]. Other columns are ignored. Each score column
-#'   must be numeric or logical; any other column, such as text, is an error
-#'   of class `hitop_nonnumeric_items`.
+#'   must be numeric or logical; any other column, such as text or a bit64
+#'   `integer64` column, is an error of class `hitop_nonnumeric_items`.
 #' @param prefix The prefix of the score column names, and of the columns this
 #'   function adds. Use the `prefix` given to [score_hitopdat()]. Set it to an
 #'   empty string `""` when the columns have no prefix. (default = `"dat_"`)
@@ -37,8 +37,8 @@
 #'   The AUDIT, DUDIT and PHQ-15 get no T score. The AUDIT and DUDIT norms
 #'   are split by sex, and how to report them waits on the authors' answer.
 #'   The authors keep the PHQ-15 on its cutoff scores rather than a T score.
-#'   The IDAS-II
-#'   General Depression scale is not scored (see [score_hitopdat()]).
+#'   The IDAS-II General Depression scale is not scored (see
+#'   [score_hitopdat()]).
 #'
 #'   **Alerts.** The battery alerts on two scales: IDAS-II Suicidality and
 #'   CAT-PD Self-Harm. Each alert column is `TRUE` when its scale's rounded T
@@ -48,8 +48,8 @@
 #'   maintainer of 2026-10-15. She added that clinics may set another, for
 #'   example to suit their state's laws.
 #'
-#'   **Errors.** A score column missing from `data` is an error that names
-#'   it.
+#'   **Errors.** A score column missing from `data`, or a score column name
+#'   held by more than one column of `data`, is an error that names it.
 #'
 #'   With `append = TRUE`, a column of `data` whose name this call would also
 #'   produce is an error rather than an overwrite or a duplicated column: the
@@ -140,6 +140,16 @@ norm_hitopdat <- function(
       "i" = "Score the items with {.code score_hitopdat()} first, and set {.arg prefix} to the prefix it used."
     ))
   }
+  ## A name held by two columns would be read from the first alone.
+  repeated <- intersect(score_cols, names(data)[duplicated(names(data))])
+  if (length(repeated) > 0L) {
+    repeated <- cli::cli_vec(repeated, style = list(vec_trunc = Inf))
+    cli::cli_abort(c(
+      "Each score column must appear once in {.arg data}.",
+      "x" = "Named by more than one column: {.val {repeated}}.",
+      "i" = "Drop or rename the extra columns first."
+    ))
+  }
   scores <- data[score_cols]
   validate_numeric_columns(
     scores,
@@ -153,6 +163,19 @@ norm_hitopdat <- function(
     },
     class = "hitop_nonnumeric_items"
   )
+  ## An integer64 column passes is.numeric(), but without bit64 attached
+  ## as.numeric() reads its bit pattern, not its value.
+  big <- names(scores)[vapply(scores, inherits, logical(1), what = "integer64")]
+  if (length(big) > 0L) {
+    cli::cli_abort(
+      c(
+        "The score columns must be numeric.",
+        "x" = "{.val {big}} {?is/are} {.cls integer64}.",
+        "i" = "Convert an {.cls integer64} column with {.code as.numeric()} after {.code library(bit64)}."
+      ),
+      class = "hitop_nonnumeric_items"
+    )
+  }
 
   ## The authors alert on these two scales only (cairn/SOURCES.md, "The
   ## authors' REDCap version").

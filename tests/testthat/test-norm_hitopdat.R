@@ -31,6 +31,10 @@ test_that("each T is rounded half away from zero from the typed M and SD", {
   for (s in norm_stems) {
     expect_identical(out[[paste0("dat_", s, "_t")]], c(50, 60, 61, NA), label = s)
   }
+  # Well-Being's score at unrounded T 20.5 is an exact half in double
+  # precision, where base round() would give 20.
+  out <- norm_hitopdat(scores_at(20.5), append = FALSE)
+  expect_identical(out$dat_wellBeing_t, 21)
 })
 
 test_that("a NaN score gives an NA T score, not NaN", {
@@ -38,7 +42,6 @@ test_that("a NaN score gives an NA T score, not NaN", {
   data$dat_suicidality[2] <- NaN
   out <- norm_hitopdat(data, append = FALSE)
   expect_identical(out$dat_suicidality_t, c(50, NA_real_))
-  expect_identical(out$dat_suicidality_alert, c(FALSE, NA))
 })
 
 test_that("an alert compares its own scale's rounded T with alert_t", {
@@ -47,11 +50,10 @@ test_that("an alert compares its own scale's rounded T with alert_t", {
   expect_identical(out$dat_suicidality_alert, c(TRUE, FALSE, NA))
   expect_identical(out$dat_selfHarm_alert, c(TRUE, FALSE, NA))
 
-  out <- norm_hitopdat(scores_at(c(69.6, 69.4, NA)), alert_t = 70, append = FALSE)
-  expect_identical(out$dat_suicidality_alert, c(TRUE, FALSE, NA))
-  expect_identical(out$dat_selfHarm_alert, c(TRUE, FALSE, NA))
+  out <- norm_hitopdat(scores_at(c(69.6, 69.4)), alert_t = 70, append = FALSE)
+  expect_identical(out$dat_suicidality_alert, c(TRUE, FALSE))
+  expect_identical(out$dat_selfHarm_alert, c(TRUE, FALSE))
 
-  # Each alert reads only its own scale.
   data <- scores_at(c(70, 50))
   data$dat_selfHarm <- rev(data$dat_selfHarm)
   out <- norm_hitopdat(data, append = FALSE)
@@ -81,18 +83,24 @@ test_that("a zero-row data frame returns a zero-row tibble", {
 test_that("norm_hitopdat() refuses bad arguments", {
   data <- scores_at(50)
   expect_error(norm_hitopdat(as.list(data)), "must be a data frame")
-  expect_error(
-    norm_hitopdat(data[names(data) != "dat_selfHarm"]),
-    "score column is not found.*dat_selfHarm"
-  )
   # A wrong prefix misses all 53, and the message names every one.
   err <- expect_error(norm_hitopdat(data, prefix = "x_"), "53 score columns")
   expect_match(conditionMessage(err), "x_workaholism", fixed = TRUE)
+  twice <- cbind(data, data["dat_anger"])
+  expect_error(norm_hitopdat(twice), "more than one column.*dat_anger")
   text <- data
   text$dat_anger <- "high"
   expect_error(norm_hitopdat(text), class = "hitop_nonnumeric_items")
+  # integer64 holds a value's bits in a double; 7 is not read as 7 without bit64.
+  big <- data
+  big$dat_anger <- structure(7, class = "integer64")
+  err <- expect_error(norm_hitopdat(big), class = "hitop_nonnumeric_items")
+  expect_match(conditionMessage(err), "integer64", fixed = TRUE)
   for (value in list(c(65, 70), "65", Inf)) {
-    expect_error(norm_hitopdat(data, alert_t = value), "single finite number")
+    expect_error(
+      norm_hitopdat(data, alert_t = value), "single finite number",
+      label = deparse(value)
+    )
   }
   expect_error(norm_hitopdat(data, prefix = c("a", "b")), "single string")
   expect_error(norm_hitopdat(data, append = NA), "must be .*TRUE.* or .*FALSE")

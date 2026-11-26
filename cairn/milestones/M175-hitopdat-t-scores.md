@@ -97,7 +97,7 @@ Pass 1 (2026-11-25). Default branch unmoved since the cut (origin/main 0e14453b)
 - blame-history #4: `hitop_nonnumeric_items` extended past D-068's item-scoring functions — reject, planned change (AC4 names the class)
 - blame-history #5: README capability table not checked — reject, false (test-readme-capabilities.R passes; Scoring was already "Yes")
 - prior-review #1: a NaN score gives T NaN, not the documented NA — fix now (NaN set to NA before rounding; test added)
-- prior-review #2: duplicated score-column names read the first match, as in norm_pid5() and rank_scales() — known issue: **Norming and ranking functions read the first of duplicated score column names** — `norm_hitopdat()`, `norm_pid5()` and `rank_scales()` select score columns by name, so a data frame holding two columns of one name (possible with `check.names = FALSE`, refused by tibble) reads the first with no message. Accepted at the M175 gate
+- prior-review #2: duplicated score-column names read the first match, as in norm_pid5() and rank_scales() — superseded in pass 2 (norm_hitopdat() fixed; the known-issue proposal narrowed to the older functions, below)
 - prior-review #3: duplicate names already in `data` reach tibble's error under append — reject, edge (a data frame with duplicated names, outside documented and common use; the effect is an error)
 - prior-review #4: `round_half_up()` may miss a half in floating point — reject, false (diff-bug lens checked every score score_hitopdat() can give at ≥ 80% answered: the three exact halves are exact doubles)
 - ripple #1, #5: DESIGN.md said HiTOP-DAT T scores "are not built yet" and omitted `norm_hitopdat()` — fix now, fixed e31cf051
@@ -108,3 +108,33 @@ Pass 1 (2026-11-25). Default branch unmoved since the cut (origin/main 0e14453b)
 - ripple #7: CLAUDE.md's opening line omits the HiTOP-DAT — follow-up, absorbed: candidate row "HiTOP-DAT after M143 to M145" item (e) already holds it
 - ripple #8: test-error-prose.R says "three" selection exports where four are listed — fix now (a count in a file this diff edits, beside counts the diff corrected)
 - ripple #9: jonas2021dat.md pointed T-score material at the candidate row — fix now, fixed e31cf051
+
+Pass 2 (2026-11-25), after the AC5 amendment return. Default branch unmoved (origin/main 0e14453b); no PR; Copilot round off.
+
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: an `integer64` score column passes `is.numeric()` and, without bit64, is read as its bit pattern (T 108 for a 7 at the anger mean) — fix now (refused under `hitop_nonnumeric_items`, D-101; test added; planted removal of the guard gives T 108)
+- diff-bug #2: "halves rounded away from zero" was untested; base `round()` passed every test — fix now (Well-Being at unrounded T 20.5, an exact double half, expects 21; planted `round()` gives 20)
+- diff-bug #3: `hitop_nonnumeric_items` now covers a score-column refusal with no D-entry — fix now (D-101 annotates D-068; NEWS names the class)
+- diff-bug #4: double `_t` against norm_pid5()'s integer — reject, planned change (AC2), as in pass 1
+- diff-bug #5: an `Inf` score gives T `Inf` — reject, false (the formula's value), as in pass 1
+- diff-bug #6: T scores have no ceiling (CAPE reaches 202 at its maximum, its per-item SD being 0.176) — reject, planned change (AC2's formula; the authors' version caps only the AUDIT and DUDIT)
+- diff-bug #7: one-point differences from the authors' REDCap item-mean norms — reject, planned change (D-098), as in pass 1
+- diff-bug #8: simms2026catpdworkbook.md still said "Sent" — fix now, fixed 0e8c4ba7
+- diff-bug #9: test-append-collision.R's header said a new appending export needs no edit to this file — fix now (reworded: it fails until it has a probe)
+- diff-bug #10: the missing-column abort has no class — reject, planned change (AC4 accepts a class or a message)
+- diff-bug #11: a broken roxygen line ("The IDAS-II" / "General Depression") — fix now
+- diff-bug (c): the NaN row's alert check, the NA row at `alert_t = 70`, the single-missing-column check beside the wrong-prefix check, the restating comment, and `nrow == 53` beside the exact camelCase check — fix now (trimmed); the three `alert_t` values (each fails a different part of the check), the explicit collision check and the zero-row checks stay — reject, planned change (AC4 names them); the counts in test-error-prose.R comments — reject, style
+- blame-history #1: "the authors keep the PHQ-15 on its cutoffs" rests on Jonas alone, against D-098's wait for a joint answer — reject, false (SOURCES.md records the 2026-11-18 thread as "The authors' joint answers", and D-099 applies its answers 1 and 2 as the authors' rule; Ringwald's reply opens "Thanks, Katherine!" and raises nothing on the PHQ-15); put to Jeff at the merge question
+- blame-history #2, ripple #1: the authors' REDCap version still gives the PHQ-15 a T from Hinz's men's row — follow-up, absorbed: candidate row "HiTOP-DAT after M143 to M145", item (a), PHQ-15 results waiting on the authors' answers
+- blame-history #3: class scope past D-068 — fixed with diff-bug #3 (D-101)
+- blame-history #4: the CAPE mean computed here — reject, planned change (AC1), as in pass 1
+- blame-history #5, ripple #3: jonas2026dat.md still pointed T-score material at the candidate row — fix now, fixed 0e8c4ba7
+- prior-review #1: duplicated score-column names read the first match — fix now for norm_hitopdat() (refused, naming the columns; planted removal of the guard gives no error); for the older functions, known issue: **`norm_pid5()`, `plot_pid5()` and `rank_scales()` trust their score columns' names and types** — they select score columns by name, so a data frame holding two columns of one name (possible with `check.names = FALSE`, refused by tibble) reads the first with no message, and `norm_pid5()` and `plot_pid5()` read a bit64 `integer64` score column as its bit pattern when bit64 is not attached. `norm_hitopdat()` refuses both. Accepted at the M175 gate
+- prior-review #2: an in-loop `alert_t` assertion had no failure label — fix now (`label = deparse(value)`)
+- ripple #2: DESIGN.md's entry bar said norms ship only from published tables — fix now (names D-098's narrowing for the HiTOP-DAT), fixed 0e8c4ba7; IP3's own text — reject, planned change (D-098 is the narrowing record; IP text changes only by Jeff's D-entry)
+- ripple #4: the REDCap IDAS-II metric differs from the sum metric — reject, planned change (D-098), as diff-bug #7
+- ripple #5: R/util.R's comment named only norm_pid5() and plot_pid5() — fix now
+- ripple #6: watson2011idas.md's dated pointer — reject, a dated observation
+- ripple #7: DAT-15 (b) carried no answer — fix now (marked answered 2026-11-07 in SOURCES.md)
+- ripple #8: CLAUDE.md's opening line — follow-up, absorbed as in pass 1
+- ripple (in diff): DESIGN.md's "(under Norms)" named no DESIGN family — fix now ("the reference index's Norms section"), fixed 0e8c4ba7

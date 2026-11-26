@@ -807,7 +807,9 @@ sources, with the typed IPIP and IDAS-II keys in
   workbook gives it 44.99, 14.75 and the file 41.94, 14.75. The workbook's 33
   CAT-PD means and SDs equal the file's at the file's two decimals. Neither is
   in print. Jeff can tell Katherine Jonas of both facts. (b) binds HiTOP-DAT
-  T scores.
+  T scores. Answered 2026-11-07: the IDAS-II norms are Table 2, and the file's
+  values came from rescaling it ("The authors' second answers"); M175 applies
+  Table 2 (corrected M175).
 - **DAT-16: The WHODAS citation (2026-10-16, M144).** The revised manual's
   "Measures and reference data" heading credits the WHODAS to "World Health
   Organization & others, 1988". The battery uses the 12-item WHODAS (W1), a
