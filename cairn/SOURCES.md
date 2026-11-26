@@ -628,6 +628,19 @@ authors' email from M173, and the authors' second answers, which no table reads 
   sets and reversals. Two alerts email the provider and the client when
   Suicidality or Self-Harm T is 65 or more, from Jonas's Stony Brook
   address.
+- **Berman Table 2's short columns (checked 2026-11-25).** The rendered page
+  (p. 26) matches the text layer, apart from a stray leading "1" in some
+  pdftotext cells (148.22 is 48.22). The women's all-ages column ends at raw
+  3 (T 104.11) and the men's at raw 13 (T 101.53) because the paper prints T
+  "up to approximately T = 100" (p. 26). The DUDIT manual (Berman et al.,
+  2003, Appendix 2, the same table) says it shows "T-score values between 50
+  and 100". Shelved as `berman2003duditmanual.pdf` (sha256 `09a6cc9f…`,
+  Internet Archive copy of 2021-04-20 of paihdelinkki.fi's
+  `duditmanual.pdf`, whose live link returns 404). Each all-ages column is
+  linear in the raw score (men 4.08 to 4.09 per point, women 18.35), so the
+  T values are non-normalized, and the columns imply men M 0.375, SD 2.450
+  and women M 0.051, SD 0.545. Neither source prints these means or SDs.
+  Only 1.6% of women (n = 9) scored above 0.
 - **Hinz et al. (2017), read 2026-11-07.** *Journal of Psychosomatic
   Research, 96*, 27-31, doi:10.1016/j.jpsychores.2016.12.017, shelved from
   Jeff's Zotero library as `hinz2017.pdf` (sha256 `89365892…`). German
