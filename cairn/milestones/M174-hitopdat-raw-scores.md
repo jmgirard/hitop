@@ -1,6 +1,6 @@
 # M174: HiTOP-DAT raw scale scores
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -53,7 +53,7 @@
 - [x] T2: Write `tests/testthat/test-score_hitopdat.R` first, with a helper that types the item lists and reverse keys from the keys (LESSONS 2026-10-04 (M159): random answers with `NA`, never a periodic pattern). Run it on the base and log that it fails for the missing function.
 - [x] T3: Write `score_hitopdat()` in `R/score_hitopdat.R`. Read memberships and reverse keys from `hitopdat_scales` and answer sets from `hitopdat_items` and `hitopdat_choices`; hardcode no item number (CLAUDE.md).
 - [x] T4: Append two D-entries: the signature departs from the family's (`min_complete` in place of `missing`, no `srange`, no `calc_se`), because the battery's answer sets differ by measure and the authors set the proration rule; and the new public class `hitop_invalid_answer` (D-034(c)).
-- [ ] T5: Write the roxygen, NEWS entry, `_pkgdown.yml` entry and README row (`devtools::build_readme()`). Run `devtools::document()`, `devtools::test()` and `devtools::check()`.
+- [x] T5: Write the roxygen, NEWS entry, `_pkgdown.yml` entry and README row (`devtools::build_readme()`). Run `devtools::document()`, `devtools::test()` and `devtools::check()`.
 
 ## Work log
 
@@ -75,3 +75,4 @@
 - 2026-11-25: T3 done: full `devtools::test()` 0 failures, 31,393 passed, 15 skipped. Choices: proration compares the answered share with `min_complete` less `sqrt(.Machine$double.eps)`, so a share such as 1 - 0.3 meets 7 of 10; reverse keys are applied per scale, so items 39 and 76 stay forward in Well-Being (tested).
 - 2026-11-25: claim audit (fresh Opus reader) flagged 5 of about 85 claims. All 5 were corrected in code or wording. One was a defect: with `min_complete` below about 1.5e-8 a scale with no answered item scored NaN. It now scores NA, with a test. Re-read by the same reader is pending. The first `devtools::check()` was stopped because it predated the fix.
 - 2026-11-25: claim audit: 85 claims read, 5 corrected — R/score_hitopdat.R, R/util.R, tests/testthat/test-score_hitopdat.R, tests/testthat/helper-hitopdat-keys.R, vignettes/articles/download-hitopdat.Rmd (the reader's one re-read found all 5 corrections hold).
+- 2026-11-25: T5 done: roxygen, NEWS entry, `_pkgdown.yml` row, README row (`build_readme()`), and, added as a minor sub-task, the download page's scoring card, which replaces its stale "does not score" sentence and covers the export for the vignette-coverage test. `pkgdown::check_pkgdown()` reports no problems; `devtools::check()` gives 0 errors, 0 warnings, 0 notes. Status set to review.
