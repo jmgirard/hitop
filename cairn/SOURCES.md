@@ -533,7 +533,8 @@ Table 1's printed counts now agree with row for row.
 `hitopdat_items`, `hitopdat_choices`, `hitopdat_scales` and the internal
 `hitopdat_instructions` are built by `data-raw/hitopdat_info.R` and
 `data-raw/sysdata.R`. Eight sources (five from M143, the revised manual and the
-authors' email from M173, and the authors' second answers, which no table reads yet):
+authors' email from M173, and the authors' second answers, which `hitopdat_norms`
+reads since M175; corrected M175):
 
 - **The file.** `data-raw/HiTOP-DAT.qsf`, a Qualtrics export titled "HiTOP-DAT -
   to share" (last modified in Qualtrics 2026-09-29), received by Jeff on
@@ -565,7 +566,9 @@ authors' email from M173, and the authors' second answers, which no table reads 
   table). T 65 is the alert point she and "Roman" chose, and she told
   clinics that they can set another. It came with Len Simms's `CAT-PD and IDAS scoring.xlsx`
   (sha256 `8643147c…`, on the shelf), "on which the Redcap battery was based".
-  No table reads that workbook yet (DAT-15).
+  `hitopdat_norms` reads its CAT-PD norms, sheet "CAT-PD Scoring" cells
+  E3:F35 ([simms2026catpdworkbook.md](references/simms2026catpdworkbook.md);
+  corrected M175).
 - **The authors' second answers (2026-11-07).** Replies to Jeff's 2026-10-16
   scoring report from Whitney Ringwald (2026-10-20) and Katherine Jonas
   (undated, after Whitney's), shelved verbatim as
@@ -804,7 +807,9 @@ sources, with the typed IPIP and IDAS-II keys in
   workbook gives it 44.99, 14.75 and the file 41.94, 14.75. The workbook's 33
   CAT-PD means and SDs equal the file's at the file's two decimals. Neither is
   in print. Jeff can tell Katherine Jonas of both facts. (b) binds HiTOP-DAT
-  T scores.
+  T scores. Answered 2026-11-07: the IDAS-II norms are Table 2, and the file's
+  values came from rescaling it ("The authors' second answers"); M175 applies
+  Table 2 (corrected M175).
 - **DAT-16: The WHODAS citation (2026-10-16, M144).** The revised manual's
   "Measures and reference data" heading credits the WHODAS to "World Health
   Organization & others, 1988". The battery uses the 12-item WHODAS (W1), a

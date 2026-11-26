@@ -420,8 +420,9 @@ validate_answer_sets <- function(data, items, values, sets, hint,
   )
 }
 
-# Refuse any column that is not numeric or logical. Shared by norm_pid5() and
-# plot_pid5(), which reject such a column for the same reason: as.numeric()
+# Refuse any column that is not numeric or logical. Shared by norm_pid5(),
+# plot_pid5() and norm_hitopdat(), which reject such a column for the same
+# reason (norm_hitopdat() alone passes `class`, hitop_nonnumeric_items): as.numeric()
 # turns a factor into its integer codes and a character column into NA -- wrong
 # answers rather than errors -- so both stop before any conversion happens. A
 # logical column is left alone: as.numeric(TRUE) is 1, which is what a 0/1
@@ -435,7 +436,7 @@ validate_answer_sets <- function(data, items, values, sets, hint,
 # caller supplies its headline and closing line as functions of how many columns
 # offended. That count is what both pluralize on and what neither knows until
 # the check has run, which is why they are functions and not strings.
-validate_numeric_columns <- function(columns, headline, info,
+validate_numeric_columns <- function(columns, headline, info, class = NULL,
                                      call = rlang::caller_env()) {
   bad <- !vapply(columns, function(x) is.numeric(x) || is.logical(x), logical(1))
   if (!any(bad)) {
@@ -455,6 +456,7 @@ validate_numeric_columns <- function(columns, headline, info,
   n <- sum(bad)
   cli::cli_abort(
     c(escape_braces(headline(n)), detail, "i" = escape_braces(info(n))),
+    class = class,
     call = call
   )
 }

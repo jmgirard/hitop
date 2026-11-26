@@ -85,6 +85,7 @@ reference:
 - title: Norms
   contents:
   - norm_pid5
+  - norm_hitopdat
 - title: Score Intervals
   desc: >
     Confidence intervals for HiTOP-SR and HiTOP-BR scale scores, computed
@@ -176,6 +177,7 @@ reference:
   - hitopdat_items
   - hitopdat_choices
   - hitopdat_scales
+  - hitopdat_norms
   - pid_items
   - pid_scales
   - pid_domains

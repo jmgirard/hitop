@@ -1,7 +1,7 @@
 # Both refusals are documented where a caller reads them (AC4).
 #
 # The help page of every export that appends its output states the
-# output-column collision, and the three exports taking a variable-length
+# output-column collision, and the four exports taking a variable-length
 # selection also state the empty-selection refusal. `NEWS.md` records both.
 #
 # The domain is the same getNamespaceExports() sweep the guards are tested by,
@@ -73,12 +73,13 @@ between <- function(text, from, to, info) {
 }
 
 # The closing anchor per export. `\examples{` is the next top-level macro on
-# eight of the nine pages; on norm_pid5 the Errors passage is followed by a
+# nine of the ten pages; on norm_pid5 the Errors passage is followed by a
 # further bold heading, which is the tighter cut.
 errors_terminator <- function() {
   c(
     interval_hitopbr = "\\examples{",
     interval_hitopsr = "\\examples{",
+    norm_hitopdat = "\\examples{",
     norm_pid5 = "\\strong{Response coding.}",
     rank_scales = "\\examples{",
     score_hitopbr = "\\examples{",
@@ -136,7 +137,7 @@ test_that("every appending export states the collision refusal on its help page"
   }
 })
 
-test_that("the three selection exports state the empty-selection refusal", {
+test_that("the four selection exports state the empty-selection refusal", {
   idx <- alias_index()
   terminators <- errors_terminator()
 
@@ -155,10 +156,10 @@ test_that("the three selection exports state the empty-selection refusal", {
   }
 })
 
-test_that("the five non-selection exports do not promise an empty-selection refusal", {
+test_that("the six non-selection exports do not promise an empty-selection refusal", {
   # A page must not claim a refusal its function does not make: score_pid5() and
   # the other four take a fixed-length `items`, which validate_items() already
-  # rejects at the wrong length.
+  # rejects at the wrong length, and norm_hitopdat() takes no selection.
   idx <- alias_index()
   terminators <- errors_terminator()
   others <- setdiff(prose_exports(), selection_exports)

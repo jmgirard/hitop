@@ -35,6 +35,10 @@ scale holds or which it reverses, because it prints no item numbers.
   (7.12, 2.37), Ill Temper (7.87, 3.73), Mania (8.05, 3.67), Checking (4.52, 2.33),
   Cleaning (9.05, 3.73), Ordering (7.98, 3.54), Appetite Gain (6.14, 2.88), Euphoria
   (8.26, 3.14), Well-Being (23.35, 6.71). No General Depression row.
+- pp. 404-405: the "Adults" column is the combined adult sample, Adult Sample 1 (355
+  community adults in Eastern Iowa), Adult Sample 2 (372 in Eastern Iowa) and Adult
+  Sample 3 (364 in the South Bend area), "overall N = 1,091" (`hitopdat_norms$Sample`:
+  "Combined community adult samples (Iowa and South Bend)") — read 2026-11-25 by M175.
 - General Depression is not in Table 1. The discussion (p. 418) says the instrument
   "also includes a General Depression scale". The paper prints no item count for it.
 - The paper prints example items in quotation marks but no item numbers, no scoring
@@ -45,7 +49,10 @@ scale holds or which it reverses, because it prints no item numbers.
 - `tests/testthat/test-keying-hitopdat.R`, `watson_counts`: the 18 counts, checked
   against `hitopdat_scales$nItems`.
 - `cairn/SOURCES.md` "HiTOP-DAT", DAT-15 (b): the Table 2 adult values, compared with
-  the Qualtrics file's and the workbook's IDAS-II norms. No package table reads them yet.
+  the Qualtrics file's and the workbook's IDAS-II norms.
+- `data-raw/hitopdat_norms.csv`: the 18 Table 2 "Adults" rows of `hitopdat_norms`, M and
+  SD on the scale-sum metric `score_hitopdat()` uses (corrected M175).
+- `tests/testthat/test-hitopdat_norms.R`: those 18 rows, typed from this page.
 
 ## Open questions
 
