@@ -77,6 +77,7 @@
 - 2026-11-25: claim audit: 85 claims read, 5 corrected — R/score_hitopdat.R, R/util.R, tests/testthat/test-score_hitopdat.R, tests/testthat/helper-hitopdat-keys.R, vignettes/articles/download-hitopdat.Rmd (the reader's one re-read found all 5 corrections hold).
 - 2026-11-25: T5 done: roxygen, NEWS entry, `_pkgdown.yml` row, README row (`build_readme()`), and, added as a minor sub-task, the download page's scoring card, which replaces its stale "does not score" sentence and covers the export for the vignette-coverage test. `pkgdown::check_pkgdown()` reports no problems; `devtools::check()` gives 0 errors, 0 warnings, 0 notes. Status set to review.
 - 2026-11-25: correction to the T3 line: `1 - 0.3` equals 0.7 exactly in R, so it shows nothing about the tolerance; `0.1 * 7` is slightly above 0.7 and still scores 7 of 10 (run at review). The code comment and `?score_hitopdat` now use that example (ff3443f0).
+- 2026-11-25: step-7 approval: m174-hitopdat-raw-scores approved for merge
 
 ## Review
 
