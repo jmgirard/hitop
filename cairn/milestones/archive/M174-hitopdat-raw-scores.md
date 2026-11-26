@@ -1,0 +1,11 @@
+# M174: HiTOP-DAT raw scale scores
+
+**Status:** done (2026-11-25, PR #182 https://github.com/jmgirard/hitop/pull/182)
+
+**Goal:** `score_hitopdat()` returns a raw score on each HiTOP-DAT scale other than General Depression, by the rule its measure's source states.
+
+**Outcome:** `score_hitopdat(data, items, prefix = "dat_", min_complete = 0.8, append = TRUE)` in `R/score_hitopdat.R`, outside `score_engine()`. It returns 56 scores, then 56 `_complete` columns (answered share). WHODAS, IDAS-II, AUDIT, DUDIT and PHQ-15 are sums, and CAT-PD facets and CAPE positive symptoms are item means. Reverse keys apply per scale from `hitopdat_scales$reverseNumbers`, as min + max − answer on the item's set. A scale scores at an answered share of at least `min_complete`, compared within `sqrt(.Machine$double.eps)`. Sums prorate to the full count. A scale with no answered item is `NA`. New `R/util.R` helpers: `validate_share()`, and `validate_answer_sets()` (class `hitop_invalid_answer`). Source notes andrews2009, bergman2002, berman2005, hinz2017. SOURCES.md DAT-5 and DAT-17 (c), (e), (h) resolved. The typed IPIP and IDAS-II keys moved to `tests/testthat/helper-hitopdat-keys.R`, with `hitopdat_answer_ends()`. The append-collision, error-prose and README-capability sweeps gained HiTOP-DAT entries. The download page gained a scoring card, and stale "no scoring" text went from `?hitopdat_items`, `?generate_docx_hitopdat`, DESIGN.md and two source notes.
+
+**Decisions:** D-099 (the signature without `srange`, `missing`, `calc_se`) and D-100 (`hitop_invalid_answer`).
+
+**Review:** Four-lens fan-out after a claim audit. The audit corrected 5 of 85 claims. One was a defect: a `min_complete` under about 1.5e-8 let an unanswered scale score NaN, now `NA` with a test. Of the review findings, 14 were fixed on the branch: stale scoring text in R/data.R, R/generate_docx.R, DESIGN.md, SOURCES.md and two source notes, a `min_complete` rounding note, and redundant test checks. 14 were rejected, one as edge: duplicate non-item column names give tibble's error. 1 follow-up went into item (e) of "HiTOP-DAT after M143 to M145", CLAUDE.md's summary line. 4 were notes. CI green on 8 checks. Hygiene: M144 row pruned, the started token dropped, lessons M043, M158 and M159 marked used, no lesson captured, LESSONS.md over its limit.
