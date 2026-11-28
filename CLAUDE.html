@@ -120,18 +120,15 @@
 </ul></div>
 <div class="section level2">
 <h2 id="project-tracking-cairn">Project tracking (cairn)<a class="anchor" aria-label="anchor" href="#project-tracking-cairn"></a></h2>
-<p>This repo uses the cairn plugin. <strong>Before acting on any request, classify it and route</strong> — the tracking rulebook only loads once a cairn skill fires, so starting work in plain conversation silently bypasses the work tiers and the git model. Classify first:</p>
+<p>This repo uses the cairn plugin. Work goes through its <code>/cairn</code> skill:</p>
 <ul><li>
-<strong>Trivial</strong> (no runtime surface — typo, comment, tracking edit): commit directly to the default branch.</li>
+<strong>Any request</strong>: <code>/cairn start</code>. It handles a trivial edit itself (no runtime surface: a typo, a comment, a ROADMAP row), and it plans anything else on a branch and takes it to review.</li>
 <li>
-<strong>User-visible bug</strong>: invoke <code>/hotfix</code>.</li>
+<strong>Work in flight</strong>: <code>/cairn resume</code> picks it up, and <code>/cairn review</code> ships it.</li>
 <li>
-<strong>New work, a design decision, or more than one sitting</strong>: invoke <code>/milestone-plan</code> (then <code>/milestone-implement</code> → <code>/milestone-review</code>).</li>
-<li>
-<strong>Status, “what’s next”, or unsure which tier</strong>: invoke <code>/milestone</code>.</li>
-<li>
-<strong>Never implement code on the default branch</strong> outside a milestone/hotfix branch; nothing reaches it without the user’s explicit approval at the review gate.</li>
-</ul><p>Whenever the request is anything but trivial, invoke the skill <em>first</em> so the full rulebook (the plugin’s <code>skills/shared/tracking-rules.md</code>) and its conduct load — do not reconstruct the rules here from memory. All project state lives under <code>cairn/</code> (<strong>Architecture → DESIGN · Status → ROADMAP · Tasks → milestone files · Decisions → DECISIONS · Lessons → LESSONS · History → archive + git</strong>); never record status or TODOs in this file. Claude’s persistent memory never holds project state; <code>cairn/</code> files win any conflict. Keying provenance (sources for <code>pid_items</code> etc.) → the repo-specific file <code>cairn/SOURCES.md</code>.</p>
+<strong>Status or “what’s next”</strong>: <code>/cairn status</code>.</li>
+</ul><p>Never build on the default branch. Nothing reaches it without the user’s approval at the merge question, or for a trivial edit their request.</p>
+<p>Candidates are in <code>cairn/ROADMAP.md</code>, and the toolchain commands are in <code>cairn/PROFILE.md</code>. Plans live outside the repo, in the home folder that <code>/cairn status</code> prints. Never record status or TODOs in this file. Keying provenance (sources for <code>pid_items</code> etc.) is in the repo-specific file <code>cairn/SOURCES.md</code>.</p>
 </div>
 </div>
 
